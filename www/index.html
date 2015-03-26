@@ -1,0 +1,636 @@
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+    <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/redmond/jquery-ui.min.css">
+    <!--link type="text/css" rel="stylesheet" href="lib/css/rickshaw.min.css"-->
+
+	<script src="/lib/js/jquery-1.11.1.min.js"></script>
+	<!--script src="/lib/js/jquery-ui.1.11.2.slider.min.js"></script-->
+    <script src="/lib/js/socket.io.js"></script>
+
+	<script src="lib/js/jquery.flot.min.js"></script>
+    <script src="lib/js/jquery.flot.resize.min.js"></script>
+    <script src="lib/js/jquery.flot.time.min.js"></script>
+    <script src="/_socket/info.js"></script>
+	<style>
+		.rickshaw_graph .x_tick.invisible {
+			border-left: 0px rgba(0, 0, 0, 0) !important;
+		}
+		#title {
+			font-size: 24px;
+			font-weight: bold;
+		}
+        div, span, p, td {
+            font-family: Arial, sans-serif;
+        }
+        #chart {
+            display: inline-block;
+        }
+        #legend_container {
+            position: absolute;
+            right: 0;
+            bottom: 26px;
+            width: 0;
+        }
+        /*#chart_container {
+            float: left;
+            position: relative;
+        }*/
+        .chart-container {
+            box-sizing: border-box;
+            padding: 20px 15px 15px 15px;
+            /*margin: 15px auto 30px auto;*/
+            border: 1px solid #ddd;
+            background: #fff;
+            background: linear-gradient(#f6f6f6 0, #fff 50px);
+            background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+            background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+            background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+            background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.2em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id="chart_container">
+    <div id="no-connection" style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10; text-align: center">No connection to server</div>
+    <div id="chart_placeholder" class="chart-placeholder"></div>
+</div>
+
+<script>
+var graph;
+
+var backgrounds = [
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,#87e0fd), color-stop(40%,#53cbf1), color-stop(100%,#05abe0))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f9ff), color-stop(47%,#cbebff), color-stop(100%,#a1dbff))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,252,234,1)), color-stop(100%,rgba(241,218,54,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,142,1)), color-stop(100%,rgba(165,201,86,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(238,238,238,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(228,239,192,1)), color-stop(100%,rgba(171,189,115,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,198,103,1)), color-stop(100%,rgba(247,150,33,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,255,232,1)), color-stop(100%,rgba(214,219,191,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(40%,rgba(223,229,215,1)), color-stop(100%,rgba(179,190,173,1)))',
+	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(241,231,103,1)), color-stop(100%,rgba(254,182,69,1)))'
+];
+// Show "no connection" message after 5 seconds
+var disconnectTimeout = setTimeout(function () {
+    disconnectTimeout = null;
+    //Show disconnected message
+    $('#no-connection').show();
+}, 5000);
+
+var config = {
+    _colors:   ["#c05020", "#30c020", "#6060c0"],
+    _units:    [],
+    _names:    [],
+};
+
+// Analyse query
+var path = location.href;
+path = path.split('?');
+if (path.length > 1) {
+	path = path[1].split('&');
+	for (var i = 0; i < path.length; i++) {
+		var parts = path[i].split('=');
+		config[parts[0]] = (parts[1] !== undefined) ? unescape(parts[1]) : true;
+		if (parts[0][0] == '_') config[parts[0]] = unescape(config[parts[0]]).split(';');
+	}
+}
+
+var min = null;
+// Set default values
+config.renderer      = config.renderer || 'line';
+config.width         = config.width    || '100%';
+config.height        = config.height   || '100%';
+config.left          = 0;
+config.timeFormat    = config.timeFormat || "%H:%M:%S %e.%m.%y";
+config._units        = config._units || [];
+config.useComma      = (config.useComma   === undefined) ? true: config.useComma;
+config.afterComma    = (config.afterComma === undefined) ? 2: config.afterComma;
+config.interpolation = config.interpolation || 'linear';
+if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
+
+var seriesData = [];
+
+// set up our data series with random data points
+/*for (var i = 0; i < range; i++) {
+	random.addData(seriesData);
+}
+
+for (var i = 0; i < range; i++) {
+	seriesData[0][i].y = Math.sin(3.14159265 / range * i) * 150;
+}*/
+//var socket = io.connect();
+var socketURL = '';
+var socketSESSION = '';
+if (typeof socketUrl != 'undefined') {
+    socketURL = socketUrl;
+    if (socketURL && socketURL[0] == ':') {
+        socketURL = 'http://' + location.hostname + socketURL;
+    }
+    socketSESSION = socketSession;
+}
+
+var socket = io.connect(socketURL, {
+    'query': 'key=' + socketSESSION,
+    'reconnection limit': 10000,
+    'max reconnection attempts': Infinity
+});
+
+socket.on('stateChange', function (changeId, state) {
+    if (graph && config && config._ids) {
+        for (j = 0; j < config._ids.length; j++) {
+            if (config._ids[j] == changeId) {
+                var ticks = state.ts * 1000;
+                seriesData[j].push([ticks, state.val]);
+                var d = new Date(ticks);
+                // Calculate tick in the past
+                d.setMinutes(d.getMinutes() - config.range);
+                ticks = d.getTime();
+
+                // Find last tick that is older than range
+                for (var i = 0; i < seriesData[j].length; i++) {
+                    if (seriesData[j][i][0] > ticks) break;
+                }
+
+                if (i) seriesData[j].splice(0, i);
+
+                if (config.fillRange) fillRange(seriesData[j]);
+
+                /*graph.setData(seriesData);
+                graph.setupGrid();
+                graph.draw();*/
+                buildGraph();
+                break;
+            }
+        }
+    }
+});
+socket.on('connect', function () {
+    socket.emit('name', 'rickshaw');
+    if (disconnectTimeout) {
+        $('#no-connection').hide();
+        clearTimeout(disconnectTimeout);
+        disconnectTimeout = null;
+    }
+    readData();
+});
+socket.on('disconnect', function () {
+    if (!disconnectTimeout) {
+        disconnectTimeout = setTimeout(function () {
+            disconnectTimeout = null;
+            //Show disconnected message
+            $('#no-connection').show();
+        }, 5000);
+    }
+});
+// After reconnect the "connect" event will be immediately called
+/*socket.on('reconnect', function () {
+    console.log('reconnect');
+});*/
+
+function fillRange(data) {
+    // Add first tick with required range
+    var now = new Date();
+    var start = new Date(now);
+    start.setMinutes(start.getMinutes() - config.range + 1);
+
+    if (data.length) {
+        if (data[0][0] > start.getTime()){
+            data.unshift([start.getTime(), null]);
+        }
+        if (data[data.length - 1][0] < now.getTime()) {
+            data.push([now.getTime(),data[data.length - 1][1]]);
+        }
+    } else {
+        data.push([start.getTime(), null]);
+        data.push([now.getTime(), null]);
+    }
+}
+
+function readOneChart(id, index, callback) {
+    socket.emit('getObject', id, function (err, res) {
+        if (!err && res && res.common) {
+            config._names[index] = config._names[index] || res.common.name;
+            config._units[index] = res.common.unit ? res.common.unit.replace('�', '°') : '';
+        } else {
+            config._names[index] = config._names[index] || id;
+            config._units[index] = '';
+        }
+        socket.emit('subscribe', id);
+        var now = new Date();
+        var start = Math.round(now.getTime() / 1000)
+        var end   = start;
+        start -= (config.range * 60) || 31536000/* 1 year */;
+        socket.emit('getStateHistory', id, start, end, function (err, res) {
+            if (!err && res) {
+                //for (var i = 0, len = res.length; i < len; i++) {
+                for (var i = res.length - 1; i >= 0; i--) {
+                    // Convert boolean values to numbers
+                    if (res[i].val === 'true' || res[i].val === true) {
+                        res[i].val = 1;
+                    } else if (res[i].val === 'false' || res[i].val === false) {
+                        res[i].val = 0;
+                    }
+					if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+					
+                    seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                }
+            }
+
+            // Add first tick with required range
+            if (config.fillRange) {
+                fillRange(seriesData[index]);
+            }
+
+            if (callback) callback(id, index);
+        });
+
+    });
+}
+
+function readData() {
+    if (disconnectTimeout) {
+        $('#no-connection').hide();
+        clearTimeout(disconnectTimeout);
+        disconnectTimeout = null;
+    }
+
+    if (config._ids) {
+        var _ids = [];
+        for (var j = 0; j < config._ids.length; j++) {
+            if (config._ids[j] !== '' && config._ids[j] !== undefined) {
+                seriesData.push([]);
+                _ids.push(config._ids[j]);
+            }
+        }
+        config._ids = _ids;
+        for (j = 0; j < config._ids.length; j++) {
+            readOneChart(config._ids[j], j, function (_id, _index) {
+                if (_index == config._ids.length - 1) {
+                    buildGraph();
+                }
+            });
+        }
+    }
+}
+
+function buildGraph() {
+    /*
+    if (config.palette) {
+        config.palette = new Rickshaw.Color.Palette( { scheme: config.palette } );
+    } else if (!config._colors && !config.palette) {
+        config.palette = new Rickshaw.Color.Palette( { scheme: 'cool' } );
+    }
+
+
+    config.element     = document.getElementById("chart");
+    config.series      = series;
+
+    // Set default values
+    config.renderer    = config.renderer || 'line';
+    config.width       = config.width    || 960;
+    config.height      = config.height   || 500;
+    config.left        = 0;
+    config.timeFormat  = config.timeFormat || "%H:%M:%S %e.%m.%y";
+    config._units      = config._units || [];
+    config.useComma    = (config.useComma   === undefined) ? true: config.useComma;
+    config.afterComma  = (config.afterComma === undefined) ? 2: config.afterComma;
+    config.timeFixture =  new Rickshaw.Fixtures.Time.Local();
+    config.interpolation = config.interpolation || 'linear';
+    config.min         = (config.min !== undefined && config.min != '' && parseFloat(config.min) != NaN) ? parseFloat(config.min) : min;
+    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) {
+        config.max     = parseFloat(config.max);
+    }
+// Replace background
+    if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = backgrounds[config.bg];
+
+    if (config.bg) {
+        $('body').css({background: config.bg});
+    }
+
+// instantiate our graph!
+    graph = new Rickshaw.Graph(config);
+    graph.render();
+
+    if (config.hoverDetail && config.hoverDetail !== 'false') {
+        var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+            graph: graph,
+            xFormatter: function(x) {
+                return d3.time.format(config.timeFormat)(new Date(x * 1000));
+            },
+            yFormatter: function(y) {
+                if (config.useComma) {
+                    return y.toFixed(config.afterComma).toString().replace('.', ',');
+                } else {
+                    return y.toFixed(config.afterComma);
+                }
+            }
+        } );
+        // Overwrite formatter to add own units
+        hoverDetail.formatter = function(series, x, y, formattedX, formattedY, d) {
+            var pos = config._names.indexOf(series.name);
+            if (pos != -1 && config._units[pos]) {
+                return series.name + ':&nbsp;' + formattedY + '&nbsp;' + config._units[pos];
+            } else {
+                return series.name + ':&nbsp;' + formattedY;
+            }
+        };
+    }
+
+    if (config.legend) {
+        var legend = new Rickshaw.Graph.Legend( {
+            graph: graph,
+            element: document.getElementById('legend')
+        } );
+
+        var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
+            graph:  graph,
+            legend: legend
+        } );
+
+        var parts = config.legend.split(';');
+        var css = {};
+        for(var t = 0; t < parts.length; t++) {
+            var p = parts[t].split(':');
+            // Bottom inside
+            if (p[0] == 'bottom' && p[1] == '5')  {
+                css.top = config.height - $('#legend').height() - 24 - 5;  // Padding 12
+            } else	// Bottom outside
+            if (p[0] == 'bottom' && p[1] == '-5') {
+                css.top = config.height + 5;
+            } else	// Middle
+            if (p[0] == 'top'    && p[1] == '50') {
+                css[p[0]] = (config.height - $('#legend').height() - 24) / 2;
+            } else	// Center
+            if (p[0] == 'left'   && p[1] == '50') {
+                css[p[0]] = (config.width - $('#legend').width() - 24) / 2;
+            } else	// Right inside
+            if (p[0] == 'right'  && p[1] == '5')  {
+                css.left  = config.width - $('#legend').width() - 24 - 5;
+            } else	// Right outside
+            if (p[0] == 'right'  && p[1] == '-5')  {
+                css.left  = config.width + 5;
+            } else	{
+                css[p[0]] = p[1];
+            }
+        };
+        $('#legend').css(css);
+    }
+
+    if (config.title) {
+        $('#title').html(unescape(config.title));
+        if (config.title_pos) {
+            var parts = config.title_pos.split(';');
+            var css = {}
+            for(var t = 0; t < parts.length; t++) {
+                var p = parts[t].split(':');
+                // Bottom inside
+                if (p[0] == 'bottom' && p[1] == '5')  {
+                    css.top = config.height - $('#title').height() - 5;
+                } else	// Bottom outside
+                if (p[0] == 'bottom' && p[1] == '-5') {
+                    css.top = config.height + 5;
+                } else	// Middle
+                if (p[0] == 'top'    && p[1] == '50') {
+                    css[p[0]] = (config.height - $('#title').height()) / 2;
+                } else	// Center
+                if (p[0] == 'left'   && p[1] == '50') {
+                    css[p[0]] = (config.width - $('#title').width()) / 2;
+                } else	// Right inside
+                if (p[0] == 'right'  && p[1] == '5')  {
+                    css.left  = config.width - $('#title').width() - 5;
+                } else	// Right outside
+                if (p[0] == 'right'  && p[1] == '-5')  {
+                    css.left  = config.width + 5;
+                } else	{
+                    css[p[0]] = p[1];
+                }
+            };
+            $('#title').css(css);
+        }
+    }
+
+    if (config.axeX) {
+        var format = function(d) {
+            d = new Date(d);
+            return d3.time.format("%c")(d);
+        }
+
+        if (config.axeX == "lines") {
+            var xAxis = new Rickshaw.Graph.Axis.Time( {
+                graph: graph,
+                ticksTreatment: 'glow',
+                //tickFormat: format,
+                timeFixture: new Rickshaw.Fixtures.Time.Local()
+            } );
+            xAxis.render();
+
+        } else if (config.axeX == "nolines"){
+            var xAxis = new Rickshaw.Graph.Axis.Time( {
+                graph: graph,
+                ticksTreatment: 'invisible',
+                //tickFormat: format,
+                timeFixture: new Rickshaw.Fixtures.Time.Local()
+            } );
+            xAxis.render();
+        }
+    }
+
+    if (config.axeY) {
+        var ticksTreatment = 'glow';
+
+        if (config.axeY.indexOf('inside') != -1) {
+            var yAxis1 = new Rickshaw.Graph.Axis.Y( {
+                graph: graph,
+                tickFormat: function(y) {
+                    return y.toString().replace('.', ',');
+                },
+                ticksTreatment: ticksTreatment
+            } );
+
+            yAxis1.render();
+            if (config.axeY.indexOf('nolines') != -1) $('.y_grid').hide();
+            if (config._units[0]) $('#chart').append('<div style="position:absolute; top:0; left: 5">' + config._units[0] + '</div>');
+
+        } else if (config.axeY.indexOf('outside') != -1) {
+            var yAxis1 = new Rickshaw.Graph.Axis.Y( {
+                graph: graph,
+                tickFormat: function(y) {
+                    return y.toString().replace('.', ',');
+                },
+                ticksTreatment: ticksTreatment,
+                orientation: 'left',
+                element: document.getElementById('y_axis_1')
+            } );
+
+            yAxis1.render();
+            config.left += 40;
+            $('#chart').css({left: config.left});
+            if (config.axeY.indexOf('nolines') != -1) $('.y_grid').hide();
+
+            if (config._units[0]) $('#y_axis_1').append('<div style="position:absolute; top:0; right: 5">' + config._units[0] + '</div>');
+        }
+    }
+
+    if (config.axeY2) {
+        var ticksTreatment = 'glow';
+
+        if (config.axeY2.indexOf('inside') != -1) {
+            var yAxis2 = new Rickshaw.Graph.Axis.Y( {
+                graph: graph,
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                ticksTreatment: ticksTreatment,
+                grid:false,
+                orientation: 'left',
+                element: document.getElementById('y_axis_2')
+            } );
+
+            yAxis2.render();
+            $('#y_axis_2').css({left: config.left + config.width - 40});
+            if (config.axeY2.indexOf('nolines') != -1) {
+                $('.y_grid').last().hide();
+            }
+
+            if (config._units[1]) $('#y_axis_2').append('<div style="position:absolute; top:0; width: 100%; text-align:center">' + config._units[1] + '</div>');
+
+        } else if (config.axeY2.indexOf('outside') != -1) {
+            var yAxis2 = new Rickshaw.Graph.Axis.Y( {
+                graph: graph,
+                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+                ticksTreatment: ticksTreatment,
+                orientation: 'right',
+                grid:false,
+                element: document.getElementById('y_axis_2')
+            } );
+
+            yAxis2.render();
+            if (config.axeY2.indexOf('nolines') != -1) {
+                $('.y_grid').last().hide();
+            }
+            $('#y_axis_2').css({left: config.left + config.width});
+            if (config._units[1]) $('#y_axis_2').append('<div style="position:absolute; top:0; width: 100%; text-align:center">' + config._units[1] + '</div>');
+        }
+    }
+
+    if (config.smoothing > 0) {
+        var smoother = new Rickshaw.Graph.Smoother( {
+            graph: graph
+        } );
+        smoother.setScale(config.smoothing);
+    }
+
+    if (config.preview && config.preview !== 'false') {
+        $p = $('#preview').show();
+        var preview = new Rickshaw.Graph.RangeSlider( {
+            graph: graph,
+            element: $p[0]
+        } );
+
+    }
+
+    if (config.annotate && config.annotate !== 'false') {
+        var annotator = new Rickshaw.Graph.Annotate( {
+            graph: graph,
+            element: document.getElementById('timeline')
+        } );
+    }*/
+
+    var series = [];
+    for (var i = seriesData.length - 1; i >= 0; i--) {
+        // Find minimum for all grafics
+        if (min === null) min = (seriesData[i] && seriesData[i].length) ? seriesData[i][0][1] : 0;
+
+        if (seriesData[i]) {
+            for (var t = 0; t < seriesData[i].length; t++) {
+                if (min > seriesData[i][t][1]) min = seriesData[i][t][1];
+            }
+
+            series.push({
+                //color: config.palette ? config.palette.color() : (config._colors[i] || 'black'),
+                lines: {
+                    show: (config.renderer != 'scatterplot'),
+                    fill: (config.renderer == 'area')
+                },
+                points: {
+                    show: (config.renderer == 'lineplot' || config.renderer == 'scatterplot')
+                },
+                data: seriesData[i]
+                //name: (config._names ? config._names[i] : '') || ('Line ' + config._ids[i])
+            });
+        }
+    }
+
+    if (min > 0) min = 0;
+
+    config.min = (config.min !== undefined && config.min != '' && parseFloat(config.min) != NaN) ? parseFloat(config.min) : min;
+
+    $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
+    graph = $.plot("#chart_placeholder", series, {
+        xaxis: {
+            mode: "time",
+            timeformat: config.timeFormat,
+            timezone: "browser"
+        },
+        grid: {
+            hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true)
+        },
+        yaxis: {
+            min: config.min,
+            max: config.max
+        }
+    });
+
+    // Hoover
+    if (config.hoverDetail === 'true' || config.hoverDetail === true) {
+        $("#chart_placeholder").unbind("plothover").bind("plothover", function (event, pos, item) {
+            if (item) {
+                var x = item.datapoint[0].toFixed(2);
+                var y = item.datapoint[1].toFixed(2);
+
+                var text = item.series.label ? item.series.label + '<br>' : '';
+                text += $.plot.formatDate(new Date(parseInt(x)), config.timeFormat) + '<br>';
+                text += '<b>' + y + '</b>';
+
+                var $tooltip = $("#tooltip").html(text);
+                if ($(this).height() - item.pageY < $tooltip.height()) {
+                    item.pageY -= 10 + $tooltip.height();
+                }
+                if ($(this).width() - item.pageX < $tooltip.width()) {
+                    item.pageX -= 10 + $tooltip.width();
+                }
+                $tooltip.css({top: item.pageY + 5, left: item.pageX + 5}).fadeIn(200);
+            } else {
+                $("#tooltip").hide();
+            }
+        });
+        if (!$('#tooltip').length) {
+            $("<div id='tooltip'></div>").css({
+                position: "absolute",
+                display: "none",
+                border: "1px solid #fdd",
+                padding: "2px",
+                "background-color": "#fee",
+                opacity: 0.80
+            }).appendTo("body");
+        }
+    }
+
+}
+
+</script>
+
+</body>

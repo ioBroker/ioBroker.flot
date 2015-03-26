@@ -1,0 +1,33 @@
+{
+    "common": {
+        "name":         "flot",
+        "version":      "0.2.2",
+        "title":        "Rickshaw Charts",
+        "desc":         {
+            "en": "This adapter draws charts with Flot in ioBroker.",
+            "de": "Adapter benutzt Flot-Module um Grafiken zu zeichnen.",
+            "ru": "Драйвер строит графики с помощью Flot"
+        },
+        "authors": [
+            "bluefox <bluefox@ccu.io>"
+        ],
+        "platform":     "javascript/Node.js",
+        "icon":         "flot.png",
+        "mode":         "none",
+        "keywords":     ["charts", "graphics", "grafiken"],
+        "extIcon":      "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
+        "readme":       "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
+        "loglevel":     "info",
+        "dependencies": ["history", "web"],
+        "localLink":    "http://%ip%:%web_port%/flot/edit.html",
+        "enabled":      true,
+        "onlyWWW":      true,
+        "singleton":    true,
+		"type":         "visualisation"
+    },
+    "native": {
+
+    },
+    "objects": [
+    ]
+}
