@@ -11,6 +11,9 @@
 	<script src="lib/js/jquery.flot.min.js"></script>
     <script src="lib/js/jquery.flot.resize.min.js"></script>
     <script src="lib/js/jquery.flot.time.min.js"></script>
+    <script src="lib/js/jquery.flot.categories.min.js"></script>
+    <script src="lib/js/jquery.flot.pie.min.js"></script>
+    <script src="lib/js/JUMFlot.min.js"></script>
     <script src="/_socket/info.js"></script>
 	<style>
 		.rickshaw_graph .x_tick.invisible {
@@ -154,26 +157,37 @@ socket.on('stateChange', function (changeId, state) {
     if (graph && config && config._ids) {
         for (j = 0; j < config._ids.length; j++) {
             if (config._ids[j] == changeId) {
-                var ticks = state.ts * 1000;
-                seriesData[j].push([ticks, state.val]);
-                var d = new Date(ticks);
-                // Calculate tick in the past
-                d.setMinutes(d.getMinutes() - config.range);
-                ticks = d.getTime();
+                if (config.renderer == 'pie') {
+                    seriesData[0][j].data = state.val;
+                    graph.setData(seriesData[0]);
+                    graph.draw();
+                } else if (config.renderer == 'bar' && config._ids.length > 1) {
+                    seriesData[0][j][1] = state.val;
+                    graph.setData(seriesData);
+                    graph.setupGrid();
+                    graph.draw();
+                } else {
+                    var ticks = state.ts * 1000;
+                    seriesData[j].push([ticks, state.val]);
+                    var d = new Date(ticks);
+                    // Calculate tick in the past
+                    d.setMinutes(d.getMinutes() - config.range);
+                    ticks = d.getTime();
 
-                // Find last tick that is older than range
-                for (var i = 0; i < seriesData[j].length; i++) {
-                    if (seriesData[j][i][0] > ticks) break;
+                    // Find last tick that is older than range
+                    for (var i = 0; i < seriesData[j].length; i++) {
+                        if (seriesData[j][i][0] > ticks) break;
+                    }
+
+                    if (i) seriesData[j].splice(0, i);
+
+                    if (config.fillRange) fillRange(seriesData[j]);
+
+                    /*graph.setData(seriesData);
+                     graph.setupGrid();
+                     graph.draw();*/
+                    buildGraph();
                 }
-
-                if (i) seriesData[j].splice(0, i);
-
-                if (config.fillRange) fillRange(seriesData[j]);
-
-                /*graph.setData(seriesData);
-                graph.setupGrid();
-                graph.draw();*/
-                buildGraph();
                 break;
             }
         }
@@ -262,6 +276,27 @@ function readOneChart(id, index, callback) {
     });
 }
 
+function readOneValue(id, index, callback) {
+    socket.emit('getObject', id, function (err, res) {
+        if (!err && res && res.common) {
+            config._names[index] = config._names[index] || res.common.name;
+            config._units[index] = res.common.unit ? res.common.unit.replace('�', '°') : '';
+        } else {
+            config._names[index] = config._names[index] || id;
+            config._units[index] = '';
+        }
+        socket.emit('subscribe', id);
+
+        socket.emit('getState', id, function (err, state) {
+            if (state) {
+                callback(id, index, state.val);
+            } else {
+                callback(id, index, null)
+            }
+        });
+    });
+}
+
 function readData() {
     if (disconnectTimeout) {
         $('#no-connection').hide();
@@ -270,20 +305,36 @@ function readData() {
     }
 
     if (config._ids) {
-        var _ids = [];
-        for (var j = 0; j < config._ids.length; j++) {
-            if (config._ids[j] !== '' && config._ids[j] !== undefined) {
-                seriesData.push([]);
-                _ids.push(config._ids[j]);
+        if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+            seriesData = [[]];
+            for (var j = 0; j < config._ids.length; j++) {
+                readOneValue(config._ids[j], j, function (_id, _index, value) {
+                    if (config.renderer == 'pie') {
+                        seriesData[0][_index] = {label: config._names[_index], data: value};
+                    } else {
+                        seriesData[0][_index] = [config._names[_index], value];
+                    }
+                    if (_index == config._ids.length - 1) {
+                        buildGraph();
+                    }
+                });
             }
-        }
-        config._ids = _ids;
-        for (j = 0; j < config._ids.length; j++) {
-            readOneChart(config._ids[j], j, function (_id, _index) {
-                if (_index == config._ids.length - 1) {
-                    buildGraph();
+        } else {
+            var _ids = [];
+            for (var j = 0; j < config._ids.length; j++) {
+                if (config._ids[j] !== '' && config._ids[j] !== undefined) {
+                    seriesData.push([]);
+                    _ids.push(config._ids[j]);
                 }
-            });
+            }
+            config._ids = _ids;
+            for (j = 0; j < config._ids.length; j++) {
+                readOneChart(config._ids[j], j, function (_id, _index) {
+                    if (_index == config._ids.length - 1) {
+                        buildGraph();
+                    }
+                });
+            }
         }
     }
 }
@@ -550,49 +601,89 @@ function buildGraph() {
     }*/
 
     var series = [];
-    for (var i = seriesData.length - 1; i >= 0; i--) {
-        // Find minimum for all grafics
-        if (min === null) min = (seriesData[i] && seriesData[i].length) ? seriesData[i][0][1] : 0;
+    if (config.renderer != 'bar' || config._ids.length <= 1) {
+        for (var i = seriesData.length - 1; i >= 0; i--) {
+            if (seriesData[i]) {
+                var option = {
+                    //color: config.palette ? config.palette.color() : (config._colors[i] || 'black'),
+                    lines: {
+                        show: (config.renderer != 'scatterplot' && config.renderer != 'bar'),
+                        fill: (config.renderer == 'area' || config.renderer == 'bar'),
+                        steps: (config.renderer == 'steps'),
+                    },
+                    bars: {
+                        show: (config.renderer == 'bar'),
+                        barWidth: 0.6
+                    },
+                    points: {
+                        show: (config.renderer == 'lineplot' || config.renderer == 'scatterplot')
+                    },
+                    data: seriesData[i],
+                    label: (config._names ? config._names[i] : '') || ('Line ' + config._ids[i])
+                };
 
-        if (seriesData[i]) {
-            for (var t = 0; t < seriesData[i].length; t++) {
-                if (min > seriesData[i][t][1]) min = seriesData[i][t][1];
+                if (config.smoothing > 0) {
+                    config.smoothing = parseInt(config.smoothing);
+                    option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
+                }
+                if (config.renderer == 'bar') {
+                    option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
+                }
+
+                series.push(option);
             }
-
-            series.push({
-                //color: config.palette ? config.palette.color() : (config._colors[i] || 'black'),
-                lines: {
-                    show: (config.renderer != 'scatterplot'),
-                    fill: (config.renderer == 'area')
-                },
-                points: {
-                    show: (config.renderer == 'lineplot' || config.renderer == 'scatterplot')
-                },
-                data: seriesData[i]
-                //name: (config._names ? config._names[i] : '') || ('Line ' + config._ids[i])
-            });
         }
     }
 
-    if (min > 0) min = 0;
-
-    config.min = (config.min !== undefined && config.min != '' && parseFloat(config.min) != NaN) ? parseFloat(config.min) : min;
+    if (config.min === null || config.min === undefined || config.min === '' || config.min.toString() === 'NaN') {
+        config.min = undefined;
+    } else {
+        config.min = parseFloat(config.min);
+    }
 
     $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
-    graph = $.plot("#chart_placeholder", series, {
-        xaxis: {
-            mode: "time",
-            timeformat: config.timeFormat,
-            timezone: "browser"
-        },
-        grid: {
-            hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true)
-        },
-        yaxis: {
-            min: config.min,
-            max: config.max
+
+    if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+        var series = {
+            series: {
+                bars: {
+                    show: config.renderer == 'bar',
+                    barWidth: 0.6,
+                    align: "center"
+                },
+                pie: {
+                    show: config.renderer == 'pie'
+                }
+            }
+        };
+        if (config.renderer == 'bar') {
+            series.xaxis = {
+                mode: "categories",
+                tickLength: 0
+            };
+            graph = $.plot("#chart_placeholder", [seriesData[0]], series);
+        } else {
+            series.legend = {
+                show: false
+            };
+            graph = $.plot("#chart_placeholder", seriesData[0], series);
         }
-    });
+    } else {
+        graph = $.plot("#chart_placeholder", series, {
+            grid: {
+                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true)
+            },
+            yaxis: {
+                min: config.min,
+                max: config.max
+            },
+            xaxis: {
+                mode: "time",
+                timeformat: config.timeFormat,
+                timezone: "browser"
+            }
+        });
+    }
 
     // Hoover
     if (config.hoverDetail === 'true' || config.hoverDetail === true) {
