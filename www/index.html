@@ -14,6 +14,9 @@
     <script src="lib/js/jquery.flot.categories.min.js"></script>
     <script src="lib/js/jquery.flot.pie.min.js"></script>
     <script src="lib/js/JUMFlot.min.js"></script>
+    <script src="lib/js/curvedLines.js"></script>
+    <script src="lib/js/jquery.flot.selection.min.js"></script>
+    <!--script src="lib/js/jquery.flot.navigate.min.js"></script-->
     <script src="/_socket/info.js"></script>
 	<style>
 		.rickshaw_graph .x_tick.invisible {
@@ -69,7 +72,7 @@
 <body>
 
 <div id="chart_container">
-    <div id="no-connection" style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10; text-align: center">No connection to server</div>
+    <div id="no-connection" style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">No connection to server</div>
     <div id="chart_placeholder" class="chart-placeholder"></div>
 </div>
 
@@ -77,16 +80,16 @@
 var graph;
 
 var backgrounds = [
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,#87e0fd), color-stop(40%,#53cbf1), color-stop(100%,#05abe0))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,#f0f9ff), color-stop(47%,#cbebff), color-stop(100%,#a1dbff))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,252,234,1)), color-stop(100%,rgba(241,218,54,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(205,235,142,1)), color-stop(100%,rgba(165,201,86,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(238,238,238,1)), color-stop(100%,rgba(238,238,238,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(228,239,192,1)), color-stop(100%,rgba(171,189,115,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(249,198,103,1)), color-stop(100%,rgba(247,150,33,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(254,255,232,1)), color-stop(100%,rgba(214,219,191,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(40%,rgba(223,229,215,1)), color-stop(100%,rgba(179,190,173,1)))',
-	'-webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(241,231,103,1)), color-stop(100%,rgba(254,182,69,1)))'
+	['#8e9eab', '#eef2f3'], //Portrait
+    ['#517fa4', '#243949'], //Instagram
+    ['#485563', '#29323c'], //ServQuick
+    ['#abbaab', '#ffffff'], //Metallic Toad
+    ['#ECE9E6', '#FFFFFF'], //Clouds
+    ['#16222A', '#3A6073'], //Mirage
+    ['#1F1C2C', '#928DAB'], //Steel Gray
+    ['#003973', '#E5E5BE'], //Horizon
+    ['#D1913C', '#FFD194'], //Koko Caramel
+    ['#136a8a', '#267871']  //Turquoise flow
 ];
 // Show "no connection" message after 5 seconds
 var disconnectTimeout = setTimeout(function () {
@@ -98,8 +101,9 @@ var disconnectTimeout = setTimeout(function () {
 var config = {
     _colors:   ["#c05020", "#30c020", "#6060c0"],
     _units:    [],
-    _names:    [],
+    _names:    []
 };
+var timeout = null;
 
 // Analyse query
 var path = location.href;
@@ -127,15 +131,9 @@ config.interpolation = config.interpolation || 'linear';
 if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
 
 var seriesData = [];
+var from = undefined;
+var to = undefined;
 
-// set up our data series with random data points
-/*for (var i = 0; i < range; i++) {
-	random.addData(seriesData);
-}
-
-for (var i = 0; i < range; i++) {
-	seriesData[0][i].y = Math.sin(3.14159265 / range * i) * 150;
-}*/
 //var socket = io.connect();
 var socketURL = '';
 var socketSESSION = '';
@@ -170,6 +168,7 @@ socket.on('stateChange', function (changeId, state) {
                     var ticks = state.ts * 1000;
                     seriesData[j].push([ticks, state.val]);
                     var d = new Date(ticks);
+
                     // Calculate tick in the past
                     d.setMinutes(d.getMinutes() - config.range);
                     ticks = d.getTime();
@@ -186,7 +185,7 @@ socket.on('stateChange', function (changeId, state) {
                     /*graph.setData(seriesData);
                      graph.setupGrid();
                      graph.draw();*/
-                    buildGraph();
+                    buildGraph(from, to);
                 }
                 break;
             }
@@ -275,6 +274,24 @@ function readOneChart(id, index, callback) {
 
     });
 }
+function yFormatter(y) {
+    if (config.afterComma !== undefined && config.afterComma !== null) {
+        y = parseFloat(y);
+        if (config.useComma) {
+            return y.toFixed(config.afterComma).toString().replace('.', ',');
+        } else {
+            return y.toFixed(config.afterComma);
+        }
+    } else {
+        if (config.useComma) {
+            y = parseFloat(y);
+            return y.toString().replace('.', ',');
+        } else {
+            return y;
+        }
+    }
+
+}
 
 function readOneValue(id, index, callback) {
     socket.emit('getObject', id, function (err, res) {
@@ -339,7 +356,9 @@ function readData() {
     }
 }
 
-function buildGraph() {
+function buildGraph(_from, _to) {
+    from = _from;
+    to   = _to;
     /*
     if (config.palette) {
         config.palette = new Rickshaw.Color.Palette( { scheme: config.palette } );
@@ -366,7 +385,7 @@ function buildGraph() {
     if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) {
         config.max     = parseFloat(config.max);
     }
-// Replace background
+    // Replace background
     if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = backgrounds[config.bg];
 
     if (config.bg) {
@@ -600,16 +619,22 @@ function buildGraph() {
         } );
     }*/
 
+    // Replace background
+    if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = {colors: backgrounds[config.bg]};
+
     var series = [];
+    var settings = undefined;
     if (config.renderer != 'bar' || config._ids.length <= 1) {
+
         for (var i = seriesData.length - 1; i >= 0; i--) {
             if (seriesData[i]) {
                 var option = {
-                    //color: config.palette ? config.palette.color() : (config._colors[i] || 'black'),
+                    color:     config._colors[i] || undefined,
                     lines: {
-                        show: (config.renderer != 'scatterplot' && config.renderer != 'bar'),
-                        fill: (config.renderer == 'area' || config.renderer == 'bar'),
-                        steps: (config.renderer == 'steps'),
+                        show:      (config.renderer != 'scatterplot' && config.renderer != 'bar'),
+                        fill:      (config.renderer == 'area' || config.renderer == 'bar'),
+                        steps:     (config.renderer == 'steps'),
+                        lineWidth: config.strokeWidth
                     },
                     bars: {
                         show: (config.renderer == 'bar'),
@@ -624,7 +649,13 @@ function buildGraph() {
 
                 if (config.smoothing > 0) {
                     config.smoothing = parseInt(config.smoothing);
+
+                    if (config.smoothing > 1) {
+                        option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
+                    }
                     option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
+                } else {
+                    config.smoothing = 0;
                 }
                 if (config.renderer == 'bar') {
                     option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
@@ -643,7 +674,12 @@ function buildGraph() {
 
     $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
 
-    if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+    if (config.renderer == 'pie') {
+        series.legend = {
+            show: false
+        };
+        graph = $.plot("#chart_placeholder", seriesData[0], series);
+    } else if (config.renderer == 'bar' && config._ids.length > 1) {
         var series = {
             series: {
                 bars: {
@@ -656,33 +692,63 @@ function buildGraph() {
                 }
             }
         };
-        if (config.renderer == 'bar') {
-            series.xaxis = {
-                mode: "categories",
-                tickLength: 0
-            };
-            graph = $.plot("#chart_placeholder", [seriesData[0]], series);
-        } else {
-            series.legend = {
-                show: false
-            };
-            graph = $.plot("#chart_placeholder", seriesData[0], series);
-        }
+
+        series.xaxis = {
+            mode: "categories",
+            tickLength: 0
+        };
+
+        graph = $.plot("#chart_placeholder", [seriesData[0]], series);
     } else {
-        graph = $.plot("#chart_placeholder", series, {
+        var settings = {
             grid: {
-                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true)
+                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
+                backgroundColor: config.bg || undefined
             },
             yaxis: {
                 min: config.min,
                 max: config.max
             },
             xaxis: {
-                mode: "time",
+                mode:       "time",
                 timeformat: config.timeFormat,
-                timezone: "browser"
+                timezone:   "browser",
+                min: from || undefined,
+                max: to || undefined
             }
-        });
+        };
+        if (config.smoothing) {
+            settings.series = {
+                curvedLines: {
+                    apply: true,
+                    active: true,
+                    monotonicFit: true
+                }
+            };
+        }
+
+        if (config.preview) {
+            settings.selection = {
+                mode: "x"
+            };
+            settings.zoom = {
+                interactive: true
+            };
+            settings.pan = {
+                interactive: true
+            };
+        }
+
+        graph = $.plot("#chart_placeholder", series, settings);
+    }
+
+    // selection
+    if (config.preview) {
+        $("#chart_placeholder").bind("plotselected", function (event, ranges) {
+            buildGraph(ranges.xaxis.from, ranges.xaxis.to);
+        }).dblclick(function () {
+            buildGraph();
+        })
     }
 
     // Hoover
@@ -694,7 +760,7 @@ function buildGraph() {
 
                 var text = item.series.label ? item.series.label + '<br>' : '';
                 text += $.plot.formatDate(new Date(parseInt(x)), config.timeFormat) + '<br>';
-                text += '<b>' + y + '</b>';
+                text += '<b>' + yFormatter(y) + '</b>';
 
                 var $tooltip = $("#tooltip").html(text);
                 if ($(this).height() - item.pageY < $tooltip.height()) {

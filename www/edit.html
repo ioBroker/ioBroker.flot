@@ -153,19 +153,19 @@
 		<td class="colors header4" style="vertical-align:top"><table>
 			<tr><td class="translate label">Predefined background:</td><td> <select class="input" id="pre_bg">
 				<option value="" class="translate">User defined</option>
-				<option value="0">Azur</option>
-				<option value="1">Grey-Blue</option>
-				<option value="2">White-yellow</option>
-				<option value="3">Light green</option>
-				<option value="4">Grey</option>
-				<option value="5">Grey-green</option>
-				<option value="6">Orange</option>
-				<option value="7">Light grey-green</option>
-				<option value="8">Dark grey-green</option>
-				<option value="9">Yellow-orange</option>
+				<option value="0">Portrait</option>
+				<option value="1">Instagram</option>
+				<option value="2">ServQuick</option>
+				<option value="3">Metallic Toad</option>
+				<option value="4">Clouds</option>
+				<option value="5">Mirage</option>
+				<option value="6">Steel Gray</option>
+				<option value="7">Horizon</option>
+				<option value="8">Koko Caramel</option>
+				<option value="9">Turquoise flow</option>
 			</select></td></tr>
 			<tr><td class="translate label">Background:</td><td> <input type="text" id="bg" class="value input"></td></tr>
-			<tr><td class="translate">Palette:</td><td><select class="value input" id="palette">
+			<!--tr><td class="translate">Palette:</td><td><select class="value input" id="palette">
 				<option value="" class="translate">User defined</option>
 				<option value="munin">Munin</option>
 				<option value="colorwheel">Colorwheel</option>
@@ -174,7 +174,7 @@
 				<option value="cool">Cool</option>
 				<option value="spectrum2000">Spectrum2000</option>
 				<option value="spectrum2001">Spectrum2001</option>
-			</select></td></tr>
+			</select></td></tr-->
 			<tr><td colspan="2"><table id="colorslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
 		</table></td>
 		<td class="thickness header5" style="vertical-align:top"><table>
@@ -188,15 +188,17 @@
 				<option value="%H:%M:%S %m.%e.%y">HH:MM:SS mm.dd.yy</option>
                 <option value="%H:%M:%S">HH:MM:SS</option>
                 <option value="%H:%M">HH:MM</option>
+                <option value="%e.%m.%y">dd.mm.yy</option>
+                <option value="%e.%m">dd.mm</option>
 			</select></td></tr>
 			<tr><td class="translate">Smoothing:</td><td>    <input type="text"     class="value input" id="smoothing"></td></tr>
-            <tr><td class="translate">Interpolation:</td><td><select id="interpolation" class="value input">
+            <!--tr><td class="translate">Interpolation:</td><td><select id="interpolation" class="value input">
                 <option value=""           class="translate">default</option>
                 <option value="linear"     class="translate">linear</option>
                 <option value="step-after" class="translate">step-after</option>
                 <option value="cardinal"   class="translate">cardinal</option>
                 <option value="basis"      class="translate">basis</option>
-            </select></td></tr>
+            </select></td></tr-->
 			<tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr>
 			<tr><td class="translate">After comma:</td><td> <input type="text"     class="value input" id="afterComma"></td></tr>
             <tr><td class="translate">Fill range:</td><td>  <input type="checkbox" class="value" id="fillRange"></td></tr>
@@ -281,7 +283,7 @@
             "User defined":         {"en": "User defined",          "de": "User defined",           "ru": "Пользовательские"},
             "Background:":          {"en": "Background:",           "de": "Background:",            "ru": "Фон:"},
             "Palette:":             {"en": "Palette:",              "de": "Palette:",               "ru": "Палитра:"},
-            "Line thick:":          {"en": "Line thick:",           "de": "Line thick:",            "ru": "Тольщина линии:"},
+            "Line thick:":          {"en": "Line thick:",           "de": "Line thick:",            "ru": "Толщина линии:"},
             "Hover details:":       {"en": "Hover details:",        "de": "Hover details:",         "ru": "Показывать подсказку:"},
             "Time format:":         {"en": "Time format:",          "de": "Time format:",           "ru": "Формат времени:"},
             "Default":              {"en": "Default",               "de": "Default",                "ru": "по умолчанию"},
@@ -363,7 +365,7 @@
                 ts:       _('Time stamp'),
                 wait:     _('Processing...'),
                 ack:      _('Acknowledged')
-            },
+            }
         });
 
         function updateCount() {
