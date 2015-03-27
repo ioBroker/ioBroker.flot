@@ -1,8 +1,8 @@
 {
     "common": {
         "name":         "flot",
-        "version":      "0.2.2",
-        "title":        "Rickshaw Charts",
+        "version":      "0.0.1",
+        "title":        "Flot Charts",
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",
             "de": "Adapter benutzt Flot-Module um Grafiken zu zeichnen.",
