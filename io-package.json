@@ -19,7 +19,7 @@
         "readme":       "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
         "loglevel":     "info",
         "dependencies": ["history", "web"],
-        "localLink":    "http://%ip%:%web_port%/flot/edit.html",
+        "localLink":    "%web_protocol%://%ip%:%web_port%/flot/edit.html",
         "enabled":      true,
         "onlyWWW":      true,
         "singleton":    true,
