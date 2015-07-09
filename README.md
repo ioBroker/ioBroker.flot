@@ -5,6 +5,10 @@ ioBroker.flot
 draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
+
+### 0.0.1 (2015-07-09)
+* (bluefox) implement title and sort points
+
 ### 0.0.1 (2015-03-27)
 * (bluefox) initial commit
 
