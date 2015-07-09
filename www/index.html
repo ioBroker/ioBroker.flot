@@ -74,6 +74,7 @@
 <div id="chart_container">
     <div id="no-connection" style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">No connection to server</div>
     <div id="chart_placeholder" class="chart-placeholder"></div>
+    <div id="title" style="position:absolute"></div>
 </div>
 
 <script>
@@ -112,8 +113,8 @@ if (path.length > 1) {
 	path = path[1].split('&');
 	for (var i = 0; i < path.length; i++) {
 		var parts = path[i].split('=');
-		config[parts[0]] = (parts[1] !== undefined) ? unescape(parts[1]) : true;
-		if (parts[0][0] == '_') config[parts[0]] = unescape(config[parts[0]]).split(';');
+		config[parts[0]] = (parts[1] !== undefined) ? decodeURI(parts[1]) : true;
+		if (parts[0][0] == '_') config[parts[0]] = decodeURI(config[parts[0]]).split(';');
 	}
 }
 
@@ -180,7 +181,7 @@ socket.on('stateChange', function (changeId, state) {
 
                     if (i) seriesData[j].splice(0, i);
 
-                    if (config.fillRange) fillRange(seriesData[j]);
+                    seriesData[j] = fillRange(seriesData[j]);
 
                     /*graph.setData(seriesData);
                      graph.setupGrid();
@@ -210,6 +211,7 @@ socket.on('disconnect', function () {
         }, 5000);
     }
 });
+
 // After reconnect the "connect" event will be immediately called
 /*socket.on('reconnect', function () {
     console.log('reconnect');
@@ -217,21 +219,88 @@ socket.on('disconnect', function () {
 
 function fillRange(data) {
     // Add first tick with required range
-    var now = new Date();
-    var start = new Date(now);
-    start.setMinutes(start.getMinutes() - config.range + 1);
+    if (config.fillRange) {
+        var now   = new Date();
+        var start = new Date(now);
+        start.setMinutes(start.getMinutes() - config.range + 1);
 
-    if (data.length) {
-        if (data[0][0] > start.getTime()){
-            data.unshift([start.getTime(), null]);
+        if (data.length) {
+            if (data[0][0] > start.getTime()){
+                data.unshift([start.getTime(), null]);
+            }
+            if (data[data.length - 1][0] < now.getTime()) {
+                data.push([now.getTime(), data[data.length - 1][1]]);
+            }
+        } else {
+            data.push([start.getTime(), null]);
+            data.push([now.getTime(), null]);
         }
-        if (data[data.length - 1][0] < now.getTime()) {
-            data.push([now.getTime(),data[data.length - 1][1]]);
-        }
-    } else {
-        data.push([start.getTime(), null]);
-        data.push([now.getTime(), null]);
     }
+
+    // first of all sort data
+    data.sort(function (a, b) {
+        return a[0] - b[0];
+    });
+
+    // find smallest interval
+    var step = null;
+    var s;
+    var isDifferent = false;
+    for (var i = 1; i < data.length; i++) {
+        s = data[i][0] - data[i - 1][0];
+        if (step === null) {
+            step = s;
+        } else if (s < step) {
+            step = s;
+        }
+        if (step != s) {
+            isDifferent = true;
+        }
+    }
+
+    if (!isDifferent || !config.interpolate) return data;
+
+    var result = [];
+    var time = data[0][0];
+    var end = data[data.length - 1][0];
+    var i = 0;
+
+    var tDiff = data[1][0] - data[0][0];
+    var vDiff = data[1][1] - data[0][1];
+    var tVal  = data[0][0];
+    var vVal  = data[0][1];
+    var tEnd  = data[1][0];
+    // interpolate
+    while (time <= end) {
+        while (tEnd <= time && i < data.length - 1) {
+            i++;
+            tVal  = data[i][0];
+            vVal  = data[i][1];
+            if (vVal !== null) {
+                if (i + 1 < data.length) {
+                    tEnd  = data[i + 1][0];
+                    tDiff = tEnd - data[i][0];
+                    if (data[i + 1][1] === null) {
+                        vDiff = 0;
+                    } else {
+                        vDiff = data[i + 1][1] - data[i][1];
+                    }
+                } else {
+                    tEnd  = end;
+                    tDiff = end - data[i][1];
+                    vDiff = 0;
+                }
+            } else if (i + 1 < data.length) {
+                tEnd = data[i + 1][0];
+            } else {
+                tEnd = end;
+            }
+        }
+        result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
+        time += step;
+    }
+
+    return result;
 }
 
 function readOneChart(id, index, callback) {
@@ -248,6 +317,7 @@ function readOneChart(id, index, callback) {
         var start = Math.round(now.getTime() / 1000)
         var end   = start;
         start -= (config.range * 60) || 31536000/* 1 year */;
+
         socket.emit('getStateHistory', id, start, end, function (err, res) {
             if (!err && res) {
                 //for (var i = 0, len = res.length; i < len; i++) {
@@ -265,15 +335,14 @@ function readOneChart(id, index, callback) {
             }
 
             // Add first tick with required range
-            if (config.fillRange) {
-                fillRange(seriesData[index]);
-            }
+            seriesData[index] = fillRange(seriesData[index]);
 
             if (callback) callback(id, index);
         });
 
     });
 }
+
 function yFormatter(y) {
     if (config.afterComma !== undefined && config.afterComma !== null) {
         y = parseFloat(y);
@@ -459,33 +528,60 @@ function buildGraph(_from, _to) {
             }
         };
         $('#legend').css(css);
-    }
+    }*/
 
-    if (config.title) {
-        $('#title').html(unescape(config.title));
+    if (config.title && !$('#title').html()) {
+        $('#title').html(decodeURI(config.title));
+        if (config.titleColor) $('#title').css('color', config.titleColor);
+        if (config.titleSize) $('#title').css('font-size', config.titleSize);
         if (config.title_pos) {
             var parts = config.title_pos.split(';');
             var css = {}
             for(var t = 0; t < parts.length; t++) {
                 var p = parts[t].split(':');
+
                 // Bottom inside
                 if (p[0] == 'bottom' && p[1] == '5')  {
-                    css.top = config.height - $('#title').height() - 5;
+                    if (config.height.indexOf('%') == -1) {
+                        css.top = parseInt(config.height, 10) - $('#title').height() - 45;
+                    } else {
+                        css.top = 'calc(' + config.height + ' - ' + ($('#title').height() + 45) + 'px)';
+                    }
                 } else	// Bottom outside
                 if (p[0] == 'bottom' && p[1] == '-5') {
-                    css.top = config.height + 5;
+                    if (config.height.indexOf('%') == -1) {
+                        css.top = parseInt(config.height, 10) + 5;
+                    } else {
+                        css.top = 'calc(' + config.height + ' + 5px)';
+                    }
                 } else	// Middle
                 if (p[0] == 'top'    && p[1] == '50') {
-                    css[p[0]] = (config.height - $('#title').height()) / 2;
+                    if (config.height.indexOf('%') == -1) {
+                        css.top = (parseInt(config.height, 10) - $('#title').height()) / 2;
+                    } else {
+                        css.top = 'calc(50% - ' + ($('#title').height() / 2) + 'px)';
+                    }
                 } else	// Center
                 if (p[0] == 'left'   && p[1] == '50') {
-                    css[p[0]] = (config.width - $('#title').width()) / 2;
+                    if (config.width.indexOf('%') == -1) {
+                        css.left = (parseInt(config.width, 10) - $('#title').width()) / 2;
+                    } else {
+                        css.left = 'calc(50% - ' + ($('#title').width() / 2) + 'px)';
+                    }
                 } else	// Right inside
                 if (p[0] == 'right'  && p[1] == '5')  {
-                    css.left  = config.width - $('#title').width() - 5;
+                    if (config.width.indexOf('%') == -1) {
+                        css.left = parseInt(config.width, 10) - $('#title').width() - 45;
+                    } else {
+                        css.left = 'calc(' + config.width + ' - ' + ($('#title').width() + 45) + 'px)';
+                    }
                 } else	// Right outside
                 if (p[0] == 'right'  && p[1] == '-5')  {
-                    css.left  = config.width + 5;
+                    if (config.width.indexOf('%') == -1) {
+                        css.left  = parseInt(config.width, 10) + 25;
+                    } else {
+                        css.left = 'calc(' + config.width + ' + 5px)';
+                    }
                 } else	{
                     css[p[0]] = p[1];
                 }
@@ -493,7 +589,7 @@ function buildGraph(_from, _to) {
             $('#title').css(css);
         }
     }
-
+/*
     if (config.axeX) {
         var format = function(d) {
             d = new Date(d);
@@ -628,6 +724,7 @@ function buildGraph(_from, _to) {
 
         for (var i = seriesData.length - 1; i >= 0; i--) {
             if (seriesData[i]) {
+
                 var option = {
                     color:     config._colors[i] || undefined,
                     lines: {
@@ -674,6 +771,32 @@ function buildGraph(_from, _to) {
 
     $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
 
+
+    if (config.timeFormat) {
+        if (config.timeFormat.indexOf('%H:%M:%S') != -1) {
+            config.timeFormatTime = '%H:%M:%S';
+        } else if (config.timeFormat.indexOf('%I:%M:%S') != -1) {
+            config.timeFormatTime = '%I:%M:%S';
+        } else if (config.timeFormat.indexOf('%H:%M') != -1) {
+            config.timeFormatTime = '%H:%M';
+        } else {
+            config.timeFormatTime = null;
+        }
+        if (config.timeFormat.indexOf('%d.%m.%y') != -1) {
+            config.timeFormatDate = '%d.%m.%y';
+        } else if (config.timeFormat.indexOf('%x %p') != -1) {
+            config.timeFormatDate = '%x %p';
+        } else if (config.timeFormat.indexOf('%d/%m/%y') != -1) {
+            config.timeFormatDate = '%d/%m/%y';
+        } else if (config.timeFormat.indexOf('%m.%d.%y') != -1) {
+            config.timeFormatDate = '%m.%d.%y';
+        } else if (config.timeFormat.indexOf('%d.%m') != -1) {
+            config.timeFormatDate = '%d.%m';
+        } else {
+            config.timeFormatDate = null;
+        }
+    }
+
     if (config.renderer == 'pie') {
         series.legend = {
             show: false
@@ -710,13 +833,30 @@ function buildGraph(_from, _to) {
                 max: config.max
             },
             xaxis: {
-                mode:       "time",
-                timeformat: config.timeFormat,
-                timezone:   "browser",
-                min: from || undefined,
-                max: to || undefined
+                //mode:       "time",
+                //timeformat: config.timeFormat,
+                //timezone:   "browser",
+                tickFormatter: function (number, object) {
+                    var now = new Date(parseInt(number, 10));
+                    if (config.timeFormatDate && config.timeFormatTime) {
+                        if (!object.ticks.length) {
+                            return $.plot.formatDate(now, config.timeFormatDate);
+                        }
+                        var d   = new Date(object.ticks[object.ticks.length - 1].v);
+                        if (d.getDate() != now.getDate()) {
+                            return $.plot.formatDate(now, config.timeFormatDate);
+                        }
+                        return $.plot.formatDate(now, config.timeFormatTime);
+                    } else {
+                        return $.plot.formatDate(now, config.timeFormat);
+                    }
+                    //return (new Date(object[0]))
+                },
+                min:        from || undefined,
+                max:        to   || undefined
             }
         };
+
         if (config.smoothing) {
             settings.series = {
                 curvedLines: {
@@ -759,7 +899,7 @@ function buildGraph(_from, _to) {
                 var y = item.datapoint[1].toFixed(2);
 
                 var text = item.series.label ? item.series.label + '<br>' : '';
-                text += $.plot.formatDate(new Date(parseInt(x)), config.timeFormat) + '<br>';
+                text += $.plot.formatDate(new Date(parseInt(x, 10)), config.timeFormat) + '<br>';
                 text += '<b>' + yFormatter(y) + '</b>';
 
                 var $tooltip = $("#tooltip").html(text);

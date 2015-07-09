@@ -129,12 +129,12 @@
 			<tr><td class="translate">Title:</td><td> <input type="text" id="title" class="value input"></td></tr>
 			<tr><td class="translate">Title position:</td><td>  <select class="value input" id="title_pos">
 				<option value="" class="translate">none</option>
-				<option value="top:5;left:5" class="translate">Top, left, inside</option>
-				<option value="top:5;right:5" class="translate">Top, right, inside</option>
-				<option value="top:5;left:50" class="translate">Top, center, inside</option>
-				<option value="top:50;left:5" class="translate">Middle, left, inside</option>
+				<option value="top:35;left:49" class="translate">Top, left, inside</option>
+				<option value="top:35;right:5" class="translate">Top, right, inside</option>
+				<option value="top:35;left:50" class="translate">Top, center, inside</option>
+				<option value="top:50;left:49" class="translate">Middle, left, inside</option>
 				<option value="top:50;right:5" class="translate">Middle, right, inside</option>
-				<option value="bottom:5;left:5" class="translate">Bottom, left, inside</option>
+				<option value="bottom:5;left:49" class="translate">Bottom, left, inside</option>
 				<option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
 				<option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
 				
@@ -145,6 +145,8 @@
                 <tr><td class="translate">Minimum:</td><td> <input id="min" class="value input"></td></tr>
                 <tr><td class="translate">Maximum:</td><td><input id="max" class="value input"></td></tr>
 			</select></td></tr>
+            <tr><td class="translate">Title color:</td><td> <input type="text" id="titleColor" class="value input"></td></tr>
+            <tr><td class="translate">Title size:</td><td> <input type="text" id="titleSize" class="value input"></td></tr>
 		</table></td>
 		<td class="names header3" style="vertical-align:top"><table>
 			<tr><td class="translate label">User defined names:</td><td><input type="checkbox" id="names"></td></tr>
@@ -182,14 +184,15 @@
 			<tr><td class="translate">Hover details:</td><td><input type="checkbox" class="value" id="hoverDetail"></td></tr>
 			<tr><td class="translate">Time format:</td><td>  <select class="value input" id="timeFormat">
 				<option value="" class="translate">Default</option>
-				<option value="%H:%M:%S %e.%m.%y">HH:MM:SS dd.mm.yy</option>
+				<option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
+                <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
 				<option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
-				<option value="%H:%M:%S %e/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
-				<option value="%H:%M:%S %m.%e.%y">HH:MM:SS mm.dd.yy</option>
+				<option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
+				<option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
                 <option value="%H:%M:%S">HH:MM:SS</option>
                 <option value="%H:%M">HH:MM</option>
-                <option value="%e.%m.%y">dd.mm.yy</option>
-                <option value="%e.%m">dd.mm</option>
+                <option value="%d.%m.%y">dd.mm.yy</option>
+                <option value="%d.%m">dd.mm</option>
 			</select></td></tr>
 			<tr><td class="translate">Smoothing:</td><td>    <input type="text"     class="value input" id="smoothing"></td></tr>
             <!--tr><td class="translate">Interpolation:</td><td><select id="interpolation" class="value input">
@@ -202,7 +205,8 @@
 			<tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr>
 			<tr><td class="translate">After comma:</td><td> <input type="text"     class="value input" id="afterComma"></td></tr>
             <tr><td class="translate">Fill range:</td><td>  <input type="checkbox" class="value" id="fillRange"></td></tr>
-		</table></td>
+            <tr><td class="translate">Interpolate:</td><td>  <input type="checkbox" class="value" id="interpolate"></td></tr>
+        </table></td>
 	</tr>
 	<tr><td colspan=5>&nbsp;</td></tr>
 	<tr>
@@ -325,7 +329,8 @@
             "Inside / With lines":  {"en": "Inside / With lines",   "de": "Inside / With lines",    "ru": "Внутри / С линиями"},
             "Outside/ With lines":  {"en": "Outside/ With lines",   "de": "Outside/ With lines",    "ru": "Снаружи/ С линиями"},
             "Inside / No lines":    {"en": "Inside / No lines",     "de": "Inside / No lines",      "ru": "Внутри / Без линий"},
-            "Outside / No lines":   {"en": "Outside / No lines",    "de": "Outside / No lines",     "ru": "Снаружи / Без линий"}
+            "Outside / No lines":   {"en": "Outside / No lines",    "de": "Outside / No lines",     "ru": "Снаружи / Без линий"},
+            "Interpolate:":         {"en": "Interpolate:",          "de": "Interpolieren:",         "ru": "Интерполяция:"}
         };
 
 		var ids =     [];
@@ -450,12 +455,12 @@
 				if ($(this).attr('type') == 'checkbox') {
 					config[$(this).attr('id')] = $(this).prop('checked');
 				} else {
-					config[$(this).attr('id')] = escape($(this).val());
+					config[$(this).attr('id')] = encodeURI($(this).val());
 				}
 			});
-			config._ids = escape(ids.join(';'));
-			if ($('#names').prop('checked')) config._names = escape(names.join(';'));
-			if (!$('#palette').val()) config._colors = escape(colors.join(';'));
+			config._ids = encodeURI(ids.join(';'));
+			if ($('#names').prop('checked')) config._names = encodeURI(names.join(';'));
+			if (!$('#palette').val()) config._colors = encodeURI(colors.join(';'));
 			var text = '';
 			for(var opt in config) {
 				if (config[opt]) text += (text ? '&' : '') + opt + '=' + config[opt];
