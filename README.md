@@ -6,7 +6,10 @@ draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
 
-### 0.0.1 (2015-07-09)
+### 0.1.0 (2015-07-10)
+* (bluefox) lines are implemented
+
+### 0.0.2 (2015-07-09)
 * (bluefox) implement title and sort points
 
 ### 0.0.1 (2015-03-27)

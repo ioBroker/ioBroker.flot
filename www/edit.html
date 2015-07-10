@@ -47,173 +47,148 @@
     </style>
 </head>
 <body>
-	<table style="vertical-align:top"><tr>
-		<th class="header header1"><button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button><span class="translate">Input data</span></th>
-		<th class="translate header header2">Legend and Axes</th>
-		<th class="translate header header3">Names</th>
-		<th class="translate header header4">Colors</th>
-		<th class="translate header header5">Options</th>
-	</tr>
-	<tr>
-		<td class="input-data header1" style="vertical-align:top"><table>
-			<tr><td class="translate label">Datapoints:</td><td><input class="input" id="ids_count"/></td></tr>
-			<tr><td colspan="2"><table id="idslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
-			<tr><td class="translate">Range:</td><td><select id="range" class="value input">
-				<option value="10"      class="translate">10 Minutes</option>
-				<option value="30"      class="translate">30 Minutes</option>
-				<option value="60"      class="translate">1 Hour</option>
-				<option value="120"     class="translate">2 Hours</option>
-				<option value="180"     class="translate">3 Hours</option>
-				<option value="360"     class="translate">6 Hours</option>
-				<option value="720"     class="translate">12 Hours</option>
-				<option value="1440"    class="translate">1 Day</option>
-				<option value="2880"    class="translate">2 Days</option>
-				<option value="4320"    class="translate">3 Days</option>
-				<option value="10080"   class="translate">7 Days</option>
-				<option value="20160"   class="translate">14 Days</option>
-				<option value="43200"   class="translate">1 Month</option>
-				<option value="86400"   class="translate">2 Months</option>
-				<option value="129600"  class="translate">3 Months</option>
-				<option value="259200"  class="translate">6 Months</option>
-				<option value="525600"  class="translate">1 Year</option>
-				<option value="1051200" class="translate">2 Years</option>
-			</select></td></tr>
-			<tr><td class="translate">Width:</td><td> <input id="width" class="value input"></td></tr>
-			<tr><td class="translate">Height:</td><td><input id="height" class="value input"></td></tr>
-			<tr><td class="translate">Chart type:</td><td><select id="renderer" class="value input">
-				<option value="line"        class="translate">Line</option>
-				<option value="area"        class="translate">Area</option>
-                <option value="bar"         class="translate">Bar</option>
-				<option value="lineplot"    class="translate">Line plot</option>
-				<option value="scatterplot" class="translate">Scatter plot</option>
-                <option value="steps"       class="translate">Steps</option>
-                <option value="pie"         class="translate">Pie</option>
-			</select></td></tr>
-		</table></td>
-		<td class="axes header2" style="vertical-align:top"><table>
-			<tr><td class="translate label">Show axis bottom:</td><td><select class="value input" id="axeX">
-				<option value="" class="translate">none</option>
-				<option value="lines" class="translate">With lines</option>
-				<option value="nolines" class="translate">Without lines</option>
-			</select></td></tr>	
-			<tr><td class="translate">Show axis left:</td><td><select class="value input" id="axeY">
-				<option value="" class="translate">none</option>
-				<option value="inside" class="translate">Inside / With lines</option>
-				<option value="outside" class="translate">Outside/ With lines</option>
-				<option value="inside nolines" class="translate">Inside / No lines</option>
-				<option value="outside nolines" class="translate">Outside / No lines</option>
-			</select></td></tr>
-			<tr><td class="translate">Show axis right:</td><td><select class="value input" id="axeY2">
-				<option value="" class="translate">none</option>
-				<option value="inside nolines" class="translate">Inside / No lines</option>
-				<option value="outside nolines" class="translate">Outside / No lines</option>
-				<option value="inside" class="translate">Inside / With lines</option>
-				<option value="outside" class="translate">Outside/ With lines</option>
-			</select></td></tr>
-			<tr><td class="translate">Show legend:</td><td>  <select class="value input" id="legend">
-				<option value="" class="translate">none</option>
-				<option value="top:5;left:5" class="translate">Top, left, inside</option>
-				<option value="top:5;right:5" class="translate">Top, right, inside</option>
-				<option value="top:5;left:50" class="translate">Top, center, inside</option>
-				<option value="top:50;left:5" class="translate">Middle, left, inside</option>
-				<option value="top:50;right:5" class="translate">Middle, right, inside</option>
-				<option value="bottom:5;left:5" class="translate">Bottom, left, inside</option>
-				<option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
-				<option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
-				
-				<option value="top:5;right:-5">Top, right, outside</option>
-				<option value="top:50;right:-5">Middle, right, outside</option>
-				<option value="bottom:5;right:-5">Bottom, right, outside</option>
-				<option value="bottom:-5;left:50">Bottom, center, outside</option>
-			</select></td></tr>
-			<tr><td class="translate">Title:</td><td> <input type="text" id="title" class="value input"></td></tr>
-			<tr><td class="translate">Title position:</td><td>  <select class="value input" id="title_pos">
-				<option value="" class="translate">none</option>
-				<option value="top:35;left:49" class="translate">Top, left, inside</option>
-				<option value="top:35;right:5" class="translate">Top, right, inside</option>
-				<option value="top:35;left:50" class="translate">Top, center, inside</option>
-				<option value="top:50;left:49" class="translate">Middle, left, inside</option>
-				<option value="top:50;right:5" class="translate">Middle, right, inside</option>
-				<option value="bottom:5;left:49" class="translate">Bottom, left, inside</option>
-				<option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
-				<option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
-				
-				<option value="top:5;right:-5" class="translate">Top, right, outside</option>
-				<option value="top:50;right:-5" class="translate">Middle, right, outside</option>
-				<option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
-				<option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
-                <tr><td class="translate">Minimum:</td><td> <input id="min" class="value input"></td></tr>
+	<table style="vertical-align:top">
+        <tr>
+            <th class="header header1"><button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button><span class="translate">Input data</span></th>
+            <th class="translate header header2">Legend and Axes</th>
+            <th class="translate header header3">Names</th>
+            <th class="translate header header4">Colors</th>
+            <th class="translate header header5">Options</th>
+        </tr>
+        <tr>
+            <td class="input-data header1" style="vertical-align:top">
+                <table>
+                    <tr><td class="translate label">Datapoints:</td><td><input class="input" id="ids_count"/></td></tr>
+                    <tr><td colspan="2"><table id="idslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
+                    <tr><td class="translate">Range:</td><td><select id="range" class="value input">
+                        <option value="10"      class="translate">10 Minutes</option>
+                        <option value="30"      class="translate">30 Minutes</option>
+                        <option value="60"      class="translate">1 Hour</option>
+                        <option value="120"     class="translate">2 Hours</option>
+                        <option value="180"     class="translate">3 Hours</option>
+                        <option value="360"     class="translate">6 Hours</option>
+                        <option value="720"     class="translate">12 Hours</option>
+                        <option value="1440"    class="translate">1 Day</option>
+                        <option value="2880"    class="translate">2 Days</option>
+                        <option value="4320"    class="translate">3 Days</option>
+                        <option value="10080"   class="translate">7 Days</option>
+                        <option value="20160"   class="translate">14 Days</option>
+                        <option value="43200"   class="translate">1 Month</option>
+                        <option value="86400"   class="translate">2 Months</option>
+                        <option value="129600"  class="translate">3 Months</option>
+                        <option value="259200"  class="translate">6 Months</option>
+                        <option value="525600"  class="translate">1 Year</option>
+                        <option value="1051200" class="translate">2 Years</option>
+                    </select></td></tr>
+                    <tr><td class="translate">Width:</td><td> <input id="width" class="value input"></td></tr>
+                    <tr><td class="translate">Height:</td><td><input id="height" class="value input"></td></tr>
+                    <tr><td class="translate">Chart type:</td><td><select id="renderer" class="value input">
+                        <option value="line"        class="translate">Line</option>
+                        <option value="area"        class="translate">Area</option>
+                        <option value="bar"         class="translate">Bar</option>
+                        <option value="lineplot"    class="translate">Line plot</option>
+                        <option value="scatterplot" class="translate">Scatter plot</option>
+                        <option value="steps"       class="translate">Steps</option>
+                        <option value="pie"         class="translate">Pie</option>
+                    </select></td></tr>
+                    <tr><td class="translate">No border:</td><td><select class="value input" id="noBorder">
+                        <option value="" class="translate"></option>
+                        <option value="noborder" class="translate">yes</option>
+                    </select></td></tr>
+
+                </table>
+            </td>
+            <td class="axes header2" style="vertical-align:top"><table>
+                <tr><td class="translate label">Show axis bottom:</td><td><select class="value input" id="axeX">
+                    <option value="" class="translate">none</option>
+                    <option value="bottom" class="translate">bottom</option>
+                    <option value="top" class="translate">top</option>
+                </select></td></tr>
+                <tr><td class="translate">Show axis left:</td><td><select class="value input" id="axeY">
+                    <option value="" class="translate">none</option>
+                    <option value="left" class="translate">left</option>
+                    <option value="right" class="translate">right</option>
+                </select></td></tr>
+                <tr><td class="translate">Show legend:</td><td>  <select class="value input" id="legend">
+                    <option value="" class="translate">none</option>
+                    <option value="nw" class="translate">Top, left</option>
+                    <option value="ne" class="translate">Top, right</option>
+                    <option value="sw" class="translate">Bottom, left</option>
+                    <option value="se" class="translate">Bottom, right</option>
+                </select></td></tr>
+                <tr><td class="translate">Units:</td><td><input id="units" class="value input"></td></tr>
+
+                <tr><td class="translate">Title:</td><td> <input type="text" id="title" class="value input"></td></tr>
+                <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
+                <tr><td class="translate">Title position:</td><td>  <select class="value input" id="title_pos">
+                    <option value="" class="translate">none</option>
+                    <option value="top:35;left:65" class="translate">Top, left, inside</option>
+                    <option value="top:35;right:5" class="translate">Top, right, inside</option>
+                    <option value="top:35;left:50" class="translate">Top, center, inside</option>
+                    <option value="top:50;left:65" class="translate">Middle, left, inside</option>
+                    <option value="top:50;right:5" class="translate">Middle, right, inside</option>
+                    <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
+                    <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
+                    <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
+
+                    <option value="top:5;right:-5" class="translate">Top, right, outside</option>
+                    <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
+                    <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
+                    <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
+                </select></td></tr>
+                <tr><td class="translate">Title color:</td><td> <input type="text" id="titleColor" class="value input"></td></tr>
+                <tr><td class="translate">Title size:</td><td> <input type="text" id="titleSize" class="value input"></td></tr>
+
+                <tr><td class="translate">Minimum:</td><td><input id="min" class="value input"></td></tr>
                 <tr><td class="translate">Maximum:</td><td><input id="max" class="value input"></td></tr>
-			</select></td></tr>
-            <tr><td class="translate">Title color:</td><td> <input type="text" id="titleColor" class="value input"></td></tr>
-            <tr><td class="translate">Title size:</td><td> <input type="text" id="titleSize" class="value input"></td></tr>
-		</table></td>
-		<td class="names header3" style="vertical-align:top"><table>
-			<tr><td class="translate label">User defined names:</td><td><input type="checkbox" id="names"></td></tr>
-			<tr><td colspan="2"><table id="nameslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
-		</table></td>
-		<td class="colors header4" style="vertical-align:top"><table>
-			<tr><td class="translate label">Predefined background:</td><td> <select class="input" id="pre_bg">
-				<option value="" class="translate">User defined</option>
-				<option value="0">Portrait</option>
-				<option value="1">Instagram</option>
-				<option value="2">ServQuick</option>
-				<option value="3">Metallic Toad</option>
-				<option value="4">Clouds</option>
-				<option value="5">Mirage</option>
-				<option value="6">Steel Gray</option>
-				<option value="7">Horizon</option>
-				<option value="8">Koko Caramel</option>
-				<option value="9">Turquoise flow</option>
-			</select></td></tr>
-			<tr><td class="translate label">Background:</td><td> <input type="text" id="bg" class="value input"></td></tr>
-			<!--tr><td class="translate">Palette:</td><td><select class="value input" id="palette">
-				<option value="" class="translate">User defined</option>
-				<option value="munin">Munin</option>
-				<option value="colorwheel">Colorwheel</option>
-				<option value="classic9">Classic9</option>
-				<option value="spectrum14">Spectrum14</option>
-				<option value="cool">Cool</option>
-				<option value="spectrum2000">Spectrum2000</option>
-				<option value="spectrum2001">Spectrum2001</option>
-			</select></td></tr-->
-			<tr><td colspan="2"><table id="colorslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
-		</table></td>
-		<td class="thickness header5" style="vertical-align:top"><table>
-			<tr><td class="translate">Line thick:</td><td><input type="text" class="value input" id="strokeWidth"></td></tr>
-			<tr><td class="translate">Hover details:</td><td><input type="checkbox" class="value" id="hoverDetail"></td></tr>
-			<tr><td class="translate">Time format:</td><td>  <select class="value input" id="timeFormat">
-				<option value="" class="translate">Default</option>
-				<option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
-                <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
-				<option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
-				<option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
-				<option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
-                <option value="%H:%M:%S">HH:MM:SS</option>
-                <option value="%H:%M">HH:MM</option>
-                <option value="%d.%m.%y">dd.mm.yy</option>
-                <option value="%d.%m">dd.mm</option>
-			</select></td></tr>
-			<tr><td class="translate">Smoothing:</td><td>    <input type="text"     class="value input" id="smoothing"></td></tr>
-            <!--tr><td class="translate">Interpolation:</td><td><select id="interpolation" class="value input">
-                <option value=""           class="translate">default</option>
-                <option value="linear"     class="translate">linear</option>
-                <option value="step-after" class="translate">step-after</option>
-                <option value="cardinal"   class="translate">cardinal</option>
-                <option value="basis"      class="translate">basis</option>
-            </select></td></tr-->
-			<tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr>
-			<tr><td class="translate">After comma:</td><td> <input type="text"     class="value input" id="afterComma"></td></tr>
-            <tr><td class="translate">Fill range:</td><td>  <input type="checkbox" class="value" id="fillRange"></td></tr>
-            <tr><td class="translate">Interpolate:</td><td>  <input type="checkbox" class="value" id="interpolate"></td></tr>
-        </table></td>
-	</tr>
-	<tr><td colspan=5>&nbsp;</td></tr>
-	<tr>
-		<td colspan=5>
-			Link:<input type="text" id="link" style="width:85%"><button style="padding-left: 10" id="open" class="translateB">Open</button>
-		</td>
-	</tr>
+            </table></td>
+            <td class="names header3" style="vertical-align:top"><table>
+                <tr><td class="translate label">User defined names:</td><td><input type="checkbox" id="names"></td></tr>
+                <tr><td colspan="2"><table id="nameslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
+            </table></td>
+            <td class="colors header4" style="vertical-align:top"><table>
+                <tr><td class="translate label">Predefined background:</td><td> <select class="input" id="pre_bg">
+                    <option value="" class="translate">User defined</option>
+                    <option value="0">Portrait</option>
+                    <option value="1">Instagram</option>
+                    <option value="2">ServQuick</option>
+                    <option value="3">Metallic Toad</option>
+                    <option value="4">Clouds</option>
+                    <option value="5">Mirage</option>
+                    <option value="6">Steel Gray</option>
+                    <option value="7">Horizon</option>
+                    <option value="8">Koko Caramel</option>
+                    <option value="9">Turquoise flow</option>
+                </select></td></tr>
+                <tr><td class="translate label">Background:</td><td> <input type="text" id="bg" class="value input"></td></tr>
+                <tr><td colspan="2"><table id="colorslist" border="0" cellspacing="0" cellpadding="0"></table></td></tr>
+            </table></td>
+            <td class="thickness header5" style="vertical-align:top"><table>
+                <tr><td class="translate">Line thick:</td><td><input type="text" class="value input" id="strokeWidth"></td></tr>
+                <tr><td class="translate">Hover details:</td><td><input type="checkbox" class="value" id="hoverDetail"></td></tr>
+                <tr><td class="translate">Time format:</td><td>  <select class="value input" id="timeFormat">
+                    <option value="" class="translate">Default</option>
+                    <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
+                    <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
+                    <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
+                    <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
+                    <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
+                    <option value="%H:%M:%S">HH:MM:SS</option>
+                    <option value="%H:%M">HH:MM</option>
+                    <option value="%d.%m.%y">dd.mm.yy</option>
+                    <option value="%d.%m">dd.mm</option>
+                </select></td></tr>
+                <tr><td class="translate">Smoothing:</td><td>    <input type="text"     class="value input" id="smoothing"></td></tr>
+                <!--tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr-->
+                <tr><td class="translate">After comma:</td><td> <input type="text"     class="value input" id="afterComma"></td></tr>
+                <tr><td class="translate">Fill range:</td><td>  <input type="checkbox" class="value" id="fillRange"></td></tr>
+                <tr><td class="translate">Interpolation:</td><td>  <input type="checkbox" class="value" id="interpolation"></td></tr>
+            </table></td>
+        </tr>
+        <tr><td colspan=5>&nbsp;</td></tr>
+        <tr><td colspan=5>
+                Link:<input type="text" id="link" style="width:85%"><button style="padding-left: 10" id="open" class="translateB">Open</button>
+        </td></tr>
 	</table>
 	
 	<table>
@@ -330,7 +305,22 @@
             "Outside/ With lines":  {"en": "Outside/ With lines",   "de": "Outside/ With lines",    "ru": "Снаружи/ С линиями"},
             "Inside / No lines":    {"en": "Inside / No lines",     "de": "Inside / No lines",      "ru": "Внутри / Без линий"},
             "Outside / No lines":   {"en": "Outside / No lines",    "de": "Outside / No lines",     "ru": "Снаружи / Без линий"},
-            "Interpolate:":         {"en": "Interpolate:",          "de": "Interpolieren:",         "ru": "Интерполяция:"}
+            "Interpolate:":         {"en": "Interpolate:",          "de": "Interpolieren:",         "ru": "Интерполяция:"},
+            "Steps":                {"en": "Steps",                 "de": "Schritte",               "ru": "Ступени"},
+            "Pie":                  {"en": "Pie",                   "de": "Kuchen",                 "ru": "Круговая диаграмма"},
+            "Top, left":            {"en": "Top, left",             "de": "Oben, links",            "ru": "Сверху, слева"},
+            "Top, right":           {"en": "Top, right",            "de": "Oben, rechts",           "ru": "Сверху, справа"},
+            "Bottom, left":         {"en": "Bottom, left",          "de": "Unten, links",           "ru": "Снизу, слева"},
+            "Bottom, right":        {"en": "Bottom, right",         "de": "Unten, rechts",          "ru": "Снизу, справа"},
+            "Title color:":         {"en": "Title color:",          "de": "Titelfarbe:",            "ru": "Цвет названия:"},
+            "Title size:":          {"en": "Title size:",           "de": "Titelgröße:",            "ru": "Размер названия:"},
+            "Fill range:":          {"en": "Fill range:",           "de": "Ganzer Bereich:",        "ru": "Всегда весь интервал:"},
+            "Units:":               {"en": "Units:",                "de": "Einheiten:",             "ru": "Единицы:"},
+            "yes":                  {"en": "yes",                   "de": "ja",                     "ru": "да"},
+            "bottom":               {"en": "bottom",                "de": "unten",                  "ru": "снизу"},
+            "top":                  {"en": "top",                   "de": "oben",                   "ru": "сверху"},
+            "left":                 {"en": "left",                  "de": "links",                  "ru": "слева"},
+            "right":                {"en": "right",                 "de": "rechts",                 "ru": "справа"}
         };
 
 		var ids =     [];

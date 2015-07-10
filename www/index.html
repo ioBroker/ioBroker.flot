@@ -258,7 +258,7 @@ function fillRange(data) {
         }
     }
 
-    if (!isDifferent || !config.interpolate) return data;
+    if (!isDifferent || !config.interpolation) return data;
 
     var result = [];
     var time = data[0][0];
@@ -270,7 +270,7 @@ function fillRange(data) {
     var tVal  = data[0][0];
     var vVal  = data[0][1];
     var tEnd  = data[1][0];
-    // interpolate
+    // interpolation
     while (time <= end) {
         while (tEnd <= time && i < data.length - 1) {
             i++;
@@ -769,8 +769,22 @@ function buildGraph(_from, _to) {
         config.min = parseFloat(config.min);
     }
 
-    $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
-
+    if (config.noBorder) {
+        if (!config.width) config.width = '100%';
+        if (!config.height) config.height = '100%';
+        if (config.width.indexOf('%')  != -1) {
+            $('#chart_container').css({width:  'calc(' + config.width  + ' - 20px)'});
+        } else {
+            $('#chart_container').css({width:  config.width});
+        }
+        if (config.height.indexOf('%') != -1) {
+            $('#chart_container').css({height: 'calc(' + config.height + ' - 20px)'});
+        } else {
+            $('#chart_container').css({height:  config.height});
+        }
+    } else {
+        $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
+    }
 
     if (config.timeFormat) {
         if (config.timeFormat.indexOf('%H:%M:%S') != -1) {
@@ -799,7 +813,8 @@ function buildGraph(_from, _to) {
 
     if (config.renderer == 'pie') {
         series.legend = {
-            show: false
+            show: !!config.legend,
+            position: config.legend
         };
         graph = $.plot("#chart_placeholder", seriesData[0], series);
     } else if (config.renderer == 'bar' && config._ids.length > 1) {
@@ -812,6 +827,10 @@ function buildGraph(_from, _to) {
                 },
                 pie: {
                     show: config.renderer == 'pie'
+                },
+                legend: {
+                    show: !!config.legend,
+                    position: config.legend
                 }
             }
         };
@@ -825,14 +844,44 @@ function buildGraph(_from, _to) {
     } else {
         var settings = {
             grid: {
-                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
+                hoverable:      (config.hoverDetail === 'true' || config.hoverDetail === true),
                 backgroundColor: config.bg || undefined
             },
             yaxis: {
+                show: !!config.axeY,
                 min: config.min,
-                max: config.max
+                max: config.max,
+                position: config.axeY,
+                tickFormatter: function (number, object) {
+
+                    var factor = config.afterComma ? Math.pow(10, config.afterComma) : 1;
+                    var formatted = "" + Math.round(number * factor) / factor;
+
+                    // If tickDecimals was specified, ensure that we have exactly that
+                    // much precision; otherwise default to the value's own precision.
+
+                    if (config.afterComma != null) {
+                        var decimal = formatted.indexOf(".");
+                        var precision = decimal == -1 ? 0 : formatted.length - decimal - 1;
+                        if (precision < config.afterComma) {
+                            number = (precision ? formatted : formatted + ".") + ("" + factor).substr(1, config.afterComma - precision);
+                        }
+                    }
+
+                    if (config.units == '-') return number;
+
+                    if (config.units) {
+                        number += ' ' + config.units;
+                    } else if (config._units && config._units[0]) {
+                        number += ' ' + config._units[0];
+                    }
+
+                    return number;
+                }
             },
             xaxis: {
+                show: !!config.axeX,
+                position: config.axeX,
                 //mode:       "time",
                 //timeformat: config.timeFormat,
                 //timezone:   "browser",
@@ -854,6 +903,10 @@ function buildGraph(_from, _to) {
                 },
                 min:        from || undefined,
                 max:        to   || undefined
+            },
+            legend: {
+                show:       !!config.legend,
+                position:   config.legend
             }
         };
 
