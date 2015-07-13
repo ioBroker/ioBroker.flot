@@ -786,6 +786,8 @@ function buildGraph(_from, _to) {
         $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
     }
 
+    if (config.timeFormat === 'null') config.timeFormat = undefined;
+
     if (config.timeFormat) {
         if (config.timeFormat.indexOf('%H:%M:%S') != -1) {
             config.timeFormatTime = '%H:%M:%S';
@@ -882,10 +884,10 @@ function buildGraph(_from, _to) {
             xaxis: {
                 show: !!config.axeX,
                 position: config.axeX,
-                //mode:       "time",
+                mode:     "time",
                 //timeformat: config.timeFormat,
                 //timezone:   "browser",
-                tickFormatter: function (number, object) {
+                tickFormatter: config.timeFormat ? function (number, object) {
                     var now = new Date(parseInt(number, 10));
                     if (config.timeFormatDate && config.timeFormatTime) {
                         if (!object.ticks.length) {
@@ -900,7 +902,7 @@ function buildGraph(_from, _to) {
                         return $.plot.formatDate(now, config.timeFormat);
                     }
                     //return (new Date(object[0]))
-                },
+                } : null,
                 min:        from || undefined,
                 max:        to   || undefined
             },

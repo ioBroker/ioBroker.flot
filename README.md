@@ -6,6 +6,9 @@ draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
 
+### 0.1.1 (2015-07-13)
+* (bluefox) fix time format
+
 ### 0.1.0 (2015-07-10)
 * (bluefox) lines are implemented
 
