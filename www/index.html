@@ -398,31 +398,48 @@
             socket.emit('subscribe', id);
             var end;
             var start;
-            if (config.live) {
-                end = Math.round(new Date().getTime() / 1000);
-                start = Math.round(end - (config.range * 60))
-            }
-            else {
-                if (config._ends[index]) {
-                    end = Math.round(new Date(config._ends[index]).setHours(24) / 1000);
-                } else {
-                    end = Math.round(new Date().getTime() / 1000);
-                }
+//            if (config.live) {
+//                end = Math.round(new Date().getTime() / 1000);
+//                start = Math.round(end - (config.range * 60))
+//            }
+//            else {
+//                if (config._ends[index]) {
+//                    end = Math.round(new Date(config._ends[index]).setHours(24) / 1000);
+//                } else {
+//                    end = Math.round(new Date().getTime() / 1000);
+//                }
+//
+//                start = end;
+//                if (config._starts[index]) {
+//                    start = Math.round(new Date(config._starts[index]).setHours(0) / 1000)
+//                } else {
+//                    start -= 604800/* 1 week */;
+//                }
+//            }
 
-                start = end;
-                if (config._starts[index]) {
-                    start = Math.round(new Date(config._starts[index]).setHours(0) / 1000)
-                } else {
-                    start -= 604800/* 1 week */;
+            if(config.timeArt == "static"){
+                start = Math.round(new Date(config.start).setHours(0) / 1000) - config._offsets[index];
+                end   = Math.round(new Date(config.end).setHours(24) / 1000) - config._offsets[index]
+            }else{
+                if(config.relativeend == "now"){
+                    end  =  Math.round(new Date() / 1000);
+                    start = end - (config.range * 60)
+                }else  if(config.relativeend == "today"){
+                    end  =  Math.round(new Date().setHours(24) / 1000);
+                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60)
+                    console.log(start)
+                    console.log(end)
                 }
             }
+
+
 
 
             var option = {
                 'start': start,
                 'end': end,
-                'getNull': config.getnull,
-                'aggregate': config._aggregate[index],
+                'ignoreNull': config.getnull || false,
+                'aggregate': config._arts[index],
 
             };
 
@@ -433,7 +450,7 @@
                 option["count"] = config.aggregateSpan || document.getElementById("chart_container").clientWidth
             }
 
-            socket.emit('getStateHistory', id, option, function (err, res) {
+            socket.emit('getHistory', id, option, function (err, res) {
                 if (!err && res) {
                     //for (var i = 0, len = res.length; i < len; i++) {
 

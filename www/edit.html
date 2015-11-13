@@ -3,12 +3,14 @@
     <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/redmond/jquery-ui.min.css">
     <link type="text/css" rel="stylesheet" href="/lib/css/fancytree/ui.fancytree.min.css"/>
 
+
     <script type="text/javascript" src="/lib/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-ui-1.10.3.full.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery.fancytree-all.min.js"></script>
     <script type="text/javascript" src="/lib/js/translate.js"></script>
     <script type="text/javascript" src="/lib/js/selectID.js"></script>
     <script type="text/javascript" src="/lib/js/socket.io.js"></script>
+    <script type="text/javascript" src="lib/js/jqColorPicker.min.js"></script>
 
     <script type="text/javascript" src="/_socket/info.js"></script>
     <script type="text/javascript" src="js/words.js"></script>
@@ -20,7 +22,7 @@
         }
 
         .label {
-            width: 150;
+            width: 130;
         }
 
         .ui-widget input {
@@ -51,70 +53,33 @@
             <span class="translate">Input data</span></th>
         <th class="translate header ">Zeit</th>
         <th class="translate header ">Legend and Axes</th>
-        <th class="translate header ">Names</th>
-        <th class="translate header ">Colors</th>
         <th class="translate header ">Options</th>
     </tr>
     <tr>
         <td class="input-data header1" style="vertical-align:top">
             <table>
-                <tr>
-                    <td class="translate label">Datapoints:</td>
-                    <td><input class="input" id="ids_count"/></td>
+                <tr colspan="2">
+                    <td><div style="width: 100px; display: inline" class="translate label">Add new line:</div> <button style="margin-left: 1px" id="ids_add"></button></td>
+
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="7">
                         <table id="idslist" border="0" cellspacing="0" cellpadding="0"></table>
                     </td>
                 </tr>
-                <tr>
-                    <td class="translate">Width:</td>
-                    <td><input id="width" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Height:</td>
-                    <td><input id="height" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Chart type:</td>
-                    <td><select id="renderer" class="value input">
-                        <option value="line" class="translate">Line</option>
-                        <option value="area" class="translate">Area</option>
-                        <option value="bar" class="translate">Bar</option>
-                        <option value="lineplot" class="translate">Line plot</option>
-                        <option value="scatterplot" class="translate">Scatter plot</option>
-                        <option value="steps" class="translate">Steps</option>
-                        <option value="pie" class="translate">Pie</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">No border:</td>
-                    <td><select class="value input" id="noBorder">
-                        <option value="" class="translate"></option>
-                        <option value="noborder" class="translate">yes</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">Range Typ:</td>
-                    <td><select id="rangeTyp" class="input value">
-                        <option value="Day" class="translate">Day</option>
-                        <option value="Month" class="translate">Month</option>
-                        <option value="Year" class="translate">Year</option>
-                        <option value="Individual" class="translate">Individual</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate label">same Day:</td>
-                    <td><input type="checkbox" id="sameDay" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate label">same Month":</td>
-                    <td><input type="checkbox" id="sameMonth" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate label">same Year:</td>
-                    <td><input type="checkbox" id="sameYear" class="value input"></td>
-                </tr>
+
+                <!--<tr>-->
+                    <!--<td class="translate label">same Day:</td>-->
+                    <!--<td><input type="checkbox" id="sameDay" class="value input"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td class="translate label">same Month:</td>-->
+                    <!--<td><input type="checkbox" id="sameMonth" class="value input"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td class="translate label">same Year:</td>-->
+                    <!--<td><input type="checkbox" id="sameYear" class="value input"></td>-->
+                <!--</tr>-->
 
 
             </table>
@@ -122,60 +87,22 @@
         <td class="input-data header1" style="vertical-align:top">
             <table>
                 <tr>
-                    <td class="translate">Line:</td>
-                    <td><select id="lineSelect" class="input">
-                        <option value="1" class="translate">Line 1</option>
-                    </select></td>
-                </tr>
-                <tr class="rangeSelect  Year">
-                    <td class="translate">Year:</td>
-                    <td><input type="number" min="2012" max="2030" step="1" id="year" class="input"></td>
-                </tr>
-                <tr class="rangeSelect Month">
-                    <td class="translate">Month:</td>
-                    <td><input type="month" id="month" class="input"></td>
-                </tr>
-                <tr class="rangeSelect Day">
-                    <td class="translate">Day:</td>
-                    <td><input type="date" id="day" class="input"></td>
-                </tr>
-                <tr class="rangeSelect Individual">
-                    <td class="translate">Start:</td>
-                    <td><input type="date" id="start" class="Individual"></td>
-                </tr>
-                <tr class="rangeSelect Individual">
-                    <td class="translate">End:</td>
-                    <td><input type="date" id="end" class="Individual"></td>
-                </tr>
-                <tr>
-                    <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
-                </tr>
-                <tr>
                     <td class="translate">Art:</td>
-                    <td><select id="aggregate" class="input">
-                        <option value="max" class="translate">max</option>
-                        <option value="min" class="translate">min</option>
-                        <option value="average" class="translate">average</option>
-                        <option value="average10" class="translate">average10</option>
-                        <option value="total" class="translate">total</option>
+                    <td><select id="timeArt" class="input value">
+                        <option value="relative" class="translate">relative</option>
+                        <option value="static" class="translate">static</option>
                     </select></td>
                 </tr>
-                <tr>
-                    <td class="translate ">Schritt Type:</td>
-                    <td><select id="aggregateType" class="value input">
-                        <option value="step" class="translate">seconds</option>
-                        <option value="count" class="translate">counts</option>
+                <tr class="relative">
+                    <td class="translate">End:</td>
+                    <td><select id="relativeend" class="input value">
+                        <option value="now" class="translate">now</option>
+                        <option value="today" class="translate">today</option>
+                        <option value="month" class="translate">this month</option>
+                        <option value="year" class="translate">this year</option>
                     </select></td>
                 </tr>
-                <tr>
-                    <td class="translate" id="spanName">Schrittweite:</td>
-                    <td><input id="aggregateSpan" value="60" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate label">Live:</td>
-                    <td><input type="checkbox" id="live" class="value input"></td>
-                </tr>
-                <tr>
+                <tr class="relative">
                     <td class="translate">Range:</td>
                     <td><select id="range" class="value input">
                         <option value="10" class="translate">10 Minutes</option>
@@ -198,9 +125,31 @@
                         <option value="1051200" class="translate">2 Years</option>
                     </select></td>
                 </tr>
-                <tr>
-                    <td class="translate label">get "null":</td>
+                <tr class="relative">
+                    <td class="translate label">ignore 'null':</td>
                     <td><input type="checkbox" id="getnull" class="value input"></td>
+                </tr>
+                <tr class="static">
+                    <td class="translate">Start:</td>
+                    <td><input type="date" id="start" class="value input"></td>
+                </tr>
+                <tr class="static">
+                    <td class="translate">End:</td>
+                    <td><input type="date" id="end" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
+                </tr>
+                <tr>
+                    <td class="translate ">Schritt Type:</td>
+                    <td><select id="aggregateType" class="value input">
+                        <option value="step" class="translate">seconds</option>
+                        <option value="count" class="translate">counts</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate" id="spanName">Schrittweite:</td>
+                    <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
             </table>
         </td>
@@ -280,48 +229,6 @@
                 </tr>
             </table>
         </td>
-        <td class="names header1" style="vertical-align:top">
-            <table>
-                <tr>
-                    <td class="translate label">User defined names:</td>
-                    <td><input type="checkbox" id="names"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <table id="nameslist" border="0" cellspacing="0" cellpadding="0"></table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class="colors header1" style="vertical-align:top">
-            <table>
-                <tr>
-                    <td class="translate label">Predefined background:</td>
-                    <td><select class="input" id="pre_bg">
-                        <option value="" class="translate">User defined</option>
-                        <option value="0">Portrait</option>
-                        <option value="1">Instagram</option>
-                        <option value="2">ServQuick</option>
-                        <option value="3">Metallic Toad</option>
-                        <option value="4">Clouds</option>
-                        <option value="5">Mirage</option>
-                        <option value="6">Steel Gray</option>
-                        <option value="7">Horizon</option>
-                        <option value="8">Koko Caramel</option>
-                        <option value="9">Turquoise flow</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate label">Background:</td>
-                    <td><input type="text" id="bg" class="value input"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <table id="colorslist" border="0" cellspacing="0" cellpadding="0"></table>
-                    </td>
-                </tr>
-            </table>
-        </td>
         <td class="thickness header1" style="vertical-align:top">
             <table>
                 <tr>
@@ -351,19 +258,70 @@
                     <td class="translate">Smoothing:</td>
                     <td><input type="text" class="value input" id="smoothing"></td>
                 </tr>
+                <tr>
+                    <td class="translate">Width:</td>
+                    <td><input id="width" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Height:</td>
+                    <td><input id="height" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Chart type:</td>
+                    <td><select id="renderer" class="value input">
+                        <option value="line" class="translate">Line</option>
+                        <option value="area" class="translate">Area</option>
+                        <option value="bar" class="translate">Bar</option>
+                        <option value="lineplot" class="translate">Line plot</option>
+                        <option value="scatterplot" class="translate">Scatter plot</option>
+                        <option value="steps" class="translate">Steps</option>
+                        <option value="pie" class="translate">Pie</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate">No border:</td>
+                    <td><select class="value input" id="noBorder">
+                        <option value="" class="translate"></option>
+                        <option value="noborder" class="translate">yes</option>
+                    </select></td>
+                </tr>
                 <!--tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr-->
                 <tr>
                     <td class="translate">After comma:</td>
                     <td><input type="text" class="value input" id="afterComma"></td>
                 </tr>
+                <!--<tr>-->
+                    <!--<td class="translate">Fill range:</td>-->
+                    <!--<td><input type="checkbox" class="value" id="fillRange"></td>-->
+                <!--</tr>-->
+                <!--<tr>-->
+                    <!--<td class="translate">Interpolation:</td>-->
+                    <!--<td><input type="checkbox" class="value" id="interpolation"></td>-->
+                <!--</tr>-->
                 <tr>
-                    <td class="translate">Fill range:</td>
-                    <td><input type="checkbox" class="value" id="fillRange"></td>
+                    <td class="translate label">Predefined background:</td>
+                    <td><select class="input" id="pre_bg">
+                        <option value="" class="translate">User defined</option>
+                        <option value="0">Portrait</option>
+                        <option value="1">Instagram</option>
+                        <option value="2">ServQuick</option>
+                        <option value="3">Metallic Toad</option>
+                        <option value="4">Clouds</option>
+                        <option value="5">Mirage</option>
+                        <option value="6">Steel Gray</option>
+                        <option value="7">Horizon</option>
+                        <option value="8">Koko Caramel</option>
+                        <option value="9">Turquoise flow</option>
+                    </select></td>
                 </tr>
                 <tr>
-                    <td class="translate">Interpolation:</td>
-                    <td><input type="checkbox" class="value" id="interpolation"></td>
+                    <td class="translate label">Background:</td>
+                    <td><input type="text" id="bg" class="value input"></td>
                 </tr>
+                <!--<tr>-->
+                    <!--<td class="translate label">User defined names:</td>-->
+                    <!--<td><input type="checkbox" id="names"></td>-->
+                <!--</tr>-->
             </table>
         </td>
     </tr>
@@ -380,7 +338,9 @@
             <label class="translate" for="link">Link</label>
             <textarea id="link" style="width: calc(100% - 50px); height: 55px; word-break: break-all"></textarea>
         </td>
-        <td>            <button style="padding-left:0" id="open" class="translateB">Open</button></td>
+        <td>
+            <button style="padding-left:0" id="open" class="translateB">Open</button>
+        </td>
     </tr>
 </table>
 
@@ -561,15 +521,45 @@
         "top": {"en": "top", "de": "oben", "ru": "сверху"},
         "left": {"en": "left", "de": "links", "ru": "слева"},
         "right": {"en": "right", "de": "rechts", "ru": "справа"},
-        "No border:": {"en": "No border:", "de": "Kein Rahmen:", "ru": "Без рамки:"}
-    };
+        "No border:": {"en": "No border:", "de": "Kein Rahmen:", "ru": "Без рамки:"},
 
-    var ids = [];
-    var starts = [];
-    var ends = [];
-    var arts = [];
-    var names = ["Line 1", "Line 2", "Line 3"];
-    var colors = ["#c05020", "#30c020", "#6060c0"];
+
+
+    "Zeit": {"en": "Zeit", "de": "Zeit", "ru": "Zeit"},
+    "Range Typ:": {"en": "Range Typ:", "de": "Range Typ:", "ru": "Range Typ:"},
+    "Day": {"en": "Day", "de": "Day", "ru": "Day"},
+    "Month": {"en": "Month", "de": "Month", "ru": "Month"},
+    "Year": {"en": "Year", "de": "Year", "ru": "Year"},
+    "Individual": {"en": "Individual", "de": "Individual", "ru": "Individual"},
+    "same Day:": {"en": "same Day:", "de": "same Day:", "ru": "same Day:"},
+    "same Month:":{"en": "same Month:", "de": "same Month:", "ru": "same Month:"},
+    "same Year:": {"en": "same Year:", "de": "same Year:", "ru": "same Year:"},
+    "Art:": {"en": "Art:", "de": "Art:", "ru": "Art:"},
+    "relative": {"en": "relative", "de": "relative", "ru": "relative"},
+    "static": {"en": "static", "de": "static", "ru": "static"},
+    "now": {"en": "now", "de": "now", "ru": "now"},
+    "today": {"en": "today", "de": "today", "ru": "today"},
+    "this month": {"en": "this month", "de": "this month", "ru": "this month"},
+    "this year": {"en": "this year", "de": "this year", "ru": "this year"},
+    "Start:": {"en": "Start:", "de": "Start:", "ru": "Start:"},
+    "End:": {"en": "End:", "de": "End:", "ru": "End:"},
+    "Aggregate": {"en": "Aggregate", "de": "Aggregate", "ru": "Aggregate"},
+    "Schritt Type:": {"en": "Schritt Type:", "de": "Schritt Type:", "ru": "Schritt Type:"},
+    "seconds": {"en": "seconds", "de": "seconds", "ru": "seconds"},
+    "counts": {"en": "counts", "de": "counts", "ru": "counts"},
+    "Schrittweite:": {"en": "Schrittweite:", "de": "Schrittweite:", "ru": "Schrittweite:"},
+    "Link": {"en": "Link", "de": "Link", "ru": "Link"},
+    "Counts": {"en": "Counts", "de": "Counts", "ru": "Counts"},
+        "ignore 'null':": {"en": "ignore 'null':", "de": "ignore 'null':", "ru": "ignore 'null':"},
+    };
+    var defaultColors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF","#800000","#008000","#000080","#808000","#800080","#008080"]
+
+    var ids = [""];
+    var offsets = [0];
+    var arts = ["average"];
+    var names = [""];
+    var colors = ["#FF0000"];
+
     var objects = {};
     var states = {};
 
@@ -589,22 +579,10 @@
         }
     }
     if (options && !options.reset) {
-        $('#ids_count').val(options._ids.length || 1);
         if (options._ids) ids = options._ids;
         if (options._names) names = options._names;
         if (options._colors) colors = options._colors;
-        if (options._starts) {
-            starts = options._starts;
-            $("#start").val(starts[0])
-        }
-        if (options._ends) {
-            ends = options._ends;
-            $("#end").val(ends[0])
-        }
-        if (options._arts) {
-            arts = options._arts;
-            $("#aggregate").val(arts[0])
-        }
+
     }
 
     if (typeof sysLang !== undefined) systemLang = sysLang || 'en';
@@ -643,24 +621,73 @@
     function updateCount() {
 
         showIds(function () {
-            showNames();
-            showColors();
+
         });
     }
 
     function showIds(callback) {
         setTimeout(function () {
-            var text = '';
-            var lineSelect = ''
-            var count = $('#ids_count').val();
+            var text = '<tr style="text-align: center">' +
+                    '<td></td>' +
+                    '<td>ID</td>' +
+                    '<td>Offset</td>' +
+                    '<td>Art</td>' +
+                    '<td>Color</td>' +
+                    '<td>Name</td></tr>';
+            var count = ids.length;
             for (var i = 0; i < count; i++) {
-                text += '<tr><td class="label">' + _('Line') + ' ' + (i + 1) + '</td><td style="padding-left: 4px;"><input id="ids_' + i + '" class="input idsnames" value="' + (ids[i] || '') + '"><button class="select-dialog" data-ids="' + i + '">...</button></td></tr>';
-                lineSelect += '<option value="' + (i + 1) + '" class="translate">Line ' + (i + 1) + '</option>';
                 ids[i] = ids[i] || '';
+                offsets[i] = offsets[i] || 0;
+                arts[i] = arts[i] || 'average';
+                colors[i] = colors[i] || '#c05020';
+                names[i] = names[i] || '';
+
+                text += '<tr id="inputData' + i + '" class="inputData">' +
+                        '<td class="label" style="width: 60px">' + _('Line') + ' ' + (i + 1) + '</td>' +
+                        '<td style="padding-left: 4px;"><input class="input inputData_id idsnames" value="' + (ids[i]) + '"><button class="select-dialog" data-ids="' + i + '">...</button></td></td>' +
+                        '<td style="padding-left:10px"><select class="input inputData_offset" value="' + (offsets[i]) + '" style="width: 70px"  id="title_pos"> ' +
+                        '<option value="0" class="translate">0s</option> ' +
+                        '<option value="10" class="translate">10s</option>' +
+                        '<option value="30" class="translate">30s</option>' +
+                        '<option value="60" class="translate">60s</option>' +
+                        '<option value="120" class="translate">2m</option>' +
+                        '<option value="180" class="translate">3m</option>' +
+                        '<option value="240" class="translate">4m</option>' +
+                        '<option value="300" class="translate">5m</option>' +
+                        '<option value="600" class="translate">10m</option>' +
+                        '<option value="900" class="translate">15m</option>' +
+                        '<option value="1800" class="translate">30m</option>' +
+                        '<option value="2700" class="translate">45m</option>' +
+                        '<option value="3600" class="translate">1S</option>' +
+                        '<option value="7200" class="translate">2S</option>' +
+                        '<option value="21600" class="translate">6S</option>' +
+                        '<option value="43200" class="translate">12S</option>' +
+                        '<option value="86400" class="translate">1T</option>' +
+                        '<option value="172800" class="translate">2T</option>' +
+                        '<option value="259200" class="translate">3T</option>' +
+                        '<option value="345600" class="translate">4T</option>' +
+                        '<option value="604800" class="translate">1W</option>' +
+                        '<option value="1209600" class="translate">2W</option>' +
+                        '<option value="2419200" class="translate">4W</option>' +
+                        '<option value="30758400" class="translate">1J</option>' +
+                        '<option value="61516800" class="translate">2J</option>' +
+                        '</select></td>' +
+                        '<td style="padding-left:10px"><select style="width: 90px" id="aggregate" class="input inputData_art">' +
+                        '<option value="average" class="translate">average</option>' +
+                        '<option value="max" class="translate">max</option>' +
+                        '<option value="min" class="translate">min</option>' +
+                        '<option value="total" class="translate">total</option>' +
+                        '</select></td>' +
+                        '<td style="padding-left:10px"><input class="inputData_color" style="width: 70px" value="' + colors[i] + '">' +
+                        '</td>' +
+                        '<td style="padding-left:10px"><input class="inputData_name"  value="' + names[i] + '"></td>' +
+                        '<td style="padding-left:10px"><button class="idRemove"></button></td>' +
+                        '</tr>'
+
             }
-            ids = ids.slice(0, count);
+
             $('#idslist').html(text);
-            $('#lineSelect').html(lineSelect);
+
             $('.idsnames').change(function () {
                 var id = $(this).attr('id').substring('ids_'.length);
                 ids[id] = $(this).val();
@@ -668,60 +695,62 @@
             }).keyup(function () {
                 $(this).trigger('change');
             });
+
+            $('.inputData_color').colorPicker({
+                renderCallback: function ($elm, toggled) {
+                    if (toggled === false) {
+                        $elm.trigger("change")
+                    }
+                }
+            })
+
+            $('.idRemove').button({
+                icons: {primary: 'ui-icon-trash'},
+                text: false
+            }).click(function () {
+                if (ids.length > 1) {
+                    var i = parseInt($(this).parent().parent().attr("id").replace("inputData", ""));
+                    ids.splice(i, 1)
+                    offsets.splice(i, 1)
+                    arts.splice(i, 1)
+                    names.splice(i, 1)
+                    colors.splice(i, 1)
+                    showIds()
+                }
+
+
+            }).css({width: 22, height: 22});
+
+
             $('.select-dialog').button({
                 text: false,
                 icons: {
                     primary: 'ui-icon-folder-open'
                 }
             }).css({width: 25, height: 22}).click(function () {
-                var id = $(this).attr('data-ids');
-                $('#dialog-select-member').selectId('show', $('#ids_' + id).val(), undefined, function (newId) {
-                    $('#ids_' + id).val(newId).trigger('change');
+                var index = $(this).parent().parent().attr('id').replace('inputData', '');
+                $('#dialog-select-member').selectId('show', ids[index], undefined, function (newId) {
+                    if (newId.length > 1) {
+                        if (ids[index] == "") {
+                            ids[index] = newId.shift()
+                        }
+                        for (var _id in newId) {
+                            console.log(newId[_id])
+                            ids.push(newId[_id])
+                        }
+                    } else {
+                        ids[index] = newId[0];
+                    }
+                    showIds()
+
                 });
+
             });
             if (typeof callback == 'function') callback();
+            update()
         }, 100);
     }
 
-    function showNames() {
-        var text = '';
-        if ($('#names').prop('checked')) {
-            for (var i = 0; i < ids.length; i++) {
-                text += '<tr><td class="label">' + _('Line') + ' ' + (i + 1) + '</td><td style="padding-left: 4px;"><input id="name_' + i + '" class="input linenames" value="' + (names[i] || '') + '"></td></tr>';
-            }
-            $('#nameslist').html(text);
-            $('.linenames').change(function () {
-                var id = $(this).attr('id').substring('name_'.length);
-                names[id] = $(this).val();
-                update();
-            }).keyup(function () {
-                $(this).trigger('change');
-            });
-
-        } else {
-            $('#nameslist').html(text);
-        }
-    }
-
-    function showColors() {
-        var text = '';
-        if (!$('#palette').val()) {
-            for (var i = 0; i < ids.length; i++) {
-                text += '<tr><td class="label">' + _('Line') + ' ' + (i + 1) + '</td><td style="padding-left: 4px;"><input id="color_' + i + '" class="input colornames" value="' + (colors[i] || '') + '"></td></tr>';
-            }
-            $('#colorslist').html(text);
-            $('.colornames').change(function () {
-                var id = $(this).attr('id').substring('color_'.length);
-                colors[id] = $(this).val();
-                update();
-            }).keyup(function () {
-                $(this).trigger('change');
-            });
-
-        } else {
-            $('#colorslist').html(text);
-        }
-    }
 
     function getSettings() {
         var config = {
@@ -736,11 +765,12 @@
             }
         });
         config._ids = encodeURI(ids.join(';'));
-        config._starts = encodeURI(starts.join(';'));
-        config._ends = encodeURI(ends.join(';'));
-        config._aggregate = encodeURI(arts.join(';'));
-        if ($('#names').prop('checked')) config._names = encodeURI(names.join(';'));
-        if (!$('#palette').val()) config._colors = encodeURI(colors.join(';'));
+        config._offsets = encodeURI(offsets.join(';'));
+        config._arts = encodeURI(arts.join(';'));
+        config._colors = encodeURI(colors.join(';'));
+        config._names = encodeURI(names.join(';'));
+
+
         var text = '';
         for (var opt in config) {
             if (config[opt]) text += (text ? '&' : '') + opt + '=' + config[opt];
@@ -759,7 +789,6 @@
 
     function update() {
         clearTimeout(timer);
-        console.log("update")
         timer = null;
         var settings = getSettings();
         $('#link').val(location.href.replace('edit.html', 'index.html') + '?' + settings);
@@ -775,13 +804,23 @@
                 }
             });
             config._ids = ids;
-            config._starts = starts;
-            config._ends = ends;
+            config._offsets = offsets;
             config._arts = arts;
-            if ($('#names').prop('checked')) config._names = names;
-            if (!$('#palette').val()) config._colors = colors;
+            config._colors = colors;
+            config._names = names;
+
+//            if ($('#names').prop('checked')) config._names = names;
+//            if (!$('#palette').val()) config._colors = colors;
             localStorage.setItem("rickshaw", JSON.stringify(config));
         }
+
+        if ($('#aggregateType').val() == "step") {
+            $('#spanName').text(_("Seconds") + ":")
+        } else {
+            $('#spanName').text(_("Counts") + ":")
+        }
+        $('.relative, .static').hide()
+        $('.' + $('#timeArt').val()).show()
     }
 
     function updatePreview() {
@@ -791,17 +830,75 @@
         $('#updatePreview').button("option", "disabled", true);
     }
 
+    if (typeof(Storage) !== "undefined") {
+        $('#clear').button({
+            icons: {primary: 'ui-icon-trash'},
+            text: false
+        }).click(function () {
+            localStorage.setItem("rickshaw", JSON.stringify({reset: true}));
+            location.reload();
+        }).css({width: 22, height: 22});
+
+        if (options && !options.reset) {
+            $('.value').each(function () {
+                var $this = $(this);
+                var id = $this.attr('id');
+                if (options[id] !== undefined) {
+                    if ($this.attr('type') == 'checkbox') {
+                        $this.prop('checked', !!options[id]);
+                    } else {
+                        $this.val(options[id]);
+                    }
+                }
+            });
+
+        }
+    } else {
+        $('#clear').hide();
+    }
+
+    $('#ids_add').button({
+        icons: {primary: 'ui-icon-plus'},
+        text: false
+    }).click(function () {
+
+        ids.push("")
+        offsets.push(0)
+        arts.push("average");
+        names.push()
+        colors.push(defaultColors[ids.length-1] || "#00FFFF" )
+        showIds()
+
+    }).css({width: 22, height: 22});
+
+    $('#idslist').on('change', '.inputData_name, .inputData_color, .inputData_art, .inputData_offset, .inputData_id', function () {
+        ids = [];
+        offsets = [];
+        arts = [];
+        names = [];
+        colors = ["#c05020", "#30c020", "#6060c0"];
+        var i = 0;
+
+        $('.inputData').each(function () {
+            ids[i] = $(this).find('.inputData_id').val();
+            offsets[i] = $(this).find('.inputData_offset').val();
+            arts[i] = $(this).find('.inputData_art').val();
+            names[i] = $(this).find('.inputData_name').val();
+            colors[i] = $(this).find('.inputData_color').val();
+            i++
+        })
+
+        update();
+    })
+
     $('.value').change(update).keyup(function () {
         $(this).trigger('change');
     });
 
-    $('#names').change(function () {
-        showNames();
-//        update();
-    });
-    $('#palette').change(function () {
-        showColors();
-    });
+    $('#timeArt').change(function () {
+        $('.relative, .static').hide()
+        $('.' + $(this).val()).show()
+    })
 
     $('#width').spinner().on('spin', delayedUpdate).parent().addClass('input');
     $('#height').spinner().on('spin', delayedUpdate).parent().addClass('input');
@@ -810,58 +907,8 @@
     $('#smoothing').spinner().on('spin', delayedUpdate).parent().addClass('input');
     $('#strokeWidth').spinner().on('spin', delayedUpdate).parent().addClass('input');
     $('#afterComma').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    var oldIndex = 1;
-    $('#ids_count').spinner().on('spin', function () {
-        $(this).trigger('change');
-    }).change(function () {
 
 
-        setTimeout(function () {
-            var index = $('#ids_count').val()
-//                if (index > 1 ){
-//
-//                }
-
-            if (oldIndex > index) {
-                ids.pop()
-                starts = starts.slice(0, ids.length - 1);
-                ends = ends.slice(0, ids.length - 1);
-                arts = arts.slice(0, ids.length - 1);
-            } else {
-                starts[index - 1] = starts[index - 2] || undefined;
-                ends[index - 1] = ends[index - 2] || undefined;
-                arts[index - 1] = arts[index - 2] || undefined;
-            }
-
-            oldIndex = index;
-
-            updateCount();
-        }, 300);
-    }).keyup(function () {
-        $(this).trigger('change');
-    }).val(1).parent().addClass('input');
-    $('#pre_bg').change(function () {
-        var val = $(this).val();
-        $('#bg').val($(this).val());
-        if (val) {
-            $('#bg').hide();
-        } else {
-            $('#bg').show();
-        }
-
-        delayedUpdate();
-    });
-    $('#live').change(function () {
-        if ($('#live').is(':checked')) {
-            $('#range').parent().parent().show();
-            $('.start').parent().parent().hide();
-            $('.end').parent().parent().hide();
-        } else {
-            $('#range').parent().parent().hide();
-            $('.start').parent().parent().show();
-            $('.end').parent().parent().show();
-        }
-    });
 
     $('#aggregateType').change(function () {
 
@@ -882,124 +929,13 @@
     });
 
 
-
-
-    showIds(function () {
-        showNames();
-        showColors();
-
-        if (typeof(Storage) !== "undefined") {
-            $('#clear').button({
-                icons: {primary: 'ui-icon-trash'},
-                text: false
-            }).click(function () {
-                localStorage.setItem("rickshaw", JSON.stringify({reset: true}));
-                location.reload();
-            }).css({width: 22, height: 22});
-
-            if (options && !options.reset) {
-                $('.value').each(function () {
-                    var $this = $(this);
-                    var id = $this.attr('id');
-                    if (options[id] !== undefined) {
-                        if ($this.attr('type') == 'checkbox') {
-                            $this.prop('checked', !!options[id]);
-                        } else {
-                            $this.val(options[id]);
-                        }
-                    }
-                });
-                if ($('#live').is(':checked')) {
-                    $('#range').parent().parent().show();
-                    $('.').parent().parent().hide();
-                    $('.end').parent().parent().hide();
-                } else {
-                    $('#range').parent().parent().hide();
-                    $('.start').parent().parent().show();
-                    $('.end').parent().parent().show();
-                }
-            }
-        } else {
-            $('#clear').hide();
-        }
-
-        update();
-    });
-
-    $('#rangeTyp').change(function () {
-        $('.rangeSelect').hide();
-        $('.' + $(this).val()).show();
-    }).trigger("change");
-
-
-
-    $('#lineSelect').change(function () {
-        var index = parseInt($('#lineSelect').val());
-    var val = starts[index - 1]
-        $('#start').val(val);
-        $('#end').val(ends[index - 1]);
-        $('#aggregate').val(arts[index - 1]);
-        $('#day').val(val);
-        $('#month').val(val.slice(0,7));
-        $('#year').val(val.slice(0,4));
-
-    }).trigger("change");
-
-    $('#start').change(function () {
-        var index = $('#lineSelect').val();
-        var val = $('#start').val();
-        $('#day').val($('#start').val());
-        $('#month').val(val.slice(0,7));
-        $('#year').val(val.slice(0,4));
-        starts[index - 1] = $('#start').val();
-        update();
-    });
-
-
-
-    $('#end').change(function () {
-        var index = $('#lineSelect').val();
-        ends[index - 1] = $('#end').val();
-        update();
-    });
-
-    $('#year').change(function () {
-        var val = $(this).val();
-        $('#start').val(val+"-01-01").trigger("change");
-        $('#end').val(val+"-12-31").trigger("change");
-    }).val($('#start').val().slice(0,4));
-
-    $('#month').change(function () {
-        var val = $(this).val()
-        var end = new Date(new Date(new Date(val).setDate(31)).setDate(0)).getDate();
-        $('#start').val(val +"-01").trigger("change");
-        $('#end').val(val +"-"+end).trigger("change");
-        update();
-    }).val($('#start').val().slice(0,7));
-
-    $('#day').change(function () {
-        $('#start').val($(this).val()).trigger("change");
-        $('#end').val($(this).val()).trigger("change");
-
-    }).val($('#start').val());
-
-
-    $('#aggregate').change(function () {
-        var index = $('#lineSelect').val();
-        arts[index - 1] = $(this).val();
-        update();
-    });
+    showIds();
 
     translateAll();
-    setTimeout(function(){
-        console.log($('#aggregateType').val() )
-        if ($('#aggregateType').val() == "step") {
-            $('#spanName').text(_("Seconds") + ":")
-        } else {
-            $('#spanName').text(_("Counts") + ":")
-        }
 
-    },5)
+    update();
+
+
 </script>
 </body>
 </html>
