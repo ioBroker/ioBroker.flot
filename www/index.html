@@ -422,11 +422,11 @@
                 end   = Math.round(new Date(config.end).setHours(24) / 1000) - config._offsets[index]
             }else{
                 if(config.relativeend == "now"){
-                    end  =  Math.round(new Date() / 1000);
-                    start = end - (config.range * 60)
+                    end  =  Math.round(new Date() / 1000) - config._offsets[index];
+                    start = end - (config.range * 60) - config._offsets[index]
                 }else  if(config.relativeend == "today"){
-                    end  =  Math.round(new Date().setHours(24) / 1000);
-                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60)
+                    end  =  Math.round(new Date().setHours(24) / 1000) - config._offsets[index];
+                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - config._offsets[index]
                     console.log(start)
                     console.log(end)
                 }
@@ -483,7 +483,7 @@
 
                 // Add first tick with required range
                 seriesData[index] = fillRange(seriesData[index]);
-                $("#loader").hide()
+
                 if (callback) callback(id, index);
             });
 
@@ -562,9 +562,12 @@
                     }
                 }
                 config._ids = _ids;
+                var ready = 0;
                 for (j = 0; j < config._ids.length; j++) {
-                    readOneChart(config._ids[j], j, function (_id, _index) {
-                        if (_index == config._ids.length - 1) {
+                    readOneChart(config._ids[j], j, function () {
+                        ready ++;
+                        if (ready == config._ids.length ) {
+                            $("#loader").hide();
                             buildGraph();
                         }
                     });
