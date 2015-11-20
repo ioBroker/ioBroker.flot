@@ -594,6 +594,7 @@
                 }
             }
         },
+        noMultiselect: true,
         connCfg: {
             socketUrl: socketUrl,
             socketSession: socketSession,
@@ -702,7 +703,7 @@
                         $elm.trigger("change")
                     }
                 }
-            });
+            })
 
             $('.idRemove').button({
                 icons: {primary: 'ui-icon-trash'},
@@ -730,20 +731,10 @@
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
                 $('#dialog-select-member').selectId('show', ids[index], undefined, function (newId) {
-                    if (newId.length > 1) {
-                        if (ids[index] == "") {
-                            ids[index] = newId.shift()
-                        }
-                        for (var _id in newId) {
-                            console.log(newId[_id])
-                            ids.push(newId[_id])
-                        }
-                    } else {
-                        ids[index] = newId[0];
-                    }
+                    ids[index] =newId;
                     showIds()
 
-                });
+            });
 
             });
             if (typeof callback == 'function') callback();
@@ -826,8 +817,12 @@
     function updatePreview() {
         $('#chart').css({height: (parseInt($('#height').val()) || 500) + 90});
         var settings = getSettings();
-        $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
-        $('#updatePreview').button("option", "disabled", true);
+        $('#chart').attr('src', '');
+ setTimeout(function(){
+     $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
+ },0)
+
+//        $('#updatePreview').button("option", "disabled", true);
     }
 
     if (typeof(Storage) !== "undefined") {
@@ -920,9 +915,9 @@
     });
 
 
-    $('#range').val("10");
-    $('#axeX').val("lines");
-    $('#axeY').val("inside");
+    $('#range').val(options.range);
+    $('#axeX').val(options.axeX);
+    $('#axeY').val(options.axeY);
     $('#updatePreview').button();
     $('#open').button().click(function () {
         window.open($('#link').val());

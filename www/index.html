@@ -423,7 +423,7 @@
             }else{
                 if(config.relativeend == "now"){
                     end  =  Math.round(new Date() / 1000) - config._offsets[index];
-                    start = end - (config.range * 60) - config._offsets[index]
+                    start = end - (config.range * 60)
                 }else  if(config.relativeend == "today"){
                     end  =  Math.round(new Date().setHours(24) / 1000) - config._offsets[index];
                     start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - config._offsets[index]
