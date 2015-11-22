@@ -11,6 +11,7 @@
     <script type="text/javascript" src="/lib/js/selectID.js"></script>
     <script type="text/javascript" src="/lib/js/socket.io.js"></script>
     <script type="text/javascript" src="lib/js/jqColorPicker.min.js"></script>
+    <script type="text/javascript" src="lib/js/jquery-deparam.js"></script>
 
     <script type="text/javascript" src="/_socket/info.js"></script>
     <script type="text/javascript" src="js/words.js"></script>
@@ -34,68 +35,76 @@
             background: rgba(150, 150, 255, 0.100);
         }
 
-        .header1 {
-            background: rgba(150, 150, 255, 0.100);
-        }
-
         body {
             font-family: Arial
+        }
+
+        h3 {
+            line-height: 0.3!important;
+            font-size: 15px!important;
+        }
+
+        .ui-accordion-content {
+            padding: 5px 10px !important;
         }
 
 
     </style>
 </head>
-<body>
-<table style="vertical-align:top">
-    <tr>
-        <th class="header ">
-            <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
-            <span class="translate">Input data</span></th>
-        <th class="translate header ">Zeit</th>
-        <th class="translate header ">Legend and Axes</th>
-        <th class="translate header ">Options</th>
-    </tr>
-    <tr>
-        <td class="input-data header1" style="vertical-align:top">
+<body style="height: calc(100% - 16px)">
+
+<div style="height: 340px; position: relative">
+    <div id="accordion">
+        <h3 id="0">Input data</h3>
+        <div>
             <table>
-                <tr colspan="2">
-                    <td><div style="width: 100px; display: inline" class="translate label">Add new line:</div> <button style="margin-left: 1px" id="ids_add"></button></td>
+                <tr>
+                    <td colspan="2">
+                        <button style="margin-left: 1px" id="ids_add">Add new line:</button>
+                        <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
+                    </td>
+                    <td>
+                    </td>
 
                 </tr>
                 <tr>
                     <td colspan="7">
-                        <table id="idslist" border="0" cellspacing="0" cellpadding="0"></table>
+                        <table style="table-layout: fixed;" id="idslist" border="0" cellspacing="0" cellpadding="0"></table>
                     </td>
                 </tr>
 
                 <!--<tr>-->
-                    <!--<td class="translate label">same Day:</td>-->
-                    <!--<td><input type="checkbox" id="sameDay" class="value input"></td>-->
+                <!--<td class="translate label">same Day:</td>-->
+                <!--<td><input type="checkbox" id="sameDay" class="value input"></td>-->
                 <!--</tr>-->
                 <!--<tr>-->
-                    <!--<td class="translate label">same Month:</td>-->
-                    <!--<td><input type="checkbox" id="sameMonth" class="value input"></td>-->
+                <!--<td class="translate label">same Month:</td>-->
+                <!--<td><input type="checkbox" id="sameMonth" class="value input"></td>-->
                 <!--</tr>-->
                 <!--<tr>-->
-                    <!--<td class="translate label">same Year:</td>-->
-                    <!--<td><input type="checkbox" id="sameYear" class="value input"></td>-->
+                <!--<td class="translate label">same Year:</td>-->
+                <!--<td><input type="checkbox" id="sameYear" class="value input"></td>-->
                 <!--</tr>-->
 
 
             </table>
-        </td>
-        <td class="input-data header1" style="vertical-align:top">
-            <table>
+        </div>
+        <h3 id="1">Zeit</h3>
+        <div style="display: inline-block">
+            <table style="display: inline-block">
+                <tr>
+                    <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
+                </tr>
                 <tr>
                     <td class="translate">Art:</td>
-                    <td><select id="timeArt" class="input value">
+                    <td><select id="timeArt" class="input option">
                         <option value="relative" class="translate">relative</option>
                         <option value="static" class="translate">static</option>
                     </select></td>
                 </tr>
                 <tr class="relative">
                     <td class="translate">End:</td>
-                    <td><select id="relativeend" class="input value">
+                    <td><select id="relativeend" class="input option">
                         <option value="now" class="translate">now</option>
                         <option value="today" class="translate">today</option>
                         <option value="month" class="translate">this month</option>
@@ -104,7 +113,7 @@
                 </tr>
                 <tr class="relative">
                     <td class="translate">Range:</td>
-                    <td><select id="range" class="value input">
+                    <td><select id="range" class="option input">
                         <option value="10" class="translate">10 Minutes</option>
                         <option value="30" class="translate">30 Minutes</option>
                         <option value="60" class="translate">1 Hour</option>
@@ -127,53 +136,56 @@
                 </tr>
                 <tr class="relative">
                     <td class="translate label">ignore 'null':</td>
-                    <td><input type="checkbox" id="getnull" class="value input"></td>
+                    <td><input type="checkbox" id="getnull" class="option input"></td>
                 </tr>
                 <tr class="static">
                     <td class="translate">Start:</td>
-                    <td><input type="date" id="start" class="value input"></td>
+                    <td><input type="date" id="start" class="option input"></td>
                 </tr>
                 <tr class="static">
                     <td class="translate">End:</td>
-                    <td><input type="date" id="end" class="value input"></td>
+                    <td><input type="date" id="end" class="option input"></td>
                 </tr>
+            </table>
+            <table style="display: inline-block">
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
                 </tr>
                 <tr>
                     <td class="translate ">Schritt Type:</td>
-                    <td><select id="aggregateType" class="value input">
+                    <td><select id="aggregateType" class="option input">
                         <option value="step" class="translate">seconds</option>
                         <option value="count" class="translate">counts</option>
                     </select></td>
                 </tr>
                 <tr>
                     <td class="translate" id="spanName">Schrittweite:</td>
-                    <td><input id="aggregateSpan" value="300" class="value input"></td>
+                    <td><input id="aggregateSpan" value="300" class="option input"></td>
                 </tr>
             </table>
-        </td>
-        <td class="axes header1" style="vertical-align:top">
+        </div>
+        <h3 id="2">Legend and Axes</h3>
+        <div>
             <table>
                 <tr>
                     <td class="translate label">Show axis bottom:</td>
-                    <td><select class="value input" id="axeX">
+                    <td><select class="option input" id="axeX">
                         <option value="" class="translate">none</option>
                         <option value="bottom" class="translate">bottom</option>
                         <option value="top" class="translate">top</option>
                     </select></td>
                 </tr>
                 <tr>
-                    <td class="translate">Show axis left:</td>
-                    <td><select class="value input" id="axeY">
-                        <option value="" class="translate">none</option>
-                        <option value="left" class="translate">left</option>
-                        <option value="right" class="translate">right</option>
-                    </select></td>
+                    <!--<td class="translate">Show axis left:</td>-->
+                    <!--<td><select class="option input" id="axeY">-->
+                        <!--<option value="" class="translate">none</option>-->
+                        <!--<option value="left" class="translate">left</option>-->
+                        <!--<option value="right" class="translate">right</option>-->
+                    <!--</select></td>-->
                 </tr>
                 <tr>
                     <td class="translate">Show legend:</td>
-                    <td><select class="value input" id="legend">
+                    <td><select class="option input" id="legend">
                         <option value="" class="translate">none</option>
                         <option value="nw" class="translate">Top, left</option>
                         <option value="ne" class="translate">Top, right</option>
@@ -183,17 +195,17 @@
                 </tr>
                 <tr>
                     <td class="translate">Units:</td>
-                    <td><input id="units" class="value input"></td>
+                    <td><input id="units" class="option input"></td>
                 </tr>
 
                 <tr>
                     <td class="translate">Title:</td>
-                    <td><input type="text" id="title" class="value input"></td>
+                    <td><input type="text" id="title" class="option input"></td>
                 </tr>
                 <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
                 <tr>
                     <td class="translate">Title position:</td>
-                    <td><select class="value input" id="title_pos">
+                    <td><select class="option input" id="title_pos">
                         <option value="" class="translate">none</option>
                         <option value="top:35;left:65" class="translate">Top, left, inside</option>
                         <option value="top:35;right:5" class="translate">Top, right, inside</option>
@@ -212,36 +224,25 @@
                 </tr>
                 <tr>
                     <td class="translate">Title color:</td>
-                    <td><input type="text" id="titleColor" class="value input"></td>
+                    <td><input type="text" id="titleColor" class="option input"></td>
                 </tr>
                 <tr>
                     <td class="translate">Title size:</td>
-                    <td><input type="text" id="titleSize" class="value input"></td>
+                    <td><input type="text" id="titleSize" class="option input"></td>
                 </tr>
 
-                <tr>
-                    <td class="translate">Minimum:</td>
-                    <td><input id="min" class="value input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Maximum:</td>
-                    <td><input id="max" class="value input"></td>
-                </tr>
             </table>
-        </td>
-        <td class="thickness header1" style="vertical-align:top">
+        </div>
+        <h3 id="3">Options</h3>
+        <div>
             <table>
                 <tr>
-                    <td class="translate">Line thick:</td>
-                    <td><input type="text" class="value input" id="strokeWidth"></td>
-                </tr>
-                <tr>
                     <td class="translate">Hover details:</td>
-                    <td><input type="checkbox" class="value" id="hoverDetail"></td>
+                    <td><input type="checkbox" class="option" id="hoverDetail"></td>
                 </tr>
                 <tr>
                     <td class="translate">Time format:</td>
-                    <td><select class="value input" id="timeFormat">
+                    <td><select class="option input" id="timeFormat">
                         <option value="" class="translate">Default</option>
                         <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
                         <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
@@ -256,31 +257,31 @@
                 </tr>
                 <tr>
                     <td class="translate">Smoothing:</td>
-                    <td><input type="text" class="value input" id="smoothing"></td>
+                    <td><input type="text" class="option input" id="smoothing"></td>
                 </tr>
                 <tr>
                     <td class="translate">Width:</td>
-                    <td><input id="width" class="value input"></td>
+                    <td><input id="width" class="option input"></td>
                 </tr>
                 <tr>
                     <td class="translate">Height:</td>
-                    <td><input id="height" class="value input"></td>
+                    <td><input id="height" class="option input"></td>
                 </tr>
                 <tr>
                     <td class="translate">Chart type:</td>
-                    <td><select id="renderer" class="value input">
+                    <td><select id="renderer" class="option input">
                         <option value="line" class="translate">Line</option>
                         <option value="area" class="translate">Area</option>
                         <option value="bar" class="translate">Bar</option>
                         <option value="lineplot" class="translate">Line plot</option>
                         <option value="scatterplot" class="translate">Scatter plot</option>
                         <option value="steps" class="translate">Steps</option>
-                        <option value="pie" class="translate">Pie</option>
+                        <!--<option value="pie" class="translate">Pie</option>-->
                     </select></td>
                 </tr>
                 <tr>
                     <td class="translate">No border:</td>
-                    <td><select class="value input" id="noBorder">
+                    <td><select class="option input" id="noBorder">
                         <option value="" class="translate"></option>
                         <option value="noborder" class="translate">yes</option>
                     </select></td>
@@ -288,15 +289,15 @@
                 <!--tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr-->
                 <tr>
                     <td class="translate">After comma:</td>
-                    <td><input type="text" class="value input" id="afterComma"></td>
+                    <td><input type="text" class="option input" id="afterComma"></td>
                 </tr>
                 <!--<tr>-->
-                    <!--<td class="translate">Fill range:</td>-->
-                    <!--<td><input type="checkbox" class="value" id="fillRange"></td>-->
+                <!--<td class="translate">Fill range:</td>-->
+                <!--<td><input type="checkbox" class="option" id="fillRange"></td>-->
                 <!--</tr>-->
                 <!--<tr>-->
-                    <!--<td class="translate">Interpolation:</td>-->
-                    <!--<td><input type="checkbox" class="value" id="interpolation"></td>-->
+                <!--<td class="translate">Interpolation:</td>-->
+                <!--<td><input type="checkbox" class="option" id="interpolation"></td>-->
                 <!--</tr>-->
                 <tr>
                     <td class="translate label">Predefined background:</td>
@@ -316,41 +317,28 @@
                 </tr>
                 <tr>
                     <td class="translate label">Background:</td>
-                    <td><input type="text" id="bg" class="value input"></td>
+                    <td><input type="text" id="bg" class="option input"></td>
                 </tr>
                 <!--<tr>-->
-                    <!--<td class="translate label">User defined names:</td>-->
-                    <!--<td><input type="checkbox" id="names"></td>-->
+                <!--<td class="translate label">User defined names:</td>-->
+                <!--<td><input type="checkbox" id="names"></td>-->
                 <!--</tr>-->
             </table>
-        </td>
-    </tr>
-    <tr>
-        <td colspan=6>
-            <button id="updatePreview" onclick="updatePreview()" style="width:100%;">update Preview</button>
-        </td>
-    </tr>
-    <tr>
-        <td colspan=6>&nbsp;</td>
-    </tr>
-    <tr style="vertical-align: middle;">
-        <td colspan=5 style="vertical-align: middle;">
-            <label class="translate" for="link">Link</label>
-            <textarea id="link" style="width: calc(100% - 50px); height: 55px; word-break: break-all"></textarea>
-        </td>
-        <td>
-            <button style="padding-left:0" id="open" class="translateB">Open</button>
-        </td>
-    </tr>
-</table>
-
-<hr>
-<iframe src="index.html" style="width: 100%; bottom: 0; height: 500px" id="chart"></iframe>
+        </div>
+    </div>
+</div>
+<div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px;margin-bottom: 10px">
+    <label class="translate" for="link">Link</label>
+    <textarea id="link" style="width: calc(100% - 130px); height: 55px; word-break: break-all"></textarea>
+    <button style="padding-left:0" id="open" class="translateB">Open</button>
+</div>
+<button id="updatePreview" onclick="updatePreview()" style="width:100%;margin-bottom: 10px">update Preview</button>
+<iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 470px)" id="chart"></iframe>
 <div id="dialog-select-member" style="display:none"></div>
 <script>
     "use strict";
 
-    systemDictionary = {
+    var systemDictionary = {
         "Input data": {"en": "Input data", "de": "Input data", "ru": "Входные данные"},
         "Legend and Axes": {"en": "Legend and Axes", "de": "Legend and Axes", "ru": "Легенда и оси"},
         "Names": {"en": "Names", "de": "Names", "ru": "Имена графиков"},
@@ -524,129 +512,120 @@
         "No border:": {"en": "No border:", "de": "Kein Rahmen:", "ru": "Без рамки:"},
 
 
-
-    "Zeit": {"en": "Zeit", "de": "Zeit", "ru": "Zeit"},
-    "Range Typ:": {"en": "Range Typ:", "de": "Range Typ:", "ru": "Range Typ:"},
-    "Day": {"en": "Day", "de": "Day", "ru": "Day"},
-    "Month": {"en": "Month", "de": "Month", "ru": "Month"},
-    "Year": {"en": "Year", "de": "Year", "ru": "Year"},
-    "Individual": {"en": "Individual", "de": "Individual", "ru": "Individual"},
-    "same Day:": {"en": "same Day:", "de": "same Day:", "ru": "same Day:"},
-    "same Month:":{"en": "same Month:", "de": "same Month:", "ru": "same Month:"},
-    "same Year:": {"en": "same Year:", "de": "same Year:", "ru": "same Year:"},
-    "Art:": {"en": "Art:", "de": "Art:", "ru": "Art:"},
-    "relative": {"en": "relative", "de": "relative", "ru": "relative"},
-    "static": {"en": "static", "de": "static", "ru": "static"},
-    "now": {"en": "now", "de": "now", "ru": "now"},
-    "today": {"en": "today", "de": "today", "ru": "today"},
-    "this month": {"en": "this month", "de": "this month", "ru": "this month"},
-    "this year": {"en": "this year", "de": "this year", "ru": "this year"},
-    "Start:": {"en": "Start:", "de": "Start:", "ru": "Start:"},
-    "End:": {"en": "End:", "de": "End:", "ru": "End:"},
-    "Aggregate": {"en": "Aggregate", "de": "Aggregate", "ru": "Aggregate"},
-    "Schritt Type:": {"en": "Schritt Type:", "de": "Schritt Type:", "ru": "Schritt Type:"},
-    "seconds": {"en": "seconds", "de": "seconds", "ru": "seconds"},
-    "counts": {"en": "counts", "de": "counts", "ru": "counts"},
-    "Schrittweite:": {"en": "Schrittweite:", "de": "Schrittweite:", "ru": "Schrittweite:"},
-    "Link": {"en": "Link", "de": "Link", "ru": "Link"},
-    "Counts": {"en": "Counts", "de": "Counts", "ru": "Counts"},
+        "Zeit": {"en": "Zeit", "de": "Zeit", "ru": "Zeit"},
+        "Range Typ:": {"en": "Range Typ:", "de": "Range Typ:", "ru": "Range Typ:"},
+        "Day": {"en": "Day", "de": "Day", "ru": "Day"},
+        "Month": {"en": "Month", "de": "Month", "ru": "Month"},
+        "Year": {"en": "Year", "de": "Year", "ru": "Year"},
+        "Individual": {"en": "Individual", "de": "Individual", "ru": "Individual"},
+        "same Day:": {"en": "same Day:", "de": "same Day:", "ru": "same Day:"},
+        "same Month:": {"en": "same Month:", "de": "same Month:", "ru": "same Month:"},
+        "same Year:": {"en": "same Year:", "de": "same Year:", "ru": "same Year:"},
+        "Art:": {"en": "Art:", "de": "Art:", "ru": "Art:"},
+        "relative": {"en": "relative", "de": "relative", "ru": "relative"},
+        "static": {"en": "static", "de": "static", "ru": "static"},
+        "now": {"en": "now", "de": "now", "ru": "now"},
+        "today": {"en": "today", "de": "today", "ru": "today"},
+        "this month": {"en": "this month", "de": "this month", "ru": "this month"},
+        "this year": {"en": "this year", "de": "this year", "ru": "this year"},
+        "Start:": {"en": "Start:", "de": "Start:", "ru": "Start:"},
+        "End:": {"en": "End:", "de": "End:", "ru": "End:"},
+        "Aggregate": {"en": "Aggregate", "de": "Aggregate", "ru": "Aggregate"},
+        "Schritt Type:": {"en": "Schritt Type:", "de": "Schritt Type:", "ru": "Schritt Type:"},
+        "seconds": {"en": "seconds", "de": "seconds", "ru": "seconds"},
+        "counts": {"en": "counts", "de": "counts", "ru": "counts"},
+        "Schrittweite:": {"en": "Schrittweite:", "de": "Schrittweite:", "ru": "Schrittweite:"},
+        "Link": {"en": "Link", "de": "Link", "ru": "Link"},
+        "Counts": {"en": "Counts", "de": "Counts", "ru": "Counts"},
         "ignore 'null':": {"en": "ignore 'null':", "de": "ignore 'null':", "ru": "ignore 'null':"},
     };
-    var defaultColors = ["#FF0000","#00FF00","#0000FF","#FFFF00","#FF00FF","#00FFFF","#800000","#008000","#000080","#808000","#800080","#008080"]
 
-    var ids = [""];
-    var offsets = [0];
-    var arts = ["average"];
-    var names = [""];
-    var colors = ["#FF0000"];
 
-    var objects = {};
+    var defaultColors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF", "#800000", "#008000", "#000080", "#808000", "#800080", "#008080"]
+
+
+    var objects = {};;
     var states = {};
-
-    var options;
-    if (typeof(Storage) !== "undefined") {
-        options = localStorage.getItem("rickshaw");
-        console.log(options)
-        if (options) {
-            try {
-                options = JSON.parse(options);
-
-            }
-            catch (e) {
-                console.log('Cannot parse stored settings');
-                options = null;
-            }
-        }
-    }
-    if (options && !options.reset) {
-        if (options._ids) ids = options._ids;
-        if (options._names) names = options._names;
-        if (options._colors) colors = options._colors;
-
-    }
-
-    if (typeof sysLang !== undefined) systemLang = sysLang || 'en';
-    $('#dialog-select-member').selectId('init', {
-        filter: {
-            common: {
-                history: {
-                    enabled: true
+    var timer = null;
+    var setup = {
+        options: {
+            lines: [
+                {
+                    id: "",
+                    offset: 0,
+                    art: "average",
+                    color: "#FF0000",
+                    min: "",
+                    max: "",
+                    thickness: 3,
+                    unit: "",
+                    name: ""
                 }
-            }
-        },
-        noMultiselect: true,
-        connCfg: {
-            socketUrl: socketUrl,
-            socketSession: socketSession,
-            socketName: 'rickshawEdit'
-        },
-        columns: ['name', 'role', 'room', 'value'],
-        texts: {
-            select: _('Select'),
-            cancel: _('Cancel'),
-            all: _('All'),
-            id: _('ID'),
-            name: _('Name'),
-            role: _('Role'),
-            room: _('Room'),
-            value: _('Value'),
-            selectid: _('Select ID'),
-            from: _('From'),
-            lc: _('Last changed'),
-            ts: _('Time stamp'),
-            wait: _('Processing...'),
-            ack: _('Acknowledged')
+            ]
         }
-    });
+    };
 
-    function updateCount() {
 
-        showIds(function () {
-
+        if (typeof sysLang !== undefined) systemLang = sysLang || 'en';
+        $('#dialog-select-member').selectId('init', {
+            filter: {
+                common: {
+                    history: {
+                        enabled: true
+                    }
+                }
+            },
+            noMultiselect: true,
+            connCfg: {
+                socketUrl: socketUrl,
+                socketSession: socketSession,
+                socketName: 'rickshawEdit'
+            },
+            columns: ['name', 'role', 'room', 'value'],
+            texts: {
+                select: _('Select'),
+                cancel: _('Cancel'),
+                all: _('All'),
+                id: _('ID'),
+                name: _('Name'),
+                role: _('Role'),
+                room: _('Room'),
+                value: _('Value'),
+                selectid: _('Select ID'),
+                from: _('From'),
+                lc: _('Last changed'),
+                ts: _('Time stamp'),
+                wait: _('Processing...'),
+                ack: _('Acknowledged')
+            }
         });
-    }
+
+
 
     function showIds(callback) {
         setTimeout(function () {
             var text = '<tr style="text-align: center">' +
                     '<td></td>' +
                     '<td>ID</td>' +
+                    '<td></td>' +
                     '<td>Offset</td>' +
                     '<td>Art</td>' +
                     '<td>Color</td>' +
+                    '<td>Min</td>' +
+                    '<td>Max</td>' +
+                    '<td>Unit</td>' +
+                    '<td>Axe</td>' +
+                    '<td>D</td>' +
                     '<td>Name</td></tr>';
-            var count = ids.length;
-            for (var i = 0; i < count; i++) {
-                ids[i] = ids[i] || '';
-                offsets[i] = offsets[i] || 0;
-                arts[i] = arts[i] || 'average';
-                colors[i] = colors[i] || '#c05020';
-                names[i] = names[i] || '';
+
+            for (var i= 0; i < setup.options.lines.length; i++) {
+                var index = setup.options.lines[i]
 
                 text += '<tr id="inputData' + i + '" class="inputData">' +
-                        '<td class="label" style="width: 60px">' + _('Line') + ' ' + (i + 1) + '</td>' +
-                        '<td style="padding-left: 4px;"><input class="input inputData_id idsnames" value="' + (ids[i]) + '"><button class="select-dialog" data-ids="' + i + '">...</button></td></td>' +
-                        '<td style="padding-left:10px"><select class="input inputData_offset" value="' + (offsets[i]) + '" style="width: 70px"  id="title_pos"> ' +
+                        '<td class="label" style="width: 60px; min-width: 60px">' + _('Line') + ' ' + (i + 1) + '</td>' +
+                        '<td style="padding-left: 4px; display:"><input data-option="id" class="input inputData_id idsnames options_lines" style="display: inline; width: 200px" value="' + index.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
+                        '<td style="padding-left:5px">' +
+                        '<select class="input inputData_offset options_lines" style="width: 70px"  data-option="offset"> ' +
                         '<option value="0" class="translate">0s</option> ' +
                         '<option value="10" class="translate">10s</option>' +
                         '<option value="30" class="translate">30s</option>' +
@@ -673,29 +652,40 @@
                         '<option value="30758400" class="translate">1J</option>' +
                         '<option value="61516800" class="translate">2J</option>' +
                         '</select></td>' +
-                        '<td style="padding-left:10px"><select style="width: 90px" id="aggregate" class="input inputData_art">' +
+                        '<td style="padding-left:5px">' +
+                        '<select style="width: 90px" data-option="art" class="input inputData_art options_lines">' +
                         '<option value="average" class="translate">average</option>' +
                         '<option value="max" class="translate">max</option>' +
                         '<option value="min" class="translate">min</option>' +
                         '<option value="total" class="translate">total</option>' +
-                        '</select></td>' +
-                        '<td style="padding-left:10px"><input class="inputData_color" style="width: 70px" value="' + colors[i] + '">' +
+                        '</select>' +
                         '</td>' +
-                        '<td style="padding-left:10px"><input class="inputData_name"  value="' + names[i] + '"></td>' +
-                        '<td style="padding-left:10px"><button class="idRemove"></button></td>' +
+                        '<td style="padding-left:5px"><input data-option="color"  style="width:  70px"  class="inputData_color options_lines" value="' + index.color + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="min"  style="width:  70px"  class="inputData_min   options_lines"   value="' + index.min + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="max"  style="width:  70px"  class="inputData_max   options_lines"   value="' + index.max + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="unit"  style="width:  70px"  class="inputData_unit  options_lines"  value="' + index.unit + '"></td>' +
+                        '<td style="padding-left:5px">' +
+                        '<select style="width:  70px" data-option="axe" class="input options_lines">' +
+                        '<option value="off" class="translate">off</option>' +
+                        '<option value="left" class="translate">left</option>' +
+                        '<option value="right" class="translate">right</option>' +
+                        '</select></td>' +
+                        '<td style="padding-left:5px"><input data-option="thickness" class="inputData_thickness options_lines"  style="width: 30px"   value="' + index.thickness + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="name" class="inputData_name options_lines"       style="width: 200px"  value="' + index.name + '"></td>' +
+                        '<td style="padding-left:5px"><button class="idRemove"></button></td>' +
                         '</tr>'
 
             }
 
             $('#idslist').html(text);
 
-            $('.idsnames').change(function () {
-                var id = $(this).attr('id').substring('ids_'.length);
-                ids[id] = $(this).val();
-                update();
-            }).keyup(function () {
-                $(this).trigger('change');
-            });
+//            $('.idsnames').change(function () {
+//                var id = $(this).attr('id').substring('ids_'.length);
+//                ids[id] = $(this).val();
+//                update();
+//            }).keyup(function () {
+//                $(this).trigger('change');
+//            });
 
             $('.inputData_color').colorPicker({
                 renderCallback: function ($elm, toggled) {
@@ -705,21 +695,16 @@
                 }
             })
 
+
             $('.idRemove').button({
                 icons: {primary: 'ui-icon-trash'},
                 text: false
             }).click(function () {
-                if (ids.length > 1) {
+                if (setup.options.lines.length > 1) {
                     var i = parseInt($(this).parent().parent().attr("id").replace("inputData", ""));
-                    ids.splice(i, 1)
-                    offsets.splice(i, 1)
-                    arts.splice(i, 1)
-                    names.splice(i, 1)
-                    colors.splice(i, 1)
+                    setup.options.lines.splice(i, 1)
                     showIds()
                 }
-
-
             }).css({width: 22, height: 22});
 
 
@@ -730,46 +715,92 @@
                 }
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
-                $('#dialog-select-member').selectId('show', ids[index], undefined, function (newId) {
-                    ids[index] =newId;
+                $('#dialog-select-member').selectId('show', setup.options.lines[index]['id'], undefined, function (newId) {
+                    setup.options.lines[index]['id'] = newId;
                     showIds()
+                });
 
             });
 
-            });
+            $('.options_lines').each(function () {
+                var $this = $(this);
+                var index = $(this).parent().parent().attr('id').replace('inputData','');
+                var opt = $(this).data('option')
+                if (setup.options.lines[index][opt] !== undefined) {
+                    if ($this.attr('type') == 'checkbox') {
+                        $this.prop('checked', !!setup.options.lines[index][opt]);
+                    } else {
+                        $this.val(setup.options.lines[index][opt]);
+                    }
+                }
+            })
+
             if (typeof callback == 'function') callback();
-            update()
+//            update()
         }, 100);
     }
 
-
     function getSettings() {
-        var config = {
-            //colors:   ["#c05020", "#30c020", "#6060c0"],
-            //names:    ["Temperature", "Humidity", "Airpressure"],
-        };
-        $('.value').each(function (index) {
-            if ($(this).attr('type') == 'checkbox') {
-                config[$(this).attr('id')] = $(this).prop('checked');
-            } else {
-                config[$(this).attr('id')] = encodeURI($(this).val());
+//        var config = {
+//            //colors:   ["#c05020", "#30c020", "#6060c0"],
+//            //names:    ["Temperature", "Humidity", "Airpressure"],
+//        };
+//        $('.value').each(function (index) {
+//            if ($(this).attr('type') == 'checkbox') {
+//                config[$(this).attr('id')] = $(this).prop('checked');
+//            } else {
+//                config[$(this).attr('id')] = encodeURI($(this).val());
+//            }
+//        });
+//        config._ids = encodeURI(ids.join(';'));
+//        config._offsets = encodeURI(offsets.join(';'));
+//        config._arts = encodeURI(arts.join(';'));
+//        config._colors = encodeURI(colors.join(';'));
+////        config._names = encodeURI(names.join(';'));
+//
+//        var config =  jQuery.param(setup.options)
+//console.log()
+//        var text = '';
+//        for (var opt in config) {
+//            if (config[opt]) text += (text ? '&' : '') + opt + '=' + config[opt];
+//
+//        }
+//
+//        var x = decodeURIComponent(jQuery.param(setup.options);
+//        console.log()
+
+
+        var _options = JSON.parse(JSON.stringify(setup.options));
+
+        // clean options
+        for (var x in _options){
+            if(_options[x] == ""){
+                delete _options[x]
             }
-        });
-        config._ids = encodeURI(ids.join(';'));
-        config._offsets = encodeURI(offsets.join(';'));
-        config._arts = encodeURI(arts.join(';'));
-        config._colors = encodeURI(colors.join(';'));
-        config._names = encodeURI(names.join(';'));
-
-
-        var text = '';
-        for (var opt in config) {
-            if (config[opt]) text += (text ? '&' : '') + opt + '=' + config[opt];
         }
-        return text;
+
+
+        // clean linse
+        for (var i=0; i < _options.lines.length; i++) {
+            if (_options.lines[i].id == ""){
+                _options.lines.splice(i,1)
+                i--
+            }else{
+                for (var x in _options.lines[i]) {
+                    if (_options.lines[i][x] == "") {
+                        delete _options.lines[i][x]
+                    }
+                }
+            }
+
+
+        }
+
+        var params = $.param(_options);
+        console.log(deparam(params))
+        return  params
     }
 
-    var timer = null;
     function delayedUpdate() {
         if (timer) {
             clearTimeout(timer);
@@ -783,26 +814,28 @@
         timer = null;
         var settings = getSettings();
         $('#link').val(location.href.replace('edit.html', 'index.html') + '?' + settings);
-        $('#updatePreview').button("option", "disabled", false);
+        $('#updatePreview').button("option", "disabled", false).click(function(){
+
+        });
         // Store settings
         if (typeof(Storage) !== "undefined") {
-            var config = {};
+
             $('.value').each(function (index) {
                 if ($(this).attr('type') == 'checkbox') {
-                    config[$(this).attr('id')] = $(this).prop('checked');
+                    setup[$(this).attr('id')] = $(this).prop('checked');
                 } else {
-                    config[$(this).attr('id')] = $(this).val();
+                    setup[$(this).attr('id')] = $(this).val();
                 }
             });
-            config._ids = ids;
-            config._offsets = offsets;
-            config._arts = arts;
-            config._colors = colors;
-            config._names = names;
+            $('.option').each(function (index) {
+                if ($(this).attr('type') == 'checkbox') {
+                    setup.options[$(this).attr('id')] = $(this).prop('checked');
+                } else {
+                    setup.options[$(this).attr('id')] = $(this).val();
+                }
+            });
 
-//            if ($('#names').prop('checked')) config._names = names;
-//            if (!$('#palette').val()) config._colors = colors;
-            localStorage.setItem("rickshaw", JSON.stringify(config));
+            save()
         }
 
         if ($('#aggregateType').val() == "step") {
@@ -814,122 +847,162 @@
         $('.' + $('#timeArt').val()).show()
     }
 
+    function save(){
+        localStorage.setItem("iobroker.Flot", JSON.stringify(setup));
+    }
+
     function updatePreview() {
         $('#chart').css({height: (parseInt($('#height').val()) || 500) + 90});
         var settings = getSettings();
         $('#chart').attr('src', '');
- setTimeout(function(){
-     $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
- },0)
+        setTimeout(function () {
+            $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
+        }, 0)
 
 //        $('#updatePreview').button("option", "disabled", true);
     }
 
-    if (typeof(Storage) !== "undefined") {
+
+    $(document).ready(function() {
+
+        if (typeof(Storage) !== "undefined") {
+            var _setup = localStorage.getItem("iobroker.Flot");
+            try {
+                _setup = JSON.parse(_setup);
+                if (_setup.options){
+                    setup = _setup
+                }
+            }
+            catch (e) {
+                console.log('Cannot parse stored settings');
+            }
+        }
+
+        $("#accordion").accordion({
+            active : parseInt(setup.acc) || 0,
+            heightStyle: "fill",
+            animate: {
+                easing: "linear",
+                duration: 200
+            },
+            activate: function( event, ui ) {
+                setup['acc'] = $(ui.newHeader).attr('id');
+                save();
+            }
+
+        });
+
+
+        showIds();
+
+        $("#accordion").on('change', '.options_lines', function(){
+            var index = parseInt($(this).parent().parent().attr('id').replace('inputData',''));
+            setup.options.lines[index][$(this).data('option')] = $(this).val()
+            update()
+        })
+
+
+        $('.value').each(function () {
+            var $this = $(this);
+            var id = $this.attr('id');
+            if (setup[id] !== undefined) {
+                if ($this.attr('type') == 'checkbox') {
+                    $this.prop('checked', !!setup[id]);
+                } else {
+                    $this.val(setup[id]);
+                }
+            }
+        })
+
+        $('.option').each(function () {
+            var $this = $(this);
+            var id = $this.attr('id');
+            if (setup.options[id] !== undefined) {
+                if ($this.attr('type') == 'checkbox') {
+                    $this.prop('checked', !!setup.options[id]);
+                } else {
+                    $this.val(setup.options[id]);
+                }
+            }
+        })
+
+        $('#ids_add').button({
+            icons: {secondary: 'ui-icon-plus'},
+            text: true
+        }).click(function () {
+
+            var index = setup.options.lines.length
+            setup.options.lines.push({
+                id: "",
+                offset: 0,
+                art: "average",
+                color: defaultColors[index] || "#00FFFF",
+                min: "",
+                max: "",
+                thickness: 3,
+                unit: "",
+                name: ""
+            })
+            showIds()
+        }).css({width: 165, height: 30});
+
         $('#clear').button({
             icons: {primary: 'ui-icon-trash'},
             text: false
         }).click(function () {
-            localStorage.setItem("rickshaw", JSON.stringify({reset: true}));
+            localStorage.setItem("iobroker.Flot", JSON.stringify({reset: true}));
             location.reload();
-        }).css({width: 22, height: 22});
+        }).css({width: 30, height: 30});
 
-        if (options && !options.reset) {
-            $('.value').each(function () {
-                var $this = $(this);
-                var id = $this.attr('id');
-                if (options[id] !== undefined) {
-                    if ($this.attr('type') == 'checkbox') {
-                        $this.prop('checked', !!options[id]);
-                    } else {
-                        $this.val(options[id]);
-                    }
-                }
-            });
 
-        }
-    } else {
-        $('#clear').hide();
-    }
 
-    $('#ids_add').button({
-        icons: {primary: 'ui-icon-plus'},
-        text: false
-    }).click(function () {
+        $('.value').change(update).keyup(function () {
+            $(this).trigger('change');
+        });
+        $('.option').change(update).keyup(function () {
+            $(this).trigger('change');
+        });
 
-        ids.push("")
-        offsets.push(0)
-        arts.push("average");
-        names.push()
-        colors.push(defaultColors[ids.length-1] || "#00FFFF" )
-        showIds()
-
-    }).css({width: 22, height: 22});
-
-    $('#idslist').on('change', '.inputData_name, .inputData_color, .inputData_art, .inputData_offset, .inputData_id', function () {
-        ids = [];
-        offsets = [];
-        arts = [];
-        names = [];
-        colors = ["#c05020", "#30c020", "#6060c0"];
-        var i = 0;
-
-        $('.inputData').each(function () {
-            ids[i] = $(this).find('.inputData_id').val();
-            offsets[i] = $(this).find('.inputData_offset').val();
-            arts[i] = $(this).find('.inputData_art').val();
-            names[i] = $(this).find('.inputData_name').val();
-            colors[i] = $(this).find('.inputData_color').val();
-            i++
+        $('#timeArt').change(function () {
+            $('.relative, .static').hide()
+            $('.' + $(this).val()).show()
         })
 
-        update();
-    })
+        $('#width').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('#height').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('#smoothing').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('#strokeWidth').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('#afterComma').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
-    $('.value').change(update).keyup(function () {
-        $(this).trigger('change');
+
+        $('#aggregateType').change(function () {
+
+            if ($('#aggregateType').val() == "step") {
+                $('#spanName').text(_("Seconds"))
+            } else {
+                $('#spanName').text(_("Counts"))
+            }
+        });
+
+
+//    $('#range').val(options.range);
+//    $('#axeX').val(options.axeX);
+        $('#updatePreview').button();
+        $('#open').button().click(function () {
+            window.open($('#link').val());
+        });
+
+
+
+
+        //    translateAll();
+
+//    update();
+
+
+
+        // Handler for .ready() called.
     });
-
-    $('#timeArt').change(function () {
-        $('.relative, .static').hide()
-        $('.' + $(this).val()).show()
-    })
-
-    $('#width').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#height').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#min').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#max').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#smoothing').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#strokeWidth').spinner().on('spin', delayedUpdate).parent().addClass('input');
-    $('#afterComma').spinner().on('spin', delayedUpdate).parent().addClass('input');
-
-
-
-    $('#aggregateType').change(function () {
-
-        if ($('#aggregateType').val() == "step") {
-            $('#spanName').text(_("Seconds"))
-        } else {
-            $('#spanName').text(_("Counts"))
-        }
-    });
-
-
-    $('#range').val(options.range);
-    $('#axeX').val(options.axeX);
-    $('#axeY').val(options.axeY);
-    $('#updatePreview').button();
-    $('#open').button().click(function () {
-        window.open($('#link').val());
-    });
-
-
-    showIds();
-
-    translateAll();
-
-    update();
-
 
 </script>
 </body>
