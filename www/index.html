@@ -4,11 +4,11 @@
     <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/redmond/jquery-ui.min.css">
     <!--link type="text/css" rel="stylesheet" href="lib/css/rickshaw.min.css"-->
 
-	<script src="/lib/js/jquery-1.11.1.min.js"></script>
-	<!--script src="/lib/js/jquery-ui.1.11.2.slider.min.js"></script-->
+    <script src="/lib/js/jquery-1.11.1.min.js"></script>
+    <!--script src="/lib/js/jquery-ui.1.11.2.slider.min.js"></script-->
     <script src="/lib/js/socket.io.js"></script>
 
-	<script src="lib/js/jquery.flot.min.js"></script>
+    <script src="lib/js/jquery.flot.min.js"></script>
     <script src="lib/js/jquery.flot.resize.min.js"></script>
     <script src="lib/js/jquery.flot.time.min.js"></script>
     <script src="lib/js/jquery.flot.categories.min.js"></script>
@@ -16,28 +16,34 @@
     <script src="lib/js/JUMFlot.min.js"></script>
     <script src="lib/js/curvedLines.js"></script>
     <script src="lib/js/jquery.flot.selection.min.js"></script>
+    <script src="lib/js/jquery-deparam.js"></script>
     <!--script src="lib/js/jquery.flot.navigate.min.js"></script-->
     <script src="/_socket/info.js"></script>
-	<style>
-		.rickshaw_graph .x_tick.invisible {
-			border-left: 0px rgba(0, 0, 0, 0) !important;
-		}
-		#title {
-			font-size: 24px;
-			font-weight: bold;
-		}
+    <style>
+        .rickshaw_graph .x_tick.invisible {
+            border-left: 0px rgba(0, 0, 0, 0) !important;
+        }
+
+        #title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
         div, span, p, td {
             font-family: Arial, sans-serif;
         }
+
         #chart {
             display: inline-block;
         }
+
         #legend_container {
             position: absolute;
             right: 0;
             bottom: 26px;
             width: 0;
         }
+
         /*#chart_container {
             float: left;
             position: relative;
@@ -53,11 +59,11 @@
             background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
             background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
             background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
-            -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            -o-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            -ms-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
         .chart-placeholder {
@@ -67,681 +73,604 @@
             line-height: 1.2em;
         }
 
+        .loader {
+            display: none;
+            position: absolute;
+            left: calc(50% - 0.5em);
+            top: calc(50% - 0.5em - 72px);
+            font-size: 90px;
+            text-indent: -9999em;
+            overflow: hidden;
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            margin: 72px auto;
+            -webkit-transform: translateZ(0);
+            -ms-transform: translateZ(0);
+            transform: translateZ(0);
+            -webkit-animation: load6 1.7s infinite ease;
+            animation: load6 1.7s infinite ease;
+        }
+
+        @-webkit-keyframes load6 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+            5%,
+            95% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+            10%,
+            59% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.087em -0.825em 0 -0.42em #00ffff, -0.173em -0.812em 0 -0.44em #00ffff, -0.256em -0.789em 0 -0.46em #00ffff, -0.297em -0.775em 0 -0.477em #00ffff;
+            }
+            20% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.338em -0.758em 0 -0.42em #00ffff, -0.555em -0.617em 0 -0.44em #00ffff, -0.671em -0.488em 0 -0.46em #00ffff, -0.749em -0.34em 0 -0.477em #00ffff;
+            }
+            38% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.377em -0.74em 0 -0.42em #00ffff, -0.645em -0.522em 0 -0.44em #00ffff, -0.775em -0.297em 0 -0.46em #00ffff, -0.82em -0.09em 0 -0.477em #00ffff;
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+        }
+
+        @keyframes load6 {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+            5%,
+            95% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+            10%,
+            59% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.087em -0.825em 0 -0.42em #00ffff, -0.173em -0.812em 0 -0.44em #00ffff, -0.256em -0.789em 0 -0.46em #00ffff, -0.297em -0.775em 0 -0.477em #00ffff;
+            }
+            20% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.338em -0.758em 0 -0.42em #00ffff, -0.555em -0.617em 0 -0.44em #00ffff, -0.671em -0.488em 0 -0.46em #00ffff, -0.749em -0.34em 0 -0.477em #00ffff;
+            }
+            38% {
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, -0.377em -0.74em 0 -0.42em #00ffff, -0.645em -0.522em 0 -0.44em #00ffff, -0.775em -0.297em 0 -0.46em #00ffff, -0.82em -0.09em 0 -0.477em #00ffff;
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+                box-shadow: 0 -0.83em 0 -0.4em #00ffff, 0 -0.83em 0 -0.42em #00ffff, 0 -0.83em 0 -0.44em #00ffff, 0 -0.83em 0 -0.46em #00ffff, 0 -0.83em 0 -0.477em #00ffff;
+            }
+        }
+
     </style>
 </head>
 <body>
 
 <div id="chart_container">
-    <div id="no-connection" style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">No connection to server</div>
+    <div id="loader" class="loader"></div>
+    <div id="no-connection"
+         style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">
+        No connection to server
+    </div>
     <div id="chart_placeholder" class="chart-placeholder"></div>
     <div id="title" style="position:absolute"></div>
 </div>
 
 <script>
-var graph;
+    var graph;
 
-var backgrounds = [
-	['#8e9eab', '#eef2f3'], //Portrait
-    ['#517fa4', '#243949'], //Instagram
-    ['#485563', '#29323c'], //ServQuick
-    ['#abbaab', '#ffffff'], //Metallic Toad
-    ['#ECE9E6', '#FFFFFF'], //Clouds
-    ['#16222A', '#3A6073'], //Mirage
-    ['#1F1C2C', '#928DAB'], //Steel Gray
-    ['#003973', '#E5E5BE'], //Horizon
-    ['#D1913C', '#FFD194'], //Koko Caramel
-    ['#136a8a', '#267871']  //Turquoise flow
-];
-// Show "no connection" message after 5 seconds
-var disconnectTimeout = setTimeout(function () {
-    disconnectTimeout = null;
-    //Show disconnected message
-    $('#no-connection').show();
-}, 5000);
-
-var config = {
-    _colors:   ["#c05020", "#30c020", "#6060c0"],
-    _units:    [],
-    _names:    []
-};
-var timeout = null;
-
-// Analyse query
-var path = location.href;
-path = path.split('?');
-if (path.length > 1) {
-	path = path[1].split('&');
-	for (var i = 0; i < path.length; i++) {
-		var parts = path[i].split('=');
-		config[parts[0]] = (parts[1] !== undefined) ? decodeURI(parts[1]) : true;
-		if (parts[0][0] == '_') config[parts[0]] = decodeURI(config[parts[0]]).split(';');
-	}
-}
-
-var min = null;
-// Set default values
-config.renderer      = config.renderer || 'line';
-config.width         = config.width    || '100%';
-config.height        = config.height   || '100%';
-config.left          = 0;
-config.timeFormat    = config.timeFormat || "%H:%M:%S %e.%m.%y";
-config._units        = config._units || [];
-config.useComma      = (config.useComma   === undefined) ? true: config.useComma;
-config.afterComma    = (config.afterComma === undefined) ? 2: config.afterComma;
-config.interpolation = config.interpolation || 'linear';
-if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
-
-var seriesData = [];
-var from = undefined;
-var to = undefined;
-
-//var socket = io.connect();
-var socketURL = '';
-var socketSESSION = '';
-if (typeof socketUrl != 'undefined') {
-    socketURL = socketUrl;
-    if (socketURL && socketURL[0] == ':') {
-        socketURL = 'http://' + location.hostname + socketURL;
-    }
-    socketSESSION = socketSession;
-}
-
-var socket = io.connect(socketURL, {
-    'query': 'key=' + socketSESSION,
-    'reconnection limit': 10000,
-    'max reconnection attempts': Infinity
-});
-
-socket.on('stateChange', function (changeId, state) {
-    if (graph && config && config._ids) {
-        for (j = 0; j < config._ids.length; j++) {
-            if (config._ids[j] == changeId) {
-                if (config.renderer == 'pie') {
-                    seriesData[0][j].data = state.val;
-                    graph.setData(seriesData[0]);
-                    graph.draw();
-                } else if (config.renderer == 'bar' && config._ids.length > 1) {
-                    seriesData[0][j][1] = state.val;
-                    graph.setData(seriesData);
-                    graph.setupGrid();
-                    graph.draw();
-                } else {
-                    var ticks = state.ts * 1000;
-                    seriesData[j].push([ticks, state.val]);
-                    var d = new Date(ticks);
-
-                    // Calculate tick in the past
-                    d.setMinutes(d.getMinutes() - config.range);
-                    ticks = d.getTime();
-
-                    // Find last tick that is older than range
-                    for (var i = 0; i < seriesData[j].length; i++) {
-                        if (seriesData[j][i][0] > ticks) break;
-                    }
-
-                    if (i) seriesData[j].splice(0, i);
-
-                    seriesData[j] = fillRange(seriesData[j]);
-
-                    /*graph.setData(seriesData);
-                     graph.setupGrid();
-                     graph.draw();*/
-                    buildGraph(from, to);
-                }
-                break;
-            }
-        }
-    }
-});
-socket.on('connect', function () {
-    socket.emit('name', 'rickshaw');
-    if (disconnectTimeout) {
-        $('#no-connection').hide();
-        clearTimeout(disconnectTimeout);
+    var backgrounds = [
+        ['#8e9eab', '#eef2f3'], //Portrait
+        ['#517fa4', '#243949'], //Instagram
+        ['#485563', '#29323c'], //ServQuick
+        ['#abbaab', '#00ffff'], //Metallic Toad
+        ['#ECE9E6', '#00ffff'], //Clouds
+        ['#16222A', '#3A6073'], //Mirage
+        ['#1F1C2C', '#928DAB'], //Steel Gray
+        ['#003973', '#E5E5BE'], //Horizon
+        ['#D1913C', '#FFD194'], //Koko Caramel
+        ['#136a8a', '#267871']  //Turquoise flow
+    ];
+    // Show "no connection" message after 5 seconds
+    var disconnectTimeout = setTimeout(function () {
         disconnectTimeout = null;
-    }
-    readData();
-});
-socket.on('disconnect', function () {
-    if (!disconnectTimeout) {
-        disconnectTimeout = setTimeout(function () {
-            disconnectTimeout = null;
-            //Show disconnected message
-            $('#no-connection').show();
-        }, 5000);
-    }
-});
-
-// After reconnect the "connect" event will be immediately called
-/*socket.on('reconnect', function () {
-    console.log('reconnect');
-});*/
-
-function fillRange(data) {
-    // Add first tick with required range
-    if (config.fillRange) {
-        var now   = new Date();
-        var start = new Date(now);
-        start.setMinutes(start.getMinutes() - config.range + 1);
-
-        if (data.length) {
-            if (data[0][0] > start.getTime()){
-                data.unshift([start.getTime(), null]);
-            }
-            if (data[data.length - 1][0] < now.getTime()) {
-                data.push([now.getTime(), data[data.length - 1][1]]);
-            }
-        } else {
-            data.push([start.getTime(), null]);
-            data.push([now.getTime(), null]);
-        }
-    }
-
-    // first of all sort data
-    data.sort(function (a, b) {
-        return a[0] - b[0];
-    });
-
-    // find smallest interval
-    var step = null;
-    var s;
-    var isDifferent = false;
-    for (var i = 1; i < data.length; i++) {
-        s = data[i][0] - data[i - 1][0];
-        if (step === null) {
-            step = s;
-        } else if (s < step) {
-            step = s;
-        }
-        if (step != s) {
-            isDifferent = true;
-        }
-    }
-
-    if (!isDifferent || !config.interpolation) return data;
-
-    var result = [];
-    var time = data[0][0];
-    var end = data[data.length - 1][0];
-    var i = 0;
-
-    var tDiff = data[1][0] - data[0][0];
-    var vDiff = data[1][1] - data[0][1];
-    var tVal  = data[0][0];
-    var vVal  = data[0][1];
-    var tEnd  = data[1][0];
-    // interpolation
-    while (time <= end) {
-        while (tEnd <= time && i < data.length - 1) {
-            i++;
-            tVal  = data[i][0];
-            vVal  = data[i][1];
-            if (vVal !== null) {
-                if (i + 1 < data.length) {
-                    tEnd  = data[i + 1][0];
-                    tDiff = tEnd - data[i][0];
-                    if (data[i + 1][1] === null) {
-                        vDiff = 0;
-                    } else {
-                        vDiff = data[i + 1][1] - data[i][1];
-                    }
-                } else {
-                    tEnd  = end;
-                    tDiff = end - data[i][1];
-                    vDiff = 0;
-                }
-            } else if (i + 1 < data.length) {
-                tEnd = data[i + 1][0];
-            } else {
-                tEnd = end;
-            }
-        }
-        result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
-        time += step;
-    }
-
-    return result;
-}
-
-function readOneChart(id, index, callback) {
-    socket.emit('getObject', id, function (err, res) {
-        if (!err && res && res.common) {
-            config._names[index] = config._names[index] || res.common.name;
-            config._units[index] = res.common.unit ? res.common.unit.replace('�', '°') : '';
-        } else {
-            config._names[index] = config._names[index] || id;
-            config._units[index] = '';
-        }
-        socket.emit('subscribe', id);
-        var now = new Date();
-        var start = Math.round(now.getTime() / 1000)
-        var end   = start;
-        start -= (config.range * 60) || 31536000/* 1 year */;
-
-        socket.emit('getStateHistory', id, start, end, function (err, res) {
-            if (!err && res) {
-                //for (var i = 0, len = res.length; i < len; i++) {
-                for (var i = res.length - 1; i >= 0; i--) {
-                    // Convert boolean values to numbers
-                    if (res[i].val === 'true' || res[i].val === true) {
-                        res[i].val = 1;
-                    } else if (res[i].val === 'false' || res[i].val === false) {
-                        res[i].val = 0;
-                    }
-					if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-					
-                    seriesData[index].push([res[i].ts * 1000, res[i].val]);
-                }
-            }
-
-            // Add first tick with required range
-            seriesData[index] = fillRange(seriesData[index]);
-
-            if (callback) callback(id, index);
-        });
-
-    });
-}
-
-function yFormatter(y) {
-    if (config.afterComma !== undefined && config.afterComma !== null) {
-        y = parseFloat(y);
-        if (config.useComma) {
-            return y.toFixed(config.afterComma).toString().replace('.', ',');
-        } else {
-            return y.toFixed(config.afterComma);
-        }
-    } else {
-        if (config.useComma) {
-            y = parseFloat(y);
-            return y.toString().replace('.', ',');
-        } else {
-            return y;
-        }
-    }
-
-}
-
-function readOneValue(id, index, callback) {
-    socket.emit('getObject', id, function (err, res) {
-        if (!err && res && res.common) {
-            config._names[index] = config._names[index] || res.common.name;
-            config._units[index] = res.common.unit ? res.common.unit.replace('�', '°') : '';
-        } else {
-            config._names[index] = config._names[index] || id;
-            config._units[index] = '';
-        }
-        socket.emit('subscribe', id);
-
-        socket.emit('getState', id, function (err, state) {
-            if (state) {
-                callback(id, index, state.val);
-            } else {
-                callback(id, index, null)
-            }
-        });
-    });
-}
-
-function readData() {
-    if (disconnectTimeout) {
-        $('#no-connection').hide();
-        clearTimeout(disconnectTimeout);
-        disconnectTimeout = null;
-    }
-
-    if (config._ids) {
-        if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
-            seriesData = [[]];
-            for (var j = 0; j < config._ids.length; j++) {
-                readOneValue(config._ids[j], j, function (_id, _index, value) {
-                    if (config.renderer == 'pie') {
-                        seriesData[0][_index] = {label: config._names[_index], data: value};
-                    } else {
-                        seriesData[0][_index] = [config._names[_index], value];
-                    }
-                    if (_index == config._ids.length - 1) {
-                        buildGraph();
-                    }
-                });
-            }
-        } else {
-            var _ids = [];
-            for (var j = 0; j < config._ids.length; j++) {
-                if (config._ids[j] !== '' && config._ids[j] !== undefined) {
-                    seriesData.push([]);
-                    _ids.push(config._ids[j]);
-                }
-            }
-            config._ids = _ids;
-            for (j = 0; j < config._ids.length; j++) {
-                readOneChart(config._ids[j], j, function (_id, _index) {
-                    if (_index == config._ids.length - 1) {
-                        buildGraph();
-                    }
-                });
-            }
-        }
-    }
-}
-
-function buildGraph(_from, _to) {
-    from = _from;
-    to   = _to;
-    /*
-    if (config.palette) {
-        config.palette = new Rickshaw.Color.Palette( { scheme: config.palette } );
-    } else if (!config._colors && !config.palette) {
-        config.palette = new Rickshaw.Color.Palette( { scheme: 'cool' } );
-    }
+        //Show disconnected message
+        $('#no-connection').show();
+    }, 5000);
 
 
-    config.element     = document.getElementById("chart");
-    config.series      = series;
+    var timeout = null;
 
+    // Analyse query
+    var path = location.href;
+    path = path.split('?');
+
+
+    var config = deparam(path[1]);
+    console.log(config);
+    var min = null;
     // Set default values
-    config.renderer    = config.renderer || 'line';
-    config.width       = config.width    || 960;
-    config.height      = config.height   || 500;
-    config.left        = 0;
-    config.timeFormat  = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config._units      = config._units || [];
-    config.useComma    = (config.useComma   === undefined) ? true: config.useComma;
-    config.afterComma  = (config.afterComma === undefined) ? 2: config.afterComma;
-    config.timeFixture =  new Rickshaw.Fixtures.Time.Local();
-    config.interpolation = config.interpolation || 'linear';
-    config.min         = (config.min !== undefined && config.min != '' && parseFloat(config.min) != NaN) ? parseFloat(config.min) : min;
-    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) {
-        config.max     = parseFloat(config.max);
-    }
-    // Replace background
-    if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = backgrounds[config.bg];
-
-    if (config.bg) {
-        $('body').css({background: config.bg});
-    }
-
-// instantiate our graph!
-    graph = new Rickshaw.Graph(config);
-    graph.render();
-
-    if (config.hoverDetail && config.hoverDetail !== 'false') {
-        var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-            graph: graph,
-            xFormatter: function(x) {
-                return d3.time.format(config.timeFormat)(new Date(x * 1000));
-            },
-            yFormatter: function(y) {
-                if (config.useComma) {
-                    return y.toFixed(config.afterComma).toString().replace('.', ',');
-                } else {
-                    return y.toFixed(config.afterComma);
-                }
-            }
-        } );
-        // Overwrite formatter to add own units
-        hoverDetail.formatter = function(series, x, y, formattedX, formattedY, d) {
-            var pos = config._names.indexOf(series.name);
-            if (pos != -1 && config._units[pos]) {
-                return series.name + ':&nbsp;' + formattedY + '&nbsp;' + config._units[pos];
-            } else {
-                return series.name + ':&nbsp;' + formattedY;
-            }
-        };
-    }
-
-    if (config.legend) {
-        var legend = new Rickshaw.Graph.Legend( {
-            graph: graph,
-            element: document.getElementById('legend')
-        } );
-
-        var shelving = new Rickshaw.Graph.Behavior.Series.Toggle( {
-            graph:  graph,
-            legend: legend
-        } );
-
-        var parts = config.legend.split(';');
-        var css = {};
-        for(var t = 0; t < parts.length; t++) {
-            var p = parts[t].split(':');
-            // Bottom inside
-            if (p[0] == 'bottom' && p[1] == '5')  {
-                css.top = config.height - $('#legend').height() - 24 - 5;  // Padding 12
-            } else	// Bottom outside
-            if (p[0] == 'bottom' && p[1] == '-5') {
-                css.top = config.height + 5;
-            } else	// Middle
-            if (p[0] == 'top'    && p[1] == '50') {
-                css[p[0]] = (config.height - $('#legend').height() - 24) / 2;
-            } else	// Center
-            if (p[0] == 'left'   && p[1] == '50') {
-                css[p[0]] = (config.width - $('#legend').width() - 24) / 2;
-            } else	// Right inside
-            if (p[0] == 'right'  && p[1] == '5')  {
-                css.left  = config.width - $('#legend').width() - 24 - 5;
-            } else	// Right outside
-            if (p[0] == 'right'  && p[1] == '-5')  {
-                css.left  = config.width + 5;
-            } else	{
-                css[p[0]] = p[1];
-            }
-        };
-        $('#legend').css(css);
-    }*/
-
-    if (config.title && !$('#title').html()) {
-        $('#title').html(decodeURI(config.title));
-        if (config.titleColor) $('#title').css('color', config.titleColor);
-        if (config.titleSize) $('#title').css('font-size', config.titleSize);
-        if (config.title_pos) {
-            var parts = config.title_pos.split(';');
-            var css = {}
-            for(var t = 0; t < parts.length; t++) {
-                var p = parts[t].split(':');
-
-                // Bottom inside
-                if (p[0] == 'bottom' && p[1] == '5')  {
-                    if (config.height.indexOf('%') == -1) {
-                        css.top = parseInt(config.height, 10) - $('#title').height() - 45;
-                    } else {
-                        css.top = 'calc(' + config.height + ' - ' + ($('#title').height() + 45) + 'px)';
-                    }
-                } else	// Bottom outside
-                if (p[0] == 'bottom' && p[1] == '-5') {
-                    if (config.height.indexOf('%') == -1) {
-                        css.top = parseInt(config.height, 10) + 5;
-                    } else {
-                        css.top = 'calc(' + config.height + ' + 5px)';
-                    }
-                } else	// Middle
-                if (p[0] == 'top'    && p[1] == '50') {
-                    if (config.height.indexOf('%') == -1) {
-                        css.top = (parseInt(config.height, 10) - $('#title').height()) / 2;
-                    } else {
-                        css.top = 'calc(50% - ' + ($('#title').height() / 2) + 'px)';
-                    }
-                } else	// Center
-                if (p[0] == 'left'   && p[1] == '50') {
-                    if (config.width.indexOf('%') == -1) {
-                        css.left = (parseInt(config.width, 10) - $('#title').width()) / 2;
-                    } else {
-                        css.left = 'calc(50% - ' + ($('#title').width() / 2) + 'px)';
-                    }
-                } else	// Right inside
-                if (p[0] == 'right'  && p[1] == '5')  {
-                    if (config.width.indexOf('%') == -1) {
-                        css.left = parseInt(config.width, 10) - $('#title').width() - 45;
-                    } else {
-                        css.left = 'calc(' + config.width + ' - ' + ($('#title').width() + 45) + 'px)';
-                    }
-                } else	// Right outside
-                if (p[0] == 'right'  && p[1] == '-5')  {
-                    if (config.width.indexOf('%') == -1) {
-                        css.left  = parseInt(config.width, 10) + 25;
-                    } else {
-                        css.left = 'calc(' + config.width + ' + 5px)';
-                    }
-                } else	{
-                    css[p[0]] = p[1];
-                }
-            };
-            $('#title').css(css);
-        }
-    }
-/*
-    if (config.axeX) {
-        var format = function(d) {
-            d = new Date(d);
-            return d3.time.format("%c")(d);
-        }
-
-        if (config.axeX == "lines") {
-            var xAxis = new Rickshaw.Graph.Axis.Time( {
-                graph: graph,
-                ticksTreatment: 'glow',
-                //tickFormat: format,
-                timeFixture: new Rickshaw.Fixtures.Time.Local()
-            } );
-            xAxis.render();
-
-        } else if (config.axeX == "nolines"){
-            var xAxis = new Rickshaw.Graph.Axis.Time( {
-                graph: graph,
-                ticksTreatment: 'invisible',
-                //tickFormat: format,
-                timeFixture: new Rickshaw.Fixtures.Time.Local()
-            } );
-            xAxis.render();
-        }
-    }
-
-    if (config.axeY) {
-        var ticksTreatment = 'glow';
-
-        if (config.axeY.indexOf('inside') != -1) {
-            var yAxis1 = new Rickshaw.Graph.Axis.Y( {
-                graph: graph,
-                tickFormat: function(y) {
-                    return y.toString().replace('.', ',');
-                },
-                ticksTreatment: ticksTreatment
-            } );
-
-            yAxis1.render();
-            if (config.axeY.indexOf('nolines') != -1) $('.y_grid').hide();
-            if (config._units[0]) $('#chart').append('<div style="position:absolute; top:0; left: 5">' + config._units[0] + '</div>');
-
-        } else if (config.axeY.indexOf('outside') != -1) {
-            var yAxis1 = new Rickshaw.Graph.Axis.Y( {
-                graph: graph,
-                tickFormat: function(y) {
-                    return y.toString().replace('.', ',');
-                },
-                ticksTreatment: ticksTreatment,
-                orientation: 'left',
-                element: document.getElementById('y_axis_1')
-            } );
-
-            yAxis1.render();
-            config.left += 40;
-            $('#chart').css({left: config.left});
-            if (config.axeY.indexOf('nolines') != -1) $('.y_grid').hide();
-
-            if (config._units[0]) $('#y_axis_1').append('<div style="position:absolute; top:0; right: 5">' + config._units[0] + '</div>');
-        }
-    }
-
-    if (config.axeY2) {
-        var ticksTreatment = 'glow';
-
-        if (config.axeY2.indexOf('inside') != -1) {
-            var yAxis2 = new Rickshaw.Graph.Axis.Y( {
-                graph: graph,
-                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                ticksTreatment: ticksTreatment,
-                grid:false,
-                orientation: 'left',
-                element: document.getElementById('y_axis_2')
-            } );
-
-            yAxis2.render();
-            $('#y_axis_2').css({left: config.left + config.width - 40});
-            if (config.axeY2.indexOf('nolines') != -1) {
-                $('.y_grid').last().hide();
-            }
-
-            if (config._units[1]) $('#y_axis_2').append('<div style="position:absolute; top:0; width: 100%; text-align:center">' + config._units[1] + '</div>');
-
-        } else if (config.axeY2.indexOf('outside') != -1) {
-            var yAxis2 = new Rickshaw.Graph.Axis.Y( {
-                graph: graph,
-                tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-                ticksTreatment: ticksTreatment,
-                orientation: 'right',
-                grid:false,
-                element: document.getElementById('y_axis_2')
-            } );
-
-            yAxis2.render();
-            if (config.axeY2.indexOf('nolines') != -1) {
-                $('.y_grid').last().hide();
-            }
-            $('#y_axis_2').css({left: config.left + config.width});
-            if (config._units[1]) $('#y_axis_2').append('<div style="position:absolute; top:0; width: 100%; text-align:center">' + config._units[1] + '</div>');
-        }
-    }
-
-    if (config.smoothing > 0) {
-        var smoother = new Rickshaw.Graph.Smoother( {
-            graph: graph
-        } );
-        smoother.setScale(config.smoothing);
-    }
-
-    if (config.preview && config.preview !== 'false') {
-        $p = $('#preview').show();
-        var preview = new Rickshaw.Graph.RangeSlider( {
-            graph: graph,
-            element: $p[0]
-        } );
-
-    }
-
-    if (config.annotate && config.annotate !== 'false') {
-        var annotator = new Rickshaw.Graph.Annotate( {
-            graph: graph,
-            element: document.getElementById('timeline')
-        } );
-    }*/
-
-    // Replace background
-    if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = {colors: backgrounds[config.bg]};
-
+    config.longestStep = 0;
+    config.width = config.width || '100%';
+    config.height = config.height || '100%';
+    config.left = 0;
+    config.timeFormat = config.timeFormat || "%H:%M:%S %e.%m.%y";
+    config._units = config._units || [];
+    config.useComma = (config.useComma === undefined) ? true : config.useComma;
+    config.afterComma = (config.afterComma === undefined) ? 2 : config.afterComma;
+    //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
+    var lineOne = {};
+    var seriesData = [];
     var series = [];
-    var settings = undefined;
-    if (config.renderer != 'bar' || config._ids.length <= 1) {
+    var settings = [];
+    var from = undefined;
+    var to = undefined;
 
-        for (var i = seriesData.length - 1; i >= 0; i--) {
+    //var socket = io.connect();
+    var socketURL = '';
+    var socketSESSION = '';
+    if (typeof socketUrl != 'undefined') {
+        socketURL = socketUrl;
+        if (socketURL && socketURL[0] == ':') {
+            socketURL = 'http://' + location.hostname + socketURL;
+        }
+        socketSESSION = socketSession;
+    }
+
+    var socket = io.connect(socketURL, {
+        'query': 'key=' + socketSESSION,
+        'reconnection limit': 10000,
+        'max reconnection attempts': Infinity
+    });
+
+    //socket.on('stateChange', function (changeId, state) {
+    //    if (graph && config && config._ids ) {
+    //        for (j = 0; j < config._ids.length; j++) {
+    //            if (config._ids[j] == changeId) {
+    //                if (config.renderer == 'pie') {
+    //                    seriesData[0][j].data = state.val;
+    //                    graph.setData(seriesData[0]);
+    //                    graph.draw();
+    //                } else if (config.renderer == 'bar' && config._ids.length > 1) {
+    //                    seriesData[0][j][1] = state.val;
+    //                    graph.setData(seriesData);
+    //                    graph.setupGrid();
+    //                    graph.draw();
+    //                } else {
+    //                    var ticks = state.ts * 1000;
+    //                    seriesData[j].push([ticks, state.val]);
+    //                    var d = new Date(ticks);
+    //
+    //                    // Calculate tick in the past
+    //                    d.setMinutes(d.getMinutes() - config.range);
+    //                    ticks = d.getTime();
+    //
+    //                    // Find last tick that is older than range
+    //                    for (var i = 0; i < seriesData[j].length; i++) {
+    //                        if (seriesData[j][i][0] > ticks) break;
+    //                    }
+    //
+    //                    if (i) seriesData[j].splice(0, i);
+    //
+    //                    seriesData[j] = fillRange(seriesData[j]);
+    //
+    //                    /*graph.setData(seriesData);
+    //                     graph.setupGrid();
+    //                     graph.draw();*/
+    //                    buildGraph(from, to);
+    //                }
+    //                break;
+    //            }
+    //        }
+    //    }
+    //});
+
+    socket.on('connect', function () {
+//        socket.emit('name', 'rickshaw');
+        if (disconnectTimeout) {
+            $('#no-connection').hide();
+            clearTimeout(disconnectTimeout);
+            disconnectTimeout = null;
+        }
+        readData();
+    });
+    socket.on('disconnect', function () {
+        if (!disconnectTimeout) {
+            disconnectTimeout = setTimeout(function () {
+                disconnectTimeout = null;
+                //Show disconnected message
+                $('#no-connection').show();
+            }, 5000);
+        }
+    });
+
+    // After reconnect the "connect" event will be immediately called
+    /*socket.on('reconnect', function () {
+     console.log('reconnect');
+     });*/
+
+    function fillRange(data) {
+        // Add first tick with required range
+        if (config.fillRange) {
+            var now = new Date();
+            var start = new Date(now);
+            start.setMinutes(start.getMinutes() - config.range + 1);
+
+            if (data.length) {
+                if (data[0][0] > start.getTime()) {
+                    data.unshift([start.getTime(), null]);
+                }
+                if (data[data.length - 1][0] < now.getTime()) {
+                    data.push([now.getTime(), data[data.length - 1][1]]);
+                }
+            } else {
+                data.push([start.getTime(), null]);
+                data.push([now.getTime(), null]);
+            }
+        }
+
+        // first of all sort data
+        data.sort(function (a, b) {
+            return a[0] - b[0];
+        });
+
+        // find smallest interval
+        var step = null;
+        var s;
+        var isDifferent = false;
+        for (var i = 1; i < data.length; i++) {
+            s = data[i][0] - data[i - 1][0];
+            if (step === null) {
+                step = s;
+            } else if (s < step) {
+                step = s;
+            }
+            if (step != s) {
+                isDifferent = true;
+            }
+        }
+
+        if (!isDifferent || !config.interpolation) return data;
+
+        var result = [];
+        var time = data[0][0];
+        var end = data[data.length - 1][0];
+        var i = 0;
+
+        var tDiff = data[1][0] - data[0][0];
+        var vDiff = data[1][1] - data[0][1];
+        var tVal = data[0][0];
+        var vVal = data[0][1];
+        var tEnd = data[1][0];
+        // interpolation
+        while (time <= end) {
+            while (tEnd <= time && i < data.length - 1) {
+                i++;
+                tVal = data[i][0];
+                vVal = data[i][1];
+                if (vVal !== null) {
+                    if (i + 1 < data.length) {
+                        tEnd = data[i + 1][0];
+                        tDiff = tEnd - data[i][0];
+                        if (data[i + 1][1] === null) {
+                            vDiff = 0;
+                        } else {
+                            vDiff = data[i + 1][1] - data[i][1];
+                        }
+                    } else {
+                        tEnd = end;
+                        tDiff = end - data[i][1];
+                        vDiff = 0;
+                    }
+                } else if (i + 1 < data.length) {
+                    tEnd = data[i + 1][0];
+                } else {
+                    tEnd = end;
+                }
+            }
+            result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
+            time += step;
+        }
+
+        return result;
+    }
+
+    function getStartStop(index, step) {
+        var option = {};
+        var end;
+        var start;
+
+
+        if (!step) {
+
+            if (config.timeArt == "static") {
+                start = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
+                end = Math.round(new Date(config.end).setHours(24) / 1000) - (config.lines[index].offset || 0)
+            } else {
+                if (config.relativeend == "now") {
+                    end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
+                    start = end - (config.range * 60);
+                } else if (config.relativeend == "today") {
+                    end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
+                }
+            }
+
+            option = {
+                'start': start,
+                'end': end,
+                'ignoreNull': config.getnull || false,
+                'aggregate': config.lines[index].art || 'average',
+
+            };
+
+            if (config.aggregateType == "step") {
+                option["step"] = config.aggregateSpan
+            } else if (config.aggregateType == "count") {
+                option["count"] = config.aggregateSpan || document.getElementById("chart_container").clientWidth
+            }
+
+            return option
+
+        } else {
+            if (config.relativeend == "now") {
+                end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
+                start = end - (step);
+            } else if (config.relativeend == "today") {
+                end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - step - (config.lines[index].offset || 0);
+            }
+
+
+            option = {
+                'start': start,
+                'end': end,
+                'ignoreNull': config.getnull || false,
+                'aggregate': config.lines[index].art || 'average',
+                'count': 1
+
+            };
+
+            return option
+
+        }
+
+    }
+
+    function readOneChart(id, index, callback) {
+
+        socket.emit('getObject', id, function (err, res) {
+            if (!err && res && res.common) {
+                config.lines[index].name = config.lines[index].name || res.common.name;
+                config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+            } else {
+                config.lines[index].name = config.lines[index].name || id;
+                config.lines[index].unit = config.lines[index].unit || '';
+            }
+
+            var option = getStartStop(index);
+
+            socket.emit('getHistory', id, option, function (err, res, step) {
+                if (!err && res) {
+                    //for (var i = 0, len = res.length; i < len; i++) {
+
+                    if (config.longestStep < step) {
+                        config.longestStep = step;
+                    }
+                    // todo wenn der History adapter in ms ausgiebt kann das wieder activirt werden
+//                    if( typeof res[0].val == 'string' || res[0].val === 'true' || res[0].val === true || res[0].val === 'false' || res[0].val === false){
+                    for (var i = res.length - 1; i >= 0; i--) {
+
+                        // Convert boolean values to numbers
+                        if (res[i].val === 'true' || res[i].val === true) {
+                            res[i].val = 1;
+                        } else if (res[i].val === 'false' || res[i].val === false) {
+                            res[i].val = 0;
+                        }
+                        if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
+                        seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                    }
+//                    }else{
+//                        seriesData[index] = res
+//                    }
+
+                }
+
+                // Add first tick with required range
+                // todo muss das sein ??
+                seriesData[index] = fillRange(seriesData[index]);
+
+                if (callback) callback(id, index);
+            });
+
+        });
+    }
+
+    function yFormatter(y) {
+        if (config.afterComma !== undefined && config.afterComma !== null) {
+            y = parseFloat(y);
+            if (config.useComma) {
+                return y.toFixed(config.afterComma).toString().replace('.', ',');
+            } else {
+                return y.toFixed(config.afterComma);
+            }
+        } else {
+            if (config.useComma) {
+                y = parseFloat(y);
+                return y.toString().replace('.', ',');
+            } else {
+                return y;
+            }
+        }
+
+    }
+
+    function readOneValue(id, index, callback) {
+        socket.emit('getObject', id, function (err, res) {
+            if (!err && res && res.common) {
+                config.lines[index].name = config.lines[index].name || res.common.name;
+                config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+            } else {
+                config.lines[index].name = config.lines[index].name || id;
+                config.lines[index].unit = config.lines[index].unit || '';
+            }
+
+            socket.emit('getState', id, function (err, state) {
+                if (state) {
+                    callback(id, index, state.val);
+                } else {
+                    callback(id, index, null)
+                }
+            });
+        });
+    }
+
+    function readData() {
+        if (disconnectTimeout) {
+            $('#no-connection').hide();
+            clearTimeout(disconnectTimeout);
+            disconnectTimeout = null;
+        }
+
+        if (config.lines) {
+            $("#loader").show();
+            // todo
+//            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+//
+//                seriesData = [[]];
+//                for (var j = 0; j < config._ids.length; j++) {
+//                    readOneValue(config._ids[j], j, function (_id, _index, value) {
+//                        if (config.renderer == 'pie') {
+//                            seriesData[0][_index] = {label: config.line[_index].name, data: value};
+//                        } else {
+//                            seriesData[0][_index] = [config.line[_index].name, value];
+//                        }
+//                        if (_index == config._ids.length - 1) {
+//                            buildGraph();
+//                        }
+//                    });
+//                }
+//            } else {
+            for (var j = 0; j < config.lines.length; j++) {
+                if (config.lines[j] !== '' && config.lines[j] !== undefined) {
+                    seriesData.push([]);
+                }
+            }
+            var ready = 0;
+            for (j = 0; j < config.lines.length; j++) {
+                readOneChart(config.lines[j].id, j, function () {
+                    ready++;
+                    if (ready == config.lines.length) {
+                        $("#loader").hide();
+                        buildGraph();
+                    }
+                });
+            }
+//            }
+        }
+    }
+
+    function buildGraph() {
+
+        series = [];
+        settings = undefined;
+
+        if (config.title && !$('#title').html()) {
+            $('#title').html(decodeURI(config.title));
+            if (config.titleColor) $('#title').css('color', config.titleColor);
+            if (config.titleSize) $('#title').css('font-size', config.titleSize);
+            if (config.title_pos) {
+                var parts = config.title_pos.split(';');
+                var css = {}
+                for (var t = 0; t < parts.length; t++) {
+                    var p = parts[t].split(':');
+
+                    // Bottom inside
+                    if (p[0] == 'bottom' && p[1] == '5') {
+                        if (config.height.indexOf('%') == -1) {
+                            css.top = parseInt(config.height, 10) - $('#title').height() - 45;
+                        } else {
+                            css.top = 'calc(' + config.height + ' - ' + ($('#title').height() + 45) + 'px)';
+                        }
+                    } else	// Bottom outside
+                    if (p[0] == 'bottom' && p[1] == '-5') {
+                        if (config.height.indexOf('%') == -1) {
+                            css.top = parseInt(config.height, 10) + 5;
+                        } else {
+                            css.top = 'calc(' + config.height + ' + 5px)';
+                        }
+                    } else	// Middle
+                    if (p[0] == 'top' && p[1] == '50') {
+                        if (config.height.indexOf('%') == -1) {
+                            css.top = (parseInt(config.height, 10) - $('#title').height()) / 2;
+                        } else {
+                            css.top = 'calc(50% - ' + ($('#title').height() / 2) + 'px)';
+                        }
+                    } else	// Center
+                    if (p[0] == 'left' && p[1] == '50') {
+                        if (config.width.indexOf('%') == -1) {
+                            css.left = (parseInt(config.width, 10) - $('#title').width()) / 2;
+                        } else {
+                            css.left = 'calc(50% - ' + ($('#title').width() / 2) + 'px)';
+                        }
+                    } else	// Right inside
+                    if (p[0] == 'right' && p[1] == '5') {
+                        if (config.width.indexOf('%') == -1) {
+                            css.left = parseInt(config.width, 10) - $('#title').width() - 45;
+                        } else {
+                            css.left = 'calc(' + config.width + ' - ' + ($('#title').width() + 45) + 'px)';
+                        }
+                    } else	// Right outside
+                    if (p[0] == 'right' && p[1] == '-5') {
+                        if (config.width.indexOf('%') == -1) {
+                            css.left = parseInt(config.width, 10) + 25;
+                        } else {
+                            css.left = 'calc(' + config.width + ' + 5px)';
+                        }
+                    } else {
+                        css[p[0]] = p[1];
+                    }
+                }
+                ;
+                $('#title').css(css);
+            }
+        }
+
+
+        // Replace background
+        if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = {colors: backgrounds[config.bg]};
+
+        //todo make bar working
+//        if (config.renderer != 'bar' || config._ids.length <= 1) {
+
+
+        for (var i = 0; i < seriesData.length; i++) {
             if (seriesData[i]) {
 
+                config.lines[i].chartType = config.lines[i].chartType || 'line';
+
                 var option = {
-                    color:     config._colors[i] || undefined,
+                    color: config.lines[i].color || undefined,
                     lines: {
-                        show:      (config.renderer != 'scatterplot' && config.renderer != 'bar'),
-                        fill:      (config.renderer == 'area' || config.renderer == 'bar'),
-                        steps:     (config.renderer == 'steps'),
-                        lineWidth: config.strokeWidth
+                        show: (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
+                        fill: (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
+                        steps: (config.lines[i].chartType == 'steps'),
+                        lineWidth: config.lines[i].thickness
                     },
                     bars: {
-                        show: (config.renderer == 'bar'),
+                        show: (config.lines[i].chartType == 'bar'),
                         barWidth: 0.6
                     },
                     points: {
-                        show: (config.renderer == 'lineplot' || config.renderer == 'scatterplot')
+                        show: (config.lines[i].chartType == 'lineplot' || config.lines[i].chartType == 'scatterplot')
                     },
                     data: seriesData[i],
-                    label: (config._names ? config._names[i] : '') || ('Line ' + config._ids[i])
+                    label: config.lines[i].name
                 };
 
                 if (config.smoothing > 0) {
@@ -754,106 +683,123 @@ function buildGraph(_from, _to) {
                 } else {
                     config.smoothing = 0;
                 }
-                if (config.renderer == 'bar') {
+                if (config.lines[i].chartType == 'bar') {
                     option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
                 }
 
                 series.push(option);
             }
         }
-    }
+//        }
 
-    if (config.min === null || config.min === undefined || config.min === '' || config.min.toString() === 'NaN') {
-        config.min = undefined;
-    } else {
-        config.min = parseFloat(config.min);
-    }
-
-    if (config.noBorder) {
-        if (!config.width) config.width = '100%';
-        if (!config.height) config.height = '100%';
-        if (config.width.indexOf('%')  != -1) {
-            $('#chart_container').css({width:  'calc(' + config.width  + ' - 20px)'});
+        if (config.min === null || config.min === undefined || config.min === '' || config.min.toString() === 'NaN') {
+            config.min = undefined;
         } else {
-            $('#chart_container').css({width:  config.width});
+            config.min = parseFloat(config.min);
         }
-        if (config.height.indexOf('%') != -1) {
-            $('#chart_container').css({height: 'calc(' + config.height + ' - 20px)'});
-        } else {
-            $('#chart_container').css({height:  config.height});
-        }
-    } else {
-        $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
-    }
 
-    if (config.timeFormat === 'null') config.timeFormat = undefined;
-
-    if (config.timeFormat) {
-        if (config.timeFormat.indexOf('%H:%M:%S') != -1) {
-            config.timeFormatTime = '%H:%M:%S';
-        } else if (config.timeFormat.indexOf('%I:%M:%S') != -1) {
-            config.timeFormatTime = '%I:%M:%S';
-        } else if (config.timeFormat.indexOf('%H:%M') != -1) {
-            config.timeFormatTime = '%H:%M';
+        if (config.noBorder) {
+            if (!config.width) config.width = '100%';
+            if (!config.height) config.height = '100%';
+            if (config.width.indexOf('%') != -1) {
+                $('#chart_container').css({width: 'calc(' + config.width + ' - 20px)'});
+            } else {
+                $('#chart_container').css({width: config.width});
+            }
+            if (config.height.indexOf('%') != -1) {
+                $('#chart_container').css({height: 'calc(' + config.height + ' - 20px)'});
+            } else {
+                $('#chart_container').css({height: config.height});
+            }
         } else {
-            config.timeFormatTime = null;
+            $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
         }
-        if (config.timeFormat.indexOf('%d.%m.%y') != -1) {
-            config.timeFormatDate = '%d.%m.%y';
-        } else if (config.timeFormat.indexOf('%x %p') != -1) {
-            config.timeFormatDate = '%x %p';
-        } else if (config.timeFormat.indexOf('%d/%m/%y') != -1) {
-            config.timeFormatDate = '%d/%m/%y';
-        } else if (config.timeFormat.indexOf('%m.%d.%y') != -1) {
-            config.timeFormatDate = '%m.%d.%y';
-        } else if (config.timeFormat.indexOf('%d.%m') != -1) {
-            config.timeFormatDate = '%d.%m';
-        } else {
-            config.timeFormatDate = null;
-        }
-    }
 
-    if (config.renderer == 'pie') {
-        series.legend = {
-            show: !!config.legend,
-            position: config.legend
-        };
-        graph = $.plot("#chart_placeholder", seriesData[0], series);
-    } else if (config.renderer == 'bar' && config._ids.length > 1) {
-        var series = {
-            series: {
-                bars: {
-                    show: config.renderer == 'bar',
-                    barWidth: 0.6,
-                    align: "center"
-                },
-                pie: {
-                    show: config.renderer == 'pie'
-                },
-                legend: {
-                    show: !!config.legend,
-                    position: config.legend
-                }
+        if (config.timeFormat === 'null') config.timeFormat = undefined;
+
+        if (config.timeFormat) {
+            if (config.timeFormat.indexOf('%H:%M:%S') != -1) {
+                config.timeFormatTime = '%H:%M:%S';
+            } else if (config.timeFormat.indexOf('%I:%M:%S') != -1) {
+                config.timeFormatTime = '%I:%M:%S';
+            } else if (config.timeFormat.indexOf('%H:%M') != -1) {
+                config.timeFormatTime = '%H:%M';
+            } else {
+                config.timeFormatTime = null;
+            }
+            if (config.timeFormat.indexOf('%d.%m.%y') != -1) {
+                config.timeFormatDate = '%d.%m.%y';
+            } else if (config.timeFormat.indexOf('%x %p') != -1) {
+                config.timeFormatDate = '%x %p';
+            } else if (config.timeFormat.indexOf('%d/%m/%y') != -1) {
+                config.timeFormatDate = '%d/%m/%y';
+            } else if (config.timeFormat.indexOf('%m.%d.%y') != -1) {
+                config.timeFormatDate = '%m.%d.%y';
+            } else if (config.timeFormat.indexOf('%d.%m') != -1) {
+                config.timeFormatDate = '%d.%m';
+            } else {
+                config.timeFormatDate = null;
+            }
+        }
+
+//        if (config.lines[i].chartType == 'pie') {
+//            series.legend = {
+//                show: !!config.legend,
+//                position: config.legend
+//            };
+//            graph = $.plot("#chart_placeholder", seriesData[0], series);
+//        } else if (config.lines[i].chartType == 'bar' && config._ids.length > 1) {
+//            var series = {
+//                series: {
+//                    bars: {
+//                        show: config.lines[i].chartType == 'bar',
+//                        barWidth: 0.6,
+//                        align: "center"
+//                    },
+//                    pie: {
+//                        show: config.lines[i].chartType == 'pie'
+//                    },
+//                    legend: {
+//                        show: !!config.legend,
+//                        position: config.legend
+//                    }
+//                }
+//            };
+//
+//            series.xaxis = {
+//                mode: "categories",
+//                tickLength: 0
+//            };
+//
+//            graph = $.plot("#chart_placeholder", [seriesData[0]], series);
+//        } else {
+
+
+        settings = {
+            grid: {
+                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
+                backgroundColor: config.bg || undefined
+            },
+            yaxes: [],
+            xaxes: [],
+            legend: {
+                show: !!config.legend,
+                position: config.legend
             }
         };
 
-        series.xaxis = {
-            mode: "categories",
-            tickLength: 0
-        };
+        var yaxis = [{}]
 
-        graph = $.plot("#chart_placeholder", [seriesData[0]], series);
-    } else {
-        var settings = {
-            grid: {
-                hoverable:      (config.hoverDetail === 'true' || config.hoverDetail === true),
-                backgroundColor: config.bg || undefined
-            },
-            yaxis: {
-                show: !!config.axeY,
-                min: config.min,
-                max: config.max,
-                position: config.axeY,
+        for (var ii = 0; ii < config.lines.length; ii++) {
+
+            var yaxi = {
+                show: config.lines[ii].yaxe == "off" ? false : true,
+                min: config.lines[ii].min,
+                max: config.lines[ii].max,
+                position: config.lines[ii].yaxe.indexOf("left") > -1 ? "left" : "right",
+                font: {
+                    color: config.lines[ii].yaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                },
                 tickFormatter: function (number, object) {
 
                     var factor = config.afterComma ? Math.pow(10, config.afterComma) : 1;
@@ -870,21 +816,21 @@ function buildGraph(_from, _to) {
                         }
                     }
 
-                    if (config.units == '-') return number;
 
-                    if (config.units) {
-                        number += ' ' + config.units;
-                    } else if (config._units && config._units[0]) {
-                        number += ' ' + config._units[0];
-                    }
-
-                    return number;
+                    return number += ' ' + config.lines[object.n - 1].unit;
                 }
-            },
-            xaxis: {
-                show: !!config.axeX,
-                position: config.axeX,
-                mode:     "time",
+            }
+            var xaxi =
+            {
+
+                show: config.lines[ii].xaxe == "off" ? false : true,
+
+
+                position: config.lines[ii].xaxe.indexOf("top") > -1 ? "top" : "bottom",
+                font: {
+                    color: config.lines[ii].xaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                },
+                mode: "time",
                 //timeformat: config.timeFormat,
                 //timezone:   "browser",
                 tickFormatter: config.timeFormat ? function (number, object) {
@@ -893,7 +839,7 @@ function buildGraph(_from, _to) {
                         if (!object.ticks.length) {
                             return $.plot.formatDate(now, config.timeFormatDate);
                         }
-                        var d   = new Date(object.ticks[object.ticks.length - 1].v);
+                        var d = new Date(object.ticks[object.ticks.length - 1].v);
                         if (d.getDate() != now.getDate()) {
                             return $.plot.formatDate(now, config.timeFormatDate);
                         }
@@ -903,14 +849,19 @@ function buildGraph(_from, _to) {
                     }
                     //return (new Date(object[0]))
                 } : null,
-                min:        from || undefined,
-                max:        to   || undefined
-            },
-            legend: {
-                show:       !!config.legend,
-                position:   config.legend
+                min: from || undefined,
+                max: to || undefined
             }
-        };
+
+
+            settings.yaxes.push(yaxi);
+            settings.xaxes.push(xaxi);
+
+
+//            settings.yaxis["y"+(ii +1)] = axi
+            series[ii]["yaxis"] = ii + 1,
+                    series[ii]["xaxis"] = ii + 1
+        }
 
         if (config.smoothing) {
             settings.series = {
@@ -922,66 +873,84 @@ function buildGraph(_from, _to) {
             };
         }
 
-        if (config.preview) {
-            settings.selection = {
-                mode: "x"
-            };
-            settings.zoom = {
-                interactive: true
-            };
-            settings.pan = {
-                interactive: true
-            };
-        }
 
+        console.log(series)
+        console.log(settings)
         graph = $.plot("#chart_placeholder", series, settings);
-    }
 
-    // selection
-    if (config.preview) {
-        $("#chart_placeholder").bind("plotselected", function (event, ranges) {
-            buildGraph(ranges.xaxis.from, ranges.xaxis.to);
-        }).dblclick(function () {
-            buildGraph();
-        })
-    }
 
-    // Hoover
-    if (config.hoverDetail === 'true' || config.hoverDetail === true) {
-        $("#chart_placeholder").unbind("plothover").bind("plothover", function (event, pos, item) {
-            if (item) {
-                var x = item.datapoint[0].toFixed(2);
-                var y = item.datapoint[1].toFixed(2);
+//        }
 
-                var text = item.series.label ? item.series.label + '<br>' : '';
-                text += $.plot.formatDate(new Date(parseInt(x, 10)), config.timeFormat) + '<br>';
-                text += '<b>' + yFormatter(y) + '</b>';
 
-                var $tooltip = $("#tooltip").html(text);
-                if ($(this).height() - item.pageY < $tooltip.height()) {
-                    item.pageY -= 10 + $tooltip.height();
+        // Hoover
+        if (config.hoverDetail === 'true' || config.hoverDetail === true) {
+            $("#chart_placeholder").unbind("plothover").bind("plothover", function (event, pos, item) {
+                if (item) {
+                    var x = item.datapoint[0].toFixed(2);
+                    var y = item.datapoint[1].toFixed(2);
+
+                    var text = item.series.label ? item.series.label + '<br>' : '';
+                    text += $.plot.formatDate(new Date(parseInt(x, 10)), config.timeFormat) + '<br>';
+                    text += '<b>' + yFormatter(y) + '</b>';
+
+                    var $tooltip = $("#tooltip").html(text);
+                    if ($(this).height() - item.pageY < $tooltip.height()) {
+                        item.pageY -= 10 + $tooltip.height();
+                    }
+                    if ($(this).width() - item.pageX < $tooltip.width()) {
+                        item.pageX -= 10 + $tooltip.width();
+                    }
+                    $tooltip.css({top: item.pageY + 5, left: item.pageX + 5}).fadeIn(200);
+                } else {
+                    $("#tooltip").hide();
                 }
-                if ($(this).width() - item.pageX < $tooltip.width()) {
-                    item.pageX -= 10 + $tooltip.width();
-                }
-                $tooltip.css({top: item.pageY + 5, left: item.pageX + 5}).fadeIn(200);
-            } else {
-                $("#tooltip").hide();
+            });
+            if (!$('#tooltip').length) {
+                $("<div id='tooltip'></div>").css({
+                    position: "absolute",
+                    display: "none",
+                    border: "1px solid #fdd",
+                    padding: "2px",
+                    "background-color": "#fee",
+                    opacity: 0.80
+                }).appendTo("body");
             }
-        });
-        if (!$('#tooltip').length) {
-            $("<div id='tooltip'></div>").css({
-                position: "absolute",
-                display: "none",
-                border: "1px solid #fdd",
-                padding: "2px",
-                "background-color": "#fee",
-                opacity: 0.80
-            }).appendTo("body");
         }
+
+if(config.live && config.timeArt == "relative")
+        setInterval(function(){
+            update()
+        }, config.longestStep *1000)
     }
 
-}
+    function update() {
+        var ready = 0;
+
+        function getdata(index){
+            var option = getStartStop(j, config.longestStep);
+
+            socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
+                if (!err && res) {
+
+                    series[index].data.shift();
+                    series[index].data.push([res[0].ts * 1000, res[0].val]);
+                }
+
+                ready++;
+                console.log(ready)
+                if (ready == config.lines.length) {
+
+//                    graph.draw();
+                    graph = $.plot("#chart_placeholder", series, settings);
+                }
+            });
+        }
+
+        for (var j = 0; j < config.lines.length; j++) {
+            getdata(j)
+        }
+
+    }
 
 </script>
 

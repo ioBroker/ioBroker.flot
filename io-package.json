@@ -1,7 +1,7 @@
 {
     "common": {
         "name":         "flot",
-        "version":      "0.1.1",
+        "version":      "0.2.0",
         "title":        "Flot Charts",
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",
@@ -18,7 +18,7 @@
         "extIcon":      "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
         "readme":       "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
         "loglevel":     "info",
-        "dependencies": ["history", "web"],
+        "dependencies": [{"history": ">=0.2.0"}, {"web": ">=1.2.2"}],
         "localLink":    "%web_protocol%://%ip%:%web_port%/flot/edit.html",
         "enabled":      true,
         "onlyWWW":      true,
