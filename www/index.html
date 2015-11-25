@@ -21,7 +21,7 @@
     <script src="/_socket/info.js"></script>
     <style>
         .rickshaw_graph .x_tick.invisible {
-            border-left: 0px rgba(0, 0, 0, 0) !important;
+            border-left: 0 rgba(0, 0, 0, 0) !important;
         }
 
         #title {
@@ -44,10 +44,6 @@
             width: 0;
         }
 
-        /*#chart_container {
-            float: left;
-            position: relative;
-        }*/
         .chart-container {
             box-sizing: border-box;
             padding: 20px 15px 15px 15px;
@@ -153,9 +149,7 @@
 <div id="chart_container">
     <div id="loader" class="loader"></div>
     <div id="no-connection"
-         style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">
-        No connection to server
-    </div>
+         style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">No connection to server</div>
     <div id="chart_placeholder" class="chart-placeholder"></div>
     <div id="title" style="position:absolute"></div>
 </div>
@@ -175,6 +169,7 @@
         ['#D1913C', '#FFD194'], //Koko Caramel
         ['#136a8a', '#267871']  //Turquoise flow
     ];
+
     // Show "no connection" message after 5 seconds
     var disconnectTimeout = setTimeout(function () {
         disconnectTimeout = null;
@@ -190,18 +185,18 @@
     path = path.split('?');
 
 
-    var config = deparam(path[1]);
+    var config = deparam(path[1] || '');
     console.log(config);
     var min = null;
     // Set default values
-    config.longestStep = 0;
-    config.width = config.width || '100%';
-    config.height = config.height || '100%';
-    config.left = 0;
-    config.timeFormat = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config._units = config._units || [];
-    config.useComma = (config.useComma === undefined) ? true : config.useComma;
-    config.afterComma = (config.afterComma === undefined) ? 2 : config.afterComma;
+    config.longestStep  = 0;
+    config.width        = config.width || '100%';
+    config.height       = config.height || '100%';
+    config.left         = 0;
+    config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
+    config._units       = config._units || [];
+    config.useComma     = (config.useComma === undefined) ? true : config.useComma;
+    config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
     //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
     var lineOne = {};
     var seriesData = [];
@@ -270,7 +265,7 @@
     //});
 
     socket.on('connect', function () {
-//        socket.emit('name', 'rickshaw');
+        socket.emit('name', 'flot');
         if (disconnectTimeout) {
             $('#no-connection').hide();
             clearTimeout(disconnectTimeout);
@@ -321,8 +316,9 @@
         // find smallest interval
         var step = null;
         var s;
+        var i;
         var isDifferent = false;
-        for (var i = 1; i < data.length; i++) {
+        for (i = 1; i < data.length; i++) {
             s = data[i][0] - data[i - 1][0];
             if (step === null) {
                 step = s;
@@ -339,7 +335,7 @@
         var result = [];
         var time = data[0][0];
         var end = data[data.length - 1][0];
-        var i = 0;
+        i = 0;
 
         var tDiff = data[1][0] - data[0][0];
         var vDiff = data[1][1] - data[0][1];
@@ -384,61 +380,56 @@
         var end;
         var start;
 
-
         if (!step) {
 
-            if (config.timeArt == "static") {
-                start = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
-                end = Math.round(new Date(config.end).setHours(24) / 1000) - (config.lines[index].offset || 0)
+            if (config.timeArt == 'static') {
+                start   = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
+                end     = Math.round(new Date(config.end).setHours(24) / 1000)  - (config.lines[index].offset || 0)
             } else {
-                if (config.relativeend == "now") {
+                if (config.relativeEnd == 'now') {
                     end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
                     start = end - (config.range * 60);
-                } else if (config.relativeend == "today") {
-                    end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
-                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
+                } else if (config.relativeEnd == 'today') {
+                    end     = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                    start   = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
                 }
             }
 
             option = {
-                'start': start,
-                'end': end,
-                'ignoreNull': config.getnull || false,
-                'aggregate': config.lines[index].art || 'average',
-
+                start:      start,
+                end:        end,
+                ignoreNull: config.getNull || false,
+                aggregate:  config.lines[index].art || 'average'
             };
 
-            if (config.aggregateType == "step") {
-                option["step"] = config.aggregateSpan
-            } else if (config.aggregateType == "count") {
-                option["count"] = config.aggregateSpan || document.getElementById("chart_container").clientWidth
+            if (config.aggregateType == 'step') {
+                option.step = config.aggregateSpan;
+            } else if (config.aggregateType == 'count') {
+                option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
             }
 
             return option
 
         } else {
-            if (config.relativeend == "now") {
+            if (config.relativeEnd === 'now') {
                 end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
                 start = end - (step);
-            } else if (config.relativeend == "today") {
+            } else if (config.relativeEnd === 'today') {
                 end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
                 start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - step - (config.lines[index].offset || 0);
             }
 
 
             option = {
-                'start': start,
-                'end': end,
-                'ignoreNull': config.getnull || false,
-                'aggregate': config.lines[index].art || 'average',
-                'count': 1
-
+                start:      start,
+                end:        end,
+                ignoreNull: config.getNull || false,
+                aggregate:  config.lines[index].art || 'average',
+                count:      1
             };
 
-            return option
-
+            return option;
         }
-
     }
 
     function readOneChart(id, index, callback) {
@@ -487,7 +478,6 @@
 
                 if (callback) callback(id, index);
             });
-
         });
     }
 
@@ -507,7 +497,6 @@
                 return y;
             }
         }
-
     }
 
     function readOneValue(id, index, callback) {
@@ -566,7 +555,7 @@
                 readOneChart(config.lines[j].id, j, function () {
                     ready++;
                     if (ready == config.lines.length) {
-                        $("#loader").hide();
+                        $('#loader').hide();
                         buildGraph();
                     }
                 });
@@ -576,26 +565,25 @@
     }
 
     function buildGraph() {
-
         series = [];
-        settings = undefined;
+        var $title = $('#title');
 
-        if (config.title && !$('#title').html()) {
-            $('#title').html(decodeURI(config.title));
-            if (config.titleColor) $('#title').css('color', config.titleColor);
-            if (config.titleSize) $('#title').css('font-size', config.titleSize);
-            if (config.title_pos) {
-                var parts = config.title_pos.split(';');
-                var css = {}
+        if (config.title && !$title.html()) {
+            $title.html(decodeURI(config.title));
+            if (config.titleColor) $title.css('color', config.titleColor);
+            if (config.titleSize) $title.css('font-size', config.titleSize);
+            if (config.titlePos) {
+                var parts = config.titlePos.split(';');
+                var css = {};
                 for (var t = 0; t < parts.length; t++) {
                     var p = parts[t].split(':');
 
                     // Bottom inside
                     if (p[0] == 'bottom' && p[1] == '5') {
                         if (config.height.indexOf('%') == -1) {
-                            css.top = parseInt(config.height, 10) - $('#title').height() - 45;
+                            css.top = parseInt(config.height, 10) - $title.height() - 45;
                         } else {
-                            css.top = 'calc(' + config.height + ' - ' + ($('#title').height() + 45) + 'px)';
+                            css.top = 'calc(' + config.height + ' - ' + ($title.height() + 45) + 'px)';
                         }
                     } else	// Bottom outside
                     if (p[0] == 'bottom' && p[1] == '-5') {
@@ -607,23 +595,23 @@
                     } else	// Middle
                     if (p[0] == 'top' && p[1] == '50') {
                         if (config.height.indexOf('%') == -1) {
-                            css.top = (parseInt(config.height, 10) - $('#title').height()) / 2;
+                            css.top = (parseInt(config.height, 10) - $title.height()) / 2;
                         } else {
-                            css.top = 'calc(50% - ' + ($('#title').height() / 2) + 'px)';
+                            css.top = 'calc(50% - ' + ($title.height() / 2) + 'px)';
                         }
                     } else	// Center
                     if (p[0] == 'left' && p[1] == '50') {
                         if (config.width.indexOf('%') == -1) {
-                            css.left = (parseInt(config.width, 10) - $('#title').width()) / 2;
+                            css.left = (parseInt(config.width, 10) - $title.width()) / 2;
                         } else {
-                            css.left = 'calc(50% - ' + ($('#title').width() / 2) + 'px)';
+                            css.left = 'calc(50% - ' + ($title.width() / 2) + 'px)';
                         }
                     } else	// Right inside
                     if (p[0] == 'right' && p[1] == '5') {
                         if (config.width.indexOf('%') == -1) {
-                            css.left = parseInt(config.width, 10) - $('#title').width() - 45;
+                            css.left = parseInt(config.width, 10) - $title.width() - 45;
                         } else {
-                            css.left = 'calc(' + config.width + ' - ' + ($('#title').width() + 45) + 'px)';
+                            css.left = 'calc(' + config.width + ' - ' + ($title.width() + 45) + 'px)';
                         }
                     } else	// Right outside
                     if (p[0] == 'right' && p[1] == '-5') {
@@ -636,8 +624,8 @@
                         css[p[0]] = p[1];
                     }
                 }
-                ;
-                $('#title').css(css);
+
+                $title.css(css);
             }
         }
 
@@ -657,9 +645,9 @@
                 var option = {
                     color: config.lines[i].color || undefined,
                     lines: {
-                        show: (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
-                        fill: (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
-                        steps: (config.lines[i].chartType == 'steps'),
+                        show:      (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
+                        fill:      (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
+                        steps:     (config.lines[i].chartType == 'steps'),
                         lineWidth: config.lines[i].thickness
                     },
                     bars: {
@@ -699,8 +687,9 @@
         }
 
         if (config.noBorder) {
-            if (!config.width) config.width = '100%';
+            if (!config.width)  config.width = '100%';
             if (!config.height) config.height = '100%';
+
             if (config.width.indexOf('%') != -1) {
                 $('#chart_container').css({width: 'calc(' + config.width + ' - 20px)'});
             } else {
@@ -711,6 +700,7 @@
             } else {
                 $('#chart_container').css({height: config.height});
             }
+
         } else {
             $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
         }
@@ -788,17 +778,18 @@
             }
         };
 
-        var yaxis = [{}]
-
         for (var ii = 0; ii < config.lines.length; ii++) {
 
+            config.lines[ii].yaxe = config.lines[ii].yaxe || '';
+            config.lines[ii].xaxe = config.lines[ii].xaxe || '';
+
             var yaxi = {
-                show: config.lines[ii].yaxe == "off" ? false : true,
+                show: config.lines[ii].yaxe == 'off' ? false : true,
                 min: config.lines[ii].min,
                 max: config.lines[ii].max,
-                position: config.lines[ii].yaxe.indexOf("left") > -1 ? "left" : "right",
+                position: config.lines[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
                 font: {
-                    color: config.lines[ii].yaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                    color: config.lines[ii].yaxe.indexOf('Color') > -1 ? config.lines[ii].color : 'black'
                 },
                 tickFormatter: function (number, object) {
 
@@ -816,21 +807,17 @@
                         }
                     }
 
-
                     return number += ' ' + config.lines[object.n - 1].unit;
                 }
-            }
-            var xaxi =
-            {
+            };
 
-                show: config.lines[ii].xaxe == "off" ? false : true,
-
-
-                position: config.lines[ii].xaxe.indexOf("top") > -1 ? "top" : "bottom",
+            var xaxi = {
+                show: config.lines[ii].xaxe == 'off' ? false : true,
+                position: config.lines[ii].xaxe.indexOf("top") > -1 ? 'top' : 'bottom',
                 font: {
-                    color: config.lines[ii].xaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                    color: config.lines[ii].xaxe.indexOf('Color') > -1 ? config.lines[ii].color : 'black'
                 },
-                mode: "time",
+                mode: 'time',
                 //timeformat: config.timeFormat,
                 //timezone:   "browser",
                 tickFormatter: config.timeFormat ? function (number, object) {
@@ -851,40 +838,32 @@
                 } : null,
                 min: from || undefined,
                 max: to || undefined
-            }
-
+            };
 
             settings.yaxes.push(yaxi);
             settings.xaxes.push(xaxi);
-
-
 //            settings.yaxis["y"+(ii +1)] = axi
-            series[ii]["yaxis"] = ii + 1,
-                    series[ii]["xaxis"] = ii + 1
+            series[ii].yaxis = ii + 1;
+            series[ii].xaxis = ii + 1;
         }
 
         if (config.smoothing) {
             settings.series = {
                 curvedLines: {
-                    apply: true,
-                    active: true,
+                    apply:        true,
+                    active:       true,
                     monotonicFit: true
                 }
             };
         }
 
-
-        console.log(series)
-        console.log(settings)
-        graph = $.plot("#chart_placeholder", series, settings);
-
-
-//        }
-
+        console.log(series);
+        console.log(settings);
+        graph = $.plot('#chart_placeholder', series, settings);
 
         // Hoover
         if (config.hoverDetail === 'true' || config.hoverDetail === true) {
-            $("#chart_placeholder").unbind("plothover").bind("plothover", function (event, pos, item) {
+            $('#chart_placeholder').unbind('plothover').bind('plothover', function (event, pos, item) {
                 if (item) {
                     var x = item.datapoint[0].toFixed(2);
                     var y = item.datapoint[1].toFixed(2);
@@ -893,7 +872,7 @@
                     text += $.plot.formatDate(new Date(parseInt(x, 10)), config.timeFormat) + '<br>';
                     text += '<b>' + yFormatter(y) + '</b>';
 
-                    var $tooltip = $("#tooltip").html(text);
+                    var $tooltip = $('#tooltip').html(text);
                     if ($(this).height() - item.pageY < $tooltip.height()) {
                         item.pageY -= 10 + $tooltip.height();
                     }
@@ -902,54 +881,54 @@
                     }
                     $tooltip.css({top: item.pageY + 5, left: item.pageX + 5}).fadeIn(200);
                 } else {
-                    $("#tooltip").hide();
+                    $('#tooltip').hide();
                 }
             });
+
             if (!$('#tooltip').length) {
-                $("<div id='tooltip'></div>").css({
-                    position: "absolute",
-                    display: "none",
-                    border: "1px solid #fdd",
-                    padding: "2px",
-                    "background-color": "#fee",
+                $('<div id="tooltip"></div>').css({
+                    position: 'absolute',
+                    display: 'none',
+                    border: '1px solid #fdd',
+                    padding: '2px',
+                    "background-color": '#fee',
                     opacity: 0.80
-                }).appendTo("body");
+                }).appendTo('body');
             }
         }
+    }
 
-if(config.live && config.timeArt == "relative")
-        setInterval(function(){
-            update()
-        }, config.longestStep *1000)
+    if (config.live && config.timeArt == 'relative') {
+        setInterval(function () {
+            update();
+        }, config.longestStep * 1000);
     }
 
     function update() {
         var ready = 0;
 
-        function getdata(index){
+        function getData(index){
             var option = getStartStop(j, config.longestStep);
 
             socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
                 if (!err && res) {
-
                     series[index].data.shift();
                     series[index].data.push([res[0].ts * 1000, res[0].val]);
                 }
 
                 ready++;
-                console.log(ready)
+                console.log(ready);
                 if (ready == config.lines.length) {
 
 //                    graph.draw();
-                    graph = $.plot("#chart_placeholder", series, settings);
+                    graph = $.plot('#chart_placeholder', series, settings);
                 }
             });
         }
 
         for (var j = 0; j < config.lines.length; j++) {
-            getdata(j)
+            getData(j);
         }
-
     }
 
 </script>
