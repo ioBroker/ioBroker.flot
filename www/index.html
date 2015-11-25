@@ -194,7 +194,7 @@
     console.log(config);
     var min = null;
     // Set default values
-    config.renderer = config.renderer || 'line';
+    config.longestStep = 0;
     config.width = config.width || '100%';
     config.height = config.height || '100%';
     config.left = 0;
@@ -202,9 +202,11 @@
     config._units = config._units || [];
     config.useComma = (config.useComma === undefined) ? true : config.useComma;
     config.afterComma = (config.afterComma === undefined) ? 2 : config.afterComma;
-//    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
-    var lineOne ={};
+    //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
+    var lineOne = {};
     var seriesData = [];
+    var series = [];
+    var settings = [];
     var from = undefined;
     var to = undefined;
 
@@ -377,60 +379,28 @@
         return result;
     }
 
-    function readOneChart(id, index, callback) {
-
+    function getStartStop(index, step) {
+        var option = {};
         var end;
         var start;
 
 
+        if (!step) {
 
-            socket.emit('getObject', id, function (err, res) {
-                if (!err && res && res.common) {
-                    config.lines[index].name = config.lines[index].name || res.common.name;
-                    config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
-                } else {
-                    config.lines[index].name = config.lines[index].name || id;
-                    config.lines[index].unit = config.lines[index].unit || '';
-                }
-
-//            socket.emit('subscribe', id);
-
-//            if (config.live) {
-//                end = Math.round(new Date().getTime() / 1000);
-//                start = Math.round(end - (config.range * 60))
-//            }
-//            else {
-//                if (config._ends[index]) {
-//                    end = Math.round(new Date(config._ends[index]).setHours(24) / 1000);
-//                } else {
-//                    end = Math.round(new Date().getTime() / 1000);
-//                }
-//
-//                start = end;
-//                if (config._starts[index]) {
-//                    start = Math.round(new Date(config._starts[index]).setHours(0) / 1000)
-//                } else {
-//                    start -= 604800/* 1 week */;
-//                }
-//            }
-
-            if(config.timeArt == "static"){
-                start = Math.round(new Date(config.start).setHours(0) / 1000) - config.lines[index].offset;
-                end   = Math.round(new Date(config.end).setHours(24) / 1000) - config.lines[index].offset
-            }else{
-                if(config.relativeend == "now"){
-                    end  =  Math.round(new Date() / 1000) - config.lines[index].offset;
-                    start = end - (config.range * 60)
-                }else  if(config.relativeend == "today"){
-                    end  =  Math.round(new Date().setHours(24) / 1000) - config.lines[index].offset;
-                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - config.lines[index].offset;
+            if (config.timeArt == "static") {
+                start = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
+                end = Math.round(new Date(config.end).setHours(24) / 1000) - (config.lines[index].offset || 0)
+            } else {
+                if (config.relativeend == "now") {
+                    end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
+                    start = end - (config.range * 60);
+                } else if (config.relativeend == "today") {
+                    end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
                 }
             }
 
-
-
-
-            var option = {
+            option = {
                 'start': start,
                 'end': end,
                 'ignoreNull': config.getnull || false,
@@ -438,32 +408,73 @@
 
             };
 
-
             if (config.aggregateType == "step") {
                 option["step"] = config.aggregateSpan
             } else if (config.aggregateType == "count") {
                 option["count"] = config.aggregateSpan || document.getElementById("chart_container").clientWidth
             }
 
-            socket.emit('getHistory', id, option, function (err, res) {
+            return option
+
+        } else {
+            if (config.relativeend == "now") {
+                end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
+                start = end - (step);
+            } else if (config.relativeend == "today") {
+                end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - step - (config.lines[index].offset || 0);
+            }
+
+
+            option = {
+                'start': start,
+                'end': end,
+                'ignoreNull': config.getnull || false,
+                'aggregate': config.lines[index].art || 'average',
+                'count': 1
+
+            };
+
+            return option
+
+        }
+
+    }
+
+    function readOneChart(id, index, callback) {
+
+        socket.emit('getObject', id, function (err, res) {
+            if (!err && res && res.common) {
+                config.lines[index].name = config.lines[index].name || res.common.name;
+                config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+            } else {
+                config.lines[index].name = config.lines[index].name || id;
+                config.lines[index].unit = config.lines[index].unit || '';
+            }
+
+            var option = getStartStop(index);
+
+            socket.emit('getHistory', id, option, function (err, res, step) {
                 if (!err && res) {
                     //for (var i = 0, len = res.length; i < len; i++) {
 
-
+                    if (config.longestStep < step) {
+                        config.longestStep = step;
+                    }
                     // todo wenn der History adapter in ms ausgiebt kann das wieder activirt werden
 //                    if( typeof res[0].val == 'string' || res[0].val === 'true' || res[0].val === true || res[0].val === 'false' || res[0].val === false){
-                        for (var i = res.length - 1; i >= 0; i--) {
+                    for (var i = res.length - 1; i >= 0; i--) {
 
-                            // Convert boolean values to numbers
-                            if (res[i].val === 'true' || res[i].val === true) {
-                                res[i].val = 1;
-                            } else if (res[i].val === 'false' || res[i].val === false) {
-                                res[i].val = 0;
-                            }
-                            if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-
-                            seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                        // Convert boolean values to numbers
+                        if (res[i].val === 'true' || res[i].val === true) {
+                            res[i].val = 1;
+                        } else if (res[i].val === 'false' || res[i].val === false) {
+                            res[i].val = 0;
                         }
+                        if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
+                        seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                    }
 //                    }else{
 //                        seriesData[index] = res
 //                    }
@@ -502,13 +513,12 @@
     function readOneValue(id, index, callback) {
         socket.emit('getObject', id, function (err, res) {
             if (!err && res && res.common) {
-                config._names[index] = config._names[index] || res.common.name;
-                config._units[index] = res.common.unit ? res.common.unit.replace('�', '°') : '';
+                config.lines[index].name = config.lines[index].name || res.common.name;
+                config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
             } else {
-                config._names[index] = config._names[index] || id;
-                config._units[index] = '';
+                config.lines[index].name = config.lines[index].name || id;
+                config.lines[index].unit = config.lines[index].unit || '';
             }
-            socket.emit('subscribe', id);
 
             socket.emit('getState', id, function (err, state) {
                 if (state) {
@@ -528,47 +538,47 @@
         }
 
         if (config.lines) {
-            $("#loader").show()
-            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
-                // todo
-                seriesData = [[]];
-                for (var j = 0; j < config._ids.length; j++) {
-                    readOneValue(config._ids[j], j, function (_id, _index, value) {
-                        if (config.renderer == 'pie') {
-                            seriesData[0][_index] = {label: config._names[_index], data: value};
-                        } else {
-                            seriesData[0][_index] = [config._names[_index], value];
-                        }
-                        if (_index == config._ids.length - 1) {
-                            buildGraph();
-                        }
-                    });
-                }
-            } else {
-                var _ids = [];
-                for (var j = 0; j < config.lines.length; j++) {
-                    if (config.lines[j] !== '' && config.lines[j] !== undefined) {
-                        seriesData.push([]);
-                        _ids.push(config.lines[j].id);
-                    }
-                }
-                config._ids = _ids;
-                var ready = 0;
-                for (j = 0; j < config.lines.length; j++) {
-                    readOneChart(config.lines[j].id, j, function () {
-                        ready ++;
-                        if (ready == config.lines.length ) {
-                            $("#loader").hide();
-                            buildGraph();
-                        }
-                    });
+            $("#loader").show();
+            // todo
+//            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+//
+//                seriesData = [[]];
+//                for (var j = 0; j < config._ids.length; j++) {
+//                    readOneValue(config._ids[j], j, function (_id, _index, value) {
+//                        if (config.renderer == 'pie') {
+//                            seriesData[0][_index] = {label: config.line[_index].name, data: value};
+//                        } else {
+//                            seriesData[0][_index] = [config.line[_index].name, value];
+//                        }
+//                        if (_index == config._ids.length - 1) {
+//                            buildGraph();
+//                        }
+//                    });
+//                }
+//            } else {
+            for (var j = 0; j < config.lines.length; j++) {
+                if (config.lines[j] !== '' && config.lines[j] !== undefined) {
+                    seriesData.push([]);
                 }
             }
+            var ready = 0;
+            for (j = 0; j < config.lines.length; j++) {
+                readOneChart(config.lines[j].id, j, function () {
+                    ready++;
+                    if (ready == config.lines.length) {
+                        $("#loader").hide();
+                        buildGraph();
+                    }
+                });
+            }
+//            }
         }
     }
 
     function buildGraph() {
 
+        series = [];
+        settings = undefined;
 
         if (config.title && !$('#title').html()) {
             $('#title').html(decodeURI(config.title));
@@ -635,50 +645,52 @@
         // Replace background
         if (config.bg && config.bg.length < 3 && backgrounds[config.bg]) config.bg = {colors: backgrounds[config.bg]};
 
-        var series = [];
-        var settings = undefined;
-        if (config.renderer != 'bar' || config._ids.length <= 1) {
+        //todo make bar working
+//        if (config.renderer != 'bar' || config._ids.length <= 1) {
 
-            for (var i = seriesData.length - 1; i >= 0; i--) {
-                if (seriesData[i]) {
 
-                    var option = {
-                        color: config.lines[i].color || undefined,
-                        lines: {
-                            show: (config.renderer != 'scatterplot' && config.renderer != 'bar'),
-                            fill: (config.renderer == 'area' || config.renderer == 'bar'),
-                            steps: (config.renderer == 'steps'),
-                            lineWidth: config.strokeWidth
-                        },
-                        bars: {
-                            show: (config.renderer == 'bar'),
-                            barWidth: 0.6
-                        },
-                        points: {
-                            show: (config.renderer == 'lineplot' || config.renderer == 'scatterplot')
-                        },
-                        data: seriesData[i],
-                        label: (config._names ? config._names[i] : '') || ('Line ' + config._ids[i])
-                    };
+        for (var i = 0; i < seriesData.length; i++) {
+            if (seriesData[i]) {
 
-                    if (config.smoothing > 0) {
-                        config.smoothing = parseInt(config.smoothing);
+                config.lines[i].chartType = config.lines[i].chartType || 'line';
 
-                        if (config.smoothing > 1) {
-                            option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
-                        }
+                var option = {
+                    color: config.lines[i].color || undefined,
+                    lines: {
+                        show: (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
+                        fill: (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
+                        steps: (config.lines[i].chartType == 'steps'),
+                        lineWidth: config.lines[i].thickness
+                    },
+                    bars: {
+                        show: (config.lines[i].chartType == 'bar'),
+                        barWidth: 0.6
+                    },
+                    points: {
+                        show: (config.lines[i].chartType == 'lineplot' || config.lines[i].chartType == 'scatterplot')
+                    },
+                    data: seriesData[i],
+                    label: config.lines[i].name
+                };
+
+                if (config.smoothing > 0) {
+                    config.smoothing = parseInt(config.smoothing);
+
+                    if (config.smoothing > 1) {
                         option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
-                    } else {
-                        config.smoothing = 0;
                     }
-                    if (config.renderer == 'bar') {
-                        option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
-                    }
-
-                    series.push(option);
+                    option.data = $.plot.JUMlib.prepareData.avg(option.data, config.smoothing);
+                } else {
+                    config.smoothing = 0;
                 }
+                if (config.lines[i].chartType == 'bar') {
+                    option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
+                }
+
+                series.push(option);
             }
         }
+//        }
 
         if (config.min === null || config.min === undefined || config.min === '' || config.min.toString() === 'NaN') {
             config.min = undefined;
@@ -730,22 +742,22 @@
             }
         }
 
-//        if (config.renderer == 'pie') {
+//        if (config.lines[i].chartType == 'pie') {
 //            series.legend = {
 //                show: !!config.legend,
 //                position: config.legend
 //            };
 //            graph = $.plot("#chart_placeholder", seriesData[0], series);
-//        } else if (config.renderer == 'bar' && config._ids.length > 1) {
+//        } else if (config.lines[i].chartType == 'bar' && config._ids.length > 1) {
 //            var series = {
 //                series: {
 //                    bars: {
-//                        show: config.renderer == 'bar',
+//                        show: config.lines[i].chartType == 'bar',
 //                        barWidth: 0.6,
 //                        align: "center"
 //                    },
 //                    pie: {
-//                        show: config.renderer == 'pie'
+//                        show: config.lines[i].chartType == 'pie'
 //                    },
 //                    legend: {
 //                        show: !!config.legend,
@@ -763,55 +775,31 @@
 //        } else {
 
 
-        console.log(yaxis)
-        console.log(series)
+        settings = {
+            grid: {
+                hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
+                backgroundColor: config.bg || undefined
+            },
+            yaxes: [],
+            xaxes: [],
+            legend: {
+                show: !!config.legend,
+                position: config.legend
+            }
+        };
 
-            var settings = {
-                grid: {
-                    hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
-                    backgroundColor: config.bg || undefined
-                },
-                yaxis: [],
-                xaxis: {
-                    show: /*!!config.axeX*/ true,
-                    position: config.axeX,
-                    mode: "time",
-                    //timeformat: config.timeFormat,
-                    //timezone:   "browser",
-                    tickFormatter: config.timeFormat ? function (number, object) {
-                        var now = new Date(parseInt(number, 10));
-                        if (config.timeFormatDate && config.timeFormatTime) {
-                            if (!object.ticks.length) {
-                                return $.plot.formatDate(now, config.timeFormatDate);
-                            }
-                            var d = new Date(object.ticks[object.ticks.length - 1].v);
-                            if (d.getDate() != now.getDate()) {
-                                return $.plot.formatDate(now, config.timeFormatDate);
-                            }
-                            return $.plot.formatDate(now, config.timeFormatTime);
-                        } else {
-                            return $.plot.formatDate(now, config.timeFormat);
-                        }
-                        //return (new Date(object[0]))
-                    } : null,
-                    min: from || undefined,
-                    max: to || undefined
-                },
-                legend: {
-                    show: !!config.legend,
-                    position: config.legend
-                }
-            };
+        var yaxis = [{}]
 
-        var yaxis=[{}]
-        console.log(config.lines)
-        for (var ii= 0; ii < config.lines.length ; ii++){
+        for (var ii = 0; ii < config.lines.length; ii++) {
 
-            var axi = {
-                show: config.lines[ii].axe == "off" ? false: true,
-                min: config.lines[ii].min ,
+            var yaxi = {
+                show: config.lines[ii].yaxe == "off" ? false : true,
+                min: config.lines[ii].min,
                 max: config.lines[ii].max,
-                position: config.lines[ii].axe,
+                position: config.lines[ii].yaxe.indexOf("left") > -1 ? "left" : "right",
+                font: {
+                    color: config.lines[ii].yaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                },
                 tickFormatter: function (number, object) {
 
                     var factor = config.afterComma ? Math.pow(10, config.afterComma) : 1;
@@ -828,59 +816,71 @@
                         }
                     }
 
-//                    if (config.lines[ii].unit == '-') return number;
-//
-//                    if (config.lines[ii].unit) {
-//                        number += ' ' + config.lines[ii].unit;
-//                    } else if (config._units && config._units[0]) {
-//                        number += ' ' + config._units[0];
-//                    }
 
-                    return number;
+                    return number += ' ' + config.lines[object.n - 1].unit;
                 }
+            }
+            var xaxi =
+            {
 
+                show: config.lines[ii].xaxe == "off" ? false : true,
+
+
+                position: config.lines[ii].xaxe.indexOf("top") > -1 ? "top" : "bottom",
+                font: {
+                    color: config.lines[ii].xaxe.indexOf("Color") > -1 ? config.lines[ii].color : "black",
+                },
+                mode: "time",
+                //timeformat: config.timeFormat,
+                //timezone:   "browser",
+                tickFormatter: config.timeFormat ? function (number, object) {
+                    var now = new Date(parseInt(number, 10));
+                    if (config.timeFormatDate && config.timeFormatTime) {
+                        if (!object.ticks.length) {
+                            return $.plot.formatDate(now, config.timeFormatDate);
+                        }
+                        var d = new Date(object.ticks[object.ticks.length - 1].v);
+                        if (d.getDate() != now.getDate()) {
+                            return $.plot.formatDate(now, config.timeFormatDate);
+                        }
+                        return $.plot.formatDate(now, config.timeFormatTime);
+                    } else {
+                        return $.plot.formatDate(now, config.timeFormat);
+                    }
+                    //return (new Date(object[0]))
+                } : null,
+                min: from || undefined,
+                max: to || undefined
             }
 
-            settings.yaxis.push(axi)
+
+            settings.yaxes.push(yaxi);
+            settings.xaxes.push(xaxi);
+
+
 //            settings.yaxis["y"+(ii +1)] = axi
-            series[ii]["yaxis"] = ii +1
+            series[ii]["yaxis"] = ii + 1,
+                    series[ii]["xaxis"] = ii + 1
         }
 
-            if (config.smoothing) {
-                settings.series = {
-                    curvedLines: {
-                        apply: true,
-                        active: true,
-                        monotonicFit: true
-                    }
-                };
-            }
+        if (config.smoothing) {
+            settings.series = {
+                curvedLines: {
+                    apply: true,
+                    active: true,
+                    monotonicFit: true
+                }
+            };
+        }
 
-            if (config.preview) {
-                settings.selection = {
-                    mode: "x"
-                };
-                settings.zoom = {
-                    interactive: true
-                };
-                settings.pan = {
-                    interactive: true
-                };
-            }
-
-            graph = $.plot("#chart_placeholder", series, settings);
-//        }
 
         console.log(series)
         console.log(settings)
-        // selection
-        if (config.preview) {
-            $("#chart_placeholder").bind("plotselected", function (event, ranges) {
-                buildGraph(ranges.xaxis.from, ranges.xaxis.to);
-            }).dblclick(function () {
-                buildGraph();
-            })
-        }
+        graph = $.plot("#chart_placeholder", series, settings);
+
+
+//        }
+
 
         // Hoover
         if (config.hoverDetail === 'true' || config.hoverDetail === true) {
@@ -915,6 +915,39 @@
                     opacity: 0.80
                 }).appendTo("body");
             }
+        }
+
+if(config.live && config.timeArt == "relative")
+        setInterval(function(){
+            update()
+        }, config.longestStep *1000)
+    }
+
+    function update() {
+        var ready = 0;
+
+        function getdata(index){
+            var option = getStartStop(j, config.longestStep);
+
+            socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
+                if (!err && res) {
+
+                    series[index].data.shift();
+                    series[index].data.push([res[0].ts * 1000, res[0].val]);
+                }
+
+                ready++;
+                console.log(ready)
+                if (ready == config.lines.length) {
+
+//                    graph.draw();
+                    graph = $.plot("#chart_placeholder", series, settings);
+                }
+            });
+        }
+
+        for (var j = 0; j < config.lines.length; j++) {
+            getdata(j)
         }
 
     }

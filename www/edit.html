@@ -53,7 +53,7 @@
 </head>
 <body style="height: calc(100% - 16px)">
 
-<div style="height: 340px; position: relative">
+<div style="height: 250px; position: relative">
     <div id="accordion">
         <h3 id="0">Input data</h3>
         <div>
@@ -90,8 +90,8 @@
             </table>
         </div>
         <h3 id="1">Zeit</h3>
-        <div style="display: inline-block">
-            <table style="display: inline-block">
+        <div style="display: flex">
+            <table >
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
                 </tr>
@@ -135,9 +135,10 @@
                     </select></td>
                 </tr>
                 <tr class="relative">
-                    <td class="translate label">ignore 'null':</td>
-                    <td><input type="checkbox" id="getnull" class="option input"></td>
+                    <td class="translate">Live:</td>
+                    <td><input type="checkbox" class="option" id="live"></td>
                 </tr>
+
                 <tr class="static">
                     <td class="translate">Start:</td>
                     <td><input type="date" id="start" class="option input"></td>
@@ -147,7 +148,7 @@
                     <td><input type="date" id="end" class="option input"></td>
                 </tr>
             </table>
-            <table style="display: inline-block">
+            <table style="margin-left: 25px">
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
                 </tr>
@@ -162,168 +163,137 @@
                     <td class="translate" id="spanName">Schrittweite:</td>
                     <td><input id="aggregateSpan" value="300" class="option input"></td>
                 </tr>
+                <tr>
+                    <td class="translate label">ignore 'null':</td>
+                    <td><input type="checkbox" id="getnull" class="option input"></td>
+                </tr>
             </table>
         </div>
-        <h3 id="2">Legend and Axes</h3>
-        <div>
-            <table>
-                <tr>
-                    <td class="translate label">Show axis bottom:</td>
-                    <td><select class="option input" id="axeX">
-                        <option value="" class="translate">none</option>
-                        <option value="bottom" class="translate">bottom</option>
-                        <option value="top" class="translate">top</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <!--<td class="translate">Show axis left:</td>-->
-                    <!--<td><select class="option input" id="axeY">-->
-                        <!--<option value="" class="translate">none</option>-->
-                        <!--<option value="left" class="translate">left</option>-->
-                        <!--<option value="right" class="translate">right</option>-->
-                    <!--</select></td>-->
-                </tr>
-                <tr>
-                    <td class="translate">Show legend:</td>
-                    <td><select class="option input" id="legend">
-                        <option value="" class="translate">none</option>
-                        <option value="nw" class="translate">Top, left</option>
-                        <option value="ne" class="translate">Top, right</option>
-                        <option value="sw" class="translate">Bottom, left</option>
-                        <option value="se" class="translate">Bottom, right</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">Units:</td>
-                    <td><input id="units" class="option input"></td>
-                </tr>
+        <h3 id="2">Options</h3>
+        <div style="display: flex">
 
-                <tr>
-                    <td class="translate">Title:</td>
-                    <td><input type="text" id="title" class="option input"></td>
-                </tr>
-                <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
-                <tr>
-                    <td class="translate">Title position:</td>
-                    <td><select class="option input" id="title_pos">
-                        <option value="" class="translate">none</option>
-                        <option value="top:35;left:65" class="translate">Top, left, inside</option>
-                        <option value="top:35;right:5" class="translate">Top, right, inside</option>
-                        <option value="top:35;left:50" class="translate">Top, center, inside</option>
-                        <option value="top:50;left:65" class="translate">Middle, left, inside</option>
-                        <option value="top:50;right:5" class="translate">Middle, right, inside</option>
-                        <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
-                        <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
-                        <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
+                <table>
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
+                    <tr>
+                        <td class="translate">Width:</td>
+                        <td><input id="width" class="option input"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Height:</td>
+                        <td><input id="height" class="option input"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">No border:</td>
+                        <td><select class="option input" id="noBorder">
+                            <option value="" class="translate"></option>
+                            <option value="noborder" class="translate">yes</option>
+                        </select></td>
+                    </tr>
+                    <!--<tr>-->
+                        <!--<td class="translate label">Predefined background:</td>-->
+                        <!--<td><select class="input" id="pre_bg">-->
+                            <!--<option value="" class="translate">User defined</option>-->
+                            <!--<option value="0">Portrait</option>-->
+                            <!--<option value="1">Instagram</option>-->
+                            <!--<option value="2">ServQuick</option>-->
+                            <!--<option value="3">Metallic Toad</option>-->
+                            <!--<option value="4">Clouds</option>-->
+                            <!--<option value="5">Mirage</option>-->
+                            <!--<option value="6">Steel Gray</option>-->
+                            <!--<option value="7">Horizon</option>-->
+                            <!--<option value="8">Koko Caramel</option>-->
+                            <!--<option value="9">Turquoise flow</option>-->
+                        <!--</select></td>-->
+                    <!--</tr>-->
+                    <tr>
+                        <td class="translate label">Background:</td>
+                        <td><input type="text" id="bg" class="option input"></td>
+                    </tr>
+                    </table>
 
-                        <option value="top:5;right:-5" class="translate">Top, right, outside</option>
-                        <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
-                        <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
-                        <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">Title color:</td>
-                    <td><input type="text" id="titleColor" class="option input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Title size:</td>
-                    <td><input type="text" id="titleSize" class="option input"></td>
-                </tr>
 
-            </table>
-        </div>
-        <h3 id="3">Options</h3>
-        <div>
-            <table>
-                <tr>
-                    <td class="translate">Hover details:</td>
-                    <td><input type="checkbox" class="option" id="hoverDetail"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Time format:</td>
-                    <td><select class="option input" id="timeFormat">
-                        <option value="" class="translate">Default</option>
-                        <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
-                        <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
-                        <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
-                        <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
-                        <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
-                        <option value="%H:%M:%S">HH:MM:SS</option>
-                        <option value="%H:%M">HH:MM</option>
-                        <option value="%d.%m.%y">dd.mm.yy</option>
-                        <option value="%d.%m">dd.mm</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">Smoothing:</td>
-                    <td><input type="text" class="option input" id="smoothing"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Width:</td>
-                    <td><input id="width" class="option input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Height:</td>
-                    <td><input id="height" class="option input"></td>
-                </tr>
-                <tr>
-                    <td class="translate">Chart type:</td>
-                    <td><select id="renderer" class="option input">
-                        <option value="line" class="translate">Line</option>
-                        <option value="area" class="translate">Area</option>
-                        <option value="bar" class="translate">Bar</option>
-                        <option value="lineplot" class="translate">Line plot</option>
-                        <option value="scatterplot" class="translate">Scatter plot</option>
-                        <option value="steps" class="translate">Steps</option>
-                        <!--<option value="pie" class="translate">Pie</option>-->
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate">No border:</td>
-                    <td><select class="option input" id="noBorder">
-                        <option value="" class="translate"></option>
-                        <option value="noborder" class="translate">yes</option>
-                    </select></td>
-                </tr>
-                <!--tr><td class="translate">Preview:</td><td>     <input type="checkbox" class="value" id="preview"></td></tr-->
-                <tr>
-                    <td class="translate">After comma:</td>
-                    <td><input type="text" class="option input" id="afterComma"></td>
-                </tr>
-                <!--<tr>-->
-                <!--<td class="translate">Fill range:</td>-->
-                <!--<td><input type="checkbox" class="option" id="fillRange"></td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td class="translate">Interpolation:</td>-->
-                <!--<td><input type="checkbox" class="option" id="interpolation"></td>-->
-                <!--</tr>-->
-                <tr>
-                    <td class="translate label">Predefined background:</td>
-                    <td><select class="input" id="pre_bg">
-                        <option value="" class="translate">User defined</option>
-                        <option value="0">Portrait</option>
-                        <option value="1">Instagram</option>
-                        <option value="2">ServQuick</option>
-                        <option value="3">Metallic Toad</option>
-                        <option value="4">Clouds</option>
-                        <option value="5">Mirage</option>
-                        <option value="6">Steel Gray</option>
-                        <option value="7">Horizon</option>
-                        <option value="8">Koko Caramel</option>
-                        <option value="9">Turquoise flow</option>
-                    </select></td>
-                </tr>
-                <tr>
-                    <td class="translate label">Background:</td>
-                    <td><input type="text" id="bg" class="option input"></td>
-                </tr>
-                <!--<tr>-->
-                <!--<td class="translate label">User defined names:</td>-->
-                <!--<td><input type="checkbox" id="names"></td>-->
-                <!--</tr>-->
-            </table>
+                <table style="margin-left: 25px">
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Title</td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Title:</td>
+                        <td><input type="text" id="title" class="option input"></td>
+                    </tr>
+                    <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
+                    <tr>
+                        <td class="translate">Title position:</td>
+                        <td><select class="option input" id="title_pos">
+                            <option value="" class="translate">none</option>
+                            <option value="top:35;left:65" class="translate">Top, left, inside</option>
+                            <option value="top:35;right:5" class="translate">Top, right, inside</option>
+                            <option value="top:35;left:50" class="translate">Top, center, inside</option>
+                            <option value="top:50;left:65" class="translate">Middle, left, inside</option>
+                            <option value="top:50;right:5" class="translate">Middle, right, inside</option>
+                            <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
+                            <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
+                            <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
+
+                            <option value="top:5;right:-5" class="translate">Top, right, outside</option>
+                            <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
+                            <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
+                            <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Title color:</td>
+                        <td><input type="text" id="titleColor" class="option input"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Title size:</td>
+                        <td><input type="text" id="titleSize" class="option input"></td>
+                    </tr>
+
+                </table>
+
+                <table style="margin-left: 25px">
+                    <td class="translate header" colspan="2" style="text-align: center">Options</td>
+                    <tr>
+                        <td class="translate">Show legend:</td>
+                        <td><select class="option input" id="legend">
+                            <option value="" class="translate">none</option>
+                            <option value="nw" class="translate">Top, left</option>
+                            <option value="ne" class="translate">Top, right</option>
+                            <option value="sw" class="translate">Bottom, left</option>
+                            <option value="se" class="translate">Bottom, right</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Hover details:</td>
+                        <td><input type="checkbox" class="option" id="hoverDetail"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Time format:</td>
+                        <td><select class="option input" id="timeFormat">
+                            <option value="" class="translate">Default</option>
+                            <option value="%H.%M %d.%m">HH:MM dd.mm</option>
+                            <option value="%H.%M <br> %d.%m">HH:MM / dd.mm</option>
+                            <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
+                            <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
+                            <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
+                            <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
+                            <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
+                            <option value="%H:%M %m.%d">HH:MM mm.dd</option>
+                            <option value="%H:%M:%S">HH:MM:SS</option>
+                            <option value="%H:%M">HH:MM</option>
+                            <option value="%d.%m.%y">dd.mm.yy</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Smoothing:</td>
+                        <td><input type="text" class="option input" id="smoothing"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">After comma:</td>
+                        <td><input type="text" class="option input" id="afterComma"></td>
+                    </tr>
+                </table>
         </div>
     </div>
 </div>
@@ -333,18 +303,18 @@
     <button style="padding-left:0" id="open" class="translateB">Open</button>
 </div>
 <button id="updatePreview" onclick="updatePreview()" style="width:100%;margin-bottom: 10px">update Preview</button>
-<iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 470px)" id="chart"></iframe>
+<iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 450px)" id="chart"></iframe>
 <div id="dialog-select-member" style="display:none"></div>
 <script>
     "use strict";
 
     var systemDictionary = {
         "Input data": {"en": "Input data", "de": "Input data", "ru": "Входные данные"},
-        "Legend and Axes": {"en": "Legend and Axes", "de": "Legend and Axes", "ru": "Легенда и оси"},
-        "Names": {"en": "Names", "de": "Names", "ru": "Имена графиков"},
-        "Colors": {"en": "Colors", "de": "Colors", "ru": "Цвета графиков"},
+//        "Legend and Axes": {"en": "Legend and Axes", "de": "Legend and Axes", "ru": "Легенда и оси"},
+//        "Names": {"en": "Names", "de": "Names", "ru": "Имена графиков"},
+//        "Colors": {"en": "Colors", "de": "Colors", "ru": "Цвета графиков"},
         "Options": {"en": "Options", "de": "Options", "ru": "Опции"},
-        "Datapoints:": {"en": "Datapoints:", "de": "Datapoints:", "ru": "Данные:"},
+//        "Datapoints:": {"en": "Datapoints:", "de": "Datapoints:", "ru": "Данные:"},
         "Range:": {"en": "Range:", "de": "Range:", "ru": "Интервал:"},
         "10 Minutes": {"en": "10 Minutes", "de": "10 Minutes", "ru": "10 Минут"},
         "30 Minutes": {"en": "30 Minutes", "de": "30 Minutes", "ru": "30 Минут"},
@@ -366,16 +336,16 @@
         "2 Years": {"en": "2 Years", "de": "2 Years", "ru": "2 года"},
         "Width:": {"en": "Width:", "de": "Width:", "ru": "Ширина:"},
         "Height:": {"en": "Height:", "de": "Height:", "ru": "Выстоа:"},
-        "Chart type:": {"en": "Chart type:", "de": "Chart type:", "ru": "Тип графика:"},
+//        "Chart type:": {"en": "Chart type:", "de": "Chart type:", "ru": "Тип графика:"},
         "Line": {"en": "Line", "de": "Linie", "ru": "Линия"},
         "Area": {"en": "Area", "de": "Area", "ru": "Область"},
         "Bar": {"en": "Bar", "de": "Bar", "ru": "Bar"},
         "Line plot": {"en": "Line plot", "de": "Line plot", "ru": "Линия с точками"},
         "Scatter plot": {"en": "Scatter plot", "de": "Scatter plot", "ru": "Точки"},
         "Stack": {"en": "Stack", "de": "Stack", "ru": "Stack"},
-        "Show axis bottom:": {"en": "Show axis bottom:", "de": "Show axis bottom:", "ru": "Показать нижнюю ось:"},
-        "Show axis left:": {"en": "Show axis left:", "de": "Show axis left:", "ru": "Показать ось слева:"},
-        "Show axis right:": {"en": "Show axis right:", "de": "Show axis right:", "ru": "Показать ось справа:"},
+//        "Show axis bottom:": {"en": "Show axis bottom:", "de": "Show axis bottom:", "ru": "Показать нижнюю ось:"},
+//        "Show axis left:": {"en": "Show axis left:", "de": "Show axis left:", "ru": "Показать ось слева:"},
+//        "Show axis right:": {"en": "Show axis right:", "de": "Show axis right:", "ru": "Показать ось справа:"},
         "Show legend:": {"en": "Show legend:", "de": "Show legend:", "ru": "Показать легенду:"},
         "Title:": {"en": "Title:", "de": "Title:", "ru": "Название:"},
         "Title position:": {"en": "Title position:", "de": "Title position:", "ru": "Позиция названия:"},
@@ -431,8 +401,8 @@
             "de": "Bottom, center, outside",
             "ru": "Снизу, по центру, снаружи"
         },
-        "Minimum:": {"en": "Minimum:", "de": "Minimum:", "ru": "Минимум:"},
-        "Maximum:": {"en": "Maximum:", "de": "Maximum:", "ru": "Максимум:"},
+        "Min:": {"en": "Minimum:", "de": "Minimum:", "ru": "Минимум:"},
+        "Max:": {"en": "Maximum:", "de": "Maximum:", "ru": "Максимум:"},
         "User defined names:": {
             "en": "User defined names:",
             "de": "User defined names:",
@@ -445,19 +415,19 @@
         },
         "User defined": {"en": "User defined", "de": "User defined", "ru": "Пользовательские"},
         "Background:": {"en": "Background:", "de": "Background:", "ru": "Фон:"},
-        "Palette:": {"en": "Palette:", "de": "Palette:", "ru": "Палитра:"},
-        "Line thick:": {"en": "Line thick:", "de": "Line thick:", "ru": "Толщина линии:"},
+//        "Palette:": {"en": "Palette:", "de": "Palette:", "ru": "Палитра:"},
+//        "Line thick:": {"en": "Line thick:", "de": "Line thick:", "ru": "Толщина линии:"},
         "Hover details:": {"en": "Hover details:", "de": "Hover details:", "ru": "Показывать подсказку:"},
         "Time format:": {"en": "Time format:", "de": "Time format:", "ru": "Формат времени:"},
         "Default": {"en": "Default", "de": "Default", "ru": "по умолчанию"},
         "Smoothing:": {"en": "Smoothing:", "de": "Smoothing:", "ru": "Сглаживание:"},
-        "Interpolation:": {"en": "Interpolation:", "de": "Interpolation:", "ru": "Интерполяция:"},
-        "default": {"en": "default", "de": "default", "ru": "по умолчанию"},
-        "linear": {"en": "linear", "de": "linear", "ru": "линейная"},
-        "step-after": {"en": "step-after", "de": "step-after", "ru": "step-after"},
-        "cardinal": {"en": "cardinal", "de": "cardinal", "ru": "cardinal"},
-        "basis": {"en": "basis", "de": "basis", "ru": "basis"},
-        "Preview:": {"en": "Preview:", "de": "Preview:", "ru": "Изменение интервала:"},
+
+//        "default": {"en": "default", "de": "default", "ru": "по умолчанию"},
+//        "linear": {"en": "linear", "de": "linear", "ru": "линейная"},
+//        "step-after": {"en": "step-after", "de": "step-after", "ru": "step-after"},
+//        "cardinal": {"en": "cardinal", "de": "cardinal", "ru": "cardinal"},
+//        "basis": {"en": "basis", "de": "basis", "ru": "basis"},
+//        "Preview:": {"en": "Preview:", "de": "Preview:", "ru": "Изменение интервала:"},
         "After comma:": {"en": "After comma:", "de": "After comma:", "ru": "Чисел после запятой:"},
         "Open": {"en": "Open", "de": "Open", "ru": "Показать"},
         "Reset settings": {"en": "Reset settings", "de": "Reset settings", "ru": "Сбросить настройки"},
@@ -471,18 +441,18 @@
         "Role": {"en": "Role", "de": "Rolle", "ru": "Роль"},
         "Room": {"en": "Room", "de": "Raum", "ru": "Комната"},
         "Value": {"en": "Value", "de": "Wert", "ru": "Значение"},
-        "Type": {"en": "Type", "de": "Typ", "ru": "Тип"},
+//        "Type": {"en": "Type", "de": "Typ", "ru": "Тип"},
         "From": {"en": "From: ", "de": "Von", "ru": "От"},
         "Last changed": {"en": "Last changed", "de": "Lätze Änderung", "ru": "Изменён"},
         "Time stamp": {"en": "Time stamp", "de": "Zeitstempel", "ru": "Время"},
         "Acknowledged": {"en": "Acknowledged", "de": "Bestätigt", "ru": "Подтверждён"},
-        "common": {"en": "common", "de": "allgemein", "ru": "Общие параметры"},
-        "native": {"en": "native", "de": "nativ", "ru": "Уникальные параметры"},
-        "rest": {
-            "en": "rest (read only)",
-            "de": "weitere (nur lesend)",
-            "ru": "Остальные параметры(только для чтения)"
-        },
+//        "common": {"en": "common", "de": "allgemein", "ru": "Общие параметры"},
+//        "native": {"en": "native", "de": "nativ", "ru": "Уникальные параметры"},
+//        "rest": {
+//            "en": "rest (read only)",
+//            "de": "weitere (nur lesend)",
+//            "ru": "Остальные параметры(только для чтения)"
+//        },
         "Edit": {"en": "Edit", "de": "Editieren", "ru": "Edit"},
         "Members": {"en": "Members", "de": "Mitglied", "ru": "Объекты"},
         "Loading...": {"en": "Loading...", "de": "Lade...", "ru": "Загрузка..."},
@@ -511,16 +481,12 @@
         "right": {"en": "right", "de": "rechts", "ru": "справа"},
         "No border:": {"en": "No border:", "de": "Kein Rahmen:", "ru": "Без рамки:"},
 
-
         "Zeit": {"en": "Zeit", "de": "Zeit", "ru": "Zeit"},
         "Range Typ:": {"en": "Range Typ:", "de": "Range Typ:", "ru": "Range Typ:"},
         "Day": {"en": "Day", "de": "Day", "ru": "Day"},
         "Month": {"en": "Month", "de": "Month", "ru": "Month"},
         "Year": {"en": "Year", "de": "Year", "ru": "Year"},
         "Individual": {"en": "Individual", "de": "Individual", "ru": "Individual"},
-        "same Day:": {"en": "same Day:", "de": "same Day:", "ru": "same Day:"},
-        "same Month:": {"en": "same Month:", "de": "same Month:", "ru": "same Month:"},
-        "same Year:": {"en": "same Year:", "de": "same Year:", "ru": "same Year:"},
         "Art:": {"en": "Art:", "de": "Art:", "ru": "Art:"},
         "relative": {"en": "relative", "de": "relative", "ru": "relative"},
         "static": {"en": "static", "de": "static", "ru": "static"},
@@ -533,11 +499,24 @@
         "Aggregate": {"en": "Aggregate", "de": "Aggregate", "ru": "Aggregate"},
         "Schritt Type:": {"en": "Schritt Type:", "de": "Schritt Type:", "ru": "Schritt Type:"},
         "seconds": {"en": "seconds", "de": "seconds", "ru": "seconds"},
-        "counts": {"en": "counts", "de": "counts", "ru": "counts"},
         "Schrittweite:": {"en": "Schrittweite:", "de": "Schrittweite:", "ru": "Schrittweite:"},
         "Link": {"en": "Link", "de": "Link", "ru": "Link"},
         "Counts": {"en": "Counts", "de": "Counts", "ru": "Counts"},
         "ignore 'null':": {"en": "ignore 'null':", "de": "ignore 'null':", "ru": "ignore 'null':"},
+
+        "Time Span": {"en": "Time Span", "de": "Zeit Spanne", "ru": "Time Span"},
+        "Appearance": {"en": "Appearance", "de": "Erscheinung", "ru": "Appearance"},
+        "Title": {"en": "Title", "de": "Title", "ru": "Title"},
+        "Offset": {"en": "Offset", "de": "Offset", "ru": "Offset"},
+        "Art": {"en": "Art", "de": "Art", "ru": "Art"},
+        "Chart Type": {"en": "Chart Type", "de": "Chart Type", "ru": "Chart Type"},
+        "Color": {"en": "Color", "de": "Color", "ru": "Color"},
+        "Min": {"en": "Min", "de": "Min", "ru": "Min"},
+        "Max": {"en": "Max", "de": "Max", "ru": "Max"},
+        "Unit": {"en": "Unit", "de": "Unit", "ru": "Unit"},
+        "Y Axe": {"en": "Y Axe", "de": "Y Axe", "ru": "Y Axe"},
+        "X Axe": {"en": "X Axe", "de": "X Axe", "ru": "X Axe"},
+
     };
 
 
@@ -606,17 +585,19 @@
         setTimeout(function () {
             var text = '<tr style="text-align: center">' +
                     '<td></td>' +
-                    '<td>ID</td>' +
-                    '<td></td>' +
-                    '<td>Offset</td>' +
-                    '<td>Art</td>' +
-                    '<td>Color</td>' +
-                    '<td>Min</td>' +
-                    '<td>Max</td>' +
-                    '<td>Unit</td>' +
-                    '<td>Axe</td>' +
-                    '<td>D</td>' +
-                    '<td>Name</td></tr>';
+                    '<td >'+_('ID')+'</td>' +
+                    '<td ></td>' +
+                    '<td >'+_('Offset')+'</td>' +
+                    '<td >'+_('Art')+'</td>' +
+                    '<td >'+_('Chart Type')+'</td>' +
+                    '<td >'+_('Color')+'</td>' +
+                    '<td >'+_('Min')+'</td>' +
+                    '<td >'+_('Max')+'</td>' +
+                    '<td >'+_('Unit')+'</td>' +
+                    '<td >'+_('Y Axe')+'</td>' +
+                    '<td >'+_('X Axe')+'</td>' +
+                    '<td >&#216</td>' +
+                    '<td >'+_('Name')+'</td></tr>';
 
             for (var i= 0; i < setup.options.lines.length; i++) {
                 var index = setup.options.lines[i]
@@ -626,49 +607,68 @@
                         '<td style="padding-left: 4px; display:"><input data-option="id" class="input inputData_id idsnames options_lines" style="display: inline; width: 200px" value="' + index.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
                         '<td style="padding-left:5px">' +
                         '<select class="input inputData_offset options_lines" style="width: 70px"  data-option="offset"> ' +
-                        '<option value="0" class="translate">0s</option> ' +
-                        '<option value="10" class="translate">10s</option>' +
-                        '<option value="30" class="translate">30s</option>' +
-                        '<option value="60" class="translate">60s</option>' +
-                        '<option value="120" class="translate">2m</option>' +
-                        '<option value="180" class="translate">3m</option>' +
-                        '<option value="240" class="translate">4m</option>' +
-                        '<option value="300" class="translate">5m</option>' +
-                        '<option value="600" class="translate">10m</option>' +
-                        '<option value="900" class="translate">15m</option>' +
-                        '<option value="1800" class="translate">30m</option>' +
-                        '<option value="2700" class="translate">45m</option>' +
-                        '<option value="3600" class="translate">1S</option>' +
-                        '<option value="7200" class="translate">2S</option>' +
-                        '<option value="21600" class="translate">6S</option>' +
-                        '<option value="43200" class="translate">12S</option>' +
-                        '<option value="86400" class="translate">1T</option>' +
-                        '<option value="172800" class="translate">2T</option>' +
-                        '<option value="259200" class="translate">3T</option>' +
-                        '<option value="345600" class="translate">4T</option>' +
-                        '<option value="604800" class="translate">1W</option>' +
-                        '<option value="1209600" class="translate">2W</option>' +
-                        '<option value="2419200" class="translate">4W</option>' +
-                        '<option value="30758400" class="translate">1J</option>' +
-                        '<option value="61516800" class="translate">2J</option>' +
+                            '<option value="0" class="translate">0s</option> ' +
+                            '<option value="10" class="translate">10s</option>' +
+                            '<option value="30" class="translate">30s</option>' +
+                            '<option value="60" class="translate">60s</option>' +
+                            '<option value="120" class="translate">2m</option>' +
+                            '<option value="180" class="translate">3m</option>' +
+                            '<option value="240" class="translate">4m</option>' +
+                            '<option value="300" class="translate">5m</option>' +
+                            '<option value="600" class="translate">10m</option>' +
+                            '<option value="900" class="translate">15m</option>' +
+                            '<option value="1800" class="translate">30m</option>' +
+                            '<option value="2700" class="translate">45m</option>' +
+                            '<option value="3600" class="translate">1S</option>' +
+                            '<option value="7200" class="translate">2S</option>' +
+                            '<option value="21600" class="translate">6S</option>' +
+                            '<option value="43200" class="translate">12S</option>' +
+                            '<option value="86400" class="translate">1T</option>' +
+                            '<option value="172800" class="translate">2T</option>' +
+                            '<option value="259200" class="translate">3T</option>' +
+                            '<option value="345600" class="translate">4T</option>' +
+                            '<option value="604800" class="translate">1W</option>' +
+                            '<option value="1209600" class="translate">2W</option>' +
+                            '<option value="2419200" class="translate">4W</option>' +
+                            '<option value="30758400" class="translate">1J</option>' +
+                            '<option value="61516800" class="translate">2J</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width: 90px" data-option="art" class="input inputData_art options_lines">' +
-                        '<option value="average" class="translate">average</option>' +
-                        '<option value="max" class="translate">max</option>' +
-                        '<option value="min" class="translate">min</option>' +
-                        '<option value="total" class="translate">total</option>' +
+                            '<option value="average" class="translate">average</option>' +
+                            '<option value="max" class="translate">max</option>' +
+                            '<option value="min" class="translate">min</option>' +
+                            '<option value="total" class="translate">total</option>' +
                         '</select>' +
                         '</td>' +
+                        '<td><select style="width: 120px" data-option="chartType" class="input options_lines">'+
+                            '<option value="line" class="translate">Line</option>'+
+                            '<option value="area" class="translate">Area</option>'+
+                            '<!--<option value="bar" class="translate">Bar</option>-->'+
+                            '<option value="lineplot" class="translate">Line plot</option>'+
+                            '<option value="scatterplot" class="translate">Scatter plot</option>'+
+                            '<option value="steps" class="translate">Steps</option>'+
+                            '<!--<option value="pie" class="translate">Pie</option>-->'+
+                        '</select></td>'+
                         '<td style="padding-left:5px"><input data-option="color"  style="width:  70px"  class="inputData_color options_lines" value="' + index.color + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="min"  style="width:  70px"  class="inputData_min   options_lines"   value="' + index.min + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="max"  style="width:  70px"  class="inputData_max   options_lines"   value="' + index.max + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="unit"  style="width:  70px"  class="inputData_unit  options_lines"  value="' + index.unit + '"></td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width:  70px" data-option="axe" class="input options_lines">' +
-                        '<option value="off" class="translate">off</option>' +
-                        '<option value="left" class="translate">left</option>' +
-                        '<option value="right" class="translate">right</option>' +
+                        '<select style="width:  140px" data-option="yaxe" class="input options_lines">' +
+                            '<option value="off" class="translate">off</option>' +
+                            '<option value="left" class="translate">left</option>' +
+                            '<option value="right" class="translate">right</option>' +
+                            '<option value="leftColor" class="translate">left colored</option>' +
+                            '<option value="rightColor" class="translate">right colored</option>' +
+                        '</select></td>' +
+                        '<td style="padding-left:5px">' +
+                        '<select style="width:  140px" data-option="xaxe" class="input options_lines">' +
+                            '<option value="off" class="translate">off</option>' +
+                            '<option value="top" class="translate">top</option>' +
+                            '<option value="bottom" class="translate">bottom</option>' +
+                            '<option value="topColor" class="translate">top colored</option>' +
+                            '<option value="bottomColor" class="translate">bottom colored</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px"><input data-option="thickness" class="inputData_thickness options_lines"  style="width: 30px"   value="' + index.thickness + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="name" class="inputData_name options_lines"       style="width: 200px"  value="' + index.name + '"></td>' +
@@ -995,9 +995,9 @@
 
 
 
-        //    translateAll();
+            translateAll();
 
-//    update();
+    update();
 
 
 
