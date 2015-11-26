@@ -15,7 +15,6 @@
 
     <script type="text/javascript" src="/_socket/info.js"></script>
     <script type="text/javascript" src="js/words.js"></script>
-    <!--this file must be after translate.js -->
 
     <style>
         .input {
@@ -59,13 +58,12 @@
         <div>
             <table>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="7">
+
                         <button style="margin-left: 1px" id="ids_add" class="translateB">Add new line</button>
                         <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
+                        <span class="translate" style="padding-left: 20px">Auto-update:</span><input type="checkbox" id="autoUpdate"/>
                     </td>
-                    <td>
-                    </td>
-
                 </tr>
                 <tr>
                     <td colspan="7">
@@ -75,15 +73,15 @@
 
                 <!--<tr>-->
                 <!--<td class="translate label">same Day:</td>-->
-                <!--<td><input type="checkbox" id="sameDay" class="value input"></td>-->
+                <!--<td><input type="checkbox" id="sameDay" class="value"></td>-->
                 <!--</tr>-->
                 <!--<tr>-->
                 <!--<td class="translate label">same Month:</td>-->
-                <!--<td><input type="checkbox" id="sameMonth" class="value input"></td>-->
+                <!--<td><input type="checkbox" id="sameMonth" class="value"></td>-->
                 <!--</tr>-->
                 <!--<tr>-->
                 <!--<td class="translate label">same Year:</td>-->
-                <!--<td><input type="checkbox" id="sameYear" class="value input"></td>-->
+                <!--<td><input type="checkbox" id="sameYear" class="value"></td>-->
                 <!--</tr>-->
 
 
@@ -97,14 +95,14 @@
                 </tr>
                 <tr>
                     <td class="translate">Art:</td>
-                    <td><select id="timeArt" class="input option">
+                    <td><select id="timeArt" class="input value">
                         <option value="relative" class="translate">relative</option>
                         <option value="static" class="translate">static</option>
                     </select></td>
                 </tr>
                 <tr class="relative">
                     <td class="translate">End:</td>
-                    <td><select id="relativeEnd" class="input option">
+                    <td><select id="relativeEnd" class="input value">
                         <option value="now" class="translate">now</option>
                         <option value="today" class="translate">today</option>
                         <option value="month" class="translate">this month</option>
@@ -113,7 +111,7 @@
                 </tr>
                 <tr class="relative">
                     <td class="translate">Range:</td>
-                    <td><select id="range" class="option input">
+                    <td><select id="range" class="value input">
                         <option value="10" class="translate">10 Minutes</option>
                         <option value="30" class="translate">30 Minutes</option>
                         <option value="60" class="translate">1 Hour</option>
@@ -136,16 +134,16 @@
                 </tr>
                 <tr class="relative">
                     <td class="translate">Live:</td>
-                    <td><input type="checkbox" class="option" id="live"></td>
+                    <td><input type="checkbox" class="value" id="live"></td>
                 </tr>
 
                 <tr class="static">
                     <td class="translate">Start:</td>
-                    <td><input type="date" id="start" class="option input"></td>
+                    <td><input type="date" id="start" class="value input"></td>
                 </tr>
                 <tr class="static">
                     <td class="translate">End:</td>
-                    <td><input type="date" id="end" class="option input"></td>
+                    <td><input type="date" id="end" class="value input"></td>
                 </tr>
             </table>
             <table style="margin-left: 25px">
@@ -154,18 +152,18 @@
                 </tr>
                 <tr>
                     <td class="translate ">Step type:</td>
-                    <td><select id="aggregateType" class="option input">
+                    <td><select id="aggregateType" class="value input">
                         <option value="step" class="translate">seconds</option>
                         <option value="count" class="translate">counts</option>
                     </select></td>
                 </tr>
                 <tr>
                     <td class="translate" id="spanName">Step span:</td>
-                    <td><input id="aggregateSpan" value="300" class="option input"></td>
+                    <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
                 <tr>
                     <td class="translate label">ignore 'null':</td>
-                    <td><input type="checkbox" id="getNull" class="option input"></td>
+                    <td><input type="checkbox" id="getNull" class="value"></td>
                 </tr>
             </table>
         </div>
@@ -177,38 +175,43 @@
                         <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
                     <tr>
                         <td class="translate">Width:</td>
-                        <td><input id="width" class="option input"></td>
+                        <td><input id="width" class="value input"></td>
                     </tr>
                     <tr>
                         <td class="translate">Height:</td>
-                        <td><input id="height" class="option input"></td>
+                        <td><input id="height" class="value input"></td>
                     </tr>
                     <tr>
                         <td class="translate">No border:</td>
-                        <td><select class="option input" id="noBorder">
+                        <td><select class="value input" id="noBorder">
                             <option value="" class="translate"></option>
                             <option value="noborder" class="translate">yes</option>
                         </select></td>
                     </tr>
-                    <!--<tr>-->
-                        <!--<td class="translate label">Predefined background:</td>-->
-                        <!--<td><select class="input" id="pre_bg">-->
-                            <!--<option value="" class="translate">User defined</option>-->
-                            <!--<option value="0">Portrait</option>-->
-                            <!--<option value="1">Instagram</option>-->
-                            <!--<option value="2">ServQuick</option>-->
-                            <!--<option value="3">Metallic Toad</option>-->
-                            <!--<option value="4">Clouds</option>-->
-                            <!--<option value="5">Mirage</option>-->
-                            <!--<option value="6">Steel Gray</option>-->
-                            <!--<option value="7">Horizon</option>-->
-                            <!--<option value="8">Koko Caramel</option>-->
-                            <!--<option value="9">Turquoise flow</option>-->
-                        <!--</select></td>-->
-                    <!--</tr>-->
+                    <tr>
+                        <td class="translate label">Custom background:</td>
+                        <td>
+                            <input type="checkbox" id="bg_custom">
+                        </td>
+                    </tr>
                     <tr>
                         <td class="translate label">Background:</td>
-                        <td><input type="text" id="bg" class="option input"></td>
+                        <td>
+                            <select id="bg_predefined">
+                                <option value="" class="translate">default</option>
+                                <option value="0">Portrait</option>
+                                <option value="1">Instagram</option>
+                                <option value="2">ServQuick</option>
+                                <option value="3">Metallic Toad</option>
+                                <option value="4">Clouds</option>
+                                <option value="5">Mirage</option>
+                                <option value="6">Steel Gray</option>
+                                <option value="7">Horizon</option>
+                                <option value="8">Koko Caramel</option>
+                                <option value="9">Turquoise flow</option>
+                            </select>
+                            <input type="text" id="bg" class="value input" style="display:none">
+                        </td>
                     </tr>
                     </table>
 
@@ -219,12 +222,12 @@
                     </tr>
                     <tr>
                         <td class="translate">Title:</td>
-                        <td><input type="text" id="title" class="option input"></td>
+                        <td><input type="text" id="title" class="value input"></td>
                     </tr>
                     <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
                     <tr>
                         <td class="translate">Title position:</td>
-                        <td><select class="option input" id="titlePos">
+                        <td><select class="value input" id="titlePos">
                             <option value="" class="translate">none</option>
                             <option value="top:35;left:65" class="translate">Top, left, inside</option>
                             <option value="top:35;right:5" class="translate">Top, right, inside</option>
@@ -243,11 +246,11 @@
                     </tr>
                     <tr>
                         <td class="translate">Title color:</td>
-                        <td><input type="text" id="titleColor" class="option input"></td>
+                        <td><input type="text" id="titleColor" class="value input"></td>
                     </tr>
                     <tr>
                         <td class="translate">Title size:</td>
-                        <td><input type="text" id="titleSize" class="option input"></td>
+                        <td><input type="text" id="titleSize" class="value input"></td>
                     </tr>
 
                 </table>
@@ -256,7 +259,7 @@
                     <td class="translate header" colspan="2" style="text-align: center">Options</td>
                     <tr>
                         <td class="translate">Show legend:</td>
-                        <td><select class="option input" id="legend">
+                        <td><select class="value input" id="legend">
                             <option value="" class="translate">none</option>
                             <option value="nw" class="translate">Top, left</option>
                             <option value="ne" class="translate">Top, right</option>
@@ -266,11 +269,11 @@
                     </tr>
                     <tr>
                         <td class="translate">Hover details:</td>
-                        <td><input type="checkbox" class="option" id="hoverDetail"></td>
+                        <td><input type="checkbox" class="value" id="hoverDetail"></td>
                     </tr>
                     <tr>
                         <td class="translate">Time format:</td>
-                        <td><select class="option input" id="timeFormat">
+                        <td><select class="value input" id="timeFormat">
                             <option value="" class="translate">Default</option>
                             <option value="%H.%M %d.%m">HH:MM dd.mm</option>
                             <option value="%H.%M <br> %d.%m">HH:MM / dd.mm</option>
@@ -287,11 +290,15 @@
                     </tr>
                     <tr>
                         <td class="translate">Smoothing:</td>
-                        <td><input type="text" class="option input" id="smoothing"></td>
+                        <td><input type="text" class="value input" id="smoothing"></td>
                     </tr>
                     <tr>
                         <td class="translate">After comma:</td>
-                        <td><input type="text" class="option input" id="afterComma"></td>
+                        <td><input type="text" class="value input" id="afterComma"></td>
+                    </tr>
+                    <tr>
+                        <td class="translate">Use comma:</td>
+                        <td><input type="checkbox" class="value" id="useComma"></td>
                     </tr>
                 </table>
         </div>
@@ -302,36 +309,35 @@
     <textarea id="link" style="width: calc(100% - 130px); height: 55px; word-break: break-all"></textarea>
     <button style="padding-left:0" id="open" class="translateB">Open</button>
 </div>
-<button id="updatePreview" class="translateB" onclick="updatePreview()" style="width:100%;margin-bottom: 10px">update Preview</button>
+<button id="updatePreview" class="translateB" style="width:100%;margin-bottom: 10px">update Preview</button>
 <iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 450px)" id="chart"></iframe>
 <div id="dialog-select-member" style="display:none"></div>
 <script>
     "use strict";
 
     var defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
+    var instances   = [];
+    var timer       = null;
+    var showTimer   = null;
 
-    var objects = {};
-    var states  = {};
-    var timer   = null;
-
-    var setup   = {
+    var setup       = {
         options: {
             lines: [
                 {
-                    id:     '',
-                    offset: 0,
-                    art:    'average',
-                    color:  '#FF0000',
-                    min:    '',
-                    max:    '',
-                    thickness: 3,
-                    unit:   '',
-                    name:   ''
+                    id:         '',
+                    instance:   '',
+                    offset:     0,
+                    art:        'average',
+                    color:      '#FF0000',
+                    min:        '',
+                    max:        '',
+                    thickness:  3,
+                    unit:       '',
+                    name:       ''
                 }
             ]
         }
     };
-
 
     if (typeof sysLang !== 'undefined') systemLang = sysLang || 'en';
 
@@ -345,9 +351,9 @@
         },
         noMultiselect: true,
         connCfg: {
-            socketUrl: socketUrl,
-            socketSession: socketSession,
-            socketName: 'rickshawEdit'
+            socketUrl:      socketUrl,
+            socketSession:  socketSession,
+            socketName:     'rickshawEdit'
         },
         columns: ['name', 'role', 'room', 'value'],
         texts: {
@@ -374,6 +380,7 @@
                     '<td></td>' +
                     '<td >'+_('ID')+'</td>' +
                     '<td ></td>' +
+                    '<td >'+_('Instance')+'</td>' +
                     '<td >'+_('Offset')+'</td>' +
                     '<td >'+_('Art')+'</td>' +
                     '<td >'+_('Chart Type')+'</td>' +
@@ -383,17 +390,23 @@
                     '<td >'+_('Unit')+'</td>' +
                     '<td >'+_('Y Axis')+'</td>' +
                     '<td >'+_('X Axis')+'</td>' +
-                    '<td >&#216</td>' +
+                    '<td >&#216</td>' + // diameter
                     '<td >'+_('Name')+'</td></tr>';
 
+            var textInstances = '<option value="">' + _('default') + '</option>\n';
+            for (var t = 0; t < instances.length; t++) {
+                textInstances += '<option value="' + instances[t] + '">' + instances[t] + '</option>\n';
+            }
+
             for (var i= 0; i < setup.options.lines.length; i++) {
-                var index = setup.options.lines[i]
+                var index = setup.options.lines[i];
 
                 text += '<tr id="inputData' + i + '" class="inputData">' +
                         '<td class="label" style="width: 60px; min-width: 60px">' + _('Line') + ' ' + (i + 1) + '</td>' +
-                        '<td style="padding-left: 4px; display:"><input data-option="id" class="input inputData_id idsnames options_lines" style="display: inline; width: 200px" value="' + index.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
-                        '<td style="padding-left:5px">' +
-                        '<select class="input inputData_offset options_lines" style="width: 70px"  data-option="offset"> ' +
+                        '<td style="padding-left: 4px; display:"><input data-option="id" data-index="' + i + '" class="input options-lines ids" style="display: inline; width: 200px" value="' + index.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
+                        '<td style="padding-left: 4px; display:"><select data-option="instance" data-index="' + i + '" class="input options-lines" style="display: inline; value="' + (index.instance || '') + '">' + textInstances + '</select></td>' +
+                        '<td style="padding-left: 5px">' +
+                        '<select class="input options-lines" style="width: 70px" data-index="' + i + '" data-option="offset"> ' +
                             '<option value="0">' + _("0s") + '</option> ' +
                             '<option value="10">' + _("10s") + '</option>' +
                             '<option value="30">' + _("30s") + '</option>' +
@@ -417,18 +430,21 @@
                             '<option value="604800">' + _("1W") + '</option>' +
                             '<option value="1209600">' + _("2W") + '</option>' +
                             '<option value="2419200">' + _("4W") + '</option>' +
+                            '<option value="4838400">' + _("8W") + '</option>' +
+                            '<option value="7257600">' + _("12W") + '</option>' +
+                            '<option value="15724800">' + _("26W") + '</option>' +
                             '<option value="30758400">' + _("1Y") + '</option>' +
                             '<option value="61516800">' + _("2Y") + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width: 90px" data-option="art" class="input inputData_art options_lines">' +
+                        '<select style="width: 90px" data-option="art" class="input options-lines" data-index="' + i + '">' +
                             '<option value="average">' + _("average") + '</option>' +
                             '<option value="max">' + _("max") + '</option>' +
                             '<option value="min">' + _("min") + '</option>' +
                             '<option value="total">' + _("total") + '</option>' +
                         '</select>' +
                         '</td>' +
-                        '<td><select style="width: 120px" data-option="chartType" class="input options_lines">'+
+                        '<td><select style="width: 120px" data-option="chartType" class="input options-lines" data-index="' + i + '">'+
                             '<option value="line">' + _("Line") + '</option>'+
                             '<option value="area">' + _("Area") + '</option>'+
                             '<!--<option value="bar">' + _("Bar") + '</option>-->'+
@@ -437,12 +453,13 @@
                             '<option value="steps">' + _("Steps") + '</option>'+
                             '<!--<option value="pie">' + _("Pie") + '</option>-->'+
                         '</select></td>'+
-                        '<td style="padding-left:5px"><input data-option="color"  style="width:  70px"  class="inputData_color options_lines" value="' + index.color + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="min"  style="width:  70px"  class="inputData_min   options_lines"   value="' + index.min + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="max"  style="width:  70px"  class="inputData_max   options_lines"   value="' + index.max + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="unit"  style="width:  70px"  class="inputData_unit  options_lines"  value="' + index.unit + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="color" style="width: 70px" data-index="' + i + '" class="input-color options-lines" value="' + index.color + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="min"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.min   + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="max"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.max   + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="unit"  style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.unit  + '"></td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width:  140px" data-option="yaxe" class="input options_lines">' +
+                        '<select style="width:  140px" data-option="yaxe" class="input options-lines" data-index="' + i + '">' +
+                            '<option value="">' + _("default") + '</option>' +
                             '<option value="off">' + _("off") + '</option>' +
                             '<option value="left">' + _("left") + '</option>' +
                             '<option value="right">' + _("right") + '</option>' +
@@ -450,50 +467,40 @@
                             '<option value="rightColor">' + _("right colored") + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width:  140px" data-option="xaxe" class="input options_lines">' +
+                        '<select style="width:  140px" data-option="xaxe" class="input options-lines" data-index="' + i + '">' +
+                            '<option value="">' + _("default") + '</option>' +
                             '<option value="off">' + _("off") + '</option>' +
                             '<option value="top">' + _("top") + '</option>' +
                             '<option value="bottom">' + _("bottom") + '</option>' +
                             '<option value="topColor">' + _("top colored") + '</option>' +
                             '<option value="bottomColor">' + _("bottom colored") + '</option>' +
                         '</select></td>' +
-                        '<td style="padding-left:5px"><input data-option="thickness" class="inputData_thickness options_lines"  style="width: 30px"   value="' + index.thickness + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="name" class="inputData_name options_lines"       style="width: 200px"  value="' + index.name + '"></td>' +
-                        '<td style="padding-left:5px"><button class="idRemove"></button></td>' +
-                        '</tr>'
-
+                        '<td style="padding-left:5px"><input data-option="thickness" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.thickness + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="name"      class="options-lines"       data-index="' + i + '" style="width: 200px"  value="' + index.name + '"></td>' +
+                        '<td style="padding-left:5px"><button class="idRemove" data-index="' + i + '"></button></td>' +
+                        '</tr>';
             }
 
             $('#idslist').html(text);
 
-//            $('.idsnames').change(function () {
-//                var id = $(this).attr('id').substring('ids_'.length);
-//                ids[id] = $(this).val();
-//                update();
-//            }).keyup(function () {
-//                $(this).trigger('change');
-//            });
-
-            $('.inputData_color').colorPicker({
+            $('.input-color').colorPicker({
                 renderCallback: function ($elm, toggled) {
                     if (toggled === false) {
-                        $elm.trigger("change")
+                        $elm.trigger('change');
                     }
                 }
-            })
-
+            });
 
             $('.idRemove').button({
                 icons: {primary: 'ui-icon-trash'},
                 text: false
             }).click(function () {
                 if (setup.options.lines.length > 1) {
-                    var i = parseInt($(this).parent().parent().attr("id").replace("inputData", ''));
-                    setup.options.lines.splice(i, 1)
-                    showIds()
+                    var i = parseInt($(this).parent().parent().attr('id').replace('inputData', ''));
+                    setup.options.lines.splice(i, 1);
+                    showIds();
                 }
             }).css({width: 22, height: 22});
-
 
             $('.select-dialog').button({
                 text: false,
@@ -502,17 +509,18 @@
                 }
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
-                $('#dialog-select-member').selectId('show', setup.options.lines[index]['id'], undefined, function (newId) {
-                    setup.options.lines[index]['id'] = newId;
-                    showIds()
+                $('#dialog-select-member').selectId('show', setup.options.lines[index].id, undefined, function (newId) {
+                    setup.options.lines[index].id = newId;
+                    $('.ids[data-index="' + index + '"').val(newId).trigger('change');
+                    showIds();
                 });
-
             });
 
-            $('.options_lines').each(function () {
+            $('.options-lines').each(function () {
                 var $this = $(this);
-                var index = $(this).parent().parent().attr('id').replace('inputData','');
-                var opt = $(this).data('option')
+                var index = $(this).parent().parent().attr('id').replace('inputData', '');
+                var opt   = $(this).data('option');
+
                 if (setup.options.lines[index][opt] !== undefined) {
                     if ($this.attr('type') == 'checkbox') {
                         $this.prop('checked', !!setup.options.lines[index][opt]);
@@ -520,10 +528,9 @@
                         $this.val(setup.options.lines[index][opt]);
                     }
                 }
-            })
+            });
 
             if (typeof callback == 'function') callback();
-//            update()
         }, 100);
     }
 
@@ -560,61 +567,43 @@
         var _options = JSON.parse(JSON.stringify(setup.options));
 
         // clean options
-        for (var x in _options){
-            if(_options[x] == ''){
-                delete _options[x]
+        for (var y in _options){
+            if (_options[y] == ''){
+                delete _options[y];
             }
         }
 
-
-        // clean linse
-        for (var i=0; i < _options.lines.length; i++) {
+        // clean lines
+        for (var i = 0; i < _options.lines.length; i++) {
             if (_options.lines[i].id == ''){
-                _options.lines.splice(i,1)
-                i--
-            }else{
+                _options.lines.splice(i, 1);
+                i--;
+            } else {
                 for (var x in _options.lines[i]) {
-                    if (_options.lines[i][x] == '') {
-                        delete _options.lines[i][x]
+                    if (_options.lines[i][x] === '') {
+                        delete _options.lines[i][x];
                     }
                 }
             }
-
-
         }
 
         var params = $.param(_options);
-        console.log(deparam(params))
-        return  params
+        console.log(deparam(params));
+        return params;
     }
 
     function delayedUpdate() {
-        if (timer) {
-            clearTimeout(timer);
-            timer = null;
-        }
+        if (timer) clearTimeout(timer);
         timer = setTimeout(update, 500);
     }
 
     function update() {
         clearTimeout(timer);
         timer = null;
-        var settings = getSettings();
-        $('#link').val(location.href.replace('edit.html', 'index.html') + '?' + settings);
-        $('#updatePreview').button("option", "disabled", false).click(function(){
 
-        });
         // Store settings
-        if (typeof(Storage) !== "undefined") {
-
-            $('.value').each(function (index) {
-                if ($(this).attr('type') == 'checkbox') {
-                    setup[$(this).attr('id')] = $(this).prop('checked');
-                } else {
-                    setup[$(this).attr('id')] = $(this).val();
-                }
-            });
-            $('.option').each(function (index) {
+        if (typeof(Storage) !== 'undefined') {
+            $('.value').each(function () {
                 if ($(this).attr('type') == 'checkbox') {
                     setup.options[$(this).attr('id')] = $(this).prop('checked');
                 } else {
@@ -622,20 +611,34 @@
                 }
             });
 
-            save()
+            save();
         }
+        var settings = getSettings();
+        $('#link').val(location.href.replace('edit.html', 'index.html') + '?' + settings);
+        $('#updatePreview').button('option', 'disabled', false).click(updatePreview);
 
-        if ($('#aggregateType').val() == "step") {
-            $('#spanName').text(_("Seconds") + ":")
+        if ($('#aggregateType').val() === 'step') {
+            $('#spanName').text(_('Seconds') + ":");
         } else {
-            $('#spanName').text(_("Counts") + ":")
+            $('#spanName').text(_('Counts') + ":");
         }
-        $('.relative, .static').hide()
-        $('.' + $('#timeArt').val()).show()
+        $('.relative, .static').hide();
+        $('.' + $('#timeArt').val()).show();
+
+        if ($('#autoUpdate').prop('checked')) {
+            delayedPreview();
+        }
     }
 
-    function save(){
-        localStorage.setItem("iobroker.Flot", JSON.stringify(setup));
+    function save() {
+        if (typeof(Storage) !== 'undefined') {
+            localStorage.setItem('iobroker.Flot', JSON.stringify(setup));
+       }
+    }
+
+    function delayedPreview() {
+        if (showTimer) clearTimeout(showTimer);
+        showTimer = setTimeout(updatePreview, 500);
     }
 
     function updatePreview() {
@@ -651,38 +654,33 @@
 
     $(document).ready(function() {
 
-        if (typeof(Storage) !== "undefined") {
-            var _setup = localStorage.getItem("iobroker.Flot");
+        if (typeof(Storage) !== 'undefined') {
+            var _setup = localStorage.getItem('iobroker.Flot');
             try {
                 _setup = JSON.parse(_setup);
-                if (_setup.options){
-                    setup = _setup
-                }
+                if (_setup.options) setup = _setup;
             }
             catch (e) {
                 console.log('Cannot parse stored settings');
             }
         }
 
-        $("#accordion").on('change', '.options_lines', function(){
+        $('#autoUpdate').change(function () {
+            setup['auto-update'] = $(this).prop('checked') ? 'true' : 'false';
+            update();
+        }).prop('checked', setup['auto-update'] == 'true');
+
+        $('#accordion').on('change', '.options-lines', function () {
             var index = parseInt($(this).parent().parent().attr('id').replace('inputData',''));
             setup.options.lines[index][$(this).data('option')] = $(this).val();
-            update()
+            update();
+        });
+
+        $('#accordion').on('keyup', '.options-lines', function () {
+            $(this).trigger('change');
         });
 
         $('.value').each(function () {
-            var $this = $(this);
-            var id = $this.attr('id');
-            if (setup[id] !== undefined) {
-                if ($this.attr('type') == 'checkbox') {
-                    $this.prop('checked', !!setup[id]);
-                } else {
-                    $this.val(setup[id]);
-                }
-            }
-        });
-
-        $('.option').each(function () {
             var $this = $(this);
             var id = $this.attr('id');
             if (setup.options[id] !== undefined) {
@@ -698,22 +696,22 @@
             icons: {secondary: 'ui-icon-plus'},
             text: true
         }).click(function () {
-
             var index = setup.options.lines.length;
             setup.options.lines.push({
-                id:     '',
-                offset: 0,
-                art:    'average',
-                color:  defaultColors[index] || '#00FFFF',
-                min:    '',
-                max:    '',
-                thickness: 3,
-                unit:   '',
-                name:   ''
+                id:         '',
+                instance:   '',
+                offset:     0,
+                art:        'average',
+                color:      defaultColors[index] || '#00FFFF',
+                min:        '',
+                max:        '',
+                thickness:  3,
+                unit:       '',
+                name:       ''
             });
 
-            showIds()
-        }).css({width: 165, height: 30});
+            showIds();
+        }).css({height: 30});
 
         $('#clear').button({
             icons: {primary: 'ui-icon-trash'},
@@ -724,9 +722,6 @@
         }).css({width: 30, height: 30});
 
         $('.value').change(update).keyup(function () {
-            $(this).trigger('change');
-        });
-        $('.option').change(update).keyup(function () {
             $(this).trigger('change');
         });
 
@@ -741,15 +736,39 @@
         $('#strokeWidth').spinner().on('spin', delayedUpdate).parent().addClass('input');
         $('#afterComma').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
-
-        $('#aggregateType').change(function () {
-            if ($('#aggregateType').val() == 'step') {
-                $('#spanName').text(_('Seconds'))
+        $('#bg_custom').change(function () {
+            if ($(this).prop('checked')) {
+                $('#bg').show();
+                $('#bg_predefined').hide();
             } else {
-                $('#spanName').text(_('Counts'))
+                $('#bg').hide();
+                $('#bg_predefined').show();
+                $('#bg_predefined').val(0).trigger('change');
             }
         });
 
+        $('#bg_predefined').change(function () {
+            $('#bg').val($(this).val()).trigger('change');
+        });
+
+        if (setup.options.bg || setup.options.bg === 0) {
+            if (setup.options.bg && setup.options.bg.length < 3 && parseInt(setup.options.bg, 10).toString() == setup.options.bg) {
+                $('#bg').hide();
+                $('#bg_predefined').show().val(setup.options.bg);
+            } else {
+                $('#bg_custom').prop('checked', true);
+                $('#bg').show();
+                $('#bg_predefined').hide();
+            }
+        }
+
+        $('#aggregateType').change(function () {
+            if ($('#aggregateType').val() == 'step') {
+                $('#spanName').text(_('Seconds'));
+            } else {
+                $('#spanName').text(_('Counts'));
+            }
+        });
 
 //      $('#range').val(options.range);
 //      $('#axeX').val(options.axeX);
@@ -773,9 +792,40 @@
             }
         });
 
-        showIds();
+        // Read instances
+        var socket = io.connect(socketUrl, {
+            'query':                        'key=' + socketSession,
+            'reconnection limit':           10000,
+            'max reconnection attempts':    Infinity
+        });
 
-        update();
+        socket.on('connect', function () {
+            this.emit('name', 'flot');
+            // load history instances
+            socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
+                if (!err && doc && doc.rows) {
+                    if (doc.rows.length === 0) {
+                        if (callback) callback ([]);
+                    } else {
+                        var res = [];
+                        for (var i = 0; i < doc.rows.length; i++) {
+                            var obj = doc.rows[i].value;
+                            if (obj && obj.type === 'instance' && obj.common && obj.common.type === 'storage') {
+                                instances.push(obj._id.substring('system.adapter.'.length));
+                            }
+                        }
+                    }
+                }
+                showIds();
+
+                update();
+
+                // not need to disconnect, because socket-io uses pool
+                //socket.disconnect();
+                //socket = null;
+            });
+        });
+
         // Handler for .ready() called.
     });
 

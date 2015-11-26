@@ -177,33 +177,27 @@
         $('#no-connection').show();
     }, 5000);
 
-
     var timeout = null;
 
     // Analyse query
-    var path = location.href;
-    path = path.split('?');
+    var path = location.href.split('?')[1];
 
+    var config = deparam(path || '');
 
-    var config = deparam(path[1] || '');
     console.log(config);
-    var min = null;
     // Set default values
     config.longestStep  = 0;
     config.width        = config.width || '100%';
     config.height       = config.height || '100%';
-    config.left         = 0;
     config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config._units       = config._units || [];
-    config.useComma     = (config.useComma === undefined) ? true : config.useComma;
+    config.useComma     = config.useComma === 'true';
     config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
     //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
-    var lineOne = {};
-    var seriesData = [];
-    var series = [];
-    var settings = [];
-    var from = undefined;
-    var to = undefined;
+    var seriesData      = [];
+    var series          = [];
+    var settings        = [];
+    var from;
+    var to;
 
     //var socket = io.connect();
     var socketURL = '';
@@ -273,6 +267,7 @@
         }
         readData();
     });
+
     socket.on('disconnect', function () {
         if (!disconnectTimeout) {
             disconnectTimeout = setTimeout(function () {
@@ -282,12 +277,7 @@
             }, 5000);
         }
     });
-
-    // After reconnect the "connect" event will be immediately called
-    /*socket.on('reconnect', function () {
-     console.log('reconnect');
-     });*/
-
+/*
     function fillRange(data) {
         // Add first tick with required range
         if (config.fillRange) {
@@ -373,7 +363,7 @@
         }
 
         return result;
-    }
+    }*/
 
     function getStartStop(index, step) {
         var option = {};
@@ -432,7 +422,7 @@
         }
     }
 
-    function readOneChart(id, index, callback) {
+    function readOneChart(id, instance, index, callback) {
 
         socket.emit('getObject', id, function (err, res) {
             if (!err && res && res.common) {
@@ -444,6 +434,7 @@
             }
 
             var option = getStartStop(index);
+            option.instance = instance;
 
             socket.emit('getHistory', id, option, function (err, res, step) {
                 if (!err && res) {
@@ -453,28 +444,27 @@
                         config.longestStep = step;
                     }
                     // todo wenn der History adapter in ms ausgiebt kann das wieder activirt werden
-//                    if( typeof res[0].val == 'string' || res[0].val === 'true' || res[0].val === true || res[0].val === 'false' || res[0].val === false){
-                    for (var i = res.length - 1; i >= 0; i--) {
+                    if (1 || typeof res[0].val == 'string' || res[0].val === 'true' || res[0].val === true || res[0].val === 'false' || res[0].val === false){
+                        for (var i = res.length - 1; i >= 0; i--) {
 
-                        // Convert boolean values to numbers
-                        if (res[i].val === 'true' || res[i].val === true) {
-                            res[i].val = 1;
-                        } else if (res[i].val === 'false' || res[i].val === false) {
-                            res[i].val = 0;
+                            // Convert boolean values to numbers
+                            if (res[i].val === 'true' || res[i].val === true) {
+                                res[i].val = 1;
+                            } else if (res[i].val === 'false' || res[i].val === false) {
+                                res[i].val = 0;
+                            }
+                            if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
+                            seriesData[index].push([res[i].ts * 1000, res[i].val]);
                         }
-                        if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-
-                        seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                    } else {
+                        seriesData[index] = res
                     }
-//                    }else{
-//                        seriesData[index] = res
-//                    }
-
                 }
 
                 // Add first tick with required range
                 // todo muss das sein ??
-                seriesData[index] = fillRange(seriesData[index]);
+                //seriesData[index] = fillRange(seriesData[index]);
 
                 if (callback) callback(id, index);
             });
@@ -527,7 +517,7 @@
         }
 
         if (config.lines) {
-            $("#loader").show();
+            $('#loader').show();
             // todo
 //            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
 //
@@ -552,7 +542,7 @@
             }
             var ready = 0;
             for (j = 0; j < config.lines.length; j++) {
-                readOneChart(config.lines[j].id, j, function () {
+                readOneChart(config.lines[j].id, config.lines[j].instance, j, function () {
                     ready++;
                     if (ready == config.lines.length) {
                         $('#loader').hide();
@@ -579,7 +569,7 @@
                     var p = parts[t].split(':');
 
                     // Bottom inside
-                    if (p[0] == 'bottom' && p[1] == '5') {
+                    if (p[0] == 'bottom' && p[1] ==  '5') {
                         if (config.height.indexOf('%') == -1) {
                             css.top = parseInt(config.height, 10) - $title.height() - 45;
                         } else {
@@ -593,28 +583,28 @@
                             css.top = 'calc(' + config.height + ' + 5px)';
                         }
                     } else	// Middle
-                    if (p[0] == 'top' && p[1] == '50') {
+                    if (p[0] == 'top'    && p[1] == '50') {
                         if (config.height.indexOf('%') == -1) {
                             css.top = (parseInt(config.height, 10) - $title.height()) / 2;
                         } else {
                             css.top = 'calc(50% - ' + ($title.height() / 2) + 'px)';
                         }
                     } else	// Center
-                    if (p[0] == 'left' && p[1] == '50') {
+                    if (p[0] == 'left'   && p[1] == '50') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = (parseInt(config.width, 10) - $title.width()) / 2;
                         } else {
                             css.left = 'calc(50% - ' + ($title.width() / 2) + 'px)';
                         }
                     } else	// Right inside
-                    if (p[0] == 'right' && p[1] == '5') {
+                    if (p[0] == 'right'  && p[1] ==  '5') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = parseInt(config.width, 10) - $title.width() - 45;
                         } else {
                             css.left = 'calc(' + config.width + ' - ' + ($title.width() + 45) + 'px)';
                         }
                     } else	// Right outside
-                    if (p[0] == 'right' && p[1] == '-5') {
+                    if (p[0] == 'right'  && p[1] == '-5') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = parseInt(config.width, 10) + 25;
                         } else {
@@ -764,7 +754,6 @@
 //            graph = $.plot("#chart_placeholder", [seriesData[0]], series);
 //        } else {
 
-
         settings = {
             grid: {
                 hoverable: (config.hoverDetail === 'true' || config.hoverDetail === true),
@@ -792,22 +781,28 @@
                     color: config.lines[ii].yaxe.indexOf('Color') > -1 ? config.lines[ii].color : 'black'
                 },
                 tickFormatter: function (number, object) {
-
-                    var factor = config.afterComma ? Math.pow(10, config.afterComma) : 1;
-                    var formatted = "" + Math.round(number * factor) / factor;
-
                     // If tickDecimals was specified, ensure that we have exactly that
                     // much precision; otherwise default to the value's own precision.
 
                     if (config.afterComma != null) {
-                        var decimal = formatted.indexOf(".");
-                        var precision = decimal == -1 ? 0 : formatted.length - decimal - 1;
+                        var factor      = config.afterComma ? Math.pow(10, config.afterComma) : 1;
+                        var formatted   = (Math.round(number * factor) / factor).toString();
+                        var decimal     = formatted.indexOf('.');
+                        var precision   = decimal == -1 ? 0 : formatted.length - decimal - 1;
+
                         if (precision < config.afterComma) {
-                            number = (precision ? formatted : formatted + ".") + ("" + factor).substr(1, config.afterComma - precision);
+                            number = (precision ? formatted : formatted + '.') + factor.toString().substr(1, config.afterComma - precision);
+                        } else {
+                            number = formatted;
                         }
                     }
+                    if (config.useComma) {
+                        number = number.toString().replace('.', ',');
+                    }
 
-                    return number += ' ' + config.lines[object.n - 1].unit;
+                    var unit = config.lines[object.n - 1].unit;
+
+                    return number + (unit ? (' ' + unit) : '');
                 }
             };
 
