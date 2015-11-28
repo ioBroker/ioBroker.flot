@@ -353,7 +353,7 @@
         connCfg: {
             socketUrl:      socketUrl,
             socketSession:  socketSession,
-            socketName:     'rickshawEdit'
+            socketName:     'flotEdit'
         },
         columns: ['name', 'role', 'room', 'value'],
         texts: {
@@ -801,7 +801,7 @@
         });
 
         socket.on('connect', function () {
-            this.emit('name', 'flot');
+            this.emit('name', 'flotEdit');
             // load history instances
             socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
                 if (!err && doc && doc.rows) {
