@@ -894,6 +894,11 @@
     }
 
     if (config.live && config.timeArt == 'relative') {
+        if (!config.longestStep) {
+            console.warn('longestStep is zero!');
+            config.longestStep = 300;
+        }
+
         setInterval(function () {
             update();
         }, config.longestStep * 1000);
@@ -902,13 +907,15 @@
     function update() {
         var ready = 0;
 
-        function getData(index){
+        function getData(index) {
             var option = getStartStop(j, config.longestStep);
 
             socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
-                if (!err && res) {
+                if (!err && res && series[index] && res[0]) {
                     series[index].data.shift();
                     series[index].data.push([res[0].ts * 1000, res[0].val]);
+                } else {
+                    console.error('Error:' + err + ', Result:' + res + ', Series: ' + series[index] + ', Array: ' + res);
                 }
 
                 ready++;
