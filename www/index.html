@@ -455,7 +455,10 @@
                             }
                             if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
-                            seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                            if(res[i].val != null || !config.ignoreNull ){
+                                seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                            }
+
                         }
                     } else {
                         seriesData[index] = res
