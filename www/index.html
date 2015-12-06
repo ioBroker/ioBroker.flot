@@ -155,12 +155,11 @@
     <div id="chart_placeholder" class="chart-placeholder"></div>
     <div id="title" style="position:absolute"></div>
 </div>
-<div id="nav-bar" style="position: relative">
-    <button id="navLeft"  style="position: absolute; right:50px">right</button>
-    <button id="navNow"  onclick="NavNow()" style="position: absolute; right:50%">now</button>
-    <button id="navRight" style="position: absolute; left:50px">left</button>
-
-</div>
+<!--<div id="nav-bar" style="position: relative">-->
+    <!--<button id="navLeft"  style="position: absolute; right:50px">right</button>-->
+    <!--<button id="navNow"  onclick="NavNow()" style="position: absolute; right:50%">now</button>-->
+    <!--<button id="navRight" style="position: absolute; left:50px">left</button>-->
+<!--</div>-->
 <script>
     var graph;
 
@@ -191,7 +190,6 @@
 
     var config = deparam(path || '');
 
-    console.log(config);
     // Set default values
     config.longestStep = 0;
     config.width = config.width || '100%';
@@ -457,7 +455,6 @@
             option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
         }
 
-        console.log(option)
         return option;
 
     }
@@ -602,7 +599,6 @@
     }
 
     function buildGraph() {
-        console.log(config)
         series = [];
         var $title = $('#title');
 
@@ -901,7 +897,6 @@
             };
         }
 
-        console.log(series)
 
         graph = $.plot('#chart_placeholder', series, settings);
 
@@ -951,17 +946,20 @@
 
         function getData(index) {
             var option = getStartStop(j, config.longestStep);
-
+            option.instance = config.lines[index].instance;
+  
             socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
                 if (!err && res && series[index] && res[0]) {
                     series[index].data.shift();
+                    if (res[0].val == null){
+                        res[0].val = series[index].data[series[index].data.length - 1][1];
+                    }
                     series[index].data.push([res[0].ts * 1000, res[0].val]);
                 } else {
                     console.error('Error:' + err + ', Result:' + res + ', Series: ' + series[index] + ', Array: ' + res);
                 }
 
                 ready++;
-                console.log(ready);
                 if (ready == config.lines.length) {
 
 //                    graph.draw();
@@ -978,9 +976,12 @@
     function updateNav() {
         var ready = 0;
 
-        function read(index, callback) {
 
-            socket.emit('getHistory', config.lines[index].id, getStartStopNav(index), function (err, res, step) {
+        function read(index, callback) {
+            var option = getStartStopNav(index);
+            option.instance = config.lines[index].instance;
+
+            socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
                 if (!err && res) {
                     //for (var i = 0, len = res.length; i < len; i++) {
                     series[index].data = [];
@@ -1017,16 +1018,15 @@
                 if (ready == config.lines.length) {
 //                    graph.setData(series);
 //                    graph.draw();
-console.log("ready")
                     graph = $.plot('#chart_placeholder', series, settings);
 
-                    if(navLeft){
-                        navStepLeft()
-                    }
-
-                    if(navRight){
-                        navStepRight()
-                    }
+//                    if(navLeft){
+//                        navStepLeft()
+//                    }
+//
+//                    if(navRight){
+//                        navStepRight()
+//                    }
                 }
             });
         }
@@ -1037,9 +1037,12 @@ console.log("ready")
             console.warn('longestStep is zero!');
             config.longestStep = 300;
         }
+        if (config.longestStep < 1) {
+            config.longestStep = 1;
+        }
         liveIntervall = setInterval(function () {
             updateLive();
-        }, config.longestStep * 1000);
+        }, Math.round(config.longestStep *1000));
     }
 
     function navStepLeft() {
