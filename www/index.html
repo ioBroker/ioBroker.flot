@@ -150,11 +150,17 @@
 <div id="chart_container">
     <div id="loader" class="loader"></div>
     <div id="no-connection"
-         style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">No connection to server</div>
+         style="position:absolute; left:50%; top: 50%; display:none; font-size: 3em; background: rgba(0,0,0,0.1); border-radius: 10px; text-align: center">
+        No connection to server
+    </div>
     <div id="chart_placeholder" class="chart-placeholder"></div>
     <div id="title" style="position:absolute"></div>
 </div>
-
+<!--<div id="nav-bar" style="position: relative">-->
+    <!--<button id="navLeft"  style="position: absolute; right:50px">right</button>-->
+    <!--<button id="navNow"  onclick="NavNow()" style="position: absolute; right:50%">now</button>-->
+    <!--<button id="navRight" style="position: absolute; left:50px">left</button>-->
+<!--</div>-->
 <script>
     var graph;
 
@@ -185,20 +191,33 @@
 
     var config = deparam(path || '');
 
-    console.log(config);
     // Set default values
-    config.longestStep  = 0;
-    config.width        = config.width || '100%';
-    config.height       = config.height || '100%';
-    config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config.useComma     = config.useComma === 'true';
-    config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
+    config.longestStep = 0;
+    config.width = config.width || '100%';
+    config.height = config.height || '100%';
+    config.timeFormat = config.timeFormat || "%H:%M:%S %e.%m.%y";
+    config.useComma = config.useComma === 'true';
+    config.afterComma = (config.afterComma === undefined) ? 2 : config.afterComma;
     //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
-    var seriesData      = [];
-    var series          = [];
-    var settings        = [];
+    var seriesData = [];
+    var series = [];
+    var settings = [];
     var from;
     var to;
+
+    var stepLeftCount = 0;
+    var stepRightCount = 0;
+
+    var liveIntervall;
+
+
+    var navStep = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
+
+    var navStepMulti = 0;
+    var navOptions = {};
+    var navLeft;
+    var navRight;
+
 
     //var socket = io.connect();
     var socketURL = '';
@@ -278,93 +297,93 @@
             }, 5000);
         }
     });
-/*
-    function fillRange(data) {
-        // Add first tick with required range
-        if (config.fillRange) {
-            var now = new Date();
-            var start = new Date(now);
-            start.setMinutes(start.getMinutes() - config.range + 1);
+    /*
+     function fillRange(data) {
+     // Add first tick with required range
+     if (config.fillRange) {
+     var now = new Date();
+     var start = new Date(now);
+     start.setMinutes(start.getMinutes() - config.range + 1);
 
-            if (data.length) {
-                if (data[0][0] > start.getTime()) {
-                    data.unshift([start.getTime(), null]);
-                }
-                if (data[data.length - 1][0] < now.getTime()) {
-                    data.push([now.getTime(), data[data.length - 1][1]]);
-                }
-            } else {
-                data.push([start.getTime(), null]);
-                data.push([now.getTime(), null]);
-            }
-        }
+     if (data.length) {
+     if (data[0][0] > start.getTime()) {
+     data.unshift([start.getTime(), null]);
+     }
+     if (data[data.length - 1][0] < now.getTime()) {
+     data.push([now.getTime(), data[data.length - 1][1]]);
+     }
+     } else {
+     data.push([start.getTime(), null]);
+     data.push([now.getTime(), null]);
+     }
+     }
 
-        // first of all sort data
-        data.sort(function (a, b) {
-            return a[0] - b[0];
-        });
+     // first of all sort data
+     data.sort(function (a, b) {
+     return a[0] - b[0];
+     });
 
-        // find smallest interval
-        var step = null;
-        var s;
-        var i;
-        var isDifferent = false;
-        for (i = 1; i < data.length; i++) {
-            s = data[i][0] - data[i - 1][0];
-            if (step === null) {
-                step = s;
-            } else if (s < step) {
-                step = s;
-            }
-            if (step != s) {
-                isDifferent = true;
-            }
-        }
+     // find smallest interval
+     var step = null;
+     var s;
+     var i;
+     var isDifferent = false;
+     for (i = 1; i < data.length; i++) {
+     s = data[i][0] - data[i - 1][0];
+     if (step === null) {
+     step = s;
+     } else if (s < step) {
+     step = s;
+     }
+     if (step != s) {
+     isDifferent = true;
+     }
+     }
 
-        if (!isDifferent || !config.interpolation) return data;
+     if (!isDifferent || !config.interpolation) return data;
 
-        var result = [];
-        var time = data[0][0];
-        var end = data[data.length - 1][0];
-        i = 0;
+     var result = [];
+     var time = data[0][0];
+     var end = data[data.length - 1][0];
+     i = 0;
 
-        var tDiff = data[1][0] - data[0][0];
-        var vDiff = data[1][1] - data[0][1];
-        var tVal = data[0][0];
-        var vVal = data[0][1];
-        var tEnd = data[1][0];
-        // interpolation
-        while (time <= end) {
-            while (tEnd <= time && i < data.length - 1) {
-                i++;
-                tVal = data[i][0];
-                vVal = data[i][1];
-                if (vVal !== null) {
-                    if (i + 1 < data.length) {
-                        tEnd = data[i + 1][0];
-                        tDiff = tEnd - data[i][0];
-                        if (data[i + 1][1] === null) {
-                            vDiff = 0;
-                        } else {
-                            vDiff = data[i + 1][1] - data[i][1];
-                        }
-                    } else {
-                        tEnd = end;
-                        tDiff = end - data[i][1];
-                        vDiff = 0;
-                    }
-                } else if (i + 1 < data.length) {
-                    tEnd = data[i + 1][0];
-                } else {
-                    tEnd = end;
-                }
-            }
-            result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
-            time += step;
-        }
+     var tDiff = data[1][0] - data[0][0];
+     var vDiff = data[1][1] - data[0][1];
+     var tVal = data[0][0];
+     var vVal = data[0][1];
+     var tEnd = data[1][0];
+     // interpolation
+     while (time <= end) {
+     while (tEnd <= time && i < data.length - 1) {
+     i++;
+     tVal = data[i][0];
+     vVal = data[i][1];
+     if (vVal !== null) {
+     if (i + 1 < data.length) {
+     tEnd = data[i + 1][0];
+     tDiff = tEnd - data[i][0];
+     if (data[i + 1][1] === null) {
+     vDiff = 0;
+     } else {
+     vDiff = data[i + 1][1] - data[i][1];
+     }
+     } else {
+     tEnd = end;
+     tDiff = end - data[i][1];
+     vDiff = 0;
+     }
+     } else if (i + 1 < data.length) {
+     tEnd = data[i + 1][0];
+     } else {
+     tEnd = end;
+     }
+     }
+     result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
+     time += step;
+     }
 
-        return result;
-    }*/
+     return result;
+     }*/
 
     function getStartStop(index, step) {
         var option = {};
@@ -374,24 +393,25 @@
         if (!step) {
 
             if (config.timeArt == 'static') {
-                start   = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
-                end     = Math.round(new Date(config.end).setHours(24) / 1000)  - (config.lines[index].offset || 0)
+                start = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
+                end = Math.round(new Date(config.end).setHours(24) / 1000) - (config.lines[index].offset || 0)
             } else {
                 if (config.relativeEnd == 'now') {
                     end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
                     start = end - (config.range * 60);
                 } else if (config.relativeEnd == 'today') {
-                    end     = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
-                    start   = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
+                    end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
+                    start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.lines[index].offset || 0);
                 }
             }
 
             option = {
-                start:      start,
-                end:        end,
+                start: start,
+                end: end,
                 ignoreNull: config.getNull || false,
-                aggregate:  config.lines[index].art || 'average'
+                aggregate: config.lines[index].art || 'average'
             };
+
 
             if (config.aggregateType == 'step') {
                 option.step = config.aggregateSpan;
@@ -399,76 +419,82 @@
                 option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
             }
 
+            navOptions[index] = option;
             return option
 
         } else {
-            if (config.relativeEnd === 'now') {
-                end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
-                start = end - (step);
-            } else if (config.relativeEnd === 'today') {
-                end = Math.round(new Date().setHours(24) / 1000) - (config.lines[index].offset || 0);
-                start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - step - (config.lines[index].offset || 0);
-            }
 
+            end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
+            start = end - (step);
 
             option = {
-                start:      start,
-                end:        end,
+                start: start,
+                end: end,
                 ignoreNull: config.getNull || false,
-                aggregate:  config.lines[index].art || 'average',
-                count:      1
+                aggregate: config.lines[index].art || 'average',
+                count: 1
             };
 
+            navOptions[index].end = end;
+            navOptions[index].start = end - (config.range * 60);
             return option;
         }
     }
 
+    function getStartStopNav(index) {
+
+        var option = {
+            start: navOptions[index].start - (navStep * navStepMulti),
+            end: navOptions[index].end - (navStep * navStepMulti),
+            ignoreNull: config.getNull || false,
+            aggregate: config.lines[index].art || 'average',
+        };
+
+        if (config.aggregateType == 'step') {
+            option.step = config.aggregateSpan;
+        } else if (config.aggregateType == 'count') {
+            option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
+        }
+
+        return option;
+
+    }
+
     function readOneChart(id, instance, index, callback) {
 
-        socket.emit('getObject', id, function (err, res) {
-            if (!err && res && res.common) {
-                config.lines[index].name = config.lines[index].name || res.common.name;
-                config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
-            } else {
-                config.lines[index].name = config.lines[index].name || id;
-                config.lines[index].unit = config.lines[index].unit || '';
+        var option = getStartStop(index);
+        option.instance = instance;
+
+        socket.emit('getHistory', id, option, function (err, res, step) {
+            if (!err && res) {
+                //for (var i = 0, len = res.length; i < len; i++) {
+
+                if (config.longestStep < step) {
+                    config.longestStep = step;
+                }
+                for (var i = 0; i < res.length; i++) {
+                    if (res[i].val != null || !config.ignoreNull) {
+
+                        // Convert boolean values to numbers
+                        if (res[i].val === 'true' || res[i].val === true) {
+                            res[i].val = 1;
+                        } else if (res[i].val === 'false' || res[i].val === false) {
+                            res[i].val = 0;
+                        }
+                        if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
+
+                        seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                    }
+
+                }
             }
 
-            var option = getStartStop(index);
-            option.instance = instance;
+            // Add first tick with required range
+            // todo muss das sein ??
+            //seriesData[index] = fillRange(seriesData[index]);
 
-            socket.emit('getHistory', id, option, function (err, res, step) {
-                if (!err && res) {
-                    //for (var i = 0, len = res.length; i < len; i++) {
-
-                    if (config.longestStep < step) {
-                        config.longestStep = step;
-                    }
-                    // todo wenn der History adapter in ms ausgiebt kann das wieder activirt werden
-                    if (1 || typeof res[0].val == 'string' || res[0].val === 'true' || res[0].val === true || res[0].val === 'false' || res[0].val === false){
-                        for (var i = res.length - 1; i >= 0; i--) {
-
-                            // Convert boolean values to numbers
-                            if (res[i].val === 'true' || res[i].val === true) {
-                                res[i].val = 1;
-                            } else if (res[i].val === 'false' || res[i].val === false) {
-                                res[i].val = 0;
-                            }
-                            if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-
-                            seriesData[index].push([res[i].ts * 1000, res[i].val]);
-                        }
-                    } else {
-                        seriesData[index] = res
-                    }
-                }
-
-                // Add first tick with required range
-                // todo muss das sein ??
-                //seriesData[index] = fillRange(seriesData[index]);
-
-                if (callback) callback(id, index);
-            });
+            if (callback) callback(id, index);
         });
     }
 
@@ -510,7 +536,7 @@
         });
     }
 
-    function readData() {
+    function readData(hidden) {
         if (disconnectTimeout) {
             $('#no-connection').hide();
             clearTimeout(disconnectTimeout);
@@ -518,7 +544,10 @@
         }
 
         if (config.lines) {
-            $('#loader').show();
+            if (!hidden) {
+                $('#loader').show();
+            }
+
             // todo
 //            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
 //
@@ -543,13 +572,28 @@
             }
             var ready = 0;
             for (j = 0; j < config.lines.length; j++) {
-                readOneChart(config.lines[j].id, config.lines[j].instance, j, function () {
-                    ready++;
-                    if (ready == config.lines.length) {
-                        $('#loader').hide();
-                        buildGraph();
-                    }
-                });
+
+
+                function read(index) {
+                    socket.emit('getObject', config.lines[index].id, function (err, res) {
+                        if (!err && res && res.common) {
+                            config.lines[index].name = config.lines[index].name || res.common.name;
+                            config.lines[index].unit = config.lines[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+                        } else {
+                            config.lines[index].name = config.lines[index].name || id;
+                            config.lines[index].unit = config.lines[index].unit || '';
+                        }
+                        readOneChart(config.lines[index].id, config.lines[index].instance, index, function () {
+                            ready++;
+                            if (ready == config.lines.length) {
+                                $('#loader').hide();
+                                buildGraph();
+                            }
+                        });
+                    });
+                }
+
+                read(j)
             }
 //            }
         }
@@ -570,7 +614,7 @@
                     var p = parts[t].split(':');
 
                     // Bottom inside
-                    if (p[0] == 'bottom' && p[1] ==  '5') {
+                    if (p[0] == 'bottom' && p[1] == '5') {
                         if (config.height.indexOf('%') == -1) {
                             css.top = parseInt(config.height, 10) - $title.height() - 45;
                         } else {
@@ -584,28 +628,28 @@
                             css.top = 'calc(' + config.height + ' + 5px)';
                         }
                     } else	// Middle
-                    if (p[0] == 'top'    && p[1] == '50') {
+                    if (p[0] == 'top' && p[1] == '50') {
                         if (config.height.indexOf('%') == -1) {
                             css.top = (parseInt(config.height, 10) - $title.height()) / 2;
                         } else {
                             css.top = 'calc(50% - ' + ($title.height() / 2) + 'px)';
                         }
                     } else	// Center
-                    if (p[0] == 'left'   && p[1] == '50') {
+                    if (p[0] == 'left' && p[1] == '50') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = (parseInt(config.width, 10) - $title.width()) / 2;
                         } else {
                             css.left = 'calc(50% - ' + ($title.width() / 2) + 'px)';
                         }
                     } else	// Right inside
-                    if (p[0] == 'right'  && p[1] ==  '5') {
+                    if (p[0] == 'right' && p[1] == '5') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = parseInt(config.width, 10) - $title.width() - 45;
                         } else {
                             css.left = 'calc(' + config.width + ' - ' + ($title.width() + 45) + 'px)';
                         }
                     } else	// Right outside
-                    if (p[0] == 'right'  && p[1] == '-5') {
+                    if (p[0] == 'right' && p[1] == '-5') {
                         if (config.width.indexOf('%') == -1) {
                             css.left = parseInt(config.width, 10) + 25;
                         } else {
@@ -636,9 +680,9 @@
                 var option = {
                     color: config.lines[i].color || undefined,
                     lines: {
-                        show:      (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
-                        fill:      (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
-                        steps:     (config.lines[i].chartType == 'steps'),
+                        show: (config.lines[i].chartType != 'scatterplot' && config.lines[i].chartType != 'bar'),
+                        fill: (config.lines[i].chartType == 'area' || config.lines[i].chartType == 'bar'),
+                        steps: (config.lines[i].chartType == 'steps'),
                         lineWidth: config.lines[i].thickness
                     },
                     bars: {
@@ -682,18 +726,19 @@
             if (!config.height) config.height = '100%';
 
             if (config.width.indexOf('%') != -1) {
-                $('#chart_container').css({width: 'calc(' + config.width + ' - 20px)'});
+                $('#chart_container').css({width: 'calc(' + config.width + ' - 20px)'}); // original 20px
             } else {
                 $('#chart_container').css({width: config.width});
             }
             if (config.height.indexOf('%') != -1) {
-                $('#chart_container').css({height: 'calc(' + config.height + ' - 20px)'});
+                $('#chart_container').css({height: 'calc(' + config.height + ' - 20px)'});// original 20px
             } else {
                 $('#chart_container').css({height: config.height});
             }
 
         } else {
             $('#chart_container').addClass('chart-container').css({width: config.width, height: config.height});
+//            $('#chart_container').css({'padding-bottom':"100px"})
         }
 
         if (config.timeFormat === 'null') config.timeFormat = undefined;
@@ -787,10 +832,10 @@
                     // much precision; otherwise default to the value's own precision.
 
                     if (config.afterComma != null) {
-                        var factor      = config.afterComma ? Math.pow(10, config.afterComma) : 1;
-                        var formatted   = (Math.round(number * factor) / factor).toString();
-                        var decimal     = formatted.indexOf('.');
-                        var precision   = decimal == -1 ? 0 : formatted.length - decimal - 1;
+                        var factor = config.afterComma ? Math.pow(10, config.afterComma) : 1;
+                        var formatted = (Math.round(number * factor) / factor).toString();
+                        var decimal = formatted.indexOf('.');
+                        var precision = decimal == -1 ? 0 : formatted.length - decimal - 1;
 
                         if (precision < config.afterComma) {
                             number = (precision ? formatted : formatted + '.') + factor.toString().substr(1, config.afterComma - precision);
@@ -847,15 +892,14 @@
         if (config.smoothing) {
             settings.series = {
                 curvedLines: {
-                    apply:        true,
-                    active:       true,
+                    apply: true,
+                    active: true,
                     monotonicFit: true
                 }
             };
         }
 
-        console.log(series);
-        console.log(settings);
+
         graph = $.plot('#chart_placeholder', series, settings);
 
         // Hoover
@@ -893,35 +937,31 @@
                 }).appendTo('body');
             }
         }
-    }
 
-    if (config.live && config.timeArt == 'relative') {
-        if (!config.longestStep) {
-            console.warn('longestStep is zero!');
-            config.longestStep = 300;
+        if (config.live && config.timeArt == 'relative') {
+            live()
         }
-
-        setInterval(function () {
-            update();
-        }, config.longestStep * 1000);
     }
 
-    function update() {
+    function updateLive() {
         var ready = 0;
 
         function getData(index) {
             var option = getStartStop(j, config.longestStep);
-
+            option.instance = config.lines[index].instance;
+  
             socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
                 if (!err && res && series[index] && res[0]) {
                     series[index].data.shift();
+                    if (res[0].val == null){
+                        res[0].val = series[index].data[series[index].data.length - 1][1];
+                    }
                     series[index].data.push([res[0].ts * 1000, res[0].val]);
                 } else {
                     console.error('Error:' + err + ', Result:' + res + ', Series: ' + series[index] + ', Array: ' + res);
                 }
 
                 ready++;
-                console.log(ready);
                 if (ready == config.lines.length) {
 
 //                    graph.draw();
@@ -934,6 +974,121 @@
             getData(j);
         }
     }
+
+    function updateNav() {
+        var ready = 0;
+
+
+        function read(index, callback) {
+            var option = getStartStopNav(index);
+            option.instance = config.lines[index].instance;
+
+            socket.emit('getHistory', config.lines[index].id, option, function (err, res, step) {
+                if (!err && res) {
+                    //for (var i = 0, len = res.length; i < len; i++) {
+                    series[index].data = [];
+
+                    for (var i = 0; i < res.length; i++) {
+                        if (res[i].val != null || !config.ignoreNull) {
+
+                            // Convert boolean values to numbers
+                            if (res[i].val === 'true' || res[i].val === true) {
+                                res[i].val = 1;
+                            } else if (res[i].val === 'false' || res[i].val === false) {
+                                res[i].val = 0;
+                            }
+                            if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
+
+                            series[index].data.push([res[i].ts * 1000, res[i].val]);
+                        }
+
+                    }
+
+                }
+
+                // Add first tick with required range
+                // todo muss das sein ??
+                //seriesData[index] = fillRange(seriesData[index]);
+                callback();
+            });
+        }
+
+        for (var j = 0; j < config.lines.length; j++) {
+            read(j, function () {
+                ready++;
+                if (ready == config.lines.length) {
+//                    graph.setData(series);
+//                    graph.draw();
+                    graph = $.plot('#chart_placeholder', series, settings);
+
+//                    if(navLeft){
+//                        navStepLeft()
+//                    }
+//
+//                    if(navRight){
+//                        navStepRight()
+//                    }
+                }
+            });
+        }
+    }
+
+    function live() {
+        if (!config.longestStep) {
+            console.warn('longestStep is zero!');
+            config.longestStep = 300;
+        }
+        if (config.longestStep < 1) {
+            config.longestStep = 1;
+        }
+        liveIntervall = setInterval(function () {
+            updateLive();
+        }, Math.round(config.longestStep *1000));
+    }
+
+    function navStepLeft() {
+        if (liveIntervall) {
+            clearInterval(liveIntervall);
+            liveIntervall = undefined;
+        }
+
+        navStepMulti--;
+        updateNav();
+    }
+
+
+    function navStepRight() {
+        if (liveIntervall) {
+            clearInterval(liveIntervall);
+            liveIntervall = undefined;
+        }
+
+        navStepMulti++;
+        updateNav();
+
+    }
+
+    function NavNow() {
+        seriesData = [];
+        readData(true)
+
+    }
+
+    $("#navLeft").mousedown(function(){
+        navLeft = true;
+        navStepLeft();
+    });
+
+    $("#navRight").mousedown(function(){
+        navRight = true;
+        navStepRight();
+    });
+
+    $(window).mouseup(function(){
+        navLeft = false;
+       navRight = false;
+    })
 
 </script>
 
