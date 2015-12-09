@@ -16,6 +16,7 @@
     <script src="lib/js/JUMFlot.min.js"></script>
     <script src="lib/js/curvedLines.js"></script>
     <script src="lib/js/jquery.flot.selection.min.js"></script>
+    <script src="lib/js/jquery.flot.hiddengraphs.js"></script>
     <script src="lib/js/jquery-deparam.js"></script>
     <!--script src="lib/js/jquery.flot.navigate.min.js"></script-->
     <script src="/_socket/info.js"></script>
@@ -763,7 +764,8 @@
             xaxes: [],
             legend: {
                 show: !!config.legend,
-                position: config.legend
+                position: config.legend,
+                hideable: true
             }
         };
 
