@@ -189,39 +189,99 @@
     // Analyse query
     var path = location.href.split('?')[1];
 
+    // convert old format to new one
+    // OLD: http://localhost:8082/flot/index.html?range=1440&renderer=line&axeX=lines&axeY=inside&_ids=system.adapter.admin.0.memRss%2Csystem.adapter.email.0.memRss&_colors=%23c05020%3B%2330c020%3B%236060c0
+    // NEW: http://localhost:8082/flot/index.html?lines%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss&lines%5B0%5D%5Boffset%5D=0&lines%5B0%5D%5Bart%5D=average&lines%5B0%5D%5Bcolor%5D=%23FF0000&lines%5B0%5D%5Bthickness%5D=3&lines%5B1%5D%5Bid%5D=system.adapter.email.0.memRss&lines%5B1%5D%5Boffset%5D=0&lines%5B1%5D%5Bart%5D=average&lines%5B1%5D%5Bcolor%5D=%2300FF00&lines%5B1%5D%5Bthickness%5D=3&timeArt=relative&relativeEnd=now&range=10&aggregateType=step&aggregateSpan=300&legend=sw
+    // OLD =>
+    //{
+    //    _colors: "#c05020;#30c020;#6060c0"
+    //    _ids: "system.adapter.admin.0.memRss,system.adapter.email.0.memRss"
+    //    axeX: "lines"
+    //    axeY: "inside"
+    //    range: "1440"
+    //    renderer: "line"
+    //}
+    // NEW =>
+    //{
+    //  "lines" : [
+    //     {
+    //        "id" : "system.adapter.admin.0.memRss",
+    //        "offset" : "0",
+    //        "art" : "average",
+    //        "color" : "#FF0000",
+    //        "thickness" : "3"
+    //      }, {
+    //        "id" : "system.adapter.email.0.memRss",
+    //        "offset" : "0",
+    //        "art" : "average",
+    //        "color" : "#00FF00",
+    //        "thickness" : "3"
+    //      }
+    //  ],
+    //    "timeArt" : "relative",
+    //    "relativeEnd" : "now",
+    //    "range" : "10",
+    //    "aggregateType" : "step",
+    //    "aggregateSpan" : "300",
+    //    "legend" : "sw    //}
+
     var config = deparam(path || '');
+
+    if (config._ids) {
+        var ids    = config._ids    ? config._ids.split(';')    : [];
+        var colors = config._colors ? config._colors.split(';') : [];
+        var names  = config._names  ? config._names.split(';')  : [];
+        var units  = config._units  ? config._units.split(';')  : [];
+        config.lines = [];
+        for (var i = 0; i < ids.length; i++) {
+            config.lines.push({
+                id:         ids[i],
+                offset:     0,
+                name:       names[i] || '',
+                art:        "average",
+                color:      colors[i] || 'blue',
+                thickness:  config.strokeWidth || 1,
+                min:        config.min || '',
+                max:        config.max || '',
+                unit:       units[i]   || ''
+            });
+        }
+        config.range = parseInt(config.range, 10);
+        config.aggregateType = "step";
+        config.aggregateSpan = 300;
+        config.relativeEnd   = "now";
+    }
 
     // Set default values
     config.longestStep = 0;
-    config.width = config.width || '100%';
-    config.height = config.height || '100%';
-    config.timeFormat = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config.useComma = config.useComma === 'true';
-    config.afterComma = (config.afterComma === undefined) ? 2 : config.afterComma;
+    config.width        = config.width || '100%';
+    config.height       = config.height || '100%';
+    config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
+    config.useComma     = config.useComma === 'true';
+    config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
     //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
-    var seriesData = [];
-    var series = [];
-    var settings = [];
+    var seriesData      = [];
+    var series          = [];
+    var settings        = [];
     var from;
     var to;
 
-    var stepLeftCount = 0;
-    var stepRightCount = 0;
+    var stepLeftCount   = 0;
+    var stepRightCount  = 0;
 
-    var liveIntervall;
+    var liveInterval;
 
+    var navStep         = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
 
-    var navStep = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
-
-    var navStepMulti = 0;
-    var navOptions = {};
+    var navStepMulti    = 0;
+    var navOptions      = {};
     var navLeft;
     var navRight;
 
-
     //var socket = io.connect();
-    var socketURL = '';
-    var socketSESSION = '';
+    var socketURL       = '';
+    var socketSESSION   = '';
+    
     if (typeof socketUrl != 'undefined') {
         socketURL = socketUrl;
         if (socketURL && socketURL[0] == ':') {
@@ -878,8 +938,8 @@
                     }
                     //return (new Date(object[0]))
                 } : null,
-                min: from || undefined,
-                max: to || undefined
+                min: from   || undefined,
+                max: to     || undefined
             };
 
             settings.yaxes.push(yaxi);
@@ -1042,15 +1102,15 @@
         if (config.longestStep < 1) {
             config.longestStep = 1;
         }
-        liveIntervall = setInterval(function () {
+        liveInterval = setInterval(function () {
             updateLive();
         }, Math.round(config.longestStep *1000));
     }
 
     function navStepLeft() {
-        if (liveIntervall) {
-            clearInterval(liveIntervall);
-            liveIntervall = undefined;
+        if (liveInterval) {
+            clearInterval(liveInterval);
+            liveInterval = undefined;
         }
 
         navStepMulti--;
@@ -1059,14 +1119,13 @@
 
 
     function navStepRight() {
-        if (liveIntervall) {
-            clearInterval(liveIntervall);
-            liveIntervall = undefined;
+        if (liveInterval) {
+            clearInterval(liveInterval);
+            liveInterval = undefined;
         }
 
         navStepMulti++;
         updateNav();
-
     }
 
     function NavNow() {

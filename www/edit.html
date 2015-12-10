@@ -369,6 +369,38 @@
         }
     };
 
+    var path = location.href.split('?')[1];
+    if (path) {
+        setup.options = deparam(path || '');
+        if (setup.options._ids) {
+            var ids    = setup.options._ids    ? setup.options._ids.split(';')    : [];
+            var colors = setup.options._colors ? setup.options._colors.split(';') : [];
+            var names  = setup.options._names  ? setup.options._names.split(';')  : [];
+            var units  = setup.options._units  ? setup.options._units.split(';')  : [];
+            setup.options.lines = [];
+            for (var i = 0; i < ids.length; i++) {
+                setup.options.lines.push({
+                    id:         ids[i],
+                    offset:     0,
+                    name:       names[i] || '',
+                    art:        "average",
+                    color:      colors[i] || 'blue',
+                    thickness:  setup.options.strokeWidth || 1,
+                    min:        setup.options.min || '',
+                    max:        setup.options.max || '',
+                    unit:       units[i]          || ''
+                });
+            }
+            setup.options.range = parseInt(setup.options.range, 10);
+            setup.options.aggregateType = "step";
+            setup.options.aggregateSpan = 300;
+            setup.options.relativeEnd   = "now";
+            if (setup.options._colors)  delete setup.options._colors;
+            if (setup.options._names)   delete setup.options._names;
+            if (setup.options._ids)     delete setup.options._ids;
+        }
+    }
+
     if (typeof sysLang !== 'undefined') systemLang = sysLang || 'en';
 
     $('#dialog-select-member').selectId('init', {
@@ -428,7 +460,7 @@
                 textInstances += '<option value="' + instances[t] + '">' + instances[t] + '</option>\n';
             }
 
-            for (var i= 0; i < setup.options.lines.length; i++) {
+            for (var i = 0; i < setup.options.lines.length; i++) {
                 var index = setup.options.lines[i];
 
                 text += '<tr id="inputData' + i + '" class="inputData">' +
@@ -508,7 +540,7 @@
                         '</select></td>' +
                         '<td style="padding-left:5px"><input data-option="thickness" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.thickness + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="name"      class="options-lines"       data-index="' + i + '" style="width: 200px"  value="' + index.name + '"></td>' +
-                        '<td style="padding-left:5px"><button class="idRemove" data-index="' + i + '"></button></td>' +
+                        (i ? '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
                         '</tr>';
             }
 
@@ -522,7 +554,7 @@
                 }
             });
 
-            $('.idRemove').button({
+            $('.id-remove').button({
                 icons: {primary: 'ui-icon-trash'},
                 text: false
             }).click(function () {
@@ -530,6 +562,7 @@
                     var i = parseInt($(this).parent().parent().attr('id').replace('inputData', ''));
                     setup.options.lines.splice(i, 1);
                     showIds();
+                    save();
                 }
             }).css({width: 22, height: 22});
 
@@ -566,35 +599,6 @@
     }
 
     function getSettings() {
-//        var config = {
-//            //colors:   ["#c05020", "#30c020", "#6060c0"],
-//            //names:    ["Temperature", "Humidity", "Airpressure"],
-//        };
-//        $('.value').each(function (index) {
-//            if ($(this).attr('type') == 'checkbox') {
-//                config[$(this).attr('id')] = $(this).prop('checked');
-//            } else {
-//                config[$(this).attr('id')] = encodeURI($(this).val());
-//            }
-//        });
-//        config._ids = encodeURI(ids.join(';'));
-//        config._offsets = encodeURI(offsets.join(';'));
-//        config._arts = encodeURI(arts.join(';'));
-//        config._colors = encodeURI(colors.join(';'));
-////        config._names = encodeURI(names.join(';'));
-//
-//        var config =  jQuery.param(setup.options)
-//console.log()
-//        var text = '';
-//        for (var opt in config) {
-//            if (config[opt]) text += (text ? '&' : '') + opt + '=' + config[opt];
-//
-//        }
-//
-//        var x = decodeURIComponent(jQuery.param(setup.options);
-//        console.log()
-
-
         var _options = JSON.parse(JSON.stringify(setup.options));
 
         // clean options
@@ -619,7 +623,9 @@
         }
 
         var params = $.param(_options);
+
         console.log(deparam(params));
+
         return params;
     }
 
@@ -685,7 +691,7 @@
 
     $(document).ready(function() {
 
-        if (typeof(Storage) !== 'undefined') {
+        if (!path && typeof(Storage) !== 'undefined') {
             var _setup = localStorage.getItem('iobroker.Flot');
             try {
                 _setup = JSON.parse(_setup);
