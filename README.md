@@ -6,6 +6,14 @@ draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
 
+### 0.2.1 (2015-12-14)
+* (Smiling_Jack) support of new History concept
+* (Smiling_Jack) new editor & working on axis
+* (bluefox) add onchange aggregation
+* (Smiling_Jack) add ignoreNull
+* (Smiling_Jack) working on flot nav
+* (bluefox) import old settings
+
 ### 0.1.1 (2015-07-13)
 * (bluefox) fix time format
 

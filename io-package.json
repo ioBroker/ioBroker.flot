@@ -1,7 +1,7 @@
 {
     "common": {
         "name":         "flot",
-        "version":      "0.2.0",
+        "version":      "0.2.1",
         "title":        "Flot Charts",
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",
