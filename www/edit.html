@@ -575,7 +575,7 @@
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
                 $('#dialog-select-member').selectId('show', setup.options.lines[index].id, undefined, function (newId) {
                     setup.options.lines[index].id = newId;
-                    $('.ids[data-index="' + index + '"').val(newId).trigger('change');
+                    $('.ids[data-index="' + index + '"]').val(newId).trigger('change');
                     showIds();
                 });
             });

@@ -6,6 +6,9 @@ draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
 
+### 0.2.2 (2015-12-17)
+* (bluefox) fix SelectID for safary
+
 ### 0.2.1 (2015-12-14)
 * (Smiling_Jack) support of new History concept
 * (Smiling_Jack) new editor & working on axis
