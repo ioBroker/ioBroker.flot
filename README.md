@@ -7,7 +7,7 @@ draw charts with [flot](http://www.flotcharts.org/)
 ## Changelog
 
 ### 0.2.3 (2016-01-26)
-* (ldsign) user selectable timespan (hours/minutes) for static timeArt
+* (ldsign) user selectable time (hours/minutes) for static timeArt
 
 ### 0.2.2 (2015-12-17)
 * (bluefox) fix SelectID for safary
