@@ -453,8 +453,21 @@
         if (!step) {
 
             if (config.timeArt == 'static') {
-                start = Math.round(new Date(config.start).setHours(0) / 1000) - (config.lines[index].offset || 0);
-                end = Math.round(new Date(config.end).setHours(24) / 1000) - (config.lines[index].offset || 0)
+                if (config.start_time != undefined) {
+                    var start_time = config.start_time.split(':').map(Number);
+                } else {
+                    var start_time = [0,0];
+                }
+
+                if (config.end_time != undefined) {
+                    var end_time = config.end_time.split(':').map(Number);
+                } else {
+                    var end_time = [24,0];
+                }
+
+                start = Math.round(new Date(config.start).setHours(start_time[0],start_time[1]) / 1000) - (config.lines[index].offset || 0);
+                end = Math.round(new Date(config.end).setHours(end_time[0],end_time[1]) / 1000) - (config.lines[index].offset || 0);
+
             } else {
                 if (config.relativeEnd == 'now') {
                     end = Math.round(new Date() / 1000) - (config.lines[index].offset || 0);
