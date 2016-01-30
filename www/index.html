@@ -958,8 +958,17 @@
             settings.yaxes.push(yaxi);
             settings.xaxes.push(xaxi);
 //            settings.yaxis["y"+(ii +1)] = axi
-            series[ii].yaxis = ii + 1;
-            series[ii].xaxis = ii + 1;
+
+// Support for commonYAxis
+            if (config.commonYAxis === 'true' || config.commonYAxis === true)
+			  {
+			  series[ii].yaxis = 1;
+			  }
+             else  
+              {
+			  series[ii].yaxis = ii + 1;
+              }			  
+			series[ii].xaxis = ii + 1;
         }
 
         if (config.smoothing) {
