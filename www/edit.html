@@ -74,7 +74,12 @@
                         <table style="table-layout: fixed;" id="idslist" border="0" cellspacing="0" cellpadding="0"></table>
                     </td>
                 </tr>
-
+               <tr>
+                 <td colspan="7">
+					<span class="translate">Common Y Axis:</span><input type="checkbox" class="value" id="commonYAxis"/>
+                 </td>
+               </tr>
+				
                 <!--<tr>-->
                 <!--<td class="translate label">same Day:</td>-->
                 <!--<td><input type="checkbox" id="sameDay" class="value"></td>-->
@@ -369,7 +374,8 @@
                     unit:       '',
                     name:       ''
                 }
-            ]
+            ],
+		commonYAxis: false	
         }
     };
 
