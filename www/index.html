@@ -241,6 +241,7 @@
                 art:        "average",
                 color:      colors[i] || 'blue',
                 thickness:  config.strokeWidth || 1,
+                shadowsize: config.strokeWidth || 1,
                 min:        config.min || '',
                 max:        config.max || '',
                 unit:       units[i]   || ''
@@ -766,7 +767,8 @@
                         show: (config.lines[i].chartType == 'lineplot' || config.lines[i].chartType == 'scatterplot')
                     },
                     data: seriesData[i],
-                    label: config.lines[i].name
+                    label: config.lines[i].name,
+                    shadowSize: config.lines[i].shadowsize
                 };
 
                 if (config.smoothing > 0) {

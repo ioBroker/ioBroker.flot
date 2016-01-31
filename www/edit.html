@@ -366,6 +366,7 @@
                     min:        '',
                     max:        '',
                     thickness:  3,
+                    shadowsize: 3,
                     unit:       '',
                     name:       ''
                 }
@@ -390,6 +391,7 @@
                     art:        "average",
                     color:      colors[i] || 'blue',
                     thickness:  setup.options.strokeWidth || 1,
+                    shadowsize: setup.options.strokeWidth || 1,
                     min:        setup.options.min || '',
                     max:        setup.options.max || '',
                     unit:       units[i]          || ''
@@ -456,7 +458,8 @@
                     '<td >'+_('Unit')+'</td>' +
                     '<td >'+_('Y Axis')+'</td>' +
                     '<td >'+_('X Axis')+'</td>' +
-                    '<td >&#216</td>' + // diameter
+                    '<td title="'+_('Line Width')+'">&#216L</td>' + // diameter
+                    '<td title="'+_('Shadow Size')+'">&#216S</td>' + // ShadowSize
                     '<td >'+_('Name')+'</td></tr>';
 
             var textInstances = '<option value="">' + _('default') + '</option>\n';
@@ -543,6 +546,7 @@
                             '<option value="bottomColor">' + _("bottom colored") + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px"><input data-option="thickness" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.thickness + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="shadowsize" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.shadowsize + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="name"      class="options-lines"       data-index="' + i + '" style="width: 200px"  value="' + index.name + '"></td>' +
                         (i ? '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
                         '</tr>';
@@ -747,6 +751,7 @@
                 min:        '',
                 max:        '',
                 thickness:  3,
+                shadowsize: 3,
                 unit:       '',
                 name:       ''
             });
