@@ -9,6 +9,7 @@ draw charts with [flot](http://www.flotcharts.org/)
 ### 0.2.4 (2016-01-31)
 * (ldsign) Title/help attribute for lineWidth and ShadowSize table head
 * (ldsign) option for shadowSize
+* (nobodyMO) Add option commonYAxis
 
 ### 0.2.3 (2016-01-26)
 * (ldsign) user selectable time (hours/minutes) for static timeArt
