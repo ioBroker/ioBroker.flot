@@ -461,6 +461,8 @@ systemDictionary = {
     "Auto-update:":         {"en": "Auto-update:",          "de": "Auto-update:",           "ru": "Обновлять сразу:"},
     "Use comma:":           {"en": "Use comma:",            "de": "Benutze Komma:",         "ru": "Запятая-разделитель:"},
     "Custom background:":   {"en": "Custom background:",    "de": "Anwender-Hintergrund:",  "ru": "Пользовательский фон:"},
+	"Common Y Axis:":        {"en": "Common Y Axis:",         "de": "Gemeinsame Y-Achse:",     "ru": "Общая ось Y:"},
     "Instance":             {"en": "Instance",              "de": "Instanz",                "ru": "Драйвер"},
-	"Common Y Axis:":        {"en": "Common Y Axis:",         "de": "Gemeinsame Y-Achse:",     "ru": "Common Y Axis:"}
+    "Line Width":           {"en": "Line Width",            "de": "Linienstärke",           "ru": "Ширина линии"},
+    "Shadow Size":          {"en": "Shadow Size",           "de": "Schattengröße",          "ru": "Ширина тени"}
 };
