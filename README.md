@@ -2,7 +2,12 @@
 ioBroker.flot
 =================
 
-draw charts with [flot](http://www.flotcharts.org/)
+[![NPM version](http://img.shields.io/npm/v/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
+
+[![NPM](https://nodei.co/npm/iobroker.flot.png?downloads=true)](https://nodei.co/npm/iobroker.flot/)
+
+Draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
 
@@ -10,6 +15,7 @@ draw charts with [flot](http://www.flotcharts.org/)
 * (ldsign) Title/help attribute for lineWidth and ShadowSize table head
 * (ldsign) option for shadowSize
 * (nobodyMO) Add option commonYAxis
+* (bluefox) add favicon and title
 
 ### 0.2.3 (2016-01-26)
 * (ldsign) user selectable time (hours/minutes) for static timeArt
