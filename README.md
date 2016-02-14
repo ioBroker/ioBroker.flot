@@ -10,6 +10,9 @@ ioBroker.flot
 Draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
+### 0.2.5 (2016-02-14)
+* (Pmant) add ignore null per state
+* (Pmant) change commonYAxis per state
 
 ### 0.2.4 (2016-01-31)
 * (ldsign) Title/help attribute for lineWidth and ShadowSize table head
