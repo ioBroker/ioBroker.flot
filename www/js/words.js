@@ -400,7 +400,7 @@ systemDictionary = {
     "Step span:":           {"en": "Step span:",            "de": "Schrittweite:",          "ru": "Интервал шага:"},
     "Link":                 {"en": "Link",                  "de": "Link",                   "ru": "URL"},
     "Counts":               {"en": "Counts",                "de": "Anzahl",                 "ru": "Кол-во значений"},
-    "ignore 'null':":       {"en": "ignore 'null':",        "de": "'null' ignorieren:",     "ru": "Игнорировать 'null':"},
+    "ignore 'null'":        {"en": "ignore 'null'",         "de": "'null' ignorieren",      "ru": "Игнорировать 'null'"},
 
     "Time Span":            {"en": "Time Span",             "de": "Zeit Spanne",            "ru": "Time Span"},
     "Appearance":           {"en": "Appearance",            "de": "Erscheinung",            "ru": "Появление"},
@@ -461,7 +461,7 @@ systemDictionary = {
     "Auto-update:":         {"en": "Auto-update:",          "de": "Auto-update:",           "ru": "Обновлять сразу:"},
     "Use comma:":           {"en": "Use comma:",            "de": "Benutze Komma:",         "ru": "Запятая-разделитель:"},
     "Custom background:":   {"en": "Custom background:",    "de": "Anwender-Hintergrund:",  "ru": "Пользовательский фон:"},
-	"Common Y Axis:":        {"en": "Common Y Axis:",         "de": "Gemeinsame Y-Achse:",     "ru": "Общая ось Y:"},
+	"Common Y Axis":        {"en": "Common Y Axis",         "de": "Gemeinsame Y-Achse",     "ru": "Общая ось Y"},
     "Instance":             {"en": "Instance",              "de": "Instanz",                "ru": "Драйвер"},
     "Line Width":           {"en": "Line Width",            "de": "Linienstärke",           "ru": "Ширина линии"},
     "Shadow Size":          {"en": "Shadow Size",           "de": "Schattengröße",          "ru": "Ширина тени"}

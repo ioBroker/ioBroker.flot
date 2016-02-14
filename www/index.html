@@ -549,7 +549,7 @@
                     config.longestStep = step;
                 }
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].val != null || !config.ignoreNull) {
+                    if (res[i].val != null || !config.lines[index].ignoreNull) {
 
                         // Convert boolean values to numbers
                         if (res[i].val === 'true' || res[i].val === true) {
@@ -895,6 +895,7 @@
 
             config.lines[ii].yaxe = config.lines[ii].yaxe || '';
             config.lines[ii].xaxe = config.lines[ii].xaxe || '';
+            config.lines[ii].commonYAxis = config.lines[ii].commonYAxis || '';
 
             var yaxi = {
                 show: config.lines[ii].yaxe == 'off' ? false : true,
@@ -964,15 +965,13 @@
 //            settings.yaxis["y"+(ii +1)] = axi
 
 // Support for commonYAxis
-            if (config.commonYAxis === 'true' || config.commonYAxis === true)
-			  {
-			  series[ii].yaxis = 1;
-			  }
-             else  
-              {
-			  series[ii].yaxis = ii + 1;
-              }			  
-			series[ii].xaxis = ii + 1;
+            if (config.lines[ii].commonYAxis !== '') {
+                series[ii].yaxis = parseInt(config.lines[ii].commonYAxis);
+            }
+            else {
+                series[ii].yaxis = ii + 1;
+            }
+            series[ii].xaxis = ii + 1;
         }
 
         if (config.smoothing) {
@@ -1075,7 +1074,7 @@
                     series[index].data = [];
 
                     for (var i = 0; i < res.length; i++) {
-                        if (res[i].val != null || !config.ignoreNull) {
+                        if (res[i].val != null || !config.lines[index].ignoreNull) {
 
                             // Convert boolean values to numbers
                             if (res[i].val === 'true' || res[i].val === true) {
