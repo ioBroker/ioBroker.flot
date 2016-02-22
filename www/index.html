@@ -549,7 +549,7 @@
                     config.longestStep = step;
                 }
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].val != null || !config.lines[index].ignoreNull) {
+                    if (res[i].val != null || !config.ignoreNull) {
 
                         // Convert boolean values to numbers
                         if (res[i].val === 'true' || res[i].val === true) {
@@ -1074,7 +1074,7 @@
                     series[index].data = [];
 
                     for (var i = 0; i < res.length; i++) {
-                        if (res[i].val != null || !config.lines[index].ignoreNull) {
+                        if (res[i].val != null || !config.ignoreNull) {
 
                             // Convert boolean values to numbers
                             if (res[i].val === 'true' || res[i].val === true) {
