@@ -173,6 +173,10 @@
                     <td class="translate" id="spanName">Step span:</td>
                     <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
+                <tr>
+                    <td class="translate label">ignore 'null':</td>
+                    <td><input type="checkbox" id="ignoreNull" class="value"></td>
+                </tr>
             </table>
             <!--<table style="margin-left: 25px">-->
                 <!--<tr>-->
@@ -372,7 +376,6 @@
                     shadowsize: 3,
                     unit:       '',
                     name:       '',
-                    ignoreNull: false,
                 }
             ],
         }
@@ -465,8 +468,7 @@
                     '<td title="'+_('Line Width')+'">&#216L</td>' + // diameter
                     '<td title="'+_('Shadow Size')+'">&#216S</td>' + // ShadowSize
                     '<td >'+_('Name')+'</td>' +
-                    '<td >'+_('Common Y Axis')+'</td>' +
-                    '<td >'+_('ignore \'null\'')+'</tr>';
+                    '<td >'+_('Common Y Axis')+'</td>';
 
             var textInstances = '<option value="">' + _('default') + '</option>\n';
             for (var t = 0; t < instances.length; t++) {
@@ -563,8 +565,6 @@
                             '<option value="4">' + "4" + '</option>' +
                             '<option value="5">' + "5" + '</option>' +
                         '</select></td>' +
-                        '<td style="padding-left:5px"><input type="checkbox" data-option="ignoreNull" class="options-lines"  data-index="' + i + '" value="' + index.ignoreNull + '"></td>' +
-
 
                         (i ? '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
                         '</tr>';
