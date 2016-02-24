@@ -548,9 +548,9 @@
                 if (config.longestStep < step) {
                     config.longestStep = step;
                 }
+                var lval = null;  //qf
                 for (var i = 0; i < res.length; i++) {
-                    if (res[i].val != null || !config.ignoreNull) {
-
+       //qf             if (res[i].val != null || !config.ignoreNull) {
                         // Convert boolean values to numbers
                         if (res[i].val === 'true' || res[i].val === true) {
                             res[i].val = 1;
@@ -558,8 +558,16 @@
                             res[i].val = 0;
                         }
                         if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-
-
+       //qf -- start
+                    if (res[i].val == null) {
+                        if (config.ignoreNull || i == res.length-1) {
+                             res[i].val=lval;
+                        }
+                    } else {
+                        lval=res[i].val;
+                    }
+                    if (res[i].val != null || i == 0 || i == res.length-1) {
+       //qf -- ende
                         seriesData[index].push([res[i].ts * 1000, res[i].val]);
                     }
 
@@ -568,11 +576,12 @@
 
             // Add first tick with required range
             // todo muss das sein ??
-            //seriesData[index] = fillRange(seriesData[index]);
+            // seriesData[index] = fillRange(seriesData[index]);
 
             if (callback) callback(id, index);
         });
     }
+
 
     function yFormatter(y) {
         if (config.afterComma !== undefined && config.afterComma !== null) {
