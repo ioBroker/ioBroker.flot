@@ -550,25 +550,24 @@
                 }
                 var lval = null;  //qf
                 for (var i = 0; i < res.length; i++) {
-       //qf             if (res[i].val != null || !config.ignoreNull) {
-                        // Convert boolean values to numbers
-                        if (res[i].val === 'true' || res[i].val === true) {
-                            res[i].val = 1;
-                        } else if (res[i].val === 'false' || res[i].val === false) {
-                            res[i].val = 0;
-                        }
-                        if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-       //qf -- start
+                    // Convert boolean values to numbers
+					if (res[i].val === 'true' || res[i].val === true) {
+						res[i].val = 1;
+					} else if (res[i].val === 'false' || res[i].val === false) {
+						res[i].val = 0;
+					}
+					if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+
                     if (res[i].val == null) {
-                        if (config.ignoreNull || i == res.length-1) {
-                             res[i].val=lval;
+                        if (config.ignoreNull || i == res.length - 1) {
+                             res[i].val = lval;
                         }
                     } else {
-                        lval=res[i].val;
+                        lval = res[i].val;
                     }
-                    if (res[i].val != null || i == 0 || i == res.length-1) {
-       //qf -- ende
-                        seriesData[index].push([res[i].ts * 1000, res[i].val]);
+					
+                    if (res[i].val != null || i == 0 || i == res.length - 1) {
+						seriesData[index].push([res[i].ts * 1000, res[i].val]);
                     }
 
                 }

@@ -1,7 +1,7 @@
 {
   "name": "iobroker.flot",
   "description": "This adapter draws charts with Flot in ioBroker.",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "author": {
     "name": "bluefox",
     "email": "bluefox@ccu.io"

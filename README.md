@@ -10,6 +10,9 @@ ioBroker.flot
 Draw charts with [flot](http://www.flotcharts.org/)
 
 ## Changelog
+### 0.2.6 (2016-02-24)
+* (Pmant) remove ignore null per state
+
 ### 0.2.5 (2016-02-14)
 * (Pmant) add ignore null per state
 * (Pmant) change commonYAxis per state
