@@ -9,7 +9,16 @@ ioBroker.flot
 
 Draw charts with [flot](http://www.flotcharts.org/)
 
+![Example](img/example.png)
+
+To use the charts one of the history adapters is required: history, sql or InfluxDB
+
 ## Changelog
+### 1.0.0 (2016-04-09) 
+* (bluefox) enable editing of created charts
+* (bluefox) enable set of label colors
+* (bluefox) enable set of window background
+
 ### 0.2.6 (2016-02-24)
 * (Pmant) remove ignore null per state
 

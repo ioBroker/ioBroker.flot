@@ -2,9 +2,8 @@
 <head>
     <title>Flot Edit</title>
     <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
-    <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/redmond/jquery-ui.min.css">
+    <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/default/jquery-ui.min.css">
     <link type="text/css" rel="stylesheet" href="/lib/css/fancytree/ui.fancytree.min.css"/>
-
 
     <script type="text/javascript" src="/lib/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/lib/js/jquery-ui-1.10.3.full.min.js"></script>
@@ -20,7 +19,7 @@
 
     <style>
         .input {
-            width: 150px;
+            /*width: 150px;*/
         }
 
         .input_time {
@@ -37,7 +36,8 @@
 
         .header {
             font-weight: bold;
-            background: rgba(150, 150, 255, 0.100);
+            background: white;
+            color: black;
         }
 
         body {
@@ -60,7 +60,7 @@
 
 <div style="height: 250px; position: relative">
     <div id="accordion">
-        <h3 id="0" class="translate">Input data</h3>
+        <h3 id="0"><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.0.0</div></h3>
         <div>
             <table>
                 <tr>
@@ -108,7 +108,7 @@
                     <td class="translate">Art:</td>
                     <td><select id="timeArt" class="input value">
                         <option value="relative" class="translate">relative</option>
-                        <option value="static" class="translate">static</option>
+                        <option value="static"   class="translate">static</option>
                     </select></td>
                 </tr>
                 <tr class="relative">
@@ -123,24 +123,24 @@
                 </tr>
                 <tr class="relative">
                     <td class="translate">Range:</td>
-                    <td><select id="range" class="value input">
-                        <option value="10" class="translate">10 Minutes</option>
-                        <option value="30" class="translate">30 Minutes</option>
-                        <option value="60" class="translate">1 Hour</option>
-                        <option value="120" class="translate">2 Hours</option>
-                        <option value="180" class="translate">3 Hours</option>
-                        <option value="360" class="translate">6 Hours</option>
-                        <option value="720" class="translate">12 Hours</option>
-                        <option value="1440" class="translate">1 Day</option>
-                        <option value="2880" class="translate">2 Days</option>
-                        <option value="4320" class="translate">3 Days</option>
-                        <option value="10080" class="translate">7 Days</option>
-                        <option value="20160" class="translate">14 Days</option>
-                        <option value="43200" class="translate">1 Month</option>
-                        <option value="86400" class="translate">2 Months</option>
-                        <option value="129600" class="translate">3 Months</option>
-                        <option value="259200" class="translate">6 Months</option>
-                        <option value="525600" class="translate">1 Year</option>
+                    <td><select id="range"      class="value input">
+                        <option value="10"      class="translate">10 Minutes</option>
+                        <option value="30"      class="translate">30 Minutes</option>
+                        <option value="60"      class="translate">1 Hour</option>
+                        <option value="120"     class="translate">2 Hours</option>
+                        <option value="180"     class="translate">3 Hours</option>
+                        <option value="360"     class="translate">6 Hours</option>
+                        <option value="720"     class="translate">12 Hours</option>
+                        <option value="1440"    class="translate">1 Day</option>
+                        <option value="2880"    class="translate">2 Days</option>
+                        <option value="4320"    class="translate">3 Days</option>
+                        <option value="10080"   class="translate">7 Days</option>
+                        <option value="20160"   class="translate">14 Days</option>
+                        <option value="43200"   class="translate">1 Month</option>
+                        <option value="86400"   class="translate">2 Months</option>
+                        <option value="129600"  class="translate">3 Months</option>
+                        <option value="259200"  class="translate">6 Months</option>
+                        <option value="525600"  class="translate">1 Year</option>
                         <option value="1051200" class="translate">2 Years</option>
                     </select></td>
                 </tr>
@@ -230,13 +230,19 @@
                         </select></td>
                     </tr>
                     <tr>
-                        <td class="translate label">Custom background:</td>
+                        <td class="translate label">Window background:</td>
+                        <td>
+                            <input type="text" id="window_bg" class="value input">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="translate label">Custom chart background:</td>
                         <td>
                             <input type="checkbox" id="bg_custom">
                         </td>
                     </tr>
                     <tr>
-                        <td class="translate label">Background:</td>
+                        <td class="translate label">Chart background:</td>
                         <td>
                             <select id="bg_predefined">
                                 <option value="" class="translate">default</option>
@@ -251,9 +257,22 @@
                                 <option value="8">Koko Caramel</option>
                                 <option value="9">Turquoise flow</option>
                             </select>
-                            <input type="text" id="bg" class="value input" style="display:none">
+                            <input type="text" id="bg" class="value input" style="display: none">
                         </td>
                     </tr>
+                    <tr>
+                        <td class="translate label">X axis labels color:</td>
+                        <td>
+                            <input type="text" class="value input" id="x_labels_color">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="translate label">Y axis labels color:</td>
+                        <td>
+                            <input type="text" class="value input" id="y_labels_color">
+                        </td>
+                    </tr>
+
                     </table>
 
 
@@ -347,11 +366,11 @@
 </div>
 <div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px;margin-bottom: 10px">
     <label class="translate" for="link">Link</label>
-    <textarea id="link" style="width: calc(100% - 130px); height: 55px; word-break: break-all"></textarea>
+    <textarea id="link" style="width: calc(100% - 200px); height: 55px; word-break: break-all; resize: none"></textarea>
     <button style="padding-left:0" id="open" class="translateB">Open</button>
 </div>
 <button id="updatePreview" class="translateB" style="width:100%;margin-bottom: 10px">update Preview</button>
-<iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 450px)" id="chart"></iframe>
+<iframe src="index.html" style="width: 100%; bottom: 0; height: calc(100% - 350px);border: 1px solid #afafaf; border-radius: 2px" id="chart"></iframe>
 <div id="dialog-select-member" style="display:none"></div>
 <script>
     "use strict";
@@ -363,39 +382,28 @@
 
     var setup       = {
         options: {
-            lines: [
-                {
-                    id:         '',
-                    instance:   '',
-                    offset:     0,
-                    art:        'average',
-                    color:      '#FF0000',
-                    min:        '',
-                    max:        '',
-                    thickness:  3,
-                    shadowsize: 3,
-                    unit:       '',
-                    name:       '',
-                }
-            ],
+            l: []
         }
     };
+
+    addLine();
 
     var path = location.href.split('?')[1];
     if (path) {
         setup.options = deparam(path || '');
+        // for compatibility. Not used any more
         if (setup.options._ids) {
             var ids    = setup.options._ids    ? setup.options._ids.split(';')    : [];
             var colors = setup.options._colors ? setup.options._colors.split(';') : [];
             var names  = setup.options._names  ? setup.options._names.split(';')  : [];
             var units  = setup.options._units  ? setup.options._units.split(';')  : [];
-            setup.options.lines = [];
+            setup.options.l = [];
             for (var i = 0; i < ids.length; i++) {
-                setup.options.lines.push({
+                setup.options.l.push({
                     id:         ids[i],
                     offset:     0,
                     name:       names[i] || '',
-                    art:        "average",
+                    art:        'average',
                     color:      colors[i] || 'blue',
                     thickness:  setup.options.strokeWidth || 1,
                     shadowsize: setup.options.strokeWidth || 1,
@@ -405,13 +413,14 @@
                 });
             }
             setup.options.range = parseInt(setup.options.range, 10);
-            setup.options.aggregateType = "step";
+            setup.options.aggregateType = 'step';
             setup.options.aggregateSpan = 300;
-            setup.options.relativeEnd   = "now";
+            setup.options.relativeEnd   = 'now';
             if (setup.options._colors)  delete setup.options._colors;
             if (setup.options._names)   delete setup.options._names;
             if (setup.options._ids)     delete setup.options._ids;
         }
+        setup.options.l = setup.options.l || [];
     }
 
     if (typeof sysLang !== 'undefined') systemLang = sysLang || 'en';
@@ -449,124 +458,145 @@
         }
     });
 
+    function addLine() {
+        if (!setup.options.l) setup.options.l = [];
+        var index = setup.options.l.length;
+
+        setup.options.l.push({
+            id:         '',
+            instance:   '',
+            offset:     0,
+            art:        'average',
+            color:      defaultColors[index] || '#00FFFF',
+            min:        '',
+            max:        '',
+            thickness:  3,
+            shadowsize: 3,
+            unit:       '',
+            name:       ''
+        });
+
+        return index;
+    }
+
     function showIds(callback) {
         setTimeout(function () {
-            var text = '<tr style="text-align: center">' +
+            var text = '<tr style="text-align: center" class="header">' +
                     '<td></td>' +
-                    '<td >'+_('ID')+'</td>' +
+                    '<td >' + _('ID') +  '</td>' +
                     '<td ></td>' +
-                    '<td >'+_('Instance')+'</td>' +
-                    '<td >'+_('Offset')+'</td>' +
-                    '<td >'+_('Art')+'</td>' +
-                    '<td >'+_('Chart Type')+'</td>' +
-                    '<td >'+_('Color')+'</td>' +
-                    '<td >'+_('Min')+'</td>' +
-                    '<td >'+_('Max')+'</td>' +
-                    '<td >'+_('Unit')+'</td>' +
-                    '<td >'+_('Y Axis')+'</td>' +
-                    '<td >'+_('X Axis')+'</td>' +
-                    '<td title="'+_('Line Width')+'">&#216L</td>' + // diameter
-                    '<td title="'+_('Shadow Size')+'">&#216S</td>' + // ShadowSize
-                    '<td >'+_('Name')+'</td>' +
-                    '<td >'+_('Common Y Axis')+'</td>';
+                    '<td >' + _('Instance')      + '</td>' +
+                    '<td >' + _('Offset')        + '</td>' +
+                    '<td >' + _('Art')           + '</td>' +
+                    '<td >' + _('Chart Type')    + '</td>' +
+                    '<td >' + _('Color')         + '</td>' +
+                    '<td >' + _( 'Min')          + '</td>' +
+                    '<td >' + _('Max')           + '</td>' +
+                    '<td >' + _('Unit')          + '</td>' +
+                    '<td >' + _('Y Axis')        + '</td>' +
+                    '<td >' + _('X Axis')        + '</td>' +
+                    '<td title="' + _('Line Width')  + '">&#216L</td>' + // diameter
+                    '<td title="' + _('Shadow Size') + '">&#216S</td>' + // ShadowSize
+                    '<td >' + _('Name')          + '</td>' +
+                    '<td >' + _('Common Y Axis') + '</td>';
 
             var textInstances = '<option value="">' + _('default') + '</option>\n';
             for (var t = 0; t < instances.length; t++) {
                 textInstances += '<option value="' + instances[t] + '">' + instances[t] + '</option>\n';
             }
 
-            for (var i = 0; i < setup.options.lines.length; i++) {
-                var index = setup.options.lines[i];
+            for (var i = 0; i < setup.options.l.length; i++) {
+                var line = setup.options.l[i];
 
                 text += '<tr id="inputData' + i + '" class="inputData">' +
-                        '<td class="label" style="width: 60px; min-width: 60px">' + _('Line') + ' ' + (i + 1) + '</td>' +
-                        '<td style="padding-left: 4px; display:"><input data-option="id" data-index="' + i + '" class="input options-lines ids" style="display: inline; width: 200px" value="' + index.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
-                        '<td style="padding-left: 4px; display:"><select data-option="instance" data-index="' + i + '" class="input options-lines" style="display: inline; value="' + (index.instance || '') + '">' + textInstances + '</select></td>' +
+                        '<td title="' + _('Line') + ' ' + (i + 1) + '">' + (i + 1) + '</td>' +
+                        '<td style="padding-left: 4px; display:"><input  data-option="id"       data-index="' + i + '" class="input options-lines ids" style="display: inline; width: 200px; direction: rtl;" value="' + line.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
+                        '<td style="padding-left: 4px; display:"><select data-option="instance" data-index="' + i + '" class="input options-lines" style="display: inline; value="' + (line.instance || '') + '">' + textInstances + '</select></td>' +
                         '<td style="padding-left: 5px">' +
                         '<select class="input options-lines" style="width: 70px" data-index="' + i + '" data-option="offset"> ' +
-                            '<option value="0">' + _("0s") + '</option> ' +
-                            '<option value="10">' + _("10s") + '</option>' +
-                            '<option value="30">' + _("30s") + '</option>' +
-                            '<option value="60">' + _("60s") + '</option>' +
-                            '<option value="120">' + _("2m") + '</option>' +
-                            '<option value="180">' + _("3m") + '</option>' +
-                            '<option value="240">' + _("4m") + '</option>' +
-                            '<option value="300">' + _("5m") + '</option>' +
-                            '<option value="600">' + _("10m") + '</option>' +
-                            '<option value="900">' + _("15m") + '</option>' +
-                            '<option value="1800">' + _("30m") + '</option>' +
-                            '<option value="2700">' + _("45m") + '</option>' +
-                            '<option value="3600">' + _("1H") + '</option>' +
-                            '<option value="7200">' + _("2H") + '</option>' +
-                            '<option value="21600">' + _("6H") + '</option>' +
-                            '<option value="43200">' + _("12H") + '</option>' +
-                            '<option value="86400">' + _("1D") + '</option>' +
-                            '<option value="172800">' + _("2D") + '</option>' +
-                            '<option value="259200">' + _("3D") + '</option>' +
-                            '<option value="345600">' + _("4D") + '</option>' +
-                            '<option value="604800">' + _("1W") + '</option>' +
-                            '<option value="1209600">' + _("2W") + '</option>' +
-                            '<option value="2419200">' + _("4W") + '</option>' +
-                            '<option value="4838400">' + _("8W") + '</option>' +
-                            '<option value="7257600">' + _("12W") + '</option>' +
-                            '<option value="15724800">' + _("26W") + '</option>' +
-                            '<option value="30758400">' + _("1Y") + '</option>' +
-                            '<option value="61516800">' + _("2Y") + '</option>' +
+                            '<option value="0">'        + _('0s')   + '</option> ' +
+                            '<option value="10">'       + _('10s')  + '</option>' +
+                            '<option value="30">'       + _('30s')  + '</option>' +
+                            '<option value="60">'       + _('60s')  + '</option>' +
+                            '<option value="120">'      + _('2m')   + '</option>' +
+                            '<option value="180">'      + _('3m')   + '</option>' +
+                            '<option value="240">'      + _('4m')   + '</option>' +
+                            '<option value="300">'      + _('5m')   + '</option>' +
+                            '<option value="600">'      + _('10m')  + '</option>' +
+                            '<option value="900">'      + _('15m')  + '</option>' +
+                            '<option value="1800">'     + _('30m')  + '</option>' +
+                            '<option value="2700">'     + _('45m')  + '</option>' +
+                            '<option value="3600">'     + _('1H')   + '</option>' +
+                            '<option value="7200">'     + _('2H')   + '</option>' +
+                            '<option value="21600">'    + _('6H')   + '</option>' +
+                            '<option value="43200">'    + _('12H')  + '</option>' +
+                            '<option value="86400">'    + _('1D')   + '</option>' +
+                            '<option value="172800">'   + _('2D')   + '</option>' +
+                            '<option value="259200">'   + _('3D')   + '</option>' +
+                            '<option value="345600">'   + _('4D')   + '</option>' +
+                            '<option value="604800">'   + _('1W')   + '</option>' +
+                            '<option value="1209600">'  + _('2W')   + '</option>' +
+                            '<option value="2419200">'  + _('4W')   + '</option>' +
+                            '<option value="4838400">'  + _('8W')   + '</option>' +
+                            '<option value="7257600">'  + _('12W')  + '</option>' +
+                            '<option value="15724800">' + _('26W')  + '</option>' +
+                            '<option value="30758400">' + _('1Y')   + '</option>' +
+                            '<option value="61516800">' + _('2Y')   + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width: 90px" data-option="art" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="average">' + _("average") + '</option>' +
-                            '<option value="max">' + _("max") + '</option>' +
-                            '<option value="min">' + _("min") + '</option>' +
-                            '<option value="total">' + _("total") + '</option>' +
-                            '<option value="onchange">' + _("on change") + '</option>' +
+                            '<option value="average">'  + _('average')   + '</option>' +
+                            '<option value="max">'      + _('max')       + '</option>' +
+                            '<option value="min">'      + _('min')       + '</option>' +
+                            '<option value="total">'    + _('total')     + '</option>' +
+                            '<option value="onchange">' + _('on change') + '</option>' +
                         '</select>' +
                         '</td>' +
                         '<td><select style="width: 120px" data-option="chartType" class="input options-lines" data-index="' + i + '">'+
-                            '<option value="line">' + _("Line") + '</option>'+
-                            '<option value="area">' + _("Area") + '</option>'+
-                            '<!--<option value="bar">' + _("Bar") + '</option>-->'+
-                            '<option value="lineplot">' + _("Line plot") + '</option>'+
-                            '<option value="scatterplot">' + _("Scatter plot") + '</option>'+
-                            '<option value="steps">' + _("Steps") + '</option>'+
-                            '<!--<option value="pie">' + _("Pie") + '</option>-->'+
-                        '</select></td>'+
-                        '<td style="padding-left:5px"><input data-option="color" style="width: 70px" data-index="' + i + '" class="input-color options-lines" value="' + index.color + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="min"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.min   + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="max"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.max   + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="unit"  style="width: 70px" data-index="' + i + '" class="options-lines" value="' + index.unit  + '"></td>' +
+                            '<option value="line">'         + _('Line')         + '</option>' +
+                            '<option value="area">'         + _('Area')         + '</option>' +
+                            '<!--<option value="bar">'      + _('Bar')          + '</option>-->' +
+                            '<option value="lineplot">'     + _('Line plot')    + '</option>' +
+                            '<option value="scatterplot">'  + _('Scatter plot') + '</option>' +
+                            '<option value="steps">'        + _('Steps')        + '</option>' +
+                            '<!--<option value="pie">'      + _('Pie')          + '</option>-->' +
+                        '</select></td>' +
+                        '<td style="padding-left:5px"><input data-option="color" style="width: 70px" data-index="' + i + '" class="options-lines input-color" value="' + (line.color || '') + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="min"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="max"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + ((line.max === undefined) ? '' : line.max) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="unit"  style="width: 70px" data-index="' + i + '" class="options-lines" value="' + (line.unit || '') + '"></td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width:  140px" data-option="yaxe" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">' + _("default") + '</option>' +
-                            '<option value="off">' + _("off") + '</option>' +
-                            '<option value="left">' + _("left") + '</option>' +
-                            '<option value="right">' + _("right") + '</option>' +
-                            '<option value="leftColor">' + _("left colored") + '</option>' +
-                            '<option value="rightColor">' + _("right colored") + '</option>' +
+                            '<option value="">'             + _('default')       + '</option>' +
+                            '<option value="off">'          + _('off')           + '</option>' +
+                            '<option value="left">'         + _('left')          + '</option>' +
+                            '<option value="right">'        + _('right')         + '</option>' +
+                            '<option value="leftColor">'    + _('left colored')  + '</option>' +
+                            '<option value="rightColor">'   + _('right colored') + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width:  140px" data-option="xaxe" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">' + _("default") + '</option>' +
-                            '<option value="off">' + _("off") + '</option>' +
-                            '<option value="top">' + _("top") + '</option>' +
-                            '<option value="bottom">' + _("bottom") + '</option>' +
-                            '<option value="topColor">' + _("top colored") + '</option>' +
-                            '<option value="bottomColor">' + _("bottom colored") + '</option>' +
+                            '<option value="">'             + _('default')          + '</option>' +
+                            '<option value="off">'          + _('off')              + '</option>' +
+                            '<option value="top">'          + _('top')              + '</option>' +
+                            '<option value="bottom">'       + _('bottom')           + '</option>' +
+                            '<option value="topColor">'     + _('top colored')      + '</option>' +
+                            '<option value="bottomColor">'  + _('bottom colored')   + '</option>' +
                         '</select></td>' +
-                        '<td style="padding-left:5px"><input data-option="thickness" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.thickness + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="shadowsize" class="options-lines"  data-index="' + i + '" style="width: 30px"   value="' + index.shadowsize + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="name"      class="options-lines"       data-index="' + i + '" style="width: 200px"  value="' + index.name + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="thickness"  class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.thickness || 1) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="shadowsize" class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.shadowsize || 0) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="name"       class="options-lines" data-index="' + i + '" style="width: 200px"  value="' + (line.name || '') + '"></td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width:  180px" data-option="commonYAxis" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">' + _("default") + '</option>' +
-                            '<option value="1">' + "1" + '</option>' +
-                            '<option value="2">' + "2" + '</option>' +
-                            '<option value="3">' + "3" + '</option>' +
-                            '<option value="4">' + "4" + '</option>' +
-                            '<option value="5">' + "5" + '</option>' +
+                        '<select data-option="commonYAxis" class="input options-lines" data-index="' + i + '">' +
+                            '<option value="">'     + _('default')  + '</option>' +
+                            '<option value="1">'    + '1'           + '</option>' +
+                            '<option value="2">'    + '2'           + '</option>' +
+                            '<option value="3">'    + '3'           + '</option>' +
+                            '<option value="4">'    + '4'           + '</option>' +
+                            '<option value="5">'    + '5'           + '</option>' +
                         '</select></td>' +
 
-                        (i ? '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
+                        (i ? '<td style="padding-left: 5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
                         '</tr>';
             }
 
@@ -584,9 +614,9 @@
                 icons: {primary: 'ui-icon-trash'},
                 text: false
             }).click(function () {
-                if (setup.options.lines.length > 1) {
+                if (setup.options.l.length > 1) {
                     var i = parseInt($(this).parent().parent().attr('id').replace('inputData', ''));
-                    setup.options.lines.splice(i, 1);
+                    setup.options.l.splice(i, 1);
                     showIds();
                     save();
                 }
@@ -599,8 +629,8 @@
                 }
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
-                $('#dialog-select-member').selectId('show', setup.options.lines[index].id, undefined, function (newId) {
-                    setup.options.lines[index].id = newId;
+                $('#dialog-select-member').selectId('show', setup.options.l[index].id, undefined, function (newId) {
+                    setup.options.l[index].id = newId;
                     $('.ids[data-index="' + index + '"]').val(newId).trigger('change');
                     showIds();
                 });
@@ -611,11 +641,11 @@
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
                 var opt   = $(this).data('option');
 
-                if (setup.options.lines[index][opt] !== undefined) {
+                if (setup.options.l[index][opt] !== undefined) {
                     if ($this.attr('type') == 'checkbox') {
-                        $this.prop('checked', !!setup.options.lines[index][opt]);
+                        $this.prop('checked', !!setup.options.l[index][opt]);
                     } else {
-                        $this.val(setup.options.lines[index][opt]);
+                        $this.val(setup.options.l[index][opt]);
                     }
                 }
             });
@@ -629,20 +659,20 @@
 
         // clean options
         for (var y in _options){
-            if (_options[y] == ''){
+            if (_options[y] === ''){
                 delete _options[y];
             }
         }
 
         // clean lines
-        for (var i = 0; i < _options.lines.length; i++) {
-            if (_options.lines[i].id == ''){
-                _options.lines.splice(i, 1);
+        for (var i = 0; i < _options.l.length; i++) {
+            if (_options.l[i].id === ''){
+                _options.l.splice(i, 1);
                 i--;
             } else {
-                for (var x in _options.lines[i]) {
-                    if (_options.lines[i][x] === '') {
-                        delete _options.lines[i][x];
+                for (var x in _options.l[i]) {
+                    if (_options.l[i][x] === '') {
+                        delete _options.l[i][x];
                     }
                 }
             }
@@ -650,7 +680,7 @@
 
         var params = $.param(_options);
 
-        console.log(deparam(params));
+        //console.log(deparam(params));
 
         return params;
     }
@@ -677,19 +707,20 @@
             save();
         }
         var settings = getSettings();
-        $('#link').val(location.href.replace('edit.html', 'index.html') + '?' + settings);
+        $('#link').val(location.href.split('?')[0].replace('edit.html', 'index.html') + '?' + settings);
         $('#updatePreview').button('option', 'disabled', false).click(updatePreview);
 
         if ($('#aggregateType').val() === 'step') {
-            $('#spanName').text(_('Seconds') + ":");
+            $('#spanName').text(_('Seconds') + ':');
         } else {
-            $('#spanName').text(_('Counts') + ":");
+            $('#spanName').text(_('Counts') + ':');
         }
         $('.relative, .static').hide();
         $('.' + $('#timeArt').val()).show();
 
         if ($('#autoUpdate').prop('checked')) {
             delayedPreview();
+            $('#updatePreview').hide();
         }
     }
 
@@ -705,7 +736,12 @@
     }
 
     function updatePreview() {
-        $('#chart').css({height: (parseInt($('#height').val()) || 500) + 90});
+        if (parseInt($('#height').val())) {
+            $('#chart').css({height: (parseInt($('#height').val()) || 500) + 90});
+        } else {
+            $('#chart').css({height: 'calc(100% - 350px)'});
+        }
+
         var settings = getSettings();
         $('#chart').attr('src', '');
         setTimeout(function () {
@@ -716,26 +752,46 @@
     }
 
     $(document).ready(function() {
-
-        if (!path && typeof(Storage) !== 'undefined') {
+        if (typeof(Storage) !== 'undefined') {
             var _setup = localStorage.getItem('iobroker.Flot');
-            try {
-                _setup = JSON.parse(_setup);
-                if (_setup.options) setup = _setup;
-            }
-            catch (e) {
-                console.log('Cannot parse stored settings');
+            if (_setup) {
+                try {
+                    _setup = JSON.parse(_setup);
+                    if (path) {
+                        _setup.options = setup.options;
+                        setup = _setup;
+                        save();
+                        document.location.href = document.location.href.split('?')[0];
+                    } else if (_setup.options) {
+                        setup = _setup;
+                    }
+                }
+                catch (e) {
+                    console.log('Cannot parse stored settings');
+                }
             }
         }
+
+        if (setup.options.lines) {
+            setup.options.l = JSON.parse(JSON.stringify(setup.options.lines));
+            delete setup.options.lines;
+        }
+
+        if (!setup.options.l || !setup.options.l.length) addLine();
 
         $('#autoUpdate').change(function () {
             setup['auto-update'] = $(this).prop('checked') ? 'true' : 'false';
             update();
+            if (setup['auto-update'] == 'true') {
+                $('#updatePreview').hide();
+            } else {
+                $('#updatePreview').show();
+            }
         }).prop('checked', setup['auto-update'] == 'true');
 
         $('#accordion').on('change', '.options-lines', function () {
             var index = parseInt($(this).parent().parent().attr('id').replace('inputData',''));
-            setup.options.lines[index][$(this).data('option')] = $(this).val();
+            setup.options.l[index][$(this).data('option')] = $(this).val();
             update();
         });
 
@@ -759,21 +815,7 @@
             icons: {secondary: 'ui-icon-plus'},
             text: true
         }).click(function () {
-            var index = setup.options.lines.length;
-            setup.options.lines.push({
-                id:         '',
-                instance:   '',
-                offset:     0,
-                art:        'average',
-                color:      defaultColors[index] || '#00FFFF',
-                min:        '',
-                max:        '',
-                thickness:  3,
-                shadowsize: 3,
-                unit:       '',
-                name:       ''
-            });
-
+            addLine();
             showIds();
         }).css({height: 30});
 
@@ -836,9 +878,17 @@
 
 //      $('#range').val(options.range);
 //      $('#axeX').val(options.axeX);
-        $('#updatePreview').button();
-        $('#open').button().click(function () {
-            window.open($('#link').val());
+        $('#updatePreview').button({
+            icons: {
+                primary: 'ui-icon-refresh'
+            }
+        });
+        $('#open').button({
+            icons: {
+                primary: 'ui-icon-play'
+            }
+        }).click(function () {
+            window.open($('#link').val(), 'flot');
         });
 
         translateAll();

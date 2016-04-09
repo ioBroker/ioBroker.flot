@@ -27,6 +27,10 @@ module.exports = function (grunt) {
                         {
                             match: /"version"\: *"[\.0-9]*",/g,
                             replacement: '"version": "' + version + '",'
+                        } ,
+                        {
+                            match: />Version: *[\.0-9]*</g,
+                            replacement: '>Version: ' + version + '<'
                         }
                     ]
                 },
@@ -40,44 +44,16 @@ module.exports = function (grunt) {
                                 srcDir + 'io-package.json'
                         ],
                         dest:    srcDir
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                                srcDir + '/www/*'
+                        ],
+                        dest:    srcDir + '/www/'
                     }
                 ]
-            }
-        },
-        // Javascript code styler
-        jscs:   require(__dirname + '/tasks/jscs.js'),
-        // Lint
-        jshint: require(__dirname + '/tasks/jshint.js'),
-        http: {
-            get_hjscs: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/tasks/jscs.js'
-                },
-                dest: 'tasks/jscs.js'
-            },
-            get_jshint: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/tasks/jshint.js'
-                },
-                dest: 'tasks/jshint.js'
-            },
-            get_gruntfile: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/ioBroker/ioBroker.build/master/adapters/Gruntfile.js'
-                },
-                dest: 'Gruntfile.js'
-            },
-            get_utilsfile: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/ioBroker/ioBroker.build/master/adapters/utils.js'
-                },
-                dest: 'lib/utils.js'
-            },
-            get_jscsRules: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/tasks/jscsRules.js'
-                },
-                dest: 'tasks/jscsRules.js'
             }
         }
     });
@@ -112,16 +88,10 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-replace');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-jscs');
-    grunt.loadNpmTasks('grunt-http');
 
     grunt.registerTask('default', [
-        'http',
         'replace',
-        'updateReadme',
-        'jshint',
-        'jscs'
+        'updateReadme'
     ]);
     grunt.registerTask('p', [
         'replace',
