@@ -629,9 +629,15 @@
                 }
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).parent().parent().attr('id').replace('inputData', '');
-                $('#dialog-select-member').selectId('show', setup.options.l[index].id, undefined, function (newId) {
+                $('#dialog-select-member').selectId('show', setup.options.l[index].id, undefined, function (newId, ignore, obj) {
                     setup.options.l[index].id = newId;
                     $('.ids[data-index="' + index + '"]').val(newId).trigger('change');
+                    if (obj && obj.common.type === 'boolean') {
+                        $('select[data-option="art"][data-index="' + index + '"]').val('onchange').trigger('change');
+                        $('select[data-option="chartType"][data-index="' + index + '"]').val('steps').trigger('change');
+                        $('input[data-option="min"][data-index="' + index + '"]').val(0).trigger('change');
+                        $('input[data-option="max"][data-index="' + index + '"]').val(10).trigger('change');
+                    }
                     showIds();
                 });
             });

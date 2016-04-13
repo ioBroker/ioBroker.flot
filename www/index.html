@@ -476,31 +476,31 @@
                     var end_time = [24,0];
                 }
 
-                start = Math.round(new Date(config.start).setHours(start_time[0],start_time[1]) / 1000) - (config.l[index].offset || 0);
-                end = Math.round(new Date(config.end).setHours(end_time[0],end_time[1]) / 1000) - (config.l[index].offset || 0);
+                // offset is in seconds
+                start = Math.round(new Date(config.start).setHours(start_time[0], start_time[1]) / 1000) - (config.l[index].offset || 0);
+                end   = Math.round(new Date(config.end)  .setHours(end_time[0],   end_time[1])   / 1000) - (config.l[index].offset || 0);
 
             } else {
                 if (config.relativeEnd == 'now') {
-                    end = Math.round(new Date() / 1000) - (config.l[index].offset || 0);
+                    end   = Math.round(new Date() / 1000) - (config.l[index].offset || 0);
                     start = end - (config.range * 60);
                 } else if (config.relativeEnd == 'today') {
-                    end = Math.round(new Date().setHours(24) / 1000) - (config.l[index].offset || 0);
+                    end   = Math.round(new Date().setHours(24) / 1000) - (config.l[index].offset || 0);
                     start = Math.round(new Date(new Date(new Date().setHours(24)).setMinutes(0)).setSeconds(0) / 1000) - (config.range * 60) - (config.l[index].offset || 0);
                 }
             }
 
             option = {
-                start: start,
-                end: end,
-                ignoreNull: config.getNull || false,
-                aggregate: config.l[index].art || 'average'
+                start: start, // todo return here * 1000
+                end:   end,   // todo return here * 1000
+                ignoreNull: config.getNull      || false,
+                aggregate:  config.l[index].art || 'average'
             };
-
 
             if (config.aggregateType == 'step') {
                 option.step = config.aggregateSpan;
             } else if (config.aggregateType == 'count') {
-                option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
+                option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
             }
 
             navOptions[index] = option;
@@ -512,14 +512,14 @@
             start = end - (step);
 
             option = {
-                start: start,
-                end: end,
+                start:      start, // todo return here * 1000
+                end:        end,   // todo return here * 1000
                 ignoreNull: config.getNull || false,
-                aggregate: config.l[index].art || 'average',
-                count: 1
+                aggregate:  config.l[index].art || 'average',
+                count:      1
             };
 
-            navOptions[index].end = end;
+            navOptions[index].end   = end;
             navOptions[index].start = end - (config.range * 60);
             return option;
         }
@@ -528,16 +528,16 @@
     function getStartStopNav(index) {
 
         var option = {
-            start: navOptions[index].start - (navStep * navStepMulti),
-            end: navOptions[index].end - (navStep * navStepMulti),
-            ignoreNull: config.getNull || false,
-            aggregate: config.l[index].art || 'average',
+            start:      navOptions[index].start - (navStep * navStepMulti),
+            end:        navOptions[index].end   - (navStep * navStepMulti),
+            ignoreNull: config.getNull      || false,
+            aggregate:  config.l[index].art || 'average'
         };
 
         if (config.aggregateType == 'step') {
             option.step = config.aggregateSpan;
         } else if (config.aggregateType == 'count') {
-            option.count = config.aggregateSpan || document.getElementById("chart_container").clientWidth;
+            option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
         }
 
         return option;
@@ -575,7 +575,11 @@
                     }
 					
                     if (res[i].val != null || i == 0 || i == res.length - 1) {
-						seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                        if (res[i].ts < 946681200000) { // 2000.01.01 00:00:00
+                            seriesData[index].push([res[i].ts * 1000, res[i].val]);
+                        } else {
+                            seriesData[index].push([res[i].ts, res[i].val]);
+                        }
                     }
 
                 }
@@ -696,7 +700,7 @@
 
         if (config.title && !$title.html()) {
             $title.html(decodeURI(config.title));
-            if (config.titleColor) $title.css('color', config.titleColor);
+            if (config.titleColor) $title.css('color',    config.titleColor);
             if (config.titleSize) $title.css('font-size', config.titleSize);
             if (config.titlePos) {
                 var parts = config.titlePos.split(';');
@@ -805,7 +809,6 @@
                 series.push(option);
             }
         }
-//        }
 
         if (config.min === null || config.min === undefined || config.min === '' || config.min.toString() === 'NaN') {
             config.min = undefined;
@@ -961,9 +964,9 @@
 
             var xaxi = {
                 show: config.l[ii].xaxe == 'off' ? false : true,
-                position: config.l[ii].xaxe.indexOf("top") > -1 ? 'top' : 'bottom',
+                position: config.l[ii].xaxe.indexOf('top') !== -1 ? 'top' : 'bottom',
                 font: {
-                    color: config.l[ii].xaxe.indexOf('Color') > -1 ? config.l[ii].color : (config.x_labels_color || 'black')
+                    color: config.l[ii].xaxe.indexOf('Color') !== -1 ? config.l[ii].color : (config.x_labels_color || 'black')
                 },
                 mode: 'time',
                 //timeformat: config.timeFormat,
@@ -1012,7 +1015,6 @@
             };
         }
 
-
         graph = $.plot('#chart_placeholder', series, settings);
 
         // Hoover
@@ -1041,12 +1043,12 @@
 
             if (!$('#tooltip').length) {
                 $('<div id="tooltip"></div>').css({
-                    position: 'absolute',
-                    display: 'none',
-                    border: '1px solid #fdd',
-                    padding: '2px',
-                    "background-color": '#fee',
-                    opacity: 0.80
+                    position:   'absolute',
+                    display:    'none',
+                    border:     '1px solid #fdd',
+                    padding:    '2px',
+                    'background-color': '#fee',
+                    opacity:    0.80
                 }).appendTo('body');
             }
         }
@@ -1069,7 +1071,12 @@
                     if (res[0].val == null){
                         res[0].val = series[index].data[series[index].data.length - 1][1];
                     }
-                    series[index].data.push([res[0].ts * 1000, res[0].val]);
+
+                    if (res[i].ts < 946681200000) { // 2000.01.01 00:00:00
+                        series[index].data.push([res[0].ts * 1000, res[0].val]);
+                    } else {
+                        series[index].data.push([res[0].ts, res[0].val]);
+                    }
                 } else {
                     console.error('Error:' + err + ', Result:' + res + ', Series: ' + series[index] + ', Array: ' + res);
                 }
@@ -1113,7 +1120,11 @@
                             if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
 
-                            series[index].data.push([res[i].ts * 1000, res[i].val]);
+                            if (res[i].ts < 946681200000) { // 2000.01.01 00:00:00
+                                series[index].data.push([res[i].ts * 1000, res[i].val]);
+                            } else {
+                                series[index].data.push([res[i].ts, res[i].val]);
+                            }
                         }
 
                     }
