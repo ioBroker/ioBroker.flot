@@ -23,6 +23,11 @@ To **edit** created chart again, you should replace index.html with edit.html an
 ```http://localhost:8082/flot/edit.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss```
 
 ## Changelog
+### 1.1.0 (2016-04-09) 
+* (bluefox) change splash screen
+* (bluefox) ignoreNull per variable
+* (bluefox) fix x axis
+
 ### 1.0.0 (2016-04-09) 
 * (bluefox) enable editing of created charts
 * (bluefox) enable set of label colors

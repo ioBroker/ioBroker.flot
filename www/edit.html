@@ -65,10 +65,10 @@
             <table>
                 <tr>
                     <td colspan="7">
-
                         <button style="margin-left: 1px" id="ids_add" class="translateB">Add new line</button>
                         <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
                         <span class="translate" style="padding-left: 20px">Auto-update:</span><input type="checkbox" id="autoUpdate"/>
+                        <button id="arrangeBools" class="translateB">Arrange bools</button>
                     </td>
                 </tr>
                 <tr>
@@ -98,7 +98,7 @@
 
             </table>
         </div>
-        <h3 id="1" class="translate">Time</h3>
+        <h3 id="1"><span class="translate">Time</span> <span id="time_span"></span></h3>
         <div style="display: flex">
             <table >
                 <tr>
@@ -173,10 +173,10 @@
                     <td class="translate" id="spanName">Step span:</td>
                     <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
-                <tr>
+                <!--tr>
                     <td class="translate label">ignore 'null':</td>
                     <td><input type="checkbox" id="ignoreNull" class="value"></td>
-                </tr>
+                </tr-->
             </table>
             <!--<table style="margin-left: 25px">-->
                 <!--<tr>-->
@@ -211,156 +211,156 @@
         <h3 id="2" class="translate">Options</h3>
         <div style="display: flex">
 
-                <table>
-                    <tr>
-                        <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
-                    <tr>
-                        <td class="translate">Width:</td>
-                        <td><input id="width" class="value input"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Height:</td>
-                        <td><input id="height" class="value input"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">No border:</td>
-                        <td><select class="value input" id="noBorder">
-                            <option value="" class="translate"></option>
-                            <option value="noborder" class="translate">yes</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td class="translate label">Window background:</td>
-                        <td>
-                            <input type="text" id="window_bg" class="value input">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="translate label">Custom chart background:</td>
-                        <td>
-                            <input type="checkbox" id="bg_custom">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="translate label">Chart background:</td>
-                        <td>
-                            <select id="bg_predefined">
-                                <option value="" class="translate">default</option>
-                                <option value="0">Portrait</option>
-                                <option value="1">Instagram</option>
-                                <option value="2">ServQuick</option>
-                                <option value="3">Metallic Toad</option>
-                                <option value="4">Clouds</option>
-                                <option value="5">Mirage</option>
-                                <option value="6">Steel Gray</option>
-                                <option value="7">Horizon</option>
-                                <option value="8">Koko Caramel</option>
-                                <option value="9">Turquoise flow</option>
-                            </select>
-                            <input type="text" id="bg" class="value input" style="display: none">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="translate label">X axis labels color:</td>
-                        <td>
-                            <input type="text" class="value input" id="x_labels_color">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="translate label">Y axis labels color:</td>
-                        <td>
-                            <input type="text" class="value input" id="y_labels_color">
-                        </td>
-                    </tr>
-
-                    </table>
-
-
-                <table style="margin-left: 25px">
-                    <tr>
-                        <td class="translate header" colspan="2" style="text-align: center">Title</td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Title:</td>
-                        <td><input type="text" id="title" class="value input"></td>
-                    </tr>
-                    <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
-                    <tr>
-                        <td class="translate">Title position:</td>
-                        <td><select class="value input" id="titlePos">
-                            <option value="" class="translate">none</option>
-                            <option value="top:35;left:65" class="translate">Top, left, inside</option>
-                            <option value="top:35;right:5" class="translate">Top, right, inside</option>
-                            <option value="top:35;left:50" class="translate">Top, center, inside</option>
-                            <option value="top:50;left:65" class="translate">Middle, left, inside</option>
-                            <option value="top:50;right:5" class="translate">Middle, right, inside</option>
-                            <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
-                            <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
-                            <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
-
-                            <option value="top:5;right:-5" class="translate">Top, right, outside</option>
-                            <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
-                            <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
-                            <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Title color:</td>
-                        <td><input type="text" id="titleColor" class="value input"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Title size:</td>
-                        <td><input type="text" id="titleSize" class="value input"></td>
-                    </tr>
+            <table>
+                <tr>
+                    <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
+                <tr>
+                    <td class="translate">Width:</td>
+                    <td><input id="width" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Height:</td>
+                    <td><input id="height" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate">No border:</td>
+                    <td><select class="value input" id="noBorder">
+                        <option value="" class="translate"></option>
+                        <option value="noborder" class="translate">yes</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate label">Window background:</td>
+                    <td>
+                        <input type="text" id="window_bg" class="value input">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="translate label">Custom chart background:</td>
+                    <td>
+                        <input type="checkbox" id="bg_custom">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="translate label">Chart background:</td>
+                    <td>
+                        <select id="bg_predefined">
+                            <option value="" class="translate">default</option>
+                            <option value="0">Portrait</option>
+                            <option value="1">Instagram</option>
+                            <option value="2">ServQuick</option>
+                            <option value="3">Metallic Toad</option>
+                            <option value="4">Clouds</option>
+                            <option value="5">Mirage</option>
+                            <option value="6">Steel Gray</option>
+                            <option value="7">Horizon</option>
+                            <option value="8">Koko Caramel</option>
+                            <option value="9">Turquoise flow</option>
+                        </select>
+                        <input type="text" id="bg" class="value input" style="display: none">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="translate label">X axis labels color:</td>
+                    <td>
+                        <input type="text" class="value input" id="x_labels_color">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="translate label">Y axis labels color:</td>
+                    <td>
+                        <input type="text" class="value input" id="y_labels_color">
+                    </td>
+                </tr>
 
                 </table>
 
-                <table style="margin-left: 25px">
-                    <td class="translate header" colspan="2" style="text-align: center">Options</td>
-                    <tr>
-                        <td class="translate">Show legend:</td>
-                        <td><select class="value input" id="legend">
-                            <option value="" class="translate">none</option>
-                            <option value="nw" class="translate">Top, left</option>
-                            <option value="ne" class="translate">Top, right</option>
-                            <option value="sw" class="translate">Bottom, left</option>
-                            <option value="se" class="translate">Bottom, right</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Hover details:</td>
-                        <td><input type="checkbox" class="value" id="hoverDetail"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Time format:</td>
-                        <td><select class="value input" id="timeFormat">
-                            <option value="" class="translate">Default</option>
-                            <option value="%H:%M %d.%m">HH:MM dd.mm</option>
-                            <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
-                            <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
-                            <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
-                            <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
-                            <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
-                            <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
-                            <option value="%H:%M %m.%d">HH:MM mm.dd</option>
-                            <option value="%H:%M:%S">HH:MM:SS</option>
-                            <option value="%H:%M">HH:MM</option>
-                            <option value="%d.%m.%y">dd.mm.yy</option>
-                        </select></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Smoothing:</td>
-                        <td><input type="text" class="value input" id="smoothing"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">After comma:</td>
-                        <td><input type="text" class="value input" id="afterComma"></td>
-                    </tr>
-                    <tr>
-                        <td class="translate">Use comma:</td>
-                        <td><input type="checkbox" class="value" id="useComma"></td>
-                    </tr>
-                </table>
+
+            <table style="margin-left: 25px">
+                <tr>
+                    <td class="translate header" colspan="2" style="text-align: center">Title</td>
+                </tr>
+                <tr>
+                    <td class="translate">Title:</td>
+                    <td><input type="text" id="title" class="value input"></td>
+                </tr>
+                <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
+                <tr>
+                    <td class="translate">Title position:</td>
+                    <td><select class="value input" id="titlePos">
+                        <option value="" class="translate">none</option>
+                        <option value="top:35;left:65" class="translate">Top, left, inside</option>
+                        <option value="top:35;right:5" class="translate">Top, right, inside</option>
+                        <option value="top:35;left:50" class="translate">Top, center, inside</option>
+                        <option value="top:50;left:65" class="translate">Middle, left, inside</option>
+                        <option value="top:50;right:5" class="translate">Middle, right, inside</option>
+                        <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
+                        <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
+                        <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
+
+                        <option value="top:5;right:-5" class="translate">Top, right, outside</option>
+                        <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
+                        <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
+                        <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate">Title color:</td>
+                    <td><input type="text" id="titleColor" class="value input"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Title size:</td>
+                    <td><input type="text" id="titleSize" class="value input"></td>
+                </tr>
+
+            </table>
+
+            <table style="margin-left: 25px">
+                <td class="translate header" colspan="2" style="text-align: center">Options</td>
+                <tr>
+                    <td class="translate">Show legend:</td>
+                    <td><select class="value input" id="legend">
+                        <option value="" class="translate">none</option>
+                        <option value="nw" class="translate">Top, left</option>
+                        <option value="ne" class="translate">Top, right</option>
+                        <option value="sw" class="translate">Bottom, left</option>
+                        <option value="se" class="translate">Bottom, right</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate">Hover details:</td>
+                    <td><input type="checkbox" class="value" id="hoverDetail"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Time format:</td>
+                    <td><select class="value input" id="timeFormat">
+                        <option value="" class="translate">Default</option>
+                        <option value="%H:%M %d.%m">HH:MM dd.mm</option>
+                        <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
+                        <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
+                        <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
+                        <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
+                        <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
+                        <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
+                        <option value="%H:%M %m.%d">HH:MM mm.dd</option>
+                        <option value="%H:%M:%S">HH:MM:SS</option>
+                        <option value="%H:%M">HH:MM</option>
+                        <option value="%d.%m.%y">dd.mm.yy</option>
+                    </select></td>
+                </tr>
+                <tr>
+                    <td class="translate">Smoothing:</td>
+                    <td><input type="text" class="value input" id="smoothing"></td>
+                </tr>
+                <tr>
+                    <td class="translate">After comma:</td>
+                    <td><input type="text" class="value input" id="afterComma"></td>
+                </tr>
+                <tr>
+                    <td class="translate">Use comma:</td>
+                    <td><input type="checkbox" class="value" id="useComma"></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -487,6 +487,7 @@
                     '<td ></td>' +
                     '<td >' + _('Instance')      + '</td>' +
                     '<td >' + _('Offset')        + '</td>' +
+                    '<td >' + _('Y-Offset')      + '</td>' +
                     '<td >' + _('Art')           + '</td>' +
                     '<td >' + _('Chart Type')    + '</td>' +
                     '<td >' + _('Color')         + '</td>' +
@@ -498,7 +499,8 @@
                     '<td title="' + _('Line Width')  + '">&#216L</td>' + // diameter
                     '<td title="' + _('Shadow Size') + '">&#216S</td>' + // ShadowSize
                     '<td >' + _('Name')          + '</td>' +
-                    '<td >' + _('Common Y Axis') + '</td>';
+                    '<td >' + _('Common Y Axis') + '</td>' +
+                    '<td >' + _('no null') + '</td>';
 
             var textInstances = '<option value="">' + _('default') + '</option>\n';
             for (var t = 0; t < instances.length; t++) {
@@ -543,6 +545,9 @@
                             '<option value="30758400">' + _('1Y')   + '</option>' +
                             '<option value="61516800">' + _('2Y')   + '</option>' +
                         '</select></td>' +
+                        '<td style="padding-left: 5px">' +
+                        '<input data-option="yOffset" style="width: 70px" data-index="' + i + '" class="options-lines" value="' + (line.yOffset || '') + '">' +
+                        '</td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width: 90px" data-option="art" class="input options-lines" data-index="' + i + '">' +
                             '<option value="average">'  + _('average')   + '</option>' +
@@ -583,10 +588,10 @@
                             '<option value="topColor">'     + _('top colored')      + '</option>' +
                             '<option value="bottomColor">'  + _('bottom colored')   + '</option>' +
                         '</select></td>' +
-                        '<td style="padding-left:5px"><input data-option="thickness"  class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.thickness || 1) + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="shadowsize" class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.shadowsize || 0) + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="name"       class="options-lines" data-index="' + i + '" style="width: 200px"  value="' + (line.name || '') + '"></td>' +
-                        '<td style="padding-left:5px">' +
+                        '<td style="padding-left:5px"><input data-option="thickness"  class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.thickness  || 1)  + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="shadowsize" class="options-lines" data-index="' + i + '" style="width: 30px"   value="' + (line.shadowsize || 0)  + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="name"       class="options-lines" data-index="' + i + '" style="width: 200px"  value="' + (line.name       || '') + '"></td>' +
+                        '<td style="text-align: center; padding-left:5px">' +
                         '<select data-option="commonYAxis" class="input options-lines" data-index="' + i + '">' +
                             '<option value="">'     + _('default')  + '</option>' +
                             '<option value="1">'    + '1'           + '</option>' +
@@ -595,8 +600,10 @@
                             '<option value="4">'    + '4'           + '</option>' +
                             '<option value="5">'    + '5'           + '</option>' +
                         '</select></td>' +
+                        '<td style="text-align: center"><input data-option="ignoreNull" class="options-lines" data-index="' + i + '" type="checkbox" ' + (line.ignoreNull ? 'checked' : '') + '></td>' +
 
-                        (i ? '<td style="padding-left: 5px"><button class="id-remove" data-index="' + i + '"></button></td>' : '<td></td>') +
+                        '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' +
+
                         '</tr>';
             }
 
@@ -614,11 +621,15 @@
                 icons: {primary: 'ui-icon-trash'},
                 text: false
             }).click(function () {
-                if (setup.options.l.length > 1) {
+                if (setup.options.l.length) {
                     var i = parseInt($(this).parent().parent().attr('id').replace('inputData', ''));
                     setup.options.l.splice(i, 1);
+                    if (!setup.options.l.length) {
+                        addLine();
+                    }
                     showIds();
                     save();
+                    delayedUpdate();
                 }
             }).css({width: 22, height: 22});
 
@@ -728,6 +739,18 @@
             delayedPreview();
             $('#updatePreview').hide();
         }
+
+        // calculate span
+        var text = '';
+        if (setup.options.timeArt === 'relative') {
+            text =  _('%s ago', $('#range option:selected').text()) + ' - ' + _(setup.options.relativeEnd);
+        } else {
+            text = new Date(setup.options.start).toLocaleDateString() + ' ' +
+                   new Date(setup.options.start + ' ' + setup.options.start_time).toLocaleTimeString() + ' - ' +
+                   new Date(setup.options.end).toLocaleDateString() + ' ' +
+                   new Date(setup.options.end + ' ' + setup.options.end_time).toLocaleTimeString();
+        }
+        $('#time_span').html('[' + text + ']');
     }
 
     function save() {
@@ -795,9 +818,42 @@
             }
         }).prop('checked', setup['auto-update'] == 'true');
 
+        $('#arrangeBools').button().click(function () {
+            // arrange all boolean values automatically
+            //  calculate
+            var count = 0;
+            var axis = null;
+            for (var i = 0; i < setup.options.l.length; i++) {
+                if (setup.options.l[i].chartType == 'steps') {
+                    if (axis === null) axis = i;
+                    count++;
+                }
+            }
+
+            var t = 0;
+            for (var i = 0; i < setup.options.l.length; i++) {
+                if (setup.options.l[i].chartType == 'steps') {
+                    setup.options.l[i].max = Math.round(count * 2 * 1.2 * 10) / 10;
+                    setup.options.l[i].commonYAxis = axis + 1;
+                    setup.options.l[i].yOffset = Math.round(-(t + 1) * 1.2 * 10) / 10;
+                    setup.options.l[i].min  = Math.round((-count * 1.2 - 0.1) * 10) / 10;
+                    setup.options.l[i].yaxe = 'off';
+                    t++;
+                }
+                setup.options.l[i].min  = Math.round((-count * 1.2 - 0.1) * 10) / 10;
+            }
+            showIds();
+            save();
+            delayedUpdate();
+        });
+
         $('#accordion').on('change', '.options-lines', function () {
-            var index = parseInt($(this).parent().parent().attr('id').replace('inputData',''));
-            setup.options.l[index][$(this).data('option')] = $(this).val();
+            var index = parseInt($(this).parent().parent().attr('id').replace('inputData', ''));
+            if ($(this).attr('type') === 'checkbox') {
+                setup.options.l[index][$(this).data('option')] = $(this).prop('checked');
+            } else {
+                setup.options.l[index][$(this).data('option')] = $(this).val();
+            }
             update();
         });
 
