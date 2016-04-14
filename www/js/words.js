@@ -266,5 +266,7 @@ systemDictionary = {
     "Line Width":           {"en": "Line Width",            "de": "Linienstärke",           "ru": "Ширина линии"},
     "Shadow Size":          {"en": "Shadow Size",           "de": "Schattengröße",          "ru": "Ширина тени"},
     "ignore 'null':":       {"en": "ignore 'null':",        "de": "'null' ignorieren:",     "ru": "Игнорировать 'null':"},
-    "on change":            {"en": "on change",             "de": "bei Änderung",           "ru": "при изменении"}
+    "on change":            {"en": "on change",             "de": "bei Änderung",           "ru": "при изменении"},
+    "Enable zoom and pan:": {"en": "Enable zoom and pan:",  "de": "Aktiviere Zoom und Schieben:",   "ru": "Разрешить увеличение и сдвиг:"},
+    "Arrange bools":        {"en": "Arrange booleans",      "de": "Platziere Booleans",     "ru": "Выстроить bool графики"}
 };

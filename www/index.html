@@ -3,13 +3,13 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
 
-    <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/default/jquery-ui.min.css">
+    <!--link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/default/jquery-ui.min.css"-->
 
     <script src="/lib/js/jquery-1.11.1.min.js"></script>
     <!--script src="/lib/js/jquery-ui.1.11.2.slider.min.js"></script-->
     <script src="/lib/js/socket.io.js"></script>
 
-    <script src="lib/js/jquery.flot.min.js"></script>
+    <script src="lib/js/jquery.flot.js"></script>
     <script src="lib/js/jquery.flot.resize.min.js"></script>
     <script src="lib/js/jquery.flot.time.min.js"></script>
     <script src="lib/js/jquery.flot.categories.min.js"></script>
@@ -19,7 +19,7 @@
     <script src="lib/js/jquery.flot.selection.min.js"></script>
     <script src="lib/js/jquery.flot.hiddengraphs.js"></script>
     <script src="lib/js/jquery-deparam.js"></script>
-    <!--script src="lib/js/jquery.flot.navigate.min.js"></script-->
+    <script src="lib/js/jquery.flot.navigate.js"></script>
     <script src="/_socket/info.js"></script>
     <style>
         .rickshaw_graph .x_tick.invisible {
@@ -215,23 +215,24 @@
 </div>
 <!--<div id="nav-bar" style="position: relative">-->
     <!--<button id="navLeft"  style="position: absolute; right:50px">right</button>-->
-    <!--<button id="navNow"  onclick="NavNow()" style="position: absolute; right:50%">now</button>-->
+    <!--<button id="navNow"  onclick="navNow()" style="position: absolute; right:50%">now</button>-->
     <!--<button id="navRight" style="position: absolute; left:50px">left</button>-->
 <!--</div>-->
+    <img style="position: absolute; right: 50%; top: 20px; -webkit-filter: invert(100%); filter:invert(100%);z-index: 10; display: none; cursor: pointer" src="img/resetZoom.png" title="Reset zoom" id="resetZoom"/>
 <script>
     var graph;
 
     var backgrounds = [
-        ['#8e9eab', '#eef2f3'], //Portrait
-        ['#517fa4', '#243949'], //Instagram
-        ['#485563', '#29323c'], //ServQuick
-        ['#abbaab', '#00ffff'], //Metallic Toad
-        ['#ECE9E6', '#00ffff'], //Clouds
-        ['#16222A', '#3A6073'], //Mirage
-        ['#1F1C2C', '#928DAB'], //Steel Gray
-        ['#003973', '#E5E5BE'], //Horizon
-        ['#D1913C', '#FFD194'], //Koko Caramel
-        ['#136a8a', '#267871']  //Turquoise flow
+        ['#8e9eab', '#eef2f3'], // Portrait
+        ['#517fa4', '#243949'], // Instagram
+        ['#485563', '#29323c'], // ServQuick
+        ['#abbaab', '#00ffff'], // Metallic Toad
+        ['#ECE9E6', '#00ffff'], // Clouds
+        ['#16222A', '#3A6073'], // Mirage
+        ['#1F1C2C', '#928DAB'], // Steel Gray
+        ['#003973', '#E5E5BE'], // Horizon
+        ['#D1913C', '#FFD194'], // Koko Caramel
+        ['#136a8a', '#267871']  // Turquoise flow
     ];
 
     // Show "no connection" message after 5 seconds
@@ -241,7 +242,7 @@
         $('#no-connection').show();
     }, 5000);
 
-    var timeout = null;
+    var zoomTimeout = null;
 
     // Analyse query
     var path = location.href.split('?')[1];
@@ -320,26 +321,27 @@
     config.width        = config.width || '100%';
     config.height       = config.height || '100%';
     config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
-    config.useComma     = config.useComma === 'true';
+    config.useComma     = config.useComma === 'true' || config.useComma === true;
+    config.zoom         = config.zoom     === 'true' || config.zoom     === true;
     config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
     //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
     var seriesData      = [];
     var series          = [];
     var settings        = [];
-    var from;
-    var to;
+    //var from;
+    //var to;
 
-    var stepLeftCount   = 0;
-    var stepRightCount  = 0;
+    //var stepLeftCount   = 0;
+    //var stepRightCount  = 0;
 
     var liveInterval;
 
-    var navStep         = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
+    var navOptions      = {};
+    /*var navStep         = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
 
     var navStepMulti    = 0;
-    var navOptions      = {};
     var navLeft;
-    var navRight;
+    var navRight;*/
 
     //var socket = io.connect();
     var socketURL       = '';
@@ -359,9 +361,9 @@
     }
 
     var socket = io.connect(socketURL, {
-        'query': 'key=' + socketSESSION,
-        'reconnection limit': 10000,
-        'max reconnection attempts': Infinity
+        'query':                        'key=' + socketSESSION,
+        'reconnection limit':           10000,
+        'max reconnection attempts':    Infinity
     });
 
     //socket.on('stateChange', function (changeId, state) {
@@ -519,71 +521,77 @@
         var start;
         config.l[index].offset = config.l[index].offset || 0;
 
-        if (!step) {
-            if (config.timeArt == 'static') {
-                if (config.start_time != undefined) {
-                    var start_time = config.start_time.split(':').map(Number);
+        if (config.zoomed) {
+            navOptions[index].end   = config.l[index].zMax;
+            navOptions[index].start = config.l[index].zMin;
+            return navOptions[index];
+        } else {
+            if (!step) {
+                if (config.timeArt == 'static') {
+                    if (config.start_time != undefined) {
+                        var start_time = config.start_time.split(':').map(Number);
+                    } else {
+                        var start_time = [0, 0];
+                    }
+
+                    if (config.end_time != undefined) {
+                        var end_time = config.end_time.split(':').map(Number);
+                    } else {
+                        var end_time = [24, 0];
+                    }
+
+                    // offset is in seconds
+                    start = Math.round(new Date(config.start).setHours(start_time[0], start_time[1]) / 1000) - config.l[index].offset;
+                    end   = Math.round(new Date(config.end)  .setHours(end_time[0],   end_time[1])   / 1000) - config.l[index].offset;
+
                 } else {
-                    var start_time = [0, 0];
+                    if (config.relativeEnd == 'now') {
+                        end   = Math.round(now.getTime() / 1000) - (config.l[index].offset || 0);
+                        start = end - (config.range * 60);
+                    } else if (config.relativeEnd == 'today') {
+                        var _now = new Date(now);
+                        end   = Math.round(_now.setHours(24).getTime() / 1000) - config.l[index].offset;
+                        start = Math.round(new Date(new Date(_now).setMinutes(0)).setSeconds(0).getTime() / 1000) - (config.range * 60) - config.l[index].offset;
+                    }
                 }
 
-                if (config.end_time != undefined) {
-                    var end_time = config.end_time.split(':').map(Number);
-                } else {
-                    var end_time = [24, 0];
+                option = {
+                    start:      start, // todo return here * 1000
+                    end:        end,   // todo return here * 1000
+                    ignoreNull: false,
+                    aggregate:  config.l[index].art || 'average'
+                };
+
+                if (config.aggregateType == 'step') {
+                    option.step = config.aggregateSpan;
+                } else if (config.aggregateType == 'count') {
+                    option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
                 }
 
-                // offset is in seconds
-                start = Math.round(new Date(config.start).setHours(start_time[0], start_time[1]) / 1000) - config.l[index].offset;
-                end   = Math.round(new Date(config.end)  .setHours(end_time[0],   end_time[1])   / 1000) - config.l[index].offset;
+                navOptions[index] = option;
+                return option;
 
             } else {
-                if (config.relativeEnd == 'now') {
-                    end   = Math.round(now.getTime() / 1000) - (config.l[index].offset || 0);
-                    start = end - (config.range * 60);
-                } else if (config.relativeEnd == 'today') {
-                    var _now = new Date(now);
-                    end   = Math.round(_now.setHours(24).getTime() / 1000) - config.l[index].offset;
-                    start = Math.round(new Date(new Date(_now).setMinutes(0)).setSeconds(0).getTime() / 1000) - (config.range * 60) - config.l[index].offset;
-                }
+
+                end   = Math.round(now.getTime() / 1000) - config.l[index].offset;
+                start = end - (step);
+
+                option = {
+                    start:      start, // todo return here * 1000
+                    end:        end,   // todo return here * 1000
+                    ignoreNull: false,
+                    aggregate:  config.l[index].art || 'average',
+                    count:      1
+                };
+
+                navOptions[index].end   = end;
+                navOptions[index].start = end - (config.range * 60);
+                return option;
             }
-
-            option = {
-                start:      start, // todo return here * 1000
-                end:        end,   // todo return here * 1000
-                ignoreNull: false,
-                aggregate:  config.l[index].art || 'average'
-            };
-
-            if (config.aggregateType == 'step') {
-                option.step = config.aggregateSpan;
-            } else if (config.aggregateType == 'count') {
-                option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
-            }
-
-            navOptions[index] = option;
-            return option
-
-        } else {
-
-            end   = Math.round(now.getTime() / 1000) - config.l[index].offset;
-            start = end - (step);
-
-            option = {
-                start:      start, // todo return here * 1000
-                end:        end,   // todo return here * 1000
-                ignoreNull: false,
-                aggregate:  config.l[index].art || 'average',
-                count:      1
-            };
-
-            navOptions[index].end   = end;
-            navOptions[index].start = end - (config.range * 60);
-            return option;
         }
     }
 
-    function getStartStopNav(index) {
+    /*function getStartStopNav(index) {
 
         var option = {
             start:      navOptions[index].start - (navStep * navStepMulti),
@@ -599,20 +607,23 @@
         }
 
         return option;
-    }
+    }*/
 
     function readOneChart(id, instance, index, callback) {
 
         var option = getStartStop(index);
         option.instance = instance;
+        config.l[index].yOffset = parseFloat(config.l[index].yOffset) || 0;
 
+        //console.log(JSON.stringify(option));
+        console.log(new Date(option.start * 1000) + ' - ' + new Date(option.end * 1000));
         socket.emit('getHistory', id, option, function (err, res, step) {
             if (!err && res) {
                 //for (var i = 0, len = res.length; i < len; i++) {
                 option.start = option.start * 1000;
                 option.end   = option.end   * 1000;
                 option.ignoreNull = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
-                option.yOffset = parseFloat(config.l[index].yOffset) || 0;
+                option.yOffset = config.l[index].yOffset;
 
                 if (config.longestStep < step) config.longestStep = step;
 
@@ -652,6 +663,7 @@
     }
 
     function yFormatter(y) {
+        if (typeof y === 'boolean') return '' + y;
         if (config.afterComma !== undefined && config.afterComma !== null) {
             y = parseFloat(y);
             if (config.useComma) {
@@ -674,6 +686,7 @@
             if (!err && res && res.common) {
                 config.l[index].name = config.l[index].name || res.common.name;
                 config.l[index].unit = config.l[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+                config.l[index].type = res.common.type;
             } else {
                 config.l[index].name = config.l[index].name || id;
                 config.l[index].unit = config.l[index].unit || '';
@@ -722,18 +735,19 @@
             }
             var ready = 0;
 
-            function read(index) {
+            function _readOneLine(index) {
+                ready++;
                 socket.emit('getObject', config.l[index].id, function (err, res) {
                     if (!err && res && res.common) {
                         config.l[index].name = config.l[index].name || res.common.name;
                         config.l[index].unit = config.l[index].unit || (res.common.unit ? res.common.unit.replace('�', '°') : '');
+                        config.l[index].type = res.common.type;
                     } else {
                         config.l[index].name = config.l[index].name || config.l[index].id;
                         config.l[index].unit = config.l[index].unit || '';
                     }
                     readOneChart(config.l[index].id, config.l[index].instance, index, function () {
-                        ready++;
-                        if (ready == config.l.length) {
+                        if (!--ready) {
                             $('#server-disconnect').hide();
                             buildGraph();
                         }
@@ -742,10 +756,26 @@
             }
 
             for (j = 0; j < config.l.length; j++) {
-                read(j);
+                _readOneLine(j);
             }
-//            }
         }
+    }
+    
+    function onZoom() {
+        var opt = graph.getOptions();
+        if (!config.zoomed) {
+            $('#resetZoom').show();
+            config.zoomed = true;
+        }
+        for (var index = 0; index < opt.xaxes.length; index++) {
+            config.l[index].zMin = Math.round(opt.xaxes[index].min / 1000);
+            config.l[index].zMax = Math.round(opt.xaxes[index].max / 1000);
+            settings.xaxes[index].max = opt.xaxes[index].max;
+            settings.xaxes[index].min = opt.xaxes[index].min;
+        }
+
+        console.log('on zoom');
+        updateLive();
     }
 
     function buildGraph() {
@@ -978,6 +1008,26 @@
             }
         };
 
+        if (config.zoom) {
+            $('#resetZoom').unbind('click').click(function () {
+                seriesData = [];
+                $('#resetZoom').hide();
+                config.zoomed = false;
+                now = new Date();
+                readData(true);
+            });
+            settings.zoom = {
+                interactive: true,
+                trigger: 'dblclick', // or "click" for single click
+                amount: 1.5         // 2 = 200% (zoom in), 0.5 = 50% (zoom out)
+            };
+            settings.pan = {
+                interactive: true,
+                cursor: 'move',      // CSS mouse cursor value used when dragging, e.g. "pointer"
+                frameRate: 20
+            };
+        }
+
         for (var ii = 0; ii < config.l.length; ii++) {
 
             config.l[ii].yaxe = config.l[ii].yaxe || '';
@@ -992,6 +1042,8 @@
                 font: {
                     color: config.l[ii].yaxe.indexOf('Color') > -1 ? config.l[ii].color : (config.y_labels_color || 'black')
                 },
+                zoomRange: false,  // or [ number, number ] (min range, max range) or false
+                panRange:  false,  // or [ number, number ] (min, max) or false
                 // to do
                 /*{
                     size: 11,
@@ -1035,6 +1087,8 @@
                 font: {
                     color: config.l[ii].xaxe.indexOf('Color') !== -1 ? config.l[ii].color : (config.x_labels_color || 'black')
                 },
+                zoomRange: null,  // or [ number, number ] (min range, max range) or false
+                panRange:  null,  // or [ number, number ] (min, max) or false
                 mode:       'time',
                 //timeformat: config.timeFormat,
                 //timezone:   "browser",
@@ -1054,8 +1108,8 @@
                     }
                     //return (new Date(object[0]))
                 } : null,
-                min:        from   || undefined,
-                max:        to     || undefined
+                min: undefined,
+                max: undefined
             };
 
             settings.yaxes.push(yaxi);
@@ -1065,8 +1119,7 @@
             // Support for commonYAxis
             if (config.l[ii].commonYAxis !== '') {
                 series[ii].yaxis = parseInt(config.l[ii].commonYAxis);
-            }
-            else {
+            } else {
                 series[ii].yaxis = ii + 1;
             }
             series[ii].xaxis = ii + 1;
@@ -1075,9 +1128,9 @@
         if (config.smoothing) {
             settings.series = {
                 curvedLines: {
-                    apply: true,
-                    active: true,
-                    monotonicFit: true
+                    apply:          true,
+                    active:         true,
+                    monotonicFit:   true
                 }
             };
         }
@@ -1089,7 +1142,13 @@
             $('#chart_placeholder').unbind('plothover').bind('plothover', function (event, pos, item) {
                 if (item) {
                     var x = item.datapoint[0].toFixed(2);
-                    var y = item.datapoint[1].toFixed(2);
+                    var y;
+
+                    if (config.l[item.seriesIndex].type === 'boolean') {
+                        y = !!Math.round(item.datapoint[1] - config.l[item.seriesIndex].yOffset);
+                    } else {
+                        y = (item.datapoint[1] - config.l[item.seriesIndex].yOffset).toFixed(2)
+                    }
 
                     var text = item.series.label ? item.series.label + '<br>' : '';
                     text += $.plot.formatDate(new Date(parseInt(x, 10)), config.timeFormat) + '<br>';
@@ -1120,8 +1179,17 @@
             }
         }
 
-        if (config.live && config.timeArt == 'relative') {
-            live();
+        if (config.live && config.timeArt == 'relative') live();
+
+        if (config.zoom) {
+            // handlers for zoom and pan
+            $('#chart_placeholder').unbind('plotzoom').bind('plotzoom', function (e, plot, args) {
+                if (zoomTimeout) clearTimeout(zoomTimeout);
+                zoomTimeout = setTimeout(onZoom, 500);
+            }).unbind('plotpan').bind('plotpan', function (e, plot, args) {
+                if (zoomTimeout) clearTimeout(zoomTimeout);
+                zoomTimeout = setTimeout(onZoom, 500);
+            });
         }
     }
 
@@ -1129,14 +1197,18 @@
         var ready = 0;
         now = new Date();
 
-        function getData(index) {
+        // actually not used
+        /*function getData(index) {
             var option    = getStartStop(index, config.longestStep);
             var totalTime = getStartStop(index);
-            option.instance = config.l[index].instance;
+            option.instance    = config.l[index].instance;
+            totalTime.instance = config.l[index].instance;
 
             ready++;
+            console.log(JSON.stringify(option));
+
             // actual work around, while live Update does not work
-            socket.emit('getHistory', config.l[index].id, totalTime/*option*/, function (err, res, step) {
+            socket.emit('getHistory', config.l[index].id, option, function (err, res, step) {
                 if (!err && res && series[index] && res[0]) {
                     totalTime.start         = totalTime.start * 1000;
                     totalTime.end           = totalTime.end   * 1000;
@@ -1144,7 +1216,7 @@
                     totalTime.yOffset       = parseFloat(config.l[index].yOffset) || 0;
 
                     // actual work around, while live Update does not work
-                    series[index].data = [];
+                    //series[index].data = [];
 
                     var data = series[index].data;
                     // remove all nulls at the end
@@ -1199,10 +1271,19 @@
                     graph = $.plot('#chart_placeholder', series, settings);
                 }
             });
-        }
+        }*/
 
-        for (var j = 0; j < config.l.length; j++) {
-            getData(j);
+        for (var index = 0; index < config.l.length; index++) {
+            ready++;
+            seriesData[index] = [];
+            readOneChart(config.l[index].id, config.l[index].instance, index, function () {
+                if (!--ready) {
+                    for (var _index = 0; _index < config.l.length; _index++) {
+                        series[_index].data = seriesData[_index];
+                    }
+                    graph = $.plot('#chart_placeholder', series, settings);
+                }
+            });
         }
     }
 
@@ -1245,9 +1326,6 @@
                     }
                 }
 
-                // Add first tick with required range
-                // todo muss das sein ??
-                //seriesData[index] = fillRange(seriesData[index]);
                 callback();
             });
         }
@@ -1281,11 +1359,34 @@
             config.longestStep = 1;
         }
         liveInterval = setInterval(function () {
+            if (config.zoomed) {
+                var opt = graph.getOptions();
+                var max = 0;
+                var min = null;
+                for (var index = 0; index < opt.xaxes.length; index++) {
+                    if (max < config.l[index].zMax) max = config.l[index].zMax;
+                    if (min === null || min > config.l[index].zMin) min = config.l[index].zMin;
+                }
+                // if 10%
+                if (max + ((max - min) / 20) >= (new Date().getTime() / 1000)) {
+                    max = Math.round((new Date().getTime() - now.getTime()) / 1000);
+                    for (var index = 0; index < opt.xaxes.length; index++) {
+                        config.l[index].zMax += max;
+                        config.l[index].zMin += max;
+                        settings.xaxes[index].min = config.l[index].zMin * 1000;
+                        settings.xaxes[index].max = config.l[index].zMax * 1000;
+                    }
+                } else {
+                    return;
+                }
+            }
+
+            console.log('on time');
             updateLive();
         }, Math.round(config.longestStep * 1000));
     }
 
-    function navStepLeft() {
+    /*function navStepLeft() {
         if (liveInterval) {
             clearInterval(liveInterval);
             liveInterval = undefined;
@@ -1294,7 +1395,6 @@
         navStepMulti--;
         updateNav();
     }
-
 
     function navStepRight() {
         if (liveInterval) {
@@ -1306,18 +1406,17 @@
         updateNav();
     }
 
-    function NavNow() {
+    function navNow() {
         seriesData = [];
-        readData(true)
-
+        readData(true);
     }
 
-    $("#navLeft").mousedown(function(){
+    $('#navLeft').mousedown(function(){
         navLeft = true;
         navStepLeft();
     });
 
-    $("#navRight").mousedown(function(){
+    $('#navRight').mousedown(function(){
         navRight = true;
         navStepRight();
     });
@@ -1325,7 +1424,7 @@
     $(window).mouseup(function(){
         navLeft = false;
        navRight = false;
-    })
+    })*/
 
 </script>
 
