@@ -654,8 +654,8 @@
                     }
                 }
                 // check start and stop
-                if (seriesData[index][0][0] > option.start) seriesData[index].unshift([option.start, null]);
-                if (seriesData[index][seriesData[index].length - 1][0] < option.end) seriesData[index].push([option.end, null]);
+                if (seriesData[index][0][0] > option.start) seriesData[index].unshift([option.start, seriesData[index][0][1]]);
+                if (seriesData[index][seriesData[index].length - 1][0] < option.end) seriesData[index].push([option.end, lastVal]);
             }
 
             if (callback) callback(id, index);
