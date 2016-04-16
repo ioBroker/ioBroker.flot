@@ -318,7 +318,7 @@
 
     // Set default values
     config.longestStep = 0;
-    config.width        = config.width || '100%';
+    config.width        = config.width  || '100%';
     config.height       = config.height || '100%';
     config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
     config.useComma     = config.useComma === 'true' || config.useComma === true;
@@ -328,29 +328,14 @@
     var seriesData      = [];
     var series          = [];
     var settings        = [];
-    //var from;
-    //var to;
-
-    //var stepLeftCount   = 0;
-    //var stepRightCount  = 0;
-
     var liveInterval;
 
     var navOptions      = {};
-    /*var navStep         = config.navStepMulti == "w" ? undefined : parseInt((config.navStep || 1) * (config.navStepMulti || 1));
-
-    var navStepMulti    = 0;
-    var navLeft;
-    var navRight;*/
-
-    //var socket = io.connect();
     var socketURL       = '';
     var socketSESSION   = '';
     var now             = new Date();
 
-    if (config.window_bg) {
-        $('body').css('background', config.window_bg);
-    }
+    if (config.window_bg) $('body').css('background', config.window_bg);
 
     if (typeof socketUrl != 'undefined') {
         socketURL = socketUrl;
@@ -365,48 +350,6 @@
         'reconnection limit':           10000,
         'max reconnection attempts':    Infinity
     });
-
-    //socket.on('stateChange', function (changeId, state) {
-    //    if (graph && config && config._ids ) {
-    //        for (j = 0; j < config._ids.length; j++) {
-    //            if (config._ids[j] == changeId) {
-    //                if (config.renderer == 'pie') {
-    //                    seriesData[0][j].data = state.val;
-    //                    graph.setData(seriesData[0]);
-    //                    graph.draw();
-    //                } else if (config.renderer == 'bar' && config._ids.length > 1) {
-    //                    seriesData[0][j][1] = state.val;
-    //                    graph.setData(seriesData);
-    //                    graph.setupGrid();
-    //                    graph.draw();
-    //                } else {
-    //                    var ticks = state.ts * 1000;
-    //                    seriesData[j].push([ticks, state.val]);
-    //                    var d = new Date(ticks);
-    //
-    //                    // Calculate tick in the past
-    //                    d.setMinutes(d.getMinutes() - config.range);
-    //                    ticks = d.getTime();
-    //
-    //                    // Find last tick that is older than range
-    //                    for (var i = 0; i < seriesData[j].length; i++) {
-    //                        if (seriesData[j][i][0] > ticks) break;
-    //                    }
-    //
-    //                    if (i) seriesData[j].splice(0, i);
-    //
-    //                    seriesData[j] = fillRange(seriesData[j]);
-    //
-    //                    /*graph.setData(seriesData);
-    //                     graph.setupGrid();
-    //                     graph.draw();*/
-    //                    buildGraph(from, to);
-    //                }
-    //                break;
-    //            }
-    //        }
-    //    }
-    //});
 
     socket.on('connect', function () {
         socket.emit('name', 'flot');
@@ -427,93 +370,6 @@
             }, 5000);
         }
     });
-    /*
-     function fillRange(data) {
-     // Add first tick with required range
-     if (config.fillRange) {
-     var now = new Date();
-     var start = new Date(now);
-     start.setMinutes(start.getMinutes() - config.range + 1);
-
-     if (data.length) {
-     if (data[0][0] > start.getTime()) {
-     data.unshift([start.getTime(), null]);
-     }
-     if (data[data.length - 1][0] < now.getTime()) {
-     data.push([now.getTime(), data[data.length - 1][1]]);
-     }
-     } else {
-     data.push([start.getTime(), null]);
-     data.push([now.getTime(), null]);
-     }
-     }
-
-     // first of all sort data
-     data.sort(function (a, b) {
-     return a[0] - b[0];
-     });
-
-     // find smallest interval
-     var step = null;
-     var s;
-     var i;
-     var isDifferent = false;
-     for (i = 1; i < data.length; i++) {
-     s = data[i][0] - data[i - 1][0];
-     if (step === null) {
-     step = s;
-     } else if (s < step) {
-     step = s;
-     }
-     if (step != s) {
-     isDifferent = true;
-     }
-     }
-
-     if (!isDifferent || !config.interpolation) return data;
-
-     var result = [];
-     var time = data[0][0];
-     var end = data[data.length - 1][0];
-     i = 0;
-
-     var tDiff = data[1][0] - data[0][0];
-     var vDiff = data[1][1] - data[0][1];
-     var tVal = data[0][0];
-     var vVal = data[0][1];
-     var tEnd = data[1][0];
-     // interpolation
-     while (time <= end) {
-     while (tEnd <= time && i < data.length - 1) {
-     i++;
-     tVal = data[i][0];
-     vVal = data[i][1];
-     if (vVal !== null) {
-     if (i + 1 < data.length) {
-     tEnd = data[i + 1][0];
-     tDiff = tEnd - data[i][0];
-     if (data[i + 1][1] === null) {
-     vDiff = 0;
-     } else {
-     vDiff = data[i + 1][1] - data[i][1];
-     }
-     } else {
-     tEnd = end;
-     tDiff = end - data[i][1];
-     vDiff = 0;
-     }
-     } else if (i + 1 < data.length) {
-     tEnd = data[i + 1][0];
-     } else {
-     tEnd = end;
-     }
-     }
-     result.push([time, vVal === null ? null : vVal + (time - tVal) * vDiff / tDiff]);
-     time += step;
-     }
-
-     return result;
-     }*/
 
     function getStartStop(index, step) {
         var option = {};
@@ -591,24 +447,6 @@
         }
     }
 
-    /*function getStartStopNav(index) {
-
-        var option = {
-            start:      navOptions[index].start - (navStep * navStepMulti),
-            end:        navOptions[index].end   - (navStep * navStepMulti),
-            ignoreNull: false,
-            aggregate:  config.l[index].art || 'average'
-        };
-
-        if (config.aggregateType == 'step') {
-            option.step = config.aggregateSpan;
-        } else if (config.aggregateType == 'count') {
-            option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
-        }
-
-        return option;
-    }*/
-
     function readOneChart(id, instance, index, callback) {
 
         var option = getStartStop(index);
@@ -626,36 +464,46 @@
                 option.yOffset = config.l[index].yOffset;
 
                 if (config.longestStep < step) config.longestStep = step;
+                if (res.length && res[0].ts < 946681200000) config.longestStep *= 1000;
 
                 var lastVal = null;
+                var preFirstValue = null;
+                var postLastValue = null;
                 for (var i = 0; i < res.length; i++) {
                     // if less 2000.01.01 00:00:00
                     if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
 
-                    // remove all not requested points
-                    if (res[i].ts < option.start || res[i].ts > option.end) continue;
-
                     // Convert boolean values to numbers
-					if (res[i].val === 'true' || res[i].val === true) {
-						res[i].val = 1;
-					} else if (res[i].val === 'false' || res[i].val === false) {
-						res[i].val = 0;
-					}
-					if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+                    if (res[i].val === 'true' || res[i].val === true) {
+                        res[i].val = 1;
+                    } else if (res[i].val === 'false' || res[i].val === false) {
+                        res[i].val = 0;
+                    }
+                    if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
-                    if (res[i].val == null) {
+                    if (res[i].val === null) {
                         if (option.ignoreNull || i == res.length - 1) res[i].val = lastVal;
                     } else {
                         lastVal = res[i].val;
                     }
-					
-                    if (res[i].val !== null || i == 0 || i == res.length - 1) {
+                    // remove all not requested points
+                    if (res[i].ts < option.start) {
+                        preFirstValue = res[i].val !== null ? res[i].val + option.yOffset : null;
+                        continue;
+                    }
+                    if (res[i].ts > option.end) {
+                        postLastValue = res[i].val !== null ? res[i].val + option.yOffset : null;
+                        break;
+                    }
+
+                    if (res[i].val !== null/* || i == 0 || i == res.length - 1*/) {
                         seriesData[index].push([res[i].ts, res[i].val + option.yOffset]);
+                        postLastValue = res[i].val + option.yOffset;
                     }
                 }
                 // check start and stop
-                if (seriesData[index][0][0] > option.start) seriesData[index].unshift([option.start, null]);
-                if (seriesData[index][seriesData[index].length - 1][0] < option.end) seriesData[index].push([option.end, null]);
+                if (!seriesData[index][0] || seriesData[index][0][0] > option.start) seriesData[index].unshift([option.start, preFirstValue]);
+                if (seriesData[index][seriesData[index].length - 1][0] < option.end) seriesData[index].push([option.end, postLastValue]);
             }
 
             if (callback) callback(id, index);
@@ -849,23 +697,6 @@
         //todo make bar working
 //        if (config.renderer != 'bar' || config._ids.length <= 1) {
 
-        // normalize all axis in time
-        /*var tMin = null;
-        var tMax = null;
-        for (var i = seriesData.length - 1; i >= 0; i--) {
-            if (!seriesData[i]) {
-                seriesData.splice(i, 1);
-                continue;
-            }
-
-            if (tMin === null || seriesData[i][0][0] < tMin) tMin = seriesData[i][0][0];
-            if (tMax === null || seriesData[i][seriesData[i].length - 1][0] > tMax) tMax = seriesData[i][seriesData[i].length - 1][0];
-        }
-        for (var i = 0; i < seriesData.length; i++) {
-            if (seriesData[i][0][0] !== tMin) seriesData[i].unshift([tMin, null]);
-            if (seriesData[i][seriesData[i].length - 1][0] !== tMax) seriesData[i].push([tMax, null]);
-        }*/
-
         for (var i = 0; i < seriesData.length; i++) {
             if (seriesData[i]) {
 
@@ -1018,13 +849,13 @@
             });
             settings.zoom = {
                 interactive: true,
-                trigger: 'dblclick', // or "click" for single click
-                amount: 1.5         // 2 = 200% (zoom in), 0.5 = 50% (zoom out)
+                trigger:    'dblclick', // or "click" for single click
+                amount:     1.5         // 2 = 200% (zoom in), 0.5 = 50% (zoom out)
             };
             settings.pan = {
                 interactive: true,
-                cursor: 'move',      // CSS mouse cursor value used when dragging, e.g. "pointer"
-                frameRate: 20
+                cursor:     'move',     // CSS mouse cursor value used when dragging, e.g. "pointer"
+                frameRate:  20
             };
         }
 
@@ -1111,6 +942,11 @@
                 min: undefined,
                 max: undefined
             };
+
+            if (config.zoom) {
+                xaxi.zoomRange = [null, now]; // or [ number, number] (min range, max range) or false
+                xaxi.panRange  = [null, now]; // or [ number, number] (min range, max range) or false
+            }
 
             settings.yaxes.push(yaxi);
             settings.xaxes.push(xaxi);
@@ -1243,7 +1079,7 @@
                         }
                         if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
-                        if (res[i].val == null) {
+                        if (res[i].val === null) {
                             if (totalTime.ignoreNull || i == res.length - 1) res[i].val = lastVal;
                         } else {
                             lastVal = res[i].val;
@@ -1274,6 +1110,10 @@
         }*/
 
         for (var index = 0; index < config.l.length; index++) {
+            if (config.zoom) {
+                settings.xaxes[index].zoomRange = [null, now];
+                settings.xaxes[index].panRange  = [null, now];
+            }
             ready++;
             seriesData[index] = [];
             readOneChart(config.l[index].id, config.l[index].instance, index, function () {
@@ -1287,76 +1127,13 @@
         }
     }
 
-    function updateNav() {
-        var ready = 0;
-        now = new Date();
-
-        function read(index, callback) {
-            var option = getStartStopNav(index);
-            option.instance = config.l[index].instance;
-
-            socket.emit('getHistory', config.l[index].id, option, function (err, res, step) {
-                if (!err && res) {
-                    //for (var i = 0, len = res.length; i < len; i++) {
-                    series[index].data  = [];
-                    option.start        = option.start * 1000;
-                    option.end          = option.end   * 1000;
-                    option.ignoreNull   = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
-                    option.yOffset      = parseFloat(config.l[index].yOffset) || 0;
-
-                    for (var i = 0; i < res.length; i++) {
-                        if (res[i].val != null || !option.ignoreNull) {
-                            // if less 2000.01.01 00:00:00
-                            if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
-
-                            // remove all not requested points
-                            if (res[i].ts < option.start || res[i].ts > option.end) continue;
-
-                            // Convert boolean values to numbers
-                            if (res[i].val === 'true' || res[i].val === true) {
-                                res[i].val = 1;
-                            } else if (res[i].val === 'false' || res[i].val === false) {
-                                res[i].val = 0;
-                            }
-
-                            if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
-
-                            series[index].data.push([res[i].ts, res[i].val + option.yOffset]);
-                        }
-                    }
-                }
-
-                callback();
-            });
-        }
-
-        for (var j = 0; j < config.l.length; j++) {
-            read(j, function () {
-                ready++;
-                if (ready == config.l.length) {
-//                    graph.setData(series);
-//                    graph.draw();
-                    graph = $.plot('#chart_placeholder', series, settings);
-
-//                    if(navLeft){
-//                        navStepLeft()
-//                    }
-//
-//                    if(navRight){
-//                        navStepRight()
-//                    }
-                }
-            });
-        }
-    }
-
     function live() {
         if (!config.longestStep) {
             console.warn('longestStep is zero!');
-            config.longestStep = 300;
+            config.longestStep = 300000;
         }
-        if (config.longestStep < 1) {
-            config.longestStep = 1;
+        if (config.longestStep < 1000) {
+            config.longestStep = 1000;
         }
         liveInterval = setInterval(function () {
             if (config.zoomed) {
@@ -1368,7 +1145,7 @@
                     if (min === null || min > config.l[index].zMin) min = config.l[index].zMin;
                 }
                 // if 10%
-                if (max + ((max - min) / 20) >= (new Date().getTime() / 1000)) {
+                if (max + ((max - min) / 20) >= ((new Date().getTime() - config.longestStep)/ 1000)) {
                     max = Math.round((new Date().getTime() - now.getTime()) / 1000);
                     for (var index = 0; index < opt.xaxes.length; index++) {
                         config.l[index].zMax += max;
@@ -1383,49 +1160,8 @@
 
             console.log('on time');
             updateLive();
-        }, Math.round(config.longestStep * 1000));
+        }, Math.round(config.longestStep));
     }
-
-    /*function navStepLeft() {
-        if (liveInterval) {
-            clearInterval(liveInterval);
-            liveInterval = undefined;
-        }
-
-        navStepMulti--;
-        updateNav();
-    }
-
-    function navStepRight() {
-        if (liveInterval) {
-            clearInterval(liveInterval);
-            liveInterval = undefined;
-        }
-
-        navStepMulti++;
-        updateNav();
-    }
-
-    function navNow() {
-        seriesData = [];
-        readData(true);
-    }
-
-    $('#navLeft').mousedown(function(){
-        navLeft = true;
-        navStepLeft();
-    });
-
-    $('#navRight').mousedown(function(){
-        navRight = true;
-        navStepRight();
-    });
-
-    $(window).mouseup(function(){
-        navLeft = false;
-       navRight = false;
-    })*/
-
 </script>
 
 </body>

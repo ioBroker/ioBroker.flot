@@ -809,6 +809,7 @@
             setup.options.l = JSON.parse(JSON.stringify(setup.options.lines));
             delete setup.options.lines;
         }
+        setup.options.ignoreNull   = undefined;
 
         if (!setup.options.l || !setup.options.l.length) addLine();
 
