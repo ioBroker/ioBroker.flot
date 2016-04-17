@@ -482,28 +482,71 @@
                     if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
                     if (res[i].val === null) {
-                        if (option.ignoreNull || i == res.length - 1) res[i].val = lastVal;
+                        if (option.ignoreNull || i == res.length - 1) {
+                            res[i].val = lastVal;
+                        } else {
+                            lastVal = null;
+                        }
                     } else {
                         lastVal = res[i].val;
                     }
                     // remove all not requested points
                     if (res[i].ts < option.start) {
-                        preFirstValue = res[i].val !== null ? res[i].val + option.yOffset : null;
+                        preFirstValue = res[i].val !== null ? res[i] : null;
                         continue;
                     }
                     if (res[i].ts > option.end) {
-                        postLastValue = res[i].val !== null ? res[i].val + option.yOffset : null;
+                        postLastValue = res[i].val !== null ? res[i] : null;
                         break;
                     }
 
                     if (res[i].val !== null/* || i == 0 || i == res.length - 1*/) {
                         seriesData[index].push([res[i].ts, res[i].val + option.yOffset]);
-                        postLastValue = res[i].val + option.yOffset;
+                        postLastValue = res[i];
                     }
                 }
                 // check start and stop
-                if (!seriesData[index][0] || seriesData[index][0][0] > option.start) seriesData[index].unshift([option.start, preFirstValue]);
-                if (seriesData[index][seriesData[index].length - 1][0] < option.end) seriesData[index].push([option.end, postLastValue]);
+                if (!seriesData[index][0] || seriesData[index][0][0] > option.start) {
+                    if (preFirstValue !== null) {
+                        // if steps
+                        if (config.l[index].chartType === 'steps') {
+                            seriesData[index].unshift([option.start, preFirstValue.val + option.yOffset]);
+                        } else {
+                            if (seriesData[index][0][1] !== null) {
+                                // interpolate
+                                var y = preFirstValue.val + option.yOffset + (seriesData[index][0][1] - preFirstValue.val - option.yOffset) * (option.start - preFirstValue.ts) / (seriesData[index][0][0] - preFirstValue.ts);
+                                seriesData[index].unshift([option.start, y]);
+                            } else {
+                                seriesData[index].unshift([option.start, null]);
+                            }
+                        }
+                    } else {
+                        seriesData[index].unshift([option.start, null]);
+                    }
+                }
+
+                var lastT = seriesData[index][seriesData[index].length - 1][0];
+                if (lastT < option.end) {
+                    if (postLastValue !== null) {
+                        // if steps
+                        if (config.l[index].chartType === 'steps') {
+                            // if mor data following, draw line to the end of chart
+                            seriesData[index].push([option.end, lastVal]);
+                        } else {
+                            var lastY = seriesData[index][seriesData[index].length - 1][1];
+                            if (lastY !== null) {
+                                // make interpolation
+                                var y = lastY + (postLastValue.val + option.yOffset - lastY) * (option.end - lastT) / (postLastValue.ts - lastT);
+                                seriesData[index].push([option.end, y]);
+                            } else {
+                                seriesData[index].push([option.end, null]);
+                            }
+                        }
+                    } else {
+                        // if no more data, that means do not draw line
+                        seriesData[index].push([option.end, null]);
+                    }
+                }
             }
 
             if (callback) callback(id, index);
