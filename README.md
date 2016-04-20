@@ -16,11 +16,11 @@ To use the charts one of the history adapters is required: history, sql or Influ
 To **edit** created chart again, you should replace index.html with edit.html and call this link in browser, e.g:
 
 
-```http://localhost:8082/flot/index.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss```
+http://localhost:8082/flot/**index**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
-=>
+to
 
-```http://localhost:8082/flot/edit.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss```
+http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
 ### 1.1.0 (2016-04-09) 
