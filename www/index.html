@@ -397,23 +397,23 @@
                     }
 
                     // offset is in seconds
-                    start = Math.round(new Date(config.start).setHours(start_time[0], start_time[1]) / 1000) - config.l[index].offset;
-                    end   = Math.round(new Date(config.end)  .setHours(end_time[0],   end_time[1])   / 1000) - config.l[index].offset;
+                    start = new Date(config.start).setHours(start_time[0], start_time[1]) - config.l[index].offset * 1000;
+                    end   = new Date(config.end)  .setHours(end_time[0],   end_time[1])   - config.l[index].offset * 1000;
 
                 } else {
                     if (config.relativeEnd == 'now') {
-                        end   = Math.round(now.getTime() / 1000) - (config.l[index].offset || 0);
+                        end   = now.getTime() - (config.l[index].offset || 0) * 1000;
                         start = end - (config.range * 60);
                     } else if (config.relativeEnd == 'today') {
                         var _now = new Date(now);
-                        end   = Math.round(_now.setHours(24).getTime() / 1000) - config.l[index].offset;
-                        start = Math.round(new Date(new Date(_now).setMinutes(0)).setSeconds(0).getTime() / 1000) - (config.range * 60) - config.l[index].offset;
+                        end   = _now.setHours(24).getTime() - config.l[index].offset * 1000;
+                        start = new Date(new Date(_now).setMinutes(0)).setSeconds(0).getTime() - (config.range * 60000) - config.l[index].offset * 1000;
                     }
                 }
 
                 option = {
-                    start:      start, // todo return here * 1000
-                    end:        end,   // todo return here * 1000
+                    start:      start,
+                    end:        end,
                     ignoreNull: false,
                     aggregate:  config.l[index].art || 'average'
                 };
@@ -429,12 +429,12 @@
 
             } else {
 
-                end   = Math.round(now.getTime() / 1000) - config.l[index].offset;
+                end   = now.getTime() - config.l[index].offset * 1000;
                 start = end - (step);
 
                 option = {
-                    start:      start, // todo return here * 1000
-                    end:        end,   // todo return here * 1000
+                    start:      start,
+                    end:        end,
                     ignoreNull: false,
                     aggregate:  config.l[index].art || 'average',
                     count:      1
@@ -454,12 +454,12 @@
         config.l[index].yOffset = parseFloat(config.l[index].yOffset) || 0;
 
         //console.log(JSON.stringify(option));
-        console.log(new Date(option.start * 1000) + ' - ' + new Date(option.end * 1000));
+        console.log(new Date(option.start) + ' - ' + new Date(option.end));
         socket.emit('getHistory', id, option, function (err, res, step) {
             if (!err && res) {
                 //for (var i = 0, len = res.length; i < len; i++) {
-                option.start = option.start * 1000;
-                option.end   = option.end   * 1000;
+                option.start = option.start;
+                option.end   = option.end;
                 option.ignoreNull = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
                 option.yOffset = config.l[index].yOffset;
 
@@ -659,8 +659,8 @@
             config.zoomed = true;
         }
         for (var index = 0; index < opt.xaxes.length; index++) {
-            config.l[index].zMin = Math.round(opt.xaxes[index].min / 1000);
-            config.l[index].zMax = Math.round(opt.xaxes[index].max / 1000);
+            config.l[index].zMin = opt.xaxes[index].min;
+            config.l[index].zMax = opt.xaxes[index].max;
             settings.xaxes[index].max = opt.xaxes[index].max;
             settings.xaxes[index].min = opt.xaxes[index].min;
         }
@@ -1089,8 +1089,8 @@
             // actual work around, while live Update does not work
             socket.emit('getHistory', config.l[index].id, option, function (err, res, step) {
                 if (!err && res && series[index] && res[0]) {
-                    totalTime.start         = totalTime.start * 1000;
-                    totalTime.end           = totalTime.end   * 1000;
+                    totalTime.start         = totalTime.start;
+                    totalTime.end           = totalTime.end;
                     totalTime.ignoreNull    = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
                     totalTime.yOffset       = parseFloat(config.l[index].yOffset) || 0;
 
@@ -1188,13 +1188,13 @@
                     if (min === null || min > config.l[index].zMin) min = config.l[index].zMin;
                 }
                 // if 10%
-                if (max + ((max - min) / 20) >= ((new Date().getTime() - config.longestStep)/ 1000)) {
-                    max = Math.round((new Date().getTime() - now.getTime()) / 1000);
+                if (max + ((max - min) / 20) >= ((new Date().getTime() - config.longestStep))) {
+                    max = new Date().getTime() - now.getTime();
                     for (var index = 0; index < opt.xaxes.length; index++) {
                         config.l[index].zMax += max;
                         config.l[index].zMin += max;
-                        settings.xaxes[index].min = config.l[index].zMin * 1000;
-                        settings.xaxes[index].max = config.l[index].zMax * 1000;
+                        settings.xaxes[index].min = config.l[index].zMin;
+                        settings.xaxes[index].max = config.l[index].zMax;
                     }
                 } else {
                     return;
