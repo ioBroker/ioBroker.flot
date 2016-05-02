@@ -403,7 +403,7 @@
                 } else {
                     if (config.relativeEnd == 'now') {
                         end   = now.getTime() - (config.l[index].offset || 0) * 1000;
-                        start = end - (config.range * 60);
+                        start = end - (config.range * 60000);
                     } else if (config.relativeEnd == 'today') {
                         var _now = new Date(now);
                         end   = _now.setHours(24).getTime() - config.l[index].offset * 1000;
@@ -419,7 +419,7 @@
                 };
 
                 if (config.aggregateType == 'step') {
-                    option.step = config.aggregateSpan;
+                    option.step = config.aggregateSpan * 1000;
                 } else if (config.aggregateType == 'count') {
                     option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
                 }
@@ -456,6 +456,8 @@
         //console.log(JSON.stringify(option));
         console.log(new Date(option.start) + ' - ' + new Date(option.end));
         socket.emit('getHistory', id, option, function (err, res, step) {
+			if (err) window.alert(err);
+		
             if (!err && res) {
                 //for (var i = 0, len = res.length; i < len; i++) {
                 option.start = option.start;
@@ -910,8 +912,8 @@
 
             var yaxi = {
                 show: config.l[ii].yaxe == 'off' ? false : true,
-                min:  config.l[ii].min,
-                max:  config.l[ii].max,
+                min:  config.l[ii].min !== '' ? parseFloat(config.l[ii].min) : undefined,
+                max:  config.l[ii].max !== '' ? parseFloat(config.l[ii].max) : undefined,
                 position: config.l[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
                 font: {
                     color: config.l[ii].yaxe.indexOf('Color') > -1 ? config.l[ii].color : (config.y_labels_color || 'black')
