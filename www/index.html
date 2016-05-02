@@ -301,7 +301,7 @@
                 id:         ids[i],
                 offset:     0,
                 name:       names[i] || '',
-                art:        "average",
+                art:        'average',
                 color:      colors[i] || 'blue',
                 thickness:  config.strokeWidth || 1,
                 shadowsize: config.strokeWidth || 1,
@@ -514,7 +514,7 @@
                         if (config.l[index].chartType === 'steps') {
                             seriesData[index].unshift([option.start, preFirstValue.val + option.yOffset]);
                         } else {
-                            if (seriesData[index][0][1] !== null) {
+                            if (seriesData[index][0] && seriesData[index][0][1] !== null) {
                                 // interpolate
                                 var y = preFirstValue.val + option.yOffset + (seriesData[index][0][1] - preFirstValue.val - option.yOffset) * (option.start - preFirstValue.ts) / (seriesData[index][0][0] - preFirstValue.ts);
                                 seriesData[index].unshift([option.start, y]);
@@ -912,8 +912,8 @@
 
             var yaxi = {
                 show: config.l[ii].yaxe == 'off' ? false : true,
-                min:  config.l[ii].min !== '' ? parseFloat(config.l[ii].min) : undefined,
-                max:  config.l[ii].max !== '' ? parseFloat(config.l[ii].max) : undefined,
+                min:  (config.l[ii].min !== '' && config.l[ii].min !== null && config.l[ii].min !== undefined) ? parseFloat(config.l[ii].min) : undefined,
+                max:  (config.l[ii].max !== '' && config.l[ii].max !== null && config.l[ii].max !== undefined) ? parseFloat(config.l[ii].max) : undefined,
                 position: config.l[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
                 font: {
                     color: config.l[ii].yaxe.indexOf('Color') > -1 ? config.l[ii].color : (config.y_labels_color || 'black')
