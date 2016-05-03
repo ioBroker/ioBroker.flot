@@ -415,13 +415,13 @@
                     start:      start,
                     end:        end,
                     ignoreNull: false,
-                    aggregate:  config.l[index].art || 'average'
+                    aggregate:  config.l[index].art || 'm4'
                 };
 
                 if (config.aggregateType == 'step') {
                     option.step = config.aggregateSpan * 1000;
                 } else if (config.aggregateType == 'count') {
-                    option.count = config.aggregateSpan || document.getElementById('chart_container').clientWidth;
+                    option.count = config.aggregateSpan || (document.getElementById('chart_container').clientWidth / 10);
                 }
 
                 navOptions[index] = option;
@@ -436,7 +436,7 @@
                     start:      start,
                     end:        end,
                     ignoreNull: false,
-                    aggregate:  config.l[index].art || 'average',
+                    aggregate:  config.l[index].art || 'm4',
                     count:      1
                 };
 

@@ -165,8 +165,8 @@
                 <tr>
                     <td class="translate ">Step type:</td>
                     <td><select id="aggregateType" class="value input">
-                        <option value="step" class="translate">seconds</option>
                         <option value="count" class="translate">counts</option>
+                        <option value="step" class="translate">seconds</option>
                     </select></td>
                 </tr>
                 <tr>
@@ -407,7 +407,7 @@
                     id:         ids[i],
                     offset:     0,
                     name:       names[i] || '',
-                    art:        'average',
+                    art:        'm4',
                     color:      colors[i] || 'blue',
                     thickness:  setup.options.strokeWidth || 1,
                     shadowsize: setup.options.strokeWidth || 1,
@@ -470,7 +470,7 @@
             id:         '',
             instance:   '',
             offset:     0,
-            art:        'average',
+            art:        'm4',
             color:      defaultColors[index] || '#00FFFF',
             min:        '',
             max:        '',
@@ -554,6 +554,7 @@
                         '</td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width: 90px" data-option="art" class="input options-lines" data-index="' + i + '">' +
+                            '<option value="m4">'       + _('m4')   + '</option>' +
                             '<option value="average">'  + _('average')   + '</option>' +
                             '<option value="max">'      + _('max')       + '</option>' +
                             '<option value="min">'      + _('min')       + '</option>' +
