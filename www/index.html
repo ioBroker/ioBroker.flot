@@ -407,7 +407,10 @@
                     } else if (config.relativeEnd == 'today') {
                         var _now = new Date(now);
                         end   = _now.setHours(24).getTime() - config.l[index].offset * 1000;
-                        start = new Date(new Date(_now).setMinutes(0)).setSeconds(0).getTime() - (config.range * 60000) - config.l[index].offset * 1000;
+                        var _now2 = new Date(_now);
+                        _now2.setMinutes(0);
+                        _now2.setSeconds(0);
+                        start = _now2.getTime() - (config.range * 60000) - config.l[index].offset * 1000;
                     }
                 }
 
@@ -430,7 +433,7 @@
             } else {
 
                 end   = now.getTime() - config.l[index].offset * 1000;
-                start = end - (step);
+                start = end - step;
 
                 option = {
                     start:      start,
@@ -661,10 +664,10 @@
             config.zoomed = true;
         }
         for (var index = 0; index < opt.xaxes.length; index++) {
-            config.l[index].zMin = opt.xaxes[index].min;
-            config.l[index].zMax = opt.xaxes[index].max;
-            settings.xaxes[index].max = opt.xaxes[index].max;
-            settings.xaxes[index].min = opt.xaxes[index].min;
+            config.l[index].zMin = Math.round(opt.xaxes[index].min);
+            config.l[index].zMax = Math.round(opt.xaxes[index].max);
+            settings.xaxes[index].max = Math.round(opt.xaxes[index].max);
+            settings.xaxes[index].min = Math.round(opt.xaxes[index].min);
         }
 
         console.log('on zoom');
@@ -989,8 +992,8 @@
             };
 
             if (config.zoom) {
-                xaxi.zoomRange = [null, now]; // or [ number, number] (min range, max range) or false
-                xaxi.panRange  = [null, now]; // or [ number, number] (min range, max range) or false
+                xaxi.zoomRange = [null, now.getTime()]; // or [ number, number] (min range, max range) or false
+                xaxi.panRange  = [null, now.getTime()]; // or [ number, number] (min range, max range) or false
             }
 
             settings.yaxes.push(yaxi);
@@ -1156,8 +1159,8 @@
 
         for (var index = 0; index < config.l.length; index++) {
             if (config.zoom) {
-                settings.xaxes[index].zoomRange = [null, now];
-                settings.xaxes[index].panRange  = [null, now];
+                settings.xaxes[index].zoomRange = [null, now.getTime()];
+                settings.xaxes[index].panRange  = [null, now.getTime()];
             }
             ready++;
             seriesData[index] = [];
