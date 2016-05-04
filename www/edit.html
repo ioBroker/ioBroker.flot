@@ -124,29 +124,49 @@
                 <tr class="relative">
                     <td class="translate">Range:</td>
                     <td><select id="range"      class="value input">
-                        <option value="10"      class="translate">10 Minutes</option>
-                        <option value="30"      class="translate">30 Minutes</option>
-                        <option value="60"      class="translate">1 Hour</option>
-                        <option value="120"     class="translate">2 Hours</option>
-                        <option value="180"     class="translate">3 Hours</option>
-                        <option value="360"     class="translate">6 Hours</option>
-                        <option value="720"     class="translate">12 Hours</option>
-                        <option value="1440"    class="translate">1 Day</option>
-                        <option value="2880"    class="translate">2 Days</option>
-                        <option value="4320"    class="translate">3 Days</option>
-                        <option value="10080"   class="translate">7 Days</option>
-                        <option value="20160"   class="translate">14 Days</option>
-                        <option value="43200"   class="translate">1 Month</option>
-                        <option value="86400"   class="translate">2 Months</option>
-                        <option value="129600"  class="translate">3 Months</option>
-                        <option value="259200"  class="translate">6 Months</option>
-                        <option value="525600"  class="translate">1 Year</option>
-                        <option value="1051200" class="translate">2 Years</option>
+                        <option value="10"      class="translate">10 minutes</option>
+                        <option value="30"      class="translate">30 minutes</option>
+                        <option value="60"      class="translate">1 hour</option>
+                        <option value="120"     class="translate">2 hours</option>
+                        <option value="180"     class="translate">3 hours</option>
+                        <option value="360"     class="translate">6 hours</option>
+                        <option value="720"     class="translate">12 hours</option>
+                        <option value="1440"    class="translate">1 day</option>
+                        <option value="2880"    class="translate">2 days</option>
+                        <option value="4320"    class="translate">3 days</option>
+                        <option value="10080"   class="translate">7 days</option>
+                        <option value="20160"   class="translate">14 days</option>
+                        <option value="43200"   class="translate">1 month</option>
+                        <option value="86400"   class="translate">2 months</option>
+                        <option value="129600"  class="translate">3 months</option>
+                        <option value="259200"  class="translate">6 months</option>
+                        <option value="525600"  class="translate">1 year</option>
+                        <option value="1051200" class="translate">2 years</option>
                     </select></td>
                 </tr>
                 <tr class="relative">
-                    <td class="translate">Live:</td>
-                    <td><input type="checkbox" class="value" id="live"></td>
+                    <td class="translate">Live update every:</td>
+                    <td><select class="value" id="live">
+                        <option value=""        class="translate">none</option>
+                        <option value="5"       class="translate">5 seconds</option>
+                        <option value="10"      class="translate">10 seconds</option>
+                        <option value="15"      class="translate">15 seconds</option>
+                        <option value="20"      class="translate">20 seconds</option>
+                        <option value="30"      class="translate">30 seconds</option>
+                        <option value="60"      class="translate">1 minute</option>
+                        <option value="120"     class="translate">2 minutes</option>
+                        <option value="300"     class="translate">5 minutes</option>
+                        <option value="600"     class="translate">10 minutes</option>
+                        <option value="900"     class="translate">15 minutes</option>
+                        <option value="1200"    class="translate">20 minutes</option>
+                        <option value="1800"    class="translate">30 minutes</option>
+                        <option value="3600"    class="translate">1 hour</option>
+                        <option value="7200"    class="translate">2 hours</option>
+                        <option value="10800"   class="translate">3 hours</option>
+                        <option value="21600"   class="translate">6 hours</option>
+                        <option value="43200"   class="translate">12 hours</option>
+                        <option value="86400"   class="translate">1 day</option>
+                    </select></td>
                 </tr>
 
                 <tr class="static">
@@ -158,6 +178,7 @@
                     <td><input type="date" id="end" class="value input"> <input type="time" id="end_time" class="value input_time"></td>
                 </tr>
             </table>
+
             <table style="margin-left: 25px">
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
@@ -173,54 +194,20 @@
                     <td class="translate" id="spanName">Step span:</td>
                     <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
-                <!--tr>
-                    <td class="translate label">ignore 'null':</td>
-                    <td><input type="checkbox" id="ignoreNull" class="value"></td>
-                </tr-->
             </table>
-            <!--<table style="margin-left: 25px">-->
-                <!--<tr>-->
-                    <!--<td class="translate header" colspan="2" style="text-align: center">Navigation</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                    <!--<td class="translate ">on/off</td>-->
-                    <!--<td><input id="nav" class="value" type="checkbox" /></td>-->
-                <!--</tr>-->
-                <!--&lt;!&ndash;todo&ndash;&gt;-->
-                <!--&lt;!&ndash;<tr>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td class="translate ">Show Zoom</td>&ndash;&gt;-->
-                    <!--&lt;!&ndash;<td><input class="value" id="zoom" type="checkbox" />&ndash;&gt;-->
-                   <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                <!--&lt;!&ndash;</tr>&ndash;&gt;-->
-                <!--<tr>-->
-                    <!--<td class="translate">Step Size:</td>-->
-                    <!--<td>-->
-                        <!--<input class="value" id="navStep" type="number" min="1" step="1" style="width: 80px"/>-->
-                        <!--<select class="value input" id="navStepMulti" style="width: 100px">-->
-                            <!--<option value=0 class="translate">seconds</option>-->
-                            <!--<option value=60 class="translate">minutes</option>-->
-                            <!--<option value=3600 class="translate">hours</option>-->
-                            <!--<option value=86400 class="translate">days</option>-->
-                            <!--<option value=604800 class="translate">weeks</option>-->
-                            <!--<option value="M" class="translate">months</option>-->
-                        <!--</select>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</table>-->
         </div>
         <h3 id="2" class="translate">Options</h3>
         <div style="display: flex">
-
             <table>
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
                 <tr>
                     <td class="translate">Width:</td>
-                    <td><input id="width" class="value input"></td>
+                    <td><input id="width" class="value input spinner"></td>
                 </tr>
                 <tr>
                     <td class="translate">Height:</td>
-                    <td><input id="height" class="value input"></td>
+                    <td><input id="height" class="value input spinner"></td>
                 </tr>
                 <tr>
                     <td class="translate">No border:</td>
@@ -273,8 +260,7 @@
                     </td>
                 </tr>
 
-                </table>
-
+            </table>
 
             <table style="margin-left: 25px">
                 <tr>
@@ -348,14 +334,14 @@
                         <option value="%d.%m.%y">dd.mm.yy</option>
                     </select></td>
                 </tr>
-                <tr>
+                <!--tr>
                     <td class="translate">Smoothing:</td>
                     <td><input type="text" class="value input" id="smoothing"></td>
                 </tr>
                 <tr>
                     <td class="translate">After comma:</td>
                     <td><input type="text" class="value input" id="afterComma"></td>
-                </tr>
+                </tr-->
                 <tr>
                     <td class="translate">Use comma:</td>
                     <td><input type="checkbox" class="value" id="useComma"></td>
@@ -411,6 +397,8 @@
                     color:      colors[i] || 'blue',
                     thickness:  setup.options.strokeWidth || 1,
                     shadowsize: setup.options.strokeWidth || 1,
+                    smoothing:  setup.options.smoothing   || 0,
+                    afterComma: setup.options.afterComma  || 0,
                     min:        setup.options.min || '',
                     max:        setup.options.max || '',
                     unit:       units[i]          || ''
@@ -504,7 +492,10 @@
                     '<td title="' + _('Shadow Size') + '">&#216S</td>' + // ShadowSize
                     '<td >' + _('Name')          + '</td>' +
                     '<td >' + _('Common Y Axis') + '</td>' +
-                    '<td >' + _('no null') + '</td>';
+                    '<td >' + _('NULL as')       + '</td>' +
+                    '<td >' + _('Smoothing')     + '</td>' +
+                    '<td >' + _('After comma')   + '</td>' +
+                    '<td ></td>';
 
             var textInstances = '<option value="">' + _('default') + '</option>\n';
             for (var t = 0; t < instances.length; t++) {
@@ -572,8 +563,8 @@
                             '<!--<option value="pie">'      + _('Pie')          + '</option>-->' +
                         '</select></td>' +
                         '<td style="padding-left:5px"><input data-option="color" style="width: 70px" data-index="' + i + '" class="options-lines input-color" value="' + (line.color || '') + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="min"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="max"   style="width: 70px" data-index="' + i + '" class="options-lines" value="' + ((line.max === undefined) ? '' : line.max) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="min"   style="width: 50px" data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>' +
+                        '<td style="padding-left:5px"><input data-option="max"   style="width: 50px" data-index="' + i + '" class="options-lines" value="' + ((line.max === undefined) ? '' : line.max) + '"></td>' +
                         '<td style="padding-left:5px"><input data-option="unit"  style="width: 70px" data-index="' + i + '" class="options-lines" value="' + (line.unit || '') + '"></td>' +
                         '<td style="padding-left:5px">' +
                         '<select style="width:  140px" data-option="yaxe" class="input options-lines" data-index="' + i + '">' +
@@ -605,10 +596,14 @@
                             '<option value="4">'    + '4'           + '</option>' +
                             '<option value="5">'    + '5'           + '</option>' +
                         '</select></td>' +
-                        '<td style="text-align: center"><input data-option="ignoreNull" class="options-lines" data-index="' + i + '" type="checkbox" ' + (line.ignoreNull ? 'checked' : '') + '></td>' +
-
+                        '<td style="text-align: center"><select data-option="ignoreNull" class="input options-lines" data-index="' + i + '">' +
+                            '<option value="false">' + _('null')         + '</option>' +
+                            '<option value="true">'  + _('last value') + '</option>' +
+                            '<option value="0">0</option>' +
+                        '</select></td>' +
+                        '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="smoothing" value="' + (line.smoothing  || '')  + '"></td>' +
+                        '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="afterComma value="' + (line.afterComma || 2)   + '"></td>' +
                         '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' +
-
                         '</tr>';
             }
 
@@ -671,6 +666,8 @@
                     }
                 }
             });
+
+            $('.spinner-lines').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
             if (typeof callback == 'function') callback();
         }, 100);
@@ -811,6 +808,8 @@
             delete setup.options.lines;
         }
         setup.options.ignoreNull   = undefined;
+        setup.options.afterComma   = undefined;
+        setup.options.smoothing    = undefined;
 
         if (!setup.options.l || !setup.options.l.length) addLine();
 
@@ -904,11 +903,7 @@
             $('.' + $(this).val()).show();
         });
 
-        $('#width').spinner().on('spin', delayedUpdate).parent().addClass('input');
-        $('#height').spinner().on('spin', delayedUpdate).parent().addClass('input');
-        $('#smoothing').spinner().on('spin', delayedUpdate).parent().addClass('input');
-        $('#strokeWidth').spinner().on('spin', delayedUpdate).parent().addClass('input');
-        $('#afterComma').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('.spinner').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
         $('#bg_custom').change(function () {
             if ($(this).prop('checked')) {
