@@ -146,7 +146,7 @@ systemDictionary = {
     "Hover details:":       {"en": "Hover details:",        "de": "Hover details:",         "ru": "Показывать подсказку:"},
     "Time format:":         {"en": "Time format:",          "de": "Time format:",           "ru": "Формат времени:"},
     "Default":              {"en": "Default",               "de": "Default",                "ru": "по умолчанию"},
-    "Smoothing:":           {"en": "Smoothing:",            "de": "Smoothing:",             "ru": "Сглаживание:"},
+    "Smoothing":            {"en": "Smoothing",             "de": "Smoothing",              "ru": "Сглаживание"},
 
 //        "default": {"en": "default", "de": "default", "ru": "по умолчанию"},
 //        "linear": {"en": "linear", "de": "linear", "ru": "линейная"},
@@ -155,7 +155,7 @@ systemDictionary = {
 //        "basis": {"en": "basis", "de": "basis", "ru": "basis"},
 //        "Preview:": {"en": "Preview:", "de": "Preview:", "ru": "Изменение интервала:"},
 
-    "After comma:":         {"en": "After comma:",          "de": "Nach komma:",            "ru": "Чисел после запятой:"},
+    "After comma":          {"en": "After comma",           "de": "Nach Komma",             "ru": "После запятой"},
     "Open":                 {"en": "Open",                  "de": "Zeige",                  "ru": "Показать"},
     "Reset settings":       {"en": "Reset settings",        "de": "Einstellungen löschen",  "ru": "Сбросить настройки"},
     "From":                 {"en": "From: ",                "de": "Von",                    "ru": "От"},
@@ -195,7 +195,7 @@ systemDictionary = {
     "month":                {"en": "month",                 "de": "Monat",                  "ru": "month"},
     "year":                 {"en": "year",                  "de": "Jahr",                   "ru": "year"},
     "Individual":           {"en": "Individual",            "de": "Individual",             "ru": "Индивидуально"},
-    "Art:":                 {"en": "Art:",                  "de": "Art:",                   "ru": "Тип:"},
+    "Aggregation:":         {"en": "Type:",                 "de": "Art:",                   "ru": "Тип:"},
     "relative":             {"en": "relative",              "de": "relative",               "ru": "относительно"},
     "static":               {"en": "static",                "de": "statik",                 "ru": "постоянный"},
     "now":                  {"en": "now",                   "de": "jetzt",                  "ru": "сейчас"},
@@ -217,7 +217,7 @@ systemDictionary = {
     "Appearance":           {"en": "Appearance",            "de": "Erscheinung",            "ru": "Оформление"},
     "Title":                {"en": "Title",                 "de": "Beschriftung",           "ru": "Подпись"},
     "Offset":               {"en": "X-Offset",              "de": "X-Offset",               "ru": "Сдвиг по Х"},
-    "Art":                  {"en": "Art",                   "de": "Art",                    "ru": "Тип"},
+    "Aggregation":          {"en": "Type",                  "de": "Art",                    "ru": "Тип"},
     "Chart Type":           {"en": "Chart Type",            "de": "Chart Type",             "ru": "Тип графика"},
     "Color":                {"en": "Color",                 "de": "Farbe",                  "ru": "Цвет"},
     "Min":                  {"en": "Min",                   "de": "Min",                    "ru": "Мин"},
@@ -278,5 +278,9 @@ systemDictionary = {
     "ignore 'null':":       {"en": "ignore 'null':",        "de": "'null' ignorieren:",     "ru": "Игнорировать 'null':"},
     "on change":            {"en": "on change",             "de": "bei Änderung",           "ru": "при изменении"},
     "Enable zoom and pan:": {"en": "Enable zoom and pan:",  "de": "Aktiviere Zoom und Schieben:",   "ru": "Разрешить увеличение и сдвиг:"},
-    "Arrange bools":        {"en": "Arrange booleans",      "de": "Platziere Booleans",     "ru": "Выстроить bool графики"}
+    "Arrange bools":        {"en": "Arrange booleans",      "de": "Platziere Booleans",     "ru": "Выстроить bool графики"},
+    "NULL as":              {"en": "NULL as",               "de": "NULL als",               "ru": "NULL как"},
+    "m4":                   {"en": "M4",                    "de": "M4",                     "ru": "M4"},
+    "null":                 {"en": "null",                  "de": "null",                   "ru": "null"},
+    "last value":           {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"}
 };

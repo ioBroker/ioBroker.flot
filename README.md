@@ -27,6 +27,10 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 * (bluefox) implement zoom and pan
 * (bluefox) support ms
 * (bluefox) support m4
+* (bluefox) support of pan and zoom on touchable devices
+* (bluefox) support of 3 types of "null" handling: use nulls, use last value instead of null, use 0 instead of 0
+* (bluefox) update interval in seconds
+* (bluefox) smoothing and "after comma" per variable
 
 ### 1.1.0 (2016-04-09)
 * (bluefox) change splash screen

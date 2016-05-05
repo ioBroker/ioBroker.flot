@@ -123,6 +123,10 @@ var navOptions      = {};
 var socketURL       = '';
 var socketSESSION   = '';
 var now             = new Date();
+// for zoom
+var lastX           = null;
+var mouseDown       = false;
+var lastWidth       = null;
 
 if (config.window_bg) $('body').css('background', config.window_bg);
 
@@ -193,15 +197,38 @@ function getStartStop(index, step) {
 
             } else {
                 if (config.relativeEnd == 'now') {
-                    end   = now.getTime() - (config.l[index].offset || 0) * 1000;
+                    end   = now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 } else if (config.relativeEnd == 'today') {
                     var _now = new Date(now);
-                    end   = _now.setHours(24).getTime() - config.l[index].offset * 1000;
-                    var _now2 = new Date(_now);
-                    _now2.setMinutes(0);
-                    _now2.setSeconds(0);
-                    start = _now2.getTime() - (config.range * 60000) - config.l[index].offset * 1000;
+                    _now.setDate(_now.getDate() + 1);
+                    _now.setHours(0);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
+                } else if (config.relativeEnd == 'month') {
+                    var _now = new Date(now);
+                    _now.setMonth(_now.getMonth() + 1);
+                    _now.setDate(1);
+                    _now.setHours(0);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
+                } else if (config.relativeEnd == 'year') {
+                    var _now = new Date(now);
+                    _now.setFullYear(_now.getFullYear() + 1);
+                    _now.setMonth(0);
+                    _now.setDate(1);
+                    _now.setHours(0);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
                 }
             }
 
@@ -256,9 +283,6 @@ function readOneChart(id, instance, index, callback) {
             //option.ignoreNull = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
             option.yOffset = config.l[index].yOffset;
 
-            /*var lastVal = null;
-            var preFirstValue = null;
-            var postLastValue = null;*/
             for (var i = 0; i < res.length; i++) {
                 // if less 2000.01.01 00:00:00
                 if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
@@ -272,6 +296,11 @@ function readOneChart(id, instance, index, callback) {
                 if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
                 seriesData[index].push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
+            }
+            // add start and end
+            if (seriesData.length) {
+                if (seriesData[0][0] > option.start) seriesData.unshift([option.start, null]);
+                if (seriesData[seriesData.length - 1][0] < option.end) seriesData.push([option.end, null]);
             }
             // free memory
             res = null;
@@ -805,6 +834,63 @@ function buildGraph() {
         }).unbind('plotpan').bind('plotpan', function (e, plot, args) {
             if (zoomTimeout) clearTimeout(zoomTimeout);
             zoomTimeout = setTimeout(onZoom, 500);
+        })
+        .unbind('touchstart')
+        .on('touchstart', function (e) {
+            e.preventDefault();
+            mouseDown = true;
+            var touches = e.touches || e.originalEvent.touches;
+            if (touches) {
+                lastX = touches[touches.length - 1].pageX;
+                if (touches.length > 1) {
+                    lastWidth = Math.abs(touches[0].pageX - touches[1].pageX);
+                } else {
+                    lastWidth = null;
+                }
+            }
+        })
+        .unbind('touchend')
+        .on('touchend', function(e) {
+            e.preventDefault();
+            mouseDown = false;
+            if (zoomTimeout) clearTimeout(zoomTimeout);
+            zoomTimeout = setTimeout(onZoom, 500);
+        })
+        .unbind('touchmove')
+        .on('touchmove', function (e) {
+            e.preventDefault();
+            var touches = e.touches || e.originalEvent.touches;
+            if (!touches) return;
+            if (mouseDown) {
+                var pageX = touches[touches.length - 1].pageX;
+                if (touches.length > 1) {
+                    // zoom
+                    var width = Math.abs(touches[0].pageX - touches[1].pageX);
+
+                    if (lastWidth !== null && width !== lastWidth) {
+                        var amount     = (width > lastWidth) ? 1.1 : 0.9;
+                        var graphWidth = graph.width();
+                        var offset     = graph.offset();
+                        var positionX  = (touches[0].pageX > touches[1].pageX) ? (touches[1].pageX + width / 2) : (touches[0].pageX + width / 2);
+
+                        graph.zoom({
+                            center: {
+                                left:   positionX - offset.left,
+                                height: graph.height() / 2
+                            },
+                            amount: amount
+                        });
+
+                        if (zoomTimeout) clearTimeout(zoomTimeout);
+                        zoomTimeout = setTimeout(onZoom, 500);
+                    }
+                    lastWidth = width;
+                } else {
+                    // swipe
+                    graph.pan({left: lastX - pageX, top: 0});
+                }
+            }
+            lastX = pageX;
         });
     }
 }
