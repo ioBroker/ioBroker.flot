@@ -23,7 +23,12 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
-### 1.1.0 (2016-04-09) 
+### 1.2.0 (2016-05-05)
+* (bluefox) implement zoom and pan
+* (bluefox) support ms
+* (bluefox) support m4
+
+### 1.1.0 (2016-04-09)
 * (bluefox) change splash screen
 * (bluefox) ignoreNull per variable
 * (bluefox) fix x axis

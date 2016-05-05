@@ -106,7 +106,7 @@
                 </tr>
                 <tr>
                     <td class="translate">Art:</td>
-                    <td><select id="timeArt" class="input value">
+                    <td><select id="timeType" class="input value">
                         <option value="relative" class="translate">relative</option>
                         <option value="static"   class="translate">static</option>
                     </select></td>
@@ -393,7 +393,7 @@
                     id:         ids[i],
                     offset:     0,
                     name:       names[i] || '',
-                    art:        'm4',
+                    aggregate:  'm4',
                     color:      colors[i] || 'blue',
                     thickness:  setup.options.strokeWidth || 1,
                     shadowsize: setup.options.strokeWidth || 1,
@@ -413,6 +413,19 @@
             if (setup.options._ids)     delete setup.options._ids;
         }
         setup.options.l = setup.options.l || [];
+    }
+
+    // convert art to aggregate
+    for (var j = 0; j < setup.options.l.length; j++) {
+        if (setup.options.l[j].art) {
+            setup.options.l[j].aggregate = setup.options.l[j].art;
+            delete setup.options.l[j].art;
+        }
+    }
+    // rename timeArt
+    if (setup.options.timeArt) {
+        setup.options.timeType = setup.options.timeArt;
+        delete setup.options.timeArt;
     }
 
     if (typeof sysLang !== 'undefined') systemLang = sysLang || 'en';
@@ -458,7 +471,7 @@
             id:         '',
             instance:   '',
             offset:     0,
-            art:        'm4',
+            aggregate:  'm4',
             color:      defaultColors[index] || '#00FFFF',
             min:        '',
             max:        '',
@@ -544,7 +557,7 @@
                         '<input data-option="yOffset" style="width: 70px" data-index="' + i + '" class="options-lines" value="' + (line.yOffset || '') + '">' +
                         '</td>' +
                         '<td style="padding-left:5px">' +
-                        '<select style="width: 90px" data-option="art" class="input options-lines" data-index="' + i + '">' +
+                        '<select style="width: 90px" data-option="aggregate" class="input options-lines" data-index="' + i + '">' +
                             '<option value="m4">'       + _('m4')   + '</option>' +
                             '<option value="average">'  + _('average')   + '</option>' +
                             '<option value="max">'      + _('max')       + '</option>' +
@@ -644,7 +657,7 @@
                     setup.options.l[index].id = newId;
                     $('.ids[data-index="' + index + '"]').val(newId).trigger('change');
                     if (obj && obj.common.type === 'boolean') {
-                        $('select[data-option="art"][data-index="' + index + '"]').val('onchange').trigger('change');
+                        $('select[data-option="aggregate"][data-index="' + index + '"]').val('onchange').trigger('change');
                         $('select[data-option="chartType"][data-index="' + index + '"]').val('steps').trigger('change');
                         $('input[data-option="min"][data-index="' + index + '"]').val(0).trigger('change');
                         $('input[data-option="max"][data-index="' + index + '"]').val(10).trigger('change');
@@ -735,7 +748,7 @@
             $('#spanName').text(_('Counts') + ':');
         }
         $('.relative, .static').hide();
-        $('.' + $('#timeArt').val()).show();
+        $('.' + $('#timeType').val()).show();
 
         if ($('#autoUpdate').prop('checked')) {
             delayedPreview();
@@ -744,7 +757,7 @@
 
         // calculate span
         var text = '';
-        if (setup.options.timeArt === 'relative') {
+        if (setup.options.timeType === 'relative') {
             text =  _('%s ago', $('#range option:selected').text()) + ' - ' + _(setup.options.relativeEnd);
         } else {
             text = new Date(setup.options.start).toLocaleDateString() + ' ' +
@@ -898,7 +911,7 @@
             $(this).trigger('change');
         });
 
-        $('#timeArt').change(function () {
+        $('#timeType').change(function () {
             $('.relative, .static').hide();
             $('.' + $(this).val()).show();
         });

@@ -27,7 +27,7 @@ var path = location.href.split('?')[1];
 
 // convert old format to new one
 // OLD: http://localhost:8082/flot/index.html?range=1440&renderer=line&axeX=l&axeY=inside&_ids=system.adapter.admin.0.memRss%2Csystem.adapter.email.0.memRss&_colors=%23c05020%3B%2330c020%3B%236060c0
-// NEW: http://localhost:8082/flot/index.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss&l%5B0%5D%5Boffset%5D=0&l%5B0%5D%5Bart%5D=average&l%5B0%5D%5Bcolor%5D=%23FF0000&l%5B0%5D%5Bthickness%5D=3&l%5B1%5D%5Bid%5D=system.adapter.email.0.memRss&l%5B1%5D%5Boffset%5D=0&l%5B1%5D%5Bart%5D=average&l%5B1%5D%5Bcolor%5D=%2300FF00&l%5B1%5D%5Bthickness%5D=3&timeArt=relative&relativeEnd=now&range=10&aggregateType=step&aggregateSpan=300&legend=sw
+// NEW: http://localhost:8082/flot/index.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss&l%5B0%5D%5Boffset%5D=0&l%5B0%5D%5Baggregate%5D=average&l%5B0%5D%5Bcolor%5D=%23FF0000&l%5B0%5D%5Bthickness%5D=3&l%5B1%5D%5Bid%5D=system.adapter.email.0.memRss&l%5B1%5D%5Boffset%5D=0&l%5B1%5D%5Bart%5D=average&l%5B1%5D%5Bcolor%5D=%2300FF00&l%5B1%5D%5Bthickness%5D=3&timeType=relative&relativeEnd=now&range=10&aggregateType=step&aggregateSpan=300&legend=sw
 // OLD =>
 //{
 //    _colors: "#c05020;#30c020;#6060c0"
@@ -43,18 +43,18 @@ var path = location.href.split('?')[1];
 //     {
 //        "id" : "system.adapter.admin.0.memRss",
 //        "offset" : "0",
-//        "art" : "average",
+//        "aggregate" : "m4",
 //        "color" : "#FF0000",
 //        "thickness" : "3"
 //      }, {
 //        "id" : "system.adapter.email.0.memRss",
 //        "offset" : "0",
-//        "art" : "average",
+//        "aggregate" : "m4",
 //        "color" : "#00FF00",
 //        "thickness" : "3"
 //      }
 //  ],
-//    "timeArt" : "relative",
+//    "timeType" : "relative",
 //    "relativeEnd" : "now",
 //    "range" : "10",
 //    "aggregateType" : "step",
@@ -79,7 +79,7 @@ if (config._ids) {
             id:         ids[i],
             offset:     0,
             name:       names[i] || '',
-            art:        'average',
+            aggregate:  'onchange',
             color:      colors[i] || 'blue',
             thickness:  config.strokeWidth || 1,
             shadowsize: config.strokeWidth || 1,
@@ -89,10 +89,21 @@ if (config._ids) {
         });
     }
     config.range = parseInt(config.range, 10);
-    config.aggregateType = "step";
+    config.aggregateType = 'step';
     config.aggregateSpan = 300;
-    config.relativeEnd   = "now";
+    config.relativeEnd   = 'now';
 }
+
+// convert art to aggregate
+if (config.l) {
+    for (var j = 0; j < config.l.length; j++) {
+        if (config.l[j].art) {
+            config.l[j].aggregate = config.l[j].art;
+            delete config.l[j].art;
+        }
+    }
+}
+
 
 // Set default values
 config.width        = config.width  || '100%';
@@ -101,6 +112,7 @@ config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
 config.useComma     = config.useComma === 'true' || config.useComma === true;
 config.zoom         = config.zoom     === 'true' || config.zoom     === true;
 config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
+config.timeType     = config.timeArt || config.timeType || 'relative';
 //    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
 var seriesData      = [];
 var series          = [];
@@ -160,7 +172,7 @@ function getStartStop(index, step) {
         return navOptions[index];
     } else {
         if (!step) {
-            if (config.timeArt == 'static') {
+            if (config.timeType === 'static') {
                 var start_time;
                 var end_time;
                 if (config.start_time !== undefined) {
@@ -197,7 +209,7 @@ function getStartStop(index, step) {
                 start:      start,
                 end:        end,
                 ignoreNull: (config.l[index].ignoreNull === undefined) ? config.ignoreNull : config.l[index].ignoreNull,
-                aggregate:  config.l[index].art || 'm4'
+                aggregate:  config.l[index].aggregate || config.aggregate || 'm4'
             };
 
             if (config.aggregateType == 'step') {
@@ -218,7 +230,7 @@ function getStartStop(index, step) {
                 start:      start,
                 end:        end,
                 ignoreNull: (config.l[index].ignoreNull === undefined) ? config.ignoreNull : config.l[index].ignoreNull,
-                aggregate:  config.l[index].art || 'm4',
+                aggregate:  config.l[index].aggregate || config.aggregate || 'm4',
                 count:      1
             };
 
@@ -260,75 +272,9 @@ function readOneChart(id, instance, index, callback) {
                 if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
                 seriesData[index].push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
-
-                /*if (res[i].val === null) {
-                    if (option.ignoreNull || i == res.length - 1) {
-                        res[i].val = lastVal;
-                    } else {
-                        lastVal = null;
-                    }
-                } else {
-                    lastVal = res[i].val;
-                }*/
-                // remove all not requested points
-                /*if (res[i].ts < option.start) {
-                    preFirstValue = res[i].val !== null ? res[i] : null;
-                    continue;
-                }
-                if (res[i].ts > option.end) {
-                    postLastValue = res[i].val !== null ? res[i] : null;
-                    break;
-                }
-
-                if (res[i].val !== null) { //|| i == 0 || i == res.length - 1
-                    seriesData[index].push([res[i].ts, res[i].val + option.yOffset]);
-                    postLastValue = res[i];
-                }*/
             }
             // free memory
             res = null;
-            // check start and stop
-            /*if (!seriesData[index][0] || seriesData[index][0][0] > option.start) {
-                if (preFirstValue !== null) {
-                    // if steps
-                    if (config.l[index].chartType === 'steps') {
-                        seriesData[index].unshift([option.start, preFirstValue.val + option.yOffset]);
-                    } else {
-                        if (seriesData[index][0] && seriesData[index][0][1] !== null) {
-                            // interpolate
-                            var y = preFirstValue.val + option.yOffset + (seriesData[index][0][1] - preFirstValue.val - option.yOffset) * (option.start - preFirstValue.ts) / (seriesData[index][0][0] - preFirstValue.ts);
-                            seriesData[index].unshift([option.start, y]);
-                        } else {
-                            seriesData[index].unshift([option.start, null]);
-                        }
-                    }
-                } else {
-                    seriesData[index].unshift([option.start, null]);
-                }
-            }
-
-            var lastT = seriesData[index][seriesData[index].length - 1][0];
-            if (lastT < option.end) {
-                if (postLastValue !== null) {
-                    // if steps
-                    if (config.l[index].chartType === 'steps') {
-                        // if mor data following, draw line to the end of chart
-                        seriesData[index].push([option.end, lastVal]);
-                    } else {
-                        var lastY = seriesData[index][seriesData[index].length - 1][1];
-                        if (lastY !== null) {
-                            // make interpolation
-                            var yy = lastY + (postLastValue.val + option.yOffset - lastY) * (option.end - lastT) / (postLastValue.ts - lastT);
-                            seriesData[index].push([option.end, yy]);
-                        } else {
-                            seriesData[index].push([option.end, null]);
-                        }
-                    }
-                } else {
-                    // if no more data, that means do not draw line
-                    seriesData[index].push([option.end, null]);
-                }
-            }*/
         }
 
         if (callback) callback(id, index);
@@ -567,7 +513,7 @@ function buildGraph() {
     for (var i = 0; i < seriesData.length; i++) {
         if (seriesData[i]) {
 
-            config.l[i].chartType = config.l[i].chartType || 'line';
+            config.l[i].chartType = config.l[i].chartType || config.chartType || 'line';
 
             var option = {
                 color:      config.l[i].color || undefined,
@@ -845,7 +791,7 @@ function buildGraph() {
         }
     }
 
-    if (config.live && config.timeArt == 'relative') {
+    if (config.live && config.timeType == 'relative') {
         if (config.live === true || config.live === 'true') config.live = 30;
         config.live = parseInt(config.live, 10) || 30;
         startLiveUpdate();
