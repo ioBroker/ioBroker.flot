@@ -21,6 +21,7 @@ var disconnectTimeout = setTimeout(function () {
 }, 5000);
 
 var zoomTimeout = null;
+var sessionId = 1;
 
 // Analyse query
 var path = location.href.split('?')[1];
@@ -104,7 +105,6 @@ if (config.l) {
     }
 }
 
-
 // Set default values
 config.width        = config.width  || '100%';
 config.height       = config.height || '100%';
@@ -168,6 +168,7 @@ function getStartStop(index, step) {
     var option = {};
     var end;
     var start;
+    var _now;
     config.l[index].offset = config.l[index].offset || 0;
 
     if (config.zoomed) {
@@ -177,30 +178,30 @@ function getStartStop(index, step) {
     } else {
         if (!step) {
             if (config.timeType === 'static') {
-                var start_time;
-                var end_time;
+                var startTime;
+                var endTime;
                 if (config.start_time !== undefined) {
-                    start_time = config.start_time.split(':').map(Number);
+                    startTime = config.start_time.split(':').map(Number);
                 } else {
-                    start_time = [0, 0];
+                    startTime = [0, 0];
                 }
 
                 if (config.end_time !== undefined) {
-                    end_time = config.end_time.split(':').map(Number);
+                    endTime = config.end_time.split(':').map(Number);
                 } else {
-                    end_time = [24, 0];
+                    endTime = [24, 0];
                 }
 
                 // offset is in seconds
-                start = new Date(config.start).setHours(start_time[0], start_time[1]) - config.l[index].offset * 1000;
-                end   = new Date(config.end)  .setHours(end_time[0],   end_time[1])   - config.l[index].offset * 1000;
+                start = new Date(config.start).setHours(startTime[0], startTime[1]) - config.l[index].offset * 1000;
+                end   = new Date(config.end)  .setHours(endTime[0],   endTime[1])   - config.l[index].offset * 1000;
 
             } else {
                 if (config.relativeEnd == 'now') {
                     end   = now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 } else if (config.relativeEnd == 'today') {
-                    var _now = new Date(now);
+                    _now = new Date(now);
                     _now.setDate(_now.getDate() + 1);
                     _now.setHours(0);
                     _now.setMinutes(0);
@@ -209,7 +210,7 @@ function getStartStop(index, step) {
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 } else if (config.relativeEnd == 'month') {
-                    var _now = new Date(now);
+                    _now = new Date(now);
                     _now.setMonth(_now.getMonth() + 1);
                     _now.setDate(1);
                     _now.setHours(0);
@@ -219,7 +220,7 @@ function getStartStop(index, step) {
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 } else if (config.relativeEnd == 'year') {
-                    var _now = new Date(now);
+                    _now = new Date(now);
                     _now.setFullYear(_now.getFullYear() + 1);
                     _now.setMonth(0);
                     _now.setDate(1);
@@ -271,13 +272,19 @@ function getStartStop(index, step) {
 function readOneChart(id, instance, index, callback) {
 
     var option = getStartStop(index);
-    option.instance = instance;
+    option.instance  = instance;
+    option.sessionId = sessionId;
     config.l[index].yOffset = parseFloat(config.l[index].yOffset) || 0;
 
     //console.log(JSON.stringify(option));
     console.log(new Date(option.start) + ' - ' + new Date(option.end));
-    socket.emit('getHistory', id, option, function (err, res) {
+    socket.emit('getHistory', id, option, function (err, res, stepIgnore, _sessionId) {
         if (err) window.alert(err);
+
+        if (sessionId && _sessionId && _sessionId !== sessionId) {
+            console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
+            return;
+        }
 
         if (!err && res) {
             //option.ignoreNull = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
@@ -328,7 +335,7 @@ function yFormatter(y, line) {
         }
     }
 }
-
+/*
 function readOneValue(id, index, callback) {
     socket.emit('getObject', id, function (err, res) {
         if (!err && res && res.common) {
@@ -349,6 +356,7 @@ function readOneValue(id, index, callback) {
         });
     });
 }
+*/
 
 function readData(hidden) {
     if (disconnectTimeout) {
@@ -356,6 +364,7 @@ function readData(hidden) {
         clearTimeout(disconnectTimeout);
         disconnectTimeout = null;
     }
+    sessionId++;
 
     if (config.l) {
         if (!hidden) $('#server-disconnect').show();
@@ -708,7 +717,7 @@ function buildGraph() {
         config.l[ii].commonYAxis = config.l[ii].commonYAxis || '';
 
         var yaxi = {
-            show: config.l[ii].yaxe == 'off' ? false : true,
+            show: config.l[ii].yaxe !== 'off',
             min:  (config.l[ii].min !== '' && config.l[ii].min !== null && config.l[ii].min !== undefined) ? parseFloat(config.l[ii].min) : undefined,
             max:  (config.l[ii].max !== '' && config.l[ii].max !== null && config.l[ii].max !== undefined) ? parseFloat(config.l[ii].max) : undefined,
             position: config.l[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
@@ -733,7 +742,7 @@ function buildGraph() {
         };
 
         var xaxi = {
-            show:       config.l[ii].xaxe == 'off' ? false : true,
+            show:       config.l[ii].xaxe !== 'off',
             position:   config.l[ii].xaxe.indexOf('top') !== -1 ? 'top' : 'bottom',
             font: {
                 color: config.l[ii].xaxe.indexOf('Color') !== -1 ? config.l[ii].color : (config.x_labels_color || 'black')
@@ -869,7 +878,6 @@ function buildGraph() {
 
                     if (lastWidth !== null && width !== lastWidth) {
                         var amount     = (width > lastWidth) ? 1.1 : 0.9;
-                        var graphWidth = graph.width();
                         var offset     = graph.offset();
                         var positionX  = (touches[0].pageX > touches[1].pageX) ? (touches[1].pageX + width / 2) : (touches[0].pageX + width / 2);
 
@@ -898,6 +906,8 @@ function buildGraph() {
 function updateLive() {
     var ready = 0;
     now = new Date();
+    $('.loader').show();
+    sessionId++;
 
     for (var index = 0; index < config.l.length; index++) {
         if (config.zoom) {
@@ -912,6 +922,7 @@ function updateLive() {
                     series[_index].data = seriesData[_index];
                 }
                 graph = $.plot('#chart_placeholder', series, settings);
+                $('.loader').hide();
             }
         });
     }

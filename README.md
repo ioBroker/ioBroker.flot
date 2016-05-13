@@ -23,6 +23,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.2.1 (2016-05-13)
+* (bluefox) implement loading indicator
+
 ### 1.2.0 (2016-05-05)
 * (bluefox) implement zoom and pan
 * (bluefox) support ms
