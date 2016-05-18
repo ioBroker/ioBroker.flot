@@ -102,6 +102,9 @@ if (config.l) {
             config.l[j].aggregate = config.l[j].art;
             delete config.l[j].art;
         }
+        if (config.instance && !config.l[j].instance) {
+            config.l[j].instance = config.instance;
+        }
     }
 }
 
