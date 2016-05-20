@@ -1,7 +1,12 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.2.1",
+        "version": "1.2.2",
+        "news": {
+            "en": "(bluefox) change default aggregation name",
+            "de": "(bluefox) change default aggregation name",
+            "ru": "(bluefox) change default aggregation name"
+        },
         "title":        "Flot Charts",
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",

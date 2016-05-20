@@ -280,7 +280,7 @@ systemDictionary = {
     "Enable zoom and pan:": {"en": "Enable zoom and pan:",  "de": "Aktiviere Zoom und Schieben:",   "ru": "Разрешить увеличение и сдвиг:"},
     "Arrange bools":        {"en": "Arrange booleans",      "de": "Platziere Booleans",     "ru": "Выстроить bool графики"},
     "NULL as":              {"en": "NULL as",               "de": "NULL als",               "ru": "NULL как"},
-    "m4":                   {"en": "MinMax",                "de": "MinMax",                 "ru": "MinMax"},
+    "MinMax":               {"en": "MinMax",                "de": "MinMax",                 "ru": "MinMax"},
     "null":                 {"en": "null",                  "de": "null",                   "ru": "null"},
     "last value":           {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"}
 };

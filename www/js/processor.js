@@ -44,13 +44,13 @@ var path = location.href.split('?')[1];
 //     {
 //        "id" : "system.adapter.admin.0.memRss",
 //        "offset" : "0",
-//        "aggregate" : "m4",
+//        "aggregate" : "minmax",
 //        "color" : "#FF0000",
 //        "thickness" : "3"
 //      }, {
 //        "id" : "system.adapter.email.0.memRss",
 //        "offset" : "0",
-//        "aggregate" : "m4",
+//        "aggregate" : "minmax",
 //        "color" : "#00FF00",
 //        "thickness" : "3"
 //      }
@@ -240,7 +240,7 @@ function getStartStop(index, step) {
                 start:      start,
                 end:        end,
                 ignoreNull: (config.l[index].ignoreNull === undefined) ? config.ignoreNull : config.l[index].ignoreNull,
-                aggregate:  config.l[index].aggregate || config.aggregate || 'm4'
+                aggregate:  config.l[index].aggregate || config.aggregate || 'minmax'
             };
 
             if (config.aggregateType == 'step') {
@@ -261,7 +261,7 @@ function getStartStop(index, step) {
                 start:      start,
                 end:        end,
                 ignoreNull: (config.l[index].ignoreNull === undefined) ? config.ignoreNull : config.l[index].ignoreNull,
-                aggregate:  config.l[index].aggregate || config.aggregate || 'm4',
+                aggregate:  config.l[index].aggregate || config.aggregate || 'minmax',
                 count:      1
             };
 
