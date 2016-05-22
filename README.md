@@ -23,8 +23,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
-### 1.2.2 (2016-05-20)
+### 1.2.2 (2016-05-22)
 * (bluefox) change default aggregation name
+* (bluefox) add units in tooltip
 
 ### 1.2.1 (2016-05-13)
 * (bluefox) implement loading indicator

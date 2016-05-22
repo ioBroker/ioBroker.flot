@@ -311,6 +311,9 @@ function readOneChart(id, instance, index, callback) {
             if (seriesData.length) {
                 if (seriesData[0][0] > option.start) seriesData.unshift([option.start, null]);
                 if (seriesData[seriesData.length - 1][0] < option.end) seriesData.push([option.end, null]);
+            } else {
+                seriesData.push([option.start, null]);
+                seriesData.push([option.end,   null]);
             }
             // free memory
             res = null;
@@ -322,19 +325,20 @@ function readOneChart(id, instance, index, callback) {
 
 function yFormatter(y, line) {
     if (typeof y === 'boolean') return '' + y;
+    var unit = config.l[line].unit ? ' ' + config.l[line].unit : '';
     if (config.l[line].afterComma !== undefined && config.l[line].afterComma !== null) {
         y = parseFloat(y);
         if (config.useComma) {
-            return y.toFixed(config.l[line].afterComma).toString().replace('.', ',');
+            return y.toFixed(config.l[line].afterComma).toString().replace('.', ',') + unit;
         } else {
-            return y.toFixed(config.l[line].afterComma);
+            return y.toFixed(config.l[line].afterComma) + unit;
         }
     } else {
         if (config.useComma) {
             y = parseFloat(y);
-            return y.toString().replace('.', ',');
+            return y.toString().replace('.', ',') + unit;
         } else {
-            return y;
+            return y + unit;
         }
     }
 }

@@ -3,9 +3,9 @@
         "name":         "flot",
         "version": "1.2.2",
         "news": {
-            "en": "(bluefox) change default aggregation name",
-            "de": "(bluefox) change default aggregation name",
-            "ru": "(bluefox) change default aggregation name"
+            "en": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip",
+            "de": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip",
+            "ru": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip"
         },
         "title":        "Flot Charts",
         "desc":         {
