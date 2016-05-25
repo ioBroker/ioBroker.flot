@@ -23,7 +23,7 @@
         "extIcon":      "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
         "readme":       "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
         "loglevel":     "info",
-        "dependencies": [{"web": ">=1.4.1"}],
+        "dependencies": [{"web": ">=1.4.6"}],
         "localLink":    "%web_protocol%://%ip%:%web_port%/flot/edit.html",
         "enabled":      true,
         "onlyWWW":      true,
