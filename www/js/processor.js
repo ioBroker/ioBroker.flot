@@ -293,6 +293,8 @@ function readOneChart(id, instance, index, callback) {
             //option.ignoreNull = (config.l[index].ignoreNull === undefined) ? (config.ignoreNull === 'true' || config.ignoreNull === true) : (config.l[index].ignoreNull === 'true' || config.l[index].ignoreNull === true);
             option.yOffset = config.l[index].yOffset;
 
+            var series = seriesData[index];
+
             for (var i = 0; i < res.length; i++) {
                 // if less 2000.01.01 00:00:00
                 if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
@@ -305,15 +307,15 @@ function readOneChart(id, instance, index, callback) {
                 }
                 if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
 
-                seriesData[index].push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
+                series.push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
             }
             // add start and end
-            if (seriesData.length) {
-                if (seriesData[0][0] > option.start) seriesData.unshift([option.start, null]);
-                if (seriesData[seriesData.length - 1][0] < option.end) seriesData.push([option.end, null]);
+            if (series.length) {
+                if (series[0][0] > option.start) series.unshift([option.start, null]);
+                if (series[series.length - 1][0] < option.end) series.push([option.end, null]);
             } else {
-                seriesData.push([option.start, null]);
-                seriesData.push([option.end,   null]);
+                series.push([option.start, null]);
+                series.push([option.end,   null]);
             }
             // free memory
             res = null;

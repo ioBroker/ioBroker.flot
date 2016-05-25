@@ -1,11 +1,18 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.2.2",
+        "version": "1.2.3",
         "news": {
-            "en": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip",
-            "de": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip",
-            "ru": "(bluefox) change default aggregation name\n(bluefox) add units in tooltip"
+			"1.2.3": {
+				"en": "fix digits after comma\nfix start and finish points",
+				"de": "fix digits after comma\nfix start and finish points",
+				"ru": "fix digits after comma\nfix start and finish points"
+			},
+			"1.2.2": {
+				"en": "change default aggregation name\nadd units in tooltip",
+				"de": "change default aggregation name\nadd units in tooltip",
+				"ru": "change default aggregation name\nadd units in tooltip"
+			}
         },
         "title":        "Flot Charts",
         "desc":         {

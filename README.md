@@ -23,6 +23,10 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.2.3 (2016-05-25)
+* (bluefox) fix digits after comma
+* (bluefox) fix start and finish points
+
 ### 1.2.2 (2016-05-22)
 * (bluefox) change default aggregation name
 * (bluefox) add units in tooltip
