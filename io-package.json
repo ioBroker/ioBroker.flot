@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.2.3",
+        "version": "1.2.4",
         "news": {
+            "1.2.4": {
+              "en": "show edit button",
+              "de": "show edit button",
+              "ru": "show edit button"
+            },
 			"1.2.3": {
 				"en": "fix digits after comma\nfix start and finish points",
 				"de": "fix digits after comma\nfix start and finish points",

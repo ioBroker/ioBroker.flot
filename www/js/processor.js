@@ -425,6 +425,16 @@ function readData(hidden) {
             _readOneLine(j);
         }
     }
+
+    if (!config.noedit || config.noedit === 'false') {
+        // install edit button
+        $('#edit')
+            .show()
+            .click(function () {
+                var href = location.href;
+                location.href = location.href.replace('index.html', 'edit.html');
+            });
+    }
 }
 
 function onZoom() {

@@ -259,29 +259,42 @@
                 height: 3em;
             }
         }
+
+        #resetZoom {
+            position: absolute;
+            right: 50%;
+            top: 20px;
+            z-index: 10;
+            cursor: pointer
+        }
+
+        #edit {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            z-index: 10;
+            cursor: pointer;
+            opacity: 0.4;
+        }
     </style>
 </head>
 <body>
 
-<div id="chart_container">
-    <div id="server-disconnect">
-        <div class="splash-screen-text">...</div>
-        <div class="splash-screen-circle-outer"></div>
-        <div class="splash-screen-circle-inner"></div>
+    <div id="chart_container">
+        <div id="server-disconnect">
+            <div class="splash-screen-text">...</div>
+            <div class="splash-screen-circle-outer"></div>
+            <div class="splash-screen-circle-inner"></div>
+        </div>
+        <div id="no-connection"
+             style="position: absolute; left: 50%; top: 50%; display: none; font-size: 3em; background: rgba(0, 0, 0, 0.1); border-radius: 10px; text-align: center">
+            No connection to server
+        </div>
+        <div id="chart_placeholder" class="chart-placeholder"></div>
+        <div id="title" style="position:absolute"></div>
     </div>
-    <div id="no-connection"
-         style="position:absolute; left: 50%; top: 50%; display: none; font-size: 3em; background: rgba(0, 0, 0, 0.1); border-radius: 10px; text-align: center">
-        No connection to server
-    </div>
-    <div id="chart_placeholder" class="chart-placeholder"></div>
-    <div id="title" style="position:absolute"></div>
-</div>
-<!--<div id="nav-bar" style="position: relative">-->
-    <!--<button id="navLeft"  style="position: absolute; right:50px">right</button>-->
-    <!--<button id="navNow"  onclick="navNow()" style="position: absolute; right:50%">now</button>-->
-    <!--<button id="navRight" style="position: absolute; left:50px">left</button>-->
-<!--</div>-->
-    <img style="position: absolute; right: 50%; top: 20px; z-index: 10; display: none; cursor: pointer" src="img/resetZoom.png" title="Reset zoom" id="resetZoom"/>
+    <div id="edit" style="display: none"><img src="img/edit.svg"/></div>
+    <img style="display: none" src="img/resetZoom.png" title="Reset zoom" id="resetZoom"/>
     <div class="loader" style="display: none"></div>
 
     <script src="js/processor.js"></script>

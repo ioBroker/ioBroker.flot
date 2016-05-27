@@ -282,5 +282,7 @@ systemDictionary = {
     "NULL as":              {"en": "NULL as",               "de": "NULL als",               "ru": "NULL как"},
     "MinMax":               {"en": "MinMax",                "de": "MinMax",                 "ru": "MinMax"},
     "null":                 {"en": "null",                  "de": "null",                   "ru": "null"},
-    "last value":           {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"}
+    "last value":           {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"},
+    "Hide edit button:":    {"en": "Hide edit button:",     "de": "Kein 'Edit'-Knopf:",     "ru": "Скрыть кнопку 'Редактировать':"},
+    "minmax":               {"en": "minmax",                "de": "minmax",                 "ru": "minmax"}
 };
