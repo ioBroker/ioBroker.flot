@@ -111,7 +111,7 @@ if (config.l) {
 // Set default values
 config.width        = config.width  || '100%';
 config.height       = config.height || '100%';
-config.timeFormat   = config.timeFormat || "%H:%M:%S %e.%m.%y";
+config.timeFormat   = config.timeFormat || '%H:%M:%S %e.%m.%y';
 config.useComma     = config.useComma === 'true' || config.useComma === true;
 config.zoom         = config.zoom     === 'true' || config.zoom     === true;
 config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
@@ -431,8 +431,8 @@ function readData(hidden) {
         $('#edit')
             .show()
             .click(function () {
-                var href = location.href;
-                location.href = location.href.replace('index.html', 'edit.html');
+                var win = window.open(location.href.replace('index.html', 'edit.html'), 'flot');
+                win.focus();
             });
     }
 }
@@ -493,6 +493,34 @@ function tickYFormatter (number, object) {
     var unit = config.l[object.n - 1].unit;
 
     return number + (unit ? (' ' + unit) : '');
+}
+
+function avg(data, range){
+    var r = [];
+    var rd = [];
+    var i1;
+    var s;
+    for(var i = 0; i < data.length; i++) {
+        if (i < range) {
+            i1 = 0;
+        } else {
+            i1 = i - range + 1;
+        }
+        rd = [];
+        rd[0] = data[i][0];
+        if (data[i][1] !== null) {
+            s = 0;
+            for(var j = i1; j <= i; j++) {
+                if (data[j][1] === null) continue;
+                s += data[j][1];
+            }
+            rd[1] = (s / (i - i1 + 1));
+        } else {
+            rd[1] = null;
+        }
+        r.push(rd);
+    }
+    return r;
 }
 
 function buildGraph() {
@@ -595,7 +623,7 @@ function buildGraph() {
             if ((config.smoothing && config.smoothing > 0) || (config.l[i].smoothing && config.l[i].smoothing > 0)) {
                 smoothing = true;
                 config.l[i].smoothing = parseInt(config.l[i].smoothing || config.smoothing);
-                option.data = $.plot.JUMlib.prepareData.avg(option.data, config.l[i].smoothing);
+                option.data = avg(option.data, config.l[i].smoothing);
             } else {
                 config.l[i].smoothing = 0;
             }
