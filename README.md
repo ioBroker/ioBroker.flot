@@ -23,6 +23,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.2.5 (2016-05-28)
+* (bluefox) do not include nulls by smoothing
+
 ### 1.2.4 (2016-05-27)
 * (bluefox) show edit button
 
