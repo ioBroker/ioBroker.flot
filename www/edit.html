@@ -133,7 +133,7 @@
                             <th class="toggleable translate" data-index="16">Name</th>
                             <th class="toggleable translate" data-index="17">Common Y Axis</th>
                             <th class="toggleable translate" data-index="18">NULL as</th>
-                            <th class="toggleable translate" data-index="19">Smoothing</th>
+                            <!--th class="toggleable translate" data-index="19">Smoothing</th-->
                             <th class="toggleable translate" data-index="20">After comma</th>
                             <th data-index="21"></th>
                         </tr>
@@ -158,10 +158,10 @@
                 <tr class="relative">
                     <td class="translate">End:</td>
                     <td><select id="relativeEnd" class="input value">
-                        <option value="now" class="translate">now</option>
+                        <option value="now"   class="translate">now</option>
                         <option value="today" class="translate">today</option>
                         <option value="month" class="translate">this month</option>
-                        <option value="year" class="translate">this year</option>
+                        <option value="year"  class="translate">this year</option>
                     </select></td>
                 </tr>
                 <tr class="relative">
@@ -397,6 +397,19 @@
                     <td class="translate">Hide edit button:</td>
                     <td><input type="checkbox" class="value" id="noedit"></td>
                 </tr>
+                <tr>
+                    <td class="translate">Animation:</td>
+                    <td><select class="value input" id="animation">
+                        <option value="0" class="translate">no</option>
+                        <option value="300" class="translate">300ms</option>
+                        <option value="500" class="translate">500ms</option>
+                        <option value="1000" class="translate">1s</option>
+                        <option value="2000" class="translate">2s</option>
+                        <option value="3000" class="translate">3s</option>
+                        <option value="5000" class="translate">5s</option>
+                        <option value="10000" class="translate">10s</option>
+                    </select></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -599,6 +612,7 @@
                             '<option value="scatterplot">'  + _('Scatter plot') + '</option>' +
                             '<option value="steps">'        + _('Steps')        + '</option>' +
                             '<!--<option value="pie">'      + _('Pie')          + '</option>-->' +
+                            '<option value="spline">'       + _('Spline')       + '</option>' +
                         '</select></td>' +
                         '<td style="padding-left:5px"><input style="width: 100%" data-option="color" data-index="' + i + '" class="options-lines input-color" value="' + (line.color || '') + '"></td>' +
                         '<td style="padding-left:5px"><input style="width: 100%" data-option="min"   data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>' +
@@ -639,7 +653,7 @@
                             '<option value="true">'  + _('last value') + '</option>' +
                             '<option value="0">0</option>' +
                         '</select></td>' +
-                        '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="smoothing" value="' + (line.smoothing  || '')  + '"></td>' +
+                        //'<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="smoothing" value="' + (line.smoothing  || '')  + '"></td>' +
                         '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="afterComma" value="' + (line.afterComma || 2)   + '"></td>' +
                         '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' +
                         '</tr>';
@@ -708,6 +722,7 @@
             $('.spinner-lines').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
             if (typeof callback == 'function') callback();
+
             $('.toggleable').click(function () {
                 var index = $(this).data('index');
                 var $col = $('col[data-index="' + index + '"]');
@@ -720,6 +735,11 @@
                     $col.data('hidden', true);
                     $col.attr('width', '10px');
                     $(this).css('width', '10px');
+                }
+            });
+            $('select[data-option="chartType"]').on('change', function () {
+                if ($(this).val() === 'spline') {
+                    alert('Experimental');
                 }
             });
         }, 100);
@@ -890,11 +910,11 @@
             var t = 0;
             for (var i = 0; i < setup.options.l.length; i++) {
                 if (setup.options.l[i].chartType == 'steps') {
-                    setup.options.l[i].max = Math.round(count * 2 * 1.2 * 10) / 10;
-                    setup.options.l[i].commonYAxis = axis + 1;
-                    setup.options.l[i].yOffset = Math.round(-(t + 1) * 1.2 * 10) / 10;
-                    setup.options.l[i].min  = Math.round((-count * 1.2 - 0.1) * 10) / 10;
-                    setup.options.l[i].yaxe = 'off';
+                    setup.options.l[i].max          = Math.round(count * 2 * 1.2 * 10) / 10;
+                    setup.options.l[i].commonYAxis  = axis + 1;
+                    setup.options.l[i].yOffset      = Math.round(-(t + 1) * 1.2 * 10) / 10;
+                    setup.options.l[i].min          = Math.round((-count * 1.2 - 0.1) * 10) / 10;
+                    setup.options.l[i].yaxe         = 'off';
                     t++;
                 }
                 setup.options.l[i].min  = Math.round((-count * 1.2 - 0.1) * 10) / 10;

@@ -15,7 +15,6 @@ To use the charts one of the history adapters is required: history, sql or Influ
 
 To **edit** created chart again, you should replace index.html with edit.html and call this link in browser, e.g:
 
-
 http://localhost:8082/flot/**index**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 to
@@ -23,6 +22,11 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.3.0 (2016-05-29)
+* (bluefox) add animation
+* (bluefox) remove smoothing, because does not work
+* (bluefox) try to add splines, but it does not work always
+
 ### 1.2.5 (2016-05-28)
 * (bluefox) do not include nulls by smoothing
 

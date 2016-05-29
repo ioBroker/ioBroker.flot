@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.2.5",
+        "version": "1.3.0",
         "news": {
+            "1.3.0": {
+              "en": "add animation\nremove smoothing, because does not work\ntry to add splines, but it does not work always",
+              "de": "add animation\nremove smoothing, because does not work\ntry to add splines, but it does not work always",
+              "ru": "add animation\nremove smoothing, because does not work\ntry to add splines, but it does not work always"
+            },
             "1.2.5": {
               "en": "do not include nulls by smoothing",
               "de": "do not include nulls by smoothing",
