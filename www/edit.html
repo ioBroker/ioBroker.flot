@@ -16,6 +16,7 @@
 
     <script type="text/javascript" src="/_socket/info.js"></script>
     <script type="text/javascript" src="js/words.js"></script>
+    <script type="text/javascript" src="js/settings.js"></script>
 
     <style>
         .input {
@@ -553,110 +554,133 @@
                 textInstances += '<option value="' + instances[t] + '">' + instances[t] + '</option>\n';
             }
 
-            for (var i = 0; i < setup.options.l.length; i++) {
+            for (var i = 0; i < setup.options.l.length && i < settings.maxLines; i++) {
                 var line = setup.options.l[i];
 
                 text += '<tr id="inputData' + i + '" class="inputData">' +
                         '<td title="' + _('Line') + ' ' + (i + 1) + '">' + (i + 1) + '</td>' +
                         '<td style="padding-left: 4px;"><input  data-option="id"       data-index="' + i + '" class="input options-lines ids" style="display: inline; direction: rtl;" value="' + line.id + '"></td><td><button style="display: inline" class="select-dialog" data-ids="' + i + '">...</button></td>' +
-                        '<td style="padding-left: 4px;"><select data-option="instance" data-index="' + i + '" class="input options-lines" style="display: inline; value="' + (line.instance || '') + '">' + textInstances + '</select></td>' +
-                        '<td style="padding-left: 5px">' +
-                        '<select class="input options-lines" data-index="' + i + '" data-option="offset"> ' +
-                            '<option value="0">'        + _('0s')   + '</option> ' +
-                            '<option value="10">'       + _('10s')  + '</option>' +
-                            '<option value="30">'       + _('30s')  + '</option>' +
-                            '<option value="60">'       + _('60s')  + '</option>' +
-                            '<option value="120">'      + _('2m')   + '</option>' +
-                            '<option value="180">'      + _('3m')   + '</option>' +
-                            '<option value="240">'      + _('4m')   + '</option>' +
-                            '<option value="300">'      + _('5m')   + '</option>' +
-                            '<option value="600">'      + _('10m')  + '</option>' +
-                            '<option value="900">'      + _('15m')  + '</option>' +
-                            '<option value="1800">'     + _('30m')  + '</option>' +
-                            '<option value="2700">'     + _('45m')  + '</option>' +
-                            '<option value="3600">'     + _('1H')   + '</option>' +
-                            '<option value="7200">'     + _('2H')   + '</option>' +
-                            '<option value="21600">'    + _('6H')   + '</option>' +
-                            '<option value="43200">'    + _('12H')  + '</option>' +
-                            '<option value="86400">'    + _('1D')   + '</option>' +
-                            '<option value="172800">'   + _('2D')   + '</option>' +
-                            '<option value="259200">'   + _('3D')   + '</option>' +
-                            '<option value="345600">'   + _('4D')   + '</option>' +
-                            '<option value="604800">'   + _('1W')   + '</option>' +
-                            '<option value="1209600">'  + _('2W')   + '</option>' +
-                            '<option value="2419200">'  + _('4W')   + '</option>' +
-                            '<option value="4838400">'  + _('8W')   + '</option>' +
-                            '<option value="7257600">'  + _('12W')  + '</option>' +
-                            '<option value="15724800">' + _('26W')  + '</option>' +
-                            '<option value="30758400">' + _('1Y')   + '</option>' +
-                            '<option value="61516800">' + _('2Y')   + '</option>' +
-                        '</select></td>' +
-                        '<td style="padding-left: 5px">' +
-                        '<input data-option="yOffset" style="width: 100%" data-index="' + i + '" class="options-lines" value="' + (line.yOffset || '') + '">' +
-                        '</td>' +
-                        '<td style="padding-left:5px">' +
-                        '<select data-option="aggregate" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="minmax">'   + _('minmax')    + '</option>' +
-                            '<option value="average">'  + _('average')   + '</option>' +
-                            '<option value="max">'      + _('max')       + '</option>' +
-                            '<option value="min">'      + _('min')       + '</option>' +
-                            '<option value="total">'    + _('total')     + '</option>' +
-                            '<option value="onchange">' + _('on change') + '</option>' +
-                        '</select>' +
-                        '</td>' +
-                        '<td><select data-option="chartType" class="input options-lines" data-index="' + i + '">'+
-                            '<option value="line">'         + _('Line')         + '</option>' +
-                            '<option value="area">'         + _('Area')         + '</option>' +
-                            '<!--<option value="bar">'      + _('Bar')          + '</option>-->' +
-                            '<option value="lineplot">'     + _('Line plot')    + '</option>' +
-                            '<option value="scatterplot">'  + _('Scatter plot') + '</option>' +
-                            '<option value="steps">'        + _('Steps')        + '</option>' +
-                            '<!--<option value="pie">'      + _('Pie')          + '</option>-->' +
-                            '<option value="spline">'       + _('Spline')       + '</option>' +
-                        '</select></td>' +
-                        '<td style="padding-left:5px"><input style="width: 100%" data-option="color" data-index="' + i + '" class="options-lines input-color" value="' + (line.color || '') + '"></td>' +
-                        '<td style="padding-left:5px"><input style="width: 100%" data-option="min"   data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>' +
-                        '<td style="padding-left:5px"><input style="width: 100%" data-option="max"   data-index="' + i + '" class="options-lines" value="' + ((line.max === undefined) ? '' : line.max) + '"></td>' +
-                        '<td style="padding-left:5px"><input style="width: 100%" data-option="unit"  data-index="' + i + '" class="options-lines" value="' + (line.unit || '') + '"></td>' +
-                        '<td style="padding-left:5px">' +
-                        '<select data-option="yaxe" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">'             + _('default')       + '</option>' +
-                            '<option value="off">'          + _('off')           + '</option>' +
-                            '<option value="left">'         + _('left')          + '</option>' +
-                            '<option value="right">'        + _('right')         + '</option>' +
-                            '<option value="leftColor">'    + _('left colored')  + '</option>' +
-                            '<option value="rightColor">'   + _('right colored') + '</option>' +
-                        '</select></td>' +
-                        '<td style="padding-left:5px">' +
-                        '<select data-option="xaxe" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">'             + _('default')          + '</option>' +
-                            '<option value="off">'          + _('off')              + '</option>' +
-                            '<option value="top">'          + _('top')              + '</option>' +
-                            '<option value="bottom">'       + _('bottom')           + '</option>' +
-                            '<option value="topColor">'     + _('top colored')      + '</option>' +
-                            '<option value="bottomColor">'  + _('bottom colored')   + '</option>' +
-                        '</select></td>' +
-                        '<td style="padding-left:5px"><input data-option="thickness"  style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.thickness  || 1)  + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="shadowsize" style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.shadowsize || 0)  + '"></td>' +
-                        '<td style="padding-left:5px"><input data-option="name"       style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.name       || '') + '"></td>' +
-                        '<td style="text-align: center; padding-left:5px">' +
-                        '<select data-option="commonYAxis" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="">'     + _('default')  + '</option>' +
-                            '<option value="1">'    + '1'           + '</option>' +
-                            '<option value="2">'    + '2'           + '</option>' +
-                            '<option value="3">'    + '3'           + '</option>' +
-                            '<option value="4">'    + '4'           + '</option>' +
-                            '<option value="5">'    + '5'           + '</option>' +
-                        '</select></td>' +
-                        '<td style="text-align: center"><select data-option="ignoreNull" class="input options-lines" data-index="' + i + '">' +
-                            '<option value="false">' + _('null')         + '</option>' +
-                            '<option value="true">'  + _('last value') + '</option>' +
-                            '<option value="0">0</option>' +
-                        '</select></td>' +
-                        //'<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="smoothing" value="' + (line.smoothing  || '')  + '"></td>' +
-                        '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="afterComma" value="' + (line.afterComma || 2)   + '"></td>' +
-                        '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>' +
-                        '</tr>';
+                        '<td style="padding-left: 4px;"><select data-option="instance" data-index="' + i + '" class="input options-lines" style="display: inline; value="' + (line.instance || '') + '">' + textInstances + '</select></td>';
+
+                if (settings.line.offset) {
+                    text += '<td style="padding-left: 5px">';
+                    text += '<select class="input options-lines" data-index="' + i + '" data-option="offset">';
+                    text +=
+                        '<option value="0">'        + _('0s')   + '</option> ' +
+                        '<option value="10">'       + _('10s')  + '</option>' +
+                        '<option value="30">'       + _('30s')  + '</option>' +
+                        '<option value="60">'       + _('60s')  + '</option>' +
+                        '<option value="120">'      + _('2m')   + '</option>' +
+                        '<option value="180">'      + _('3m')   + '</option>' +
+                        '<option value="240">'      + _('4m')   + '</option>' +
+                        '<option value="300">'      + _('5m')   + '</option>' +
+                        '<option value="600">'      + _('10m')  + '</option>' +
+                        '<option value="900">'      + _('15m')  + '</option>' +
+                        '<option value="1800">'     + _('30m')  + '</option>' +
+                        '<option value="2700">'     + _('45m')  + '</option>' +
+                        '<option value="3600">'     + _('1H')   + '</option>' +
+                        '<option value="7200">'     + _('2H')   + '</option>' +
+                        '<option value="21600">'    + _('6H')   + '</option>' +
+                        '<option value="43200">'    + _('12H')  + '</option>' +
+                        '<option value="86400">'    + _('1D')   + '</option>' +
+                        '<option value="172800">'   + _('2D')   + '</option>' +
+                        '<option value="259200">'   + _('3D')   + '</option>' +
+                        '<option value="345600">'   + _('4D')   + '</option>' +
+                        '<option value="604800">'   + _('1W')   + '</option>' +
+                        '<option value="1209600">'  + _('2W')   + '</option>' +
+                        '<option value="2419200">'  + _('4W')   + '</option>' +
+                        '<option value="4838400">'  + _('8W')   + '</option>' +
+                        '<option value="7257600">'  + _('12W')  + '</option>' +
+                        '<option value="15724800">' + _('26W')  + '</option>' +
+                        '<option value="30758400">' + _('1Y')   + '</option>' +
+                        '<option value="61516800">' + _('2Y')   + '</option>';
+                    text += '</select></td>';
+                }
+                if (settings.line.yOffset) {
+                    text += '<td style="padding-left: 5px">' +
+                            '<input data-option="yOffset" style="width: 100%" data-index="' + i + '" class="options-lines" value="' + (line.yOffset || '') + '">' +
+                            '</td>';
+                }
+                if (settings.line.aggregations) {
+                    text += '<td style="padding-left: 5px">' +
+                            '<select data-option="aggregate" class="input options-lines" data-index="' + i + '">';
+                    for (var a = 0; a < settings.line.aggregations.length; a++) {
+                        text += '<option value="' + settings.line.aggregations[a] + '">'   + _(settings.line.aggregations[a])    + '</option>';
+                    }
+                    text += '</select>' +
+                            '</td>';
+                }
+                if (settings.line.chartType) {
+                    text += '<td><select data-option="chartType" class="input options-lines" data-index="' + i + '">';
+                    for (var a = 0; a < settings.line.chartType.length; a++) {
+                        text += '<option value="' + settings.line.chartType[a] + '">' + _(settings.line.chartType[a]) + '</option>';
+                    }
+                    text += '</select></td>';
+                }
+                if (settings.line.color) {
+                    text += '<td style="padding-left: 5px"><input style="width: 100%" data-option="color" data-index="' + i + '" class="options-lines input-color" value="' + (line.color || '') + '"></td>';
+                }
+                if (settings.line.min) {
+                    text += '<td style="padding-left: 5px"><input style="width: 100%" data-option="min"   data-index="' + i + '" class="options-lines" value="' + ((line.min === undefined) ? '' : line.min) + '"></td>';
+                }
+                if (settings.line.max) {
+                    text += '<td style="padding-left: 5px"><input style="width: 100%" data-option="max"   data-index="' + i + '" class="options-lines" value="' + ((line.max === undefined) ? '' : line.max) + '"></td>';
+                }
+                if (settings.line.unit) {
+                    text += '<td style="padding-left: 5px"><input style="width: 100%" data-option="unit"  data-index="' + i + '" class="options-lines" value="' + (line.unit || '') + '"></td>';
+                }
+                if (settings.line.yaxe) {
+                    text += '<td style="padding-left: 5px">' +
+                            '<select data-option="yaxe" class="input options-lines" data-index="' + i + '">';
+
+                    for (var a = 0; a < settings.line.yaxe.length; a++) {
+                        text += '<option value="' + settings.line.yaxe[a] + '">' + _(settings.line.yaxe[a] || 'default') + '</option>';
+                    }
+                    text += '</select></td>';
+                }
+                if (settings.line.xaxe) {
+                    text += '<td style="padding-left: 5px">' +
+                            '<select data-option="xaxe" class="input options-lines" data-index="' + i + '">';
+
+                    for (var a = 0; a < settings.line.xaxe.length; a++) {
+                        text += '<option value="' + settings.line.xaxe[a] + '">' + _(settings.line.xaxe[a] || 'default') + '</option>';
+                    }
+                    text += '</select></td>';
+                }
+                if (settings.line.thickness) {
+                    text += '<td style="padding-left:5px"><input data-option="thickness"  style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.thickness || 1) + '"></td>';
+                }
+                if (settings.line.shadowsize) {
+                    text += '<td style="padding-left:5px"><input data-option="shadowsize" style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.shadowsize || 0) + '"></td>';
+                }
+                if (settings.line.name) {
+                    text += '<td style="padding-left:5px"><input data-option="name"       style="width: 100%" class="options-lines" data-index="' + i + '" value="' + (line.name || '') + '"></td>';
+                }
+                if (settings.line.commonYAxis) {
+                    text += '<td style="text-align: center; padding-left:5px">';
+                    text += '<select data-option="commonYAxis" class="input options-lines" data-index="' + i + '">';
+                    for (var a = 0; a < settings.line.commonYAxis.length; a++) {
+                        text += '<option value="' + settings.line.commonYAxis[a] + '">' + _(settings.line.commonYAxis[a] || 'default') + '</option>';
+                    }
+                    text += '</select></td>';
+                }
+                if (settings.line.ignoreNull) {
+                    text += '<td style="text-align: center"><select data-option="ignoreNull" class="input options-lines" data-index="' + i + '">';
+                    for (var a = 0; a < settings.line.ignoreNull.length; a++) {
+                        text += '<option value="' + settings.line.ignoreNull[a] + '">' + _(settings.line.ignoreNull[a] || 'default') + '</option>';
+                    }
+                    text += '</select></td>';
+                }
+                if (settings.line.smoothing) {
+                    text += '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="smoothing" value="' + (line.smoothing  || '')  + '"></td>';
+                }
+                if (settings.line.afterComma) {
+                    text += '<td style="text-align: center"><input style="width: 30px" type="text" class=options-lines spinner-lines" data-option="afterComma" value="' + (line.afterComma || 2) + '"></td>';
+                }
+                if (settings.line.removeButton) {
+                    text += '<td style="padding-left:5px"><button class="id-remove" data-index="' + i + '"></button></td>';
+                }
+                text += '</tr>';
             }
 
             $('#idslist').html(text);
