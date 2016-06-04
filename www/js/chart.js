@@ -5,10 +5,10 @@
 //   cbOnZoom:
 // }
 
-function Chart(options, config, seriesData) {
+function CustomChart(options, config, seriesData) {
     "use strict";
     
-    if (!(this instanceof Chart)) return new Chart(options, config, seriesData);
+    if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData);
     
     this.chart   = null;
     this.config  = config;
@@ -462,11 +462,11 @@ function Chart(options, config, seriesData) {
 
         if (that.config.zoom && that.options.cbOnZoom) {
             $div.unbind('plotzoom').bind('plotzoom', function (e, plot, args) {
-                if (zoomTimeout) clearTimeout(zoomTimeout);
-                zoomTimeout = setTimeout(that.options.cbOnZoom, 500);
+                if (that.zoomTimeout) clearTimeout(that.zoomTimeout);
+                that.zoomTimeout = setTimeout(that.options.cbOnZoom, 500);
             }).unbind('plotpan').bind('plotpan', function (e, plot, args) {
-                if (zoomTimeout) clearTimeout(zoomTimeout);
-                zoomTimeout = setTimeout(that.options.cbOnZoom, 500);
+                if (that.zoomTimeout) clearTimeout(that.zoomTimeout);
+                that.zoomTimeout = setTimeout(that.options.cbOnZoom, 500);
             })
         }
     })();

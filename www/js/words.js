@@ -58,7 +58,7 @@ systemDictionary = {
     "1 year":               {"en": "1 year",                "de": "1 Jahr",                 "ru": "1 год"},
     "2 years":              {"en": "2 years",               "de": "2 Jahren",               "ru": "2 года"},
     "Width:":               {"en": "Width:",                "de": "Breite:",                "ru": "Ширина:"},
-    "Height:":              {"en": "Height:",               "de": "Höhe:",                  "ru": "Выстоа:"},
+    "Height:":              {"en": "Height:",               "de": "Höhe:",                  "ru": "Высота:"},
 //        "Chart type:": {"en": "Chart type:", "de": "Chart type:", "ru": "Тип графика:"},
     "line":                 {"en": "Line",                  "de": "Linie",                  "ru": "Линия"},
     "area":                 {"en": "Area",                  "de": "Area",                   "ru": "Область"},
@@ -295,5 +295,15 @@ systemDictionary = {
     "true":                 {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"},
     "last value":           {"en": "last value",            "de": "letztes Wert",           "ru": "пред. значение"},
     "Hide edit button:":    {"en": "Hide edit button:",     "de": "Kein 'Edit'-Knopf:",     "ru": "Скрыть кнопку 'Редактировать':"},
-    "minmax":               {"en": "minmax",                "de": "minmax",                 "ru": "minmax"}
+    "minmax":               {"en": "minmax",                "de": "minmax",                 "ru": "minmax"},
+    "&#216L":               {"en": "&#216L",                "de": "&#216L",                 "ru": "&#216L"},
+    "&#216S":               {"en": "&#216S",                "de": "&#216S",                 "ru": "&#216S"},
+    "Line":                 {"en": "Line",                  "de": "Linie",                  "ru": "Линия"},
+    "0":                    {"en": "0",                     "de": "0",                      "ru": "0"},
+    "1":                    {"en": "1",                     "de": "1",                      "ru": "1"},
+    "2":                    {"en": "2",                     "de": "2",                      "ru": "2"},
+    "3":                    {"en": "3",                     "de": "3",                      "ru": "3"},
+    "4":                    {"en": "4",                     "de": "4",                      "ru": "4"},
+    "5":                    {"en": "5",                     "de": "5",                      "ru": "5"},
+    "false":                {"en": "null",                  "de": "null",                   "ru": "null"}
 };

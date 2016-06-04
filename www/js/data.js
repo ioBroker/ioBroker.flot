@@ -315,7 +315,7 @@ function readOneChart(id, instance, index, callback) {
 }
 
 function prepareChart() {
-    chart = new Chart({
+    chart = new CustomChart({
         chartId:    divId,
         titleId:    'title',
         tooltipId:  'tooltip',
