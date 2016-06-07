@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.3.0",
+        "version": "1.3.1",
         "news": {
+			"1.3.1": {
+              "en": "add spline file",
+              "de": "add spline file",
+              "ru": "add spline file"
+            },
             "1.3.0": {
               "en": "add animation\nremove smoothing, because does not work\ntry to add splines, but it does not work always",
               "de": "add animation\nremove smoothing, because does not work\ntry to add splines, but it does not work always",

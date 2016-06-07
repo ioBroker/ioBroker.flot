@@ -22,6 +22,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.3.1 (2016-06-07)
+* (bluefox) add spline file
+
 ### 1.3.0 (2016-05-29)
 * (bluefox) add animation
 * (bluefox) remove smoothing, because does not work
