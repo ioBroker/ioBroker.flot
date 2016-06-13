@@ -54,11 +54,11 @@ function CustomChart(options, config, seriesData) {
         var now = new Date(parseInt(number, 10));
         if (that.config.timeFormatDate && that.config.timeFormatTime) {
             if (!object.ticks.length) {
-                return $.plot.formatDate(now, that.config.timeFormatDate);
+                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
             }
             var d = new Date(object.ticks[object.ticks.length - 1].v);
             if (d.getDate() != now.getDate()) {
-                return $.plot.formatDate(now, that.config.timeFormatDate);
+                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
             }
             return $.plot.formatDate(now, that.config.timeFormatTime);
         } else {
