@@ -201,7 +201,7 @@
                 <tr class="options_window_bg">
                     <td class="translate label">Window background:</td>
                     <td>
-                        <input type="text" id="window_bg" class="value input">
+                        <input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
                 <tr class="options_bg_custom">
@@ -232,25 +232,25 @@
                 <tr class="options_x_labels_color">
                     <td class="translate label">X axis labels color:</td>
                     <td>
-                        <input type="text" class="value input" id="x_labels_color">
+                        <input type="text" class="value input input-static-color" id="x_labels_color"><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
                 <tr class="options_y_labels_color">
                     <td class="translate label">Y axis labels color:</td>
                     <td>
-                        <input type="text" class="value input" id="y_labels_color">
+                        <input type="text" class="value input input-static-color" id="y_labels_color"><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
                 <tr class="options_border_color">
                     <td class="translate label">Border color:</td>
                     <td>
-                        <input type="text" class="value input" id="border_color">
+                        <input type="text" class="value input input-static-color" id="border_color"><button data-clear="border_color" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
                 <tr class="options_grid_color">
                     <td class="translate label">Grid color:</td>
                     <td>
-                        <input type="text" class="value input" id="grid_color">
+                        <input type="text" class="value input input-static-color" id="grid_color"><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
                 <tr class="options_border_width">
@@ -289,7 +289,7 @@
                 </tr>
                 <tr class="options_titleColor">
                     <td class="translate">Title color:</td>
-                    <td><input type="text" id="titleColor" class="value input"></td>
+                    <td><input type="text" id="titleColor" class="value input input-static-color"><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td>
                 </tr>
                 <tr class="options_titleSize">
                     <td class="translate">Title size:</td>
@@ -873,19 +873,19 @@
             delayedUpdate();
         });
 
-        $('#accordion').on('change', '.options-lines', function () {
-            var index = $(this).data('index');
-            if ($(this).attr('type') === 'checkbox') {
-                setup.options.l[index][$(this).data('option')] = $(this).prop('checked');
-            } else {
-                setup.options.l[index][$(this).data('option')] = $(this).val();
-            }
-            update();
-        });
-
-        $('#accordion').on('keyup', '.options-lines', function () {
-            $(this).trigger('change');
-        });
+        $('#accordion')
+            .on('change', '.options-lines', function () {
+                var index = $(this).data('index');
+                if ($(this).attr('type') === 'checkbox') {
+                    setup.options.l[index][$(this).data('option')] = $(this).prop('checked');
+                } else {
+                    setup.options.l[index][$(this).data('option')] = $(this).val();
+                }
+                update();
+            })
+            .on('keyup', '.options-lines', function () {
+                $(this).trigger('change');
+            });
 
         $('.value').each(function () {
             var $this = $(this);
@@ -917,6 +917,25 @@
 
         $('.value').change(update).keyup(function () {
             $(this).trigger('change');
+        });
+
+        $('.input-static-color').colorPicker({
+            renderCallback: function ($elm, toggled) {
+                if (toggled === false) {
+                    $elm.trigger('change');
+                }
+            }
+        });
+        $('.clear-button').button({
+            icons: {
+                primary: 'ui-icon-trash'
+            },
+            text: false
+        }).css({width: 22, height: 22}).click(function () {
+            $('#' + $(this).data('clear'))
+                .val('')
+                .css({color: '#000', 'background-color': '#FFF'})
+                .trigger('change');
         });
 
         $('#timeType').change(function () {
