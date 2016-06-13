@@ -8,7 +8,7 @@ var settings = {
         instance:       {enabled: true,  name: 'Instance'},
         offset:         {enabled: true,  name: 'Offset',        width: '',      style: 'padding-left: 5px'}, // support of time offset
         yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: 'padding-left: 5px'}, // support of Y offset
-        aggregations:   {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},
+        aggregate:      {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},
         chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'area', /*'bar',*/ 'lineplot', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
         color:          {enabled: true,  name: 'Color',         width: '120px', style: 'padding-left: 5px', _class: 'input-color'},
         min:            {enabled: true,  name: 'Min',           width: '50px',  style: 'padding-left: 5px'},
@@ -54,5 +54,8 @@ var settings = {
     options_useComma:   {enabled: true},
     options_zoom:       {enabled: true},
     options_noedit:     {enabled: true},
-    options_animation:  {enabled: true}
+    options_animation:  {enabled: true},
+    options_border_color: {enabled: true},
+    options_grid_color: {enabled: true},
+    options_border_width: {enabled: true}
 };

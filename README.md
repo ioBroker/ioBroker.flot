@@ -22,6 +22,10 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.3.2 (2016-06-13)
+* (bluefox) add settings for border color and border width
+* (bluefox) make splines work 
+
 ### 1.3.1 (2016-06-07)
 * (bluefox) add spline file
 

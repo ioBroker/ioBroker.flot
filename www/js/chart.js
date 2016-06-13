@@ -247,12 +247,12 @@ function CustomChart(options, config, seriesData) {
             if (!that.config.width)  that.config.width  = '100%';
             if (!that.config.height) that.config.height = '100%';
 
-            if (that.config.width.indexOf('%') != -1) {
+            if (that.config.width.indexOf('%') !== -1) {
                 $('#chart_container').css({width: 'calc(' + that.config.width + ' - 20px)'}); // original 20px
             } else {
                 $('#chart_container').css({width: that.config.width});
             }
-            if (that.config.height.indexOf('%') != -1) {
+            if (that.config.height.indexOf('%') !== -1) {
                 $('#chart_container').css({height: 'calc(' + that.config.height + ' - 20px)'});// original 20px
             } else {
                 $('#chart_container').css({height: that.config.height});
@@ -293,7 +293,9 @@ function CustomChart(options, config, seriesData) {
         settings = {
             grid: {
                 hoverable:       (that.config.hoverDetail === 'true' || that.config.hoverDetail === true),
-                backgroundColor: that.config.bg || undefined
+                backgroundColor: that.config.bg || undefined,
+                borderWidth:     (!that.config.border_width && that.config.border_width !== '0' && that.config.border_width !== 0) ? undefined : parseInt(that.config.border_width, 10),
+                borderColor:     that.config.border_color || undefined
             },
             yaxes: [],
             xaxes: [],
@@ -345,8 +347,7 @@ function CustomChart(options, config, seriesData) {
                  variant: "small-caps",
                  color: "#545454"
                  }*/
-                //tickColor: 'red',
-
+                tickColor: that.config.grid_color || undefined,
                 tickFormatter: _tickYFormatter
             };
 
@@ -363,6 +364,7 @@ function CustomChart(options, config, seriesData) {
                 //timezone:   "browser",
                 tickFormatter: that.config.timeFormat ? _tickXFormatter : null,
                 minTickSize: (that.config.l[ii].chartType === 'bar') ? series[ii].bars.barWidth : undefined,
+                tickColor: that.config.grid_color || undefined,
                 min: undefined,
                 max: undefined
             };
