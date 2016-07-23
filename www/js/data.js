@@ -120,14 +120,17 @@ var mouseDown       = false;
 var lastWidth       = null;
 var chart           = null;
 
-if (typeof socketUrl != 'undefined') {
-    socketURL = socketUrl;
-    if (socketURL && socketURL[0] == ':') {
-        socketURL = 'http://' + location.hostname + socketURL;
-    }
-    socketSESSION = socketSession;
+if ((window.top != window.self) && (typeof (window.top.app) !== 'undefined') && (typeof (window.top.socketUrl) !== 'undefined')) {
+	socketURL=window.top.socketUrl; // if flot runs in iframe inside the app use the socketURL determined by app.js
+} else {
+	if (typeof socketUrl != 'undefined') {
+		socketURL = socketUrl;
+		if (socketURL && socketURL[0] == ':') {
+			socketURL = 'http://' + location.hostname + socketURL;
+		}
+		socketSESSION = socketSession;
+	}
 }
-
 var socket = io.connect(socketURL, {
     'query':                        'key=' + socketSESSION,
     'reconnection limit':           10000,
