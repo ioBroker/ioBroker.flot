@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.3.3",
+        "version": "1.3.4",
         "news": {
+            "1.3.4": {
+              "en": "Add app support\nFix for jquery to the current version in vis",
+              "de": "Add app support\nFix for jquery to the current version in vis",
+              "ru": "Add app support\nFix for jquery to the current version in vis"
+            },
             "1.3.3": {
               "en": "remove RTL direction in id field",
               "de": "remove RTL direction in id field",

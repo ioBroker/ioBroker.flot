@@ -6,7 +6,7 @@
 // }
 
 function CustomChart(options, config, seriesData) {
-    "use strict";
+    'use strict';
     
     if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData);
     

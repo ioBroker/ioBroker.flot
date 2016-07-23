@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // Show "no connection" message after 5 seconds
 var disconnectTimeout = setTimeout(function () {
@@ -120,10 +120,10 @@ var mouseDown       = false;
 var lastWidth       = null;
 var chart           = null;
 
-if ((window.top != window.self) && (typeof (window.top.app) !== 'undefined') && (typeof (window.top.socketUrl) !== 'undefined')) {
-	socketURL=window.top.socketUrl; // if flot runs in iframe inside the app use the socketURL determined by app.js
+if ((window.top != window.self) && (typeof window.top.app !== 'undefined') && (typeof window.top.socketUrl !== 'undefined')) {
+	socketURL = window.top.socketUrl; // if flot runs in iframe inside the app use the socketURL determined by app.js
 } else {
-	if (typeof socketUrl != 'undefined') {
+	if (typeof socketUrl !== 'undefined') {
 		socketURL = socketUrl;
 		if (socketURL && socketURL[0] == ':') {
 			socketURL = 'http://' + location.hostname + socketURL;
@@ -235,9 +235,9 @@ function getStartStop(index, step) {
                 aggregate:  config.l[index].aggregate || config.aggregate || 'minmax'
             };
 
-            if (config.aggregateType == 'step') {
+            if (config.aggregateType === 'step') {
                 option.step = config.aggregateSpan * 1000;
-            } else if (config.aggregateType == 'count') {
+            } else if (config.aggregateType === 'count') {
                 option.count = config.aggregateSpan || (document.getElementById('chart_container').clientWidth / 10);
             }
 
