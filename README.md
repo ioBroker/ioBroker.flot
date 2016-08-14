@@ -22,6 +22,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.3.5 (2016-08-14)
+* (bluefox)support of web-sockets force
+
 ### 1.3.4 (2016-07-23)
 * (nobodyMO) Add app support
 * (nobodyMO) Fix for jquery to the current version in vis
