@@ -463,9 +463,12 @@
         },
         noMultiselect: true,
         connCfg: {
-            socketUrl:      socketUrl,
-            socketSession:  socketSession,
-            socketName:     'flotEdit'
+            socketUrl:      	socketUrl,
+            socketSession:  	socketSession,
+            socketName:     	'flotEdit',
+			upgrade:            typeof socketForceWebSockets !== 'undefined' ? !socketForceWebSockets : undefined,
+			rememberUpgrade:    typeof socketForceWebSockets !== 'undefined' ? socketForceWebSockets  : undefined,
+			transports:         typeof socketForceWebSockets !== 'undefined' ? (socketForceWebSockets ? ['websocket'] : undefined) : undefined
         },
         columns: ['name', 'role', 'room', 'value'],
         texts: {
@@ -545,7 +548,7 @@
                         line.max = (line.max === undefined) ? '' : line.max;
                     }
 
-                    if (s == 'number') {
+                    if (s === 'number') {
                         text +='<td title="' + _('Line') + ' ' + (i + 1) + '">' + (i + 1) + '</td>\n';
                     } else
                     if (s === 'idSelect') {
@@ -660,7 +663,7 @@
                 var opt   = $(this).data('option');
 
                 if (setup.options.l[index][opt] !== undefined) {
-                    if ($this.attr('type') == 'checkbox') {
+                    if ($this.attr('type') === 'checkbox') {
                         $this.prop('checked', !!setup.options.l[index][opt]);
                     } else {
                         $this.val(setup.options.l[index][opt]);
@@ -670,7 +673,7 @@
 
             $('.spinner-lines').spinner().on('spin', delayedUpdate).parent().addClass('input');
 
-            if (typeof callback == 'function') callback();
+            if (typeof callback === 'function') callback();
 
             $('.toggleable').click(function () {
                 var index = $(this).data('index');
@@ -737,7 +740,7 @@
         // Store settings
         if (typeof(Storage) !== 'undefined') {
             $('.value').each(function () {
-                if ($(this).attr('type') == 'checkbox') {
+                if ($(this).attr('type') === 'checkbox') {
                     setup.options[$(this).attr('id')] = $(this).prop('checked');
                 } else {
                     setup.options[$(this).attr('id')] = $(this).val();
@@ -850,7 +853,7 @@
             var count = 0;
             var axis = null;
             for (var i = 0; i < setup.options.l.length; i++) {
-                if (setup.options.l[i].chartType == 'steps') {
+                if (setup.options.l[i].chartType === 'steps') {
                     if (axis === null) axis = i;
                     count++;
                 }
@@ -858,7 +861,7 @@
 
             var t = 0;
             for (var i = 0; i < setup.options.l.length; i++) {
-                if (setup.options.l[i].chartType == 'steps') {
+                if (setup.options.l[i].chartType === 'steps') {
                     setup.options.l[i].max          = Math.round(count * 2 * 1.2 * 10) / 10;
                     setup.options.l[i].commonYAxis  = axis + 1;
                     setup.options.l[i].yOffset      = Math.round(-(t + 1) * 1.2 * 10) / 10;
@@ -891,7 +894,7 @@
             var $this = $(this);
             var id = $this.attr('id');
             if (setup.options[id] !== undefined) {
-                if ($this.attr('type') == 'checkbox') {
+                if ($this.attr('type') === 'checkbox') {
                     $this.prop('checked', !!setup.options[id]);
                 } else {
                     $this.val(setup.options[id]);
@@ -972,7 +975,7 @@
         }
 
         $('#aggregateType').change(function () {
-            if ($('#aggregateType').val() == 'step') {
+            if ($('#aggregateType').val() === 'step') {
                 $('#spanName').text(_('Seconds'));
             } else {
                 $('#spanName').text(_('Counts'));
@@ -1004,16 +1007,19 @@
                 duration: 200
             },
             activate: function (event, ui) {
-                setup['acc'] = $(ui.newHeader).attr('id');
+                setup.acc = $(ui.newHeader).attr('id');
                 save();
             }
         });
 
         // Read instances
         var socket = io.connect(socketUrl, {
-            'query':                        'key=' + socketSession,
+            query:                          'key=' + socketSession,
             'reconnection limit':           10000,
-            'max reconnection attempts':    Infinity
+            'max reconnection attempts':    Infinity,
+            upgrade:                        typeof socketForceWebSockets !== 'undefined' ? !socketForceWebSockets : undefined,
+            rememberUpgrade:                typeof socketForceWebSockets !== 'undefined' ? socketForceWebSockets  : undefined,
+            transports:                     typeof socketForceWebSockets !== 'undefined' ? (socketForceWebSockets ? ['websocket'] : undefined) : undefined
         });
 
         socket.on('connect', function () {
