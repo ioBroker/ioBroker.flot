@@ -109,7 +109,7 @@ function CustomChart(options, config, seriesData) {
                             o.top -= 20;
                         } else if (that.config.barLabels === 'topunder') {
                             o = that.chart.pointOffset({x: el[0], y: el[1]});
-                            o.top += 5;
+                            //o.top += 10;
                         } else if (that.config.barLabels === 'bottom') {
                             o = that.chart.pointOffset({x: el[0], y: 0});
                             o.top += 20;
@@ -134,7 +134,6 @@ function CustomChart(options, config, seriesData) {
             }, animation ? parseInt(animation) + 200: 0);
         }
     }
-
 
     (function _constructor () {
         series = [];
@@ -418,14 +417,17 @@ function CustomChart(options, config, seriesData) {
                 max:            undefined
             };
 
-            //
+            // prepare for bar
             if (that.config.l[ii].chartType === 'bar') {
                 settings.legend.hideable = false;
 
                 xaxi.ticks = [];
                 for (var m = 0; m < seriesData[ii].length; m++) {
                     xaxi.ticks.push(seriesData[ii][m][0]);
+                    // Normally first and last points are invalid
                 }
+                seriesData[ii][0][1] = null;
+                seriesData[ii][seriesData[ii].length - 1][1] = null;
             }
 
             if (that.config.zoom) {
@@ -533,7 +535,19 @@ function CustomChart(options, config, seriesData) {
     this.update = function (newSeriesData) {
         for (var index = 0; index < config.l.length; index++) {
             series[index].data = newSeriesData[index];
+
+            // prepare for bar
+            if (config.l[index].chartType === 'bar') {
+                settings.xaxes[index].ticks = [];
+                for (var m = 0; m < newSeriesData[index].length; m++) {
+                    settings.xaxes[index].ticks.push(newSeriesData[index][m][0]);
+                }
+                // Normally first and last points are invalid
+                newSeriesData[index][0][1] = null;
+                newSeriesData[index][newSeriesData[index].length - 1][1] = null;
+            }
         }
+
         $('.data-point-label').remove();
 
         if (settings.series && settings.series.grow) settings.series.grow.active = false;

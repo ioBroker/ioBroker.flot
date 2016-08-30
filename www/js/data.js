@@ -208,7 +208,33 @@ function getStartStop(index, step) {
                 if (config.relativeEnd === 'now') {
                     end   = now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
+                } else if (config.relativeEnd.indexOf('minute') !== -1) {
+                    var minutes = parseInt(config.relativeEnd, 10);
+                    _now = new Date(now);
+                    _now.setMinutes(Math.floor(_now.getMinutes() / minutes) * minutes + minutes);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
+                }  else if (config.relativeEnd.indexOf('hour') !== -1) {
+                    var hours = parseInt(config.relativeEnd, 10);
+                    _now = new Date(now);
+                    _now.setHours(Math.floor(_now.getHours() / hours) * hours + hours);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'today') {
+                    _now = new Date(now);
+                    _now.setDate(_now.getDate() + 1);
+                    _now.setHours(0);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
+                } else if (config.relativeEnd === 'weekEurope') {
                     _now = new Date(now);
                     _now.setDate(_now.getDate() + 1);
                     _now.setHours(0);
