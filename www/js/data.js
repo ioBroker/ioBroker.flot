@@ -209,7 +209,7 @@ function getStartStop(index, step) {
                     end   = now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 } else if (config.relativeEnd.indexOf('minute') !== -1) {
-                    var minutes = parseInt(config.relativeEnd, 10);
+                    var minutes = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
                     _now.setMinutes(Math.floor(_now.getMinutes() / minutes) * minutes + minutes);
                     _now.setSeconds(0);
@@ -217,7 +217,7 @@ function getStartStop(index, step) {
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
                 }  else if (config.relativeEnd.indexOf('hour') !== -1) {
-                    var hours = parseInt(config.relativeEnd, 10);
+                    var hours = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
                     _now.setHours(Math.floor(_now.getHours() / hours) * hours + hours);
                     _now.setMinutes(0);
@@ -234,9 +234,25 @@ function getStartStop(index, step) {
                     _now.setMilliseconds(0);
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
-                } else if (config.relativeEnd === 'weekEurope') {
+                } else if (config.relativeEnd === 'weekUsa') {
+                    //var week = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
-                    _now.setDate(_now.getDate() + 1);
+                    _now.setDate(_now.getDate() - _now.getDay() + 7);
+                    _now.setHours(0);
+                    _now.setMinutes(0);
+                    _now.setSeconds(0);
+                    _now.setMilliseconds(0);
+                    end   = _now.getTime() - config.l[index].offset * 1000;
+                    start = end - (config.range * 60000);
+                } else if (config.relativeEnd === 'weekEurope') {
+                    //var _week = parseInt(config.relativeEnd, 10) || 1;
+                    _now = new Date(now);
+                    // If
+                    if (_now.getDay() === 0) {
+                        _now.setDate(_now.getDate() + 1);
+                    } else {
+                        _now.setDate(_now.getDate() - _now.getDay() + 8);
+                    }
                     _now.setHours(0);
                     _now.setMinutes(0);
                     _now.setSeconds(0);
