@@ -242,7 +242,7 @@
                     </td>
                 </tr>
                 <tr class="options_border_color">
-                    <td class="translate label">Border color:</td>
+                    <td><label class="translate label" for="border_color">Border color:</label></td>
                     <td>
                         <input type="text" class="value input input-static-color" id="border_color"><button data-clear="border_color" class="clear-button" style="display: inline-block"></button>
                     </td>
@@ -257,6 +257,42 @@
                     <td class="translate label">Border width:</td>
                     <td>
                         <input type="text" class="value input" id="border_width">
+                    </td>
+                </tr>
+            </table>
+
+            <table style="width: 340px" class="options-bar">
+                <tr>
+                    <td class="translate header" colspan="2" style="text-align: center">Bar settings</td>
+                </tr>
+                <tr class="options_barColor">
+                    <td><label  class="translate" for="barColor">Fill color:</label></td>
+                    <td>
+                        <input type="text" class="value input input-static-color" id="barColor"><button data-clear="barColor" class="clear-button" style="display: inline-block"></button>
+                    </td>
+                </tr>
+                <tr class="options_barLabels">
+                    <td><label  class="translate" for="barLabels">Show labels:</label></td>
+                    <td><select id="barLabels" class="value input">
+                        <option value=""       class="translate">none</option>
+                        <option value="topover"  class="translate">top over</option>
+                        <option value="topunder" class="translate">top under</option>
+                        <option value="bottom"   class="translate">bottom</option>
+                        <option value="middle"   class="translate">middle</option>
+                    </select></td>
+                </tr>
+                <tr class="options_barWidth">
+                    <td><label class="translate" for="barWidth">Bars width:</label></td>
+                    <td><input id="barWidth" class="value input"></td>
+                </tr>
+                <tr class="options_barFontSize">
+                    <td><label class="translate" for="barFontSize">Label font size:</label></td>
+                    <td><input id="barFontSize" class="value input"></td>
+                </tr>
+                <tr class="options_barFontColor">
+                    <td><label class="translate" for="barFontColor">Label color:</label></td>
+                    <td>
+                        <input type="text" class="value input input-static-color" id="barFontColor"><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button>
                     </td>
                 </tr>
             </table>
@@ -370,14 +406,14 @@
 </div>
 <div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px;margin-bottom: 10px">
     <label class="translate" for="link">Link</label>
-    <textarea id="link" style="width: calc(100% - 200px); height: 55px; word-break: break-all; resize: none"></textarea>
-    <button style="padding-left:0" id="open" class="translateB">Open</button>
+    <textarea id="link" style="width: calc(100% - 260px); height: 55px; word-break: break-all; resize: none"></textarea>
+    <button style="padding-left: 2px" id="open"          class="translateB">Open</button>
+    <button style="padding-left: 5px" id="updatePreview" class="translateB">update Preview</button>
 </div>
-<button id="updatePreview" class="translateB" style="width:100%;margin-bottom: 10px">update Preview</button>
 <iframe src="index.html" style="width: calc(100% - 20px); bottom: 0; height: calc(100% - 360px); border: 1px solid #afafaf; border-radius: 2px" id="chart"></iframe>
 <div id="dialog-select-member" style="display:none"></div>
 <script>
-    "use strict";
+    'use strict';
 
     var defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
     var instances   = [];
@@ -387,11 +423,11 @@
     // hide/show settings
     if (settings.maxLines < 2) $('#ids_add').hide();
     for (var s in settings) {
+        if (!settings.hasOwnProperty(s)) continue;
         if (typeof settings[s] === 'object' && settings[s].enabled === false) {
             $('.' + s).remove();
         }
     }
-
 
     var setup       = {
         options: {
@@ -751,7 +787,7 @@
         }
         var settings = getSettings();
         $('#link').val(location.href.split('?')[0].replace('edit.html', 'index.html') + '?' + settings);
-        $('#updatePreview').button('option', 'disabled', false).click(updatePreview);
+        $('#updatePreview').button('option', 'disabled', false);
 
         if ($('#aggregateType').val() === 'step') {
             $('#spanName').text(_('Seconds') + ':');
@@ -803,7 +839,7 @@
             $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
         }, 0);
 
-//        $('#updatePreview').button("option", "disabled", true);
+        $('#updatePreview').button('option', 'disabled', true);
     }
 
     $(document).ready(function() {
@@ -984,18 +1020,24 @@
 
 //      $('#range').val(options.range);
 //      $('#axeX').val(options.axeX);
-        $('#updatePreview').button({
-            icons: {
-                primary: 'ui-icon-refresh'
-            }
-        });
+        $('#updatePreview')
+            .button({
+                icons: {
+                    primary: 'ui-icon-refresh'
+                }
+            })
+            .click(updatePreview)
+            .button('option', 'disabled', true)
+            .css({'font-size': 14, 'white-space': 'nowrap'});
+
         $('#open').button({
             icons: {
                 primary: 'ui-icon-play'
             }
         }).click(function () {
             window.open($('#link').val(), 'flot');
-        });
+        }).css({'font-size': 14, 'white-space': 'nowrap'});
+
 
         translateAll();
 

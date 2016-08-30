@@ -196,7 +196,6 @@
             }
         }
 
-
         .loader,
         .loader:before,
         .loader:after {
@@ -218,22 +217,21 @@
             animation-delay: -0.32s;
         }
         .loader {
-            color:      #8ca6ff;
-            text-indent: -9999em;
-            position: relative;
-            font-size: 11px;
+            color:          #8ca6ff;
+            text-indent:    -9999em;
+            font-size:      11px;
             -webkit-transform: translateZ(0);
-            -ms-transform: translateZ(0);
-            transform: translateZ(0);
+            -ms-transform:  translateZ(0);
+            transform:      translateZ(0);
             -webkit-animation-delay: -0.16s;
             animation-delay: -0.16s;
-            position: absolute;
-            top: 5em;
-            left: 13em;
-            z-index: 1000;
+            position:       absolute;
+            top:            5em;
+            left:           13em;
+            z-index:        1000;
         }
         .loader:after {
-            left: 1.5em;
+            left:           1.5em;
         }
         @-webkit-keyframes load1 {
             0%,
@@ -276,6 +274,13 @@
             cursor: pointer;
             opacity: 0.4;
         }
+
+        .data-point-label {
+            text-align: center;
+            overflow: visible;
+            white-space: nowrap;
+        }
+
     </style>
 </head>
 <body style="margin: 0">

@@ -158,7 +158,8 @@ systemDictionary = {
 //        "Preview:": {"en": "Preview:", "de": "Preview:", "ru": "Изменение интервала:"},
 
     "After comma":          {"en": "After comma",           "de": "Nach Komma",             "ru": "После запятой"},
-    "Open":                 {"en": "Open",                  "de": "Zeige",                  "ru": "Показать"},
+    "Open":                 {"en": "Open",                  "de": "Zeige im Fenster",       "ru": "Показать"},
+    "Update":               {"en": "Update",                "de": "Updaten",                "ru": "Обновить"},
     "Reset settings":       {"en": "Reset settings",        "de": "Einstellungen löschen",  "ru": "Сбросить настройки"},
     "From":                 {"en": "From: ",                "de": "Von",                    "ru": "От"},
     "Last changed":         {"en": "Last changed",          "de": "Lätze Änderung",         "ru": "Изменён"},
@@ -308,5 +309,15 @@ systemDictionary = {
     "3":                    {"en": "3",                     "de": "3",                      "ru": "3"},
     "4":                    {"en": "4",                     "de": "4",                      "ru": "4"},
     "5":                    {"en": "5",                     "de": "5",                      "ru": "5"},
-    "false":                {"en": "null",                  "de": "null",                   "ru": "null"}
+    "false":                {"en": "null",                  "de": "null",                   "ru": "null"},
+
+    "Bar settings":         {"en": "Bar settings",          "de": "Bar-Einstellungen",      "ru": "Настройки Bar"},
+    "Fill color:":          {"en": "Fill color:",           "de": "Füllfarbe color:",       "ru": "Цвет заливки:"},
+    "Show labels:":         {"en": "Show labels:",          "de": "Zeige Labels:",          "ru": "Подписи:"},
+    "top over":             {"en": "top over",              "de": "oben über",              "ru": "Сверху над"},
+    "top under":            {"en": "top under",             "de": "oben unten",             "ru": "Сверху под"},
+    "middle":               {"en": "middle",                "de": "mittig",                 "ru": "В середине"},
+    "Bars width:":          {"en": "Bars width:",           "de": "Barbreite:",             "ru": "Ширина бара:"},
+    "Label font size:":     {"en": "Label font size:",      "de": "Labelschriftgröße:",     "ru": "Шрифт подписи:"},
+    "Label color:":         {"en": "Label color:",          "de": "Labelfarbe:",            "ru": "Цвет подписи:"}
 };

@@ -103,7 +103,7 @@ config.animation    = parseInt(config.animation)  || 0;
 config.noedit       = config.noedit    === 'true' || config.noedit    === true;
 config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
 config.timeType     = config.timeArt || config.timeType || 'relative';
-//    if ((config.max !== undefined && config.max != '' && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
+//    if ((config.max !== undefined && config.max !== '' && config.max !== null && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
 var seriesData      = [];
 var liveInterval;
 
@@ -120,12 +120,22 @@ var mouseDown       = false;
 var lastWidth       = null;
 var chart           = null;
 
-if ((window.top != window.self) && (typeof window.top.app !== 'undefined') && (typeof window.top.socketUrl !== 'undefined')) {
+var isApp           = false;
+// because of security issue
+try {
+    if ((window.top !== window.self) && (typeof window.top.app !== 'undefined') && (typeof window.top.socketUrl !== 'undefined')) {
+        isApp = true;
+    }
+} catch (e) {
+
+}
+
+if (isApp) {
 	socketURL = window.top.socketUrl; // if flot runs in iframe inside the app use the socketURL determined by app.js
 } else {
 	if (typeof socketUrl !== 'undefined') {
 		socketURL = socketUrl;
-		if (socketURL && socketURL[0] == ':') {
+		if (socketURL && socketURL[0] === ':') {
 			socketURL = 'http://' + location.hostname + socketURL;
 		}
 		socketSESSION = socketSession;
@@ -195,10 +205,10 @@ function getStartStop(index, step) {
                 end   = new Date(config.end)  .setHours(endTime[0],   endTime[1])   - config.l[index].offset * 1000;
 
             } else {
-                if (config.relativeEnd == 'now') {
+                if (config.relativeEnd === 'now') {
                     end   = now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
-                } else if (config.relativeEnd == 'today') {
+                } else if (config.relativeEnd === 'today') {
                     _now = new Date(now);
                     _now.setDate(_now.getDate() + 1);
                     _now.setHours(0);
@@ -207,7 +217,7 @@ function getStartStop(index, step) {
                     _now.setMilliseconds(0);
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
-                } else if (config.relativeEnd == 'month') {
+                } else if (config.relativeEnd === 'month') {
                     _now = new Date(now);
                     _now.setMonth(_now.getMonth() + 1);
                     _now.setDate(1);
@@ -217,7 +227,7 @@ function getStartStop(index, step) {
                     _now.setMilliseconds(0);
                     end   = _now.getTime() - config.l[index].offset * 1000;
                     start = end - (config.range * 60000);
-                } else if (config.relativeEnd == 'year') {
+                } else if (config.relativeEnd === 'year') {
                     _now = new Date(now);
                     _now.setFullYear(_now.getFullYear() + 1);
                     _now.setMonth(0);
@@ -300,7 +310,7 @@ function readOneChart(id, instance, index, callback) {
                 } else if (res[i].val === 'false' || res[i].val === false) {
                     res[i].val = 0;
                 }
-                if (typeof res[i].val == 'string') res[i].val = parseFloat(res[i].val);
+                if (typeof res[i].val === 'string') res[i].val = parseFloat(res[i].val);
 
                 _series.push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
             }
@@ -415,7 +425,7 @@ function prepareChart() {
             });
     }
 
-    if (config.live && config.timeType == 'relative') {
+    if (config.live && config.timeType === 'relative') {
         if (config.live === true || config.live === 'true') config.live = 30;
         config.live = parseInt(config.live, 10) || 30;
         startLiveUpdate();
@@ -448,17 +458,17 @@ function readData(hidden) {
         if (!hidden) $('#server-disconnect').show();
 
         // todo
-//            if (config.renderer == 'pie' || (config.renderer == 'bar' && config._ids.length > 1)) {
+//            if (config.renderer === 'pie' || (config.renderer === 'bar' && config._ids.length > 1)) {
 //
 //                seriesData = [[]];
 //                for (var j = 0; j < config._ids.length; j++) {
 //                    readOneValue(config._ids[j], j, function (_id, _index, value) {
-//                        if (config.renderer == 'pie') {
+//                        if (config.renderer === 'pie') {
 //                            seriesData[0][_index] = {label: config.l[_index].name, data: value};
 //                        } else {
 //                            seriesData[0][_index] = [config.l[_index].name, value];
 //                        }
-//                        if (_index == config._ids.length - 1) {
+//                        if (_index === config._ids.length - 1) {
 //                            graphCreate(divId, );
 //                        }
 //                    });

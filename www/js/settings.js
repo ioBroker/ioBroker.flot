@@ -9,15 +9,15 @@ var settings = {
         offset:         {enabled: true,  name: 'Offset',        width: '',      style: 'padding-left: 5px'}, // support of time offset
         yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: 'padding-left: 5px'}, // support of Y offset
         aggregate:      {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},
-        chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'area', /*'bar',*/ 'lineplot', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
+        chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'area', 'bar', 'lineplot', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
         color:          {enabled: true,  name: 'Color',         width: '120px', style: 'padding-left: 5px', _class: 'input-color'},
         min:            {enabled: true,  name: 'Min',           width: '50px',  style: 'padding-left: 5px'},
         max:            {enabled: true,  name: 'Max',           width: '50px',  style: 'padding-left: 5px'},
         unit:           {enabled: true,  name: 'Unit',          width: '70px',  style: 'padding-left: 5px'},
         yaxe:           {enabled: true,  name: 'Y Axis',        width: '140px', style: 'padding-left: 5px',     values: ['', 'off', 'left', 'right', 'leftColor', 'rightColor'], defaultValueName: 'default'},
         xaxe:           {enabled: true,  name: 'X Axis',        width: '140px', style: 'padding-left: 5px',     values: ['', 'off', 'top', 'bottom', 'topColor', 'bottomColor'], defaultValueName: 'default'},
-        thickness:      {enabled: true,  name: '&#216L',        width: '30px',  style: 'padding-left: 5px', title: "Line Width",    default: 1},
-        shadowsize:     {enabled: true,  name: '&#216S',        width: '30px',  style: 'padding-left: 5px', title: "Shadow Size",   default: 0},
+        thickness:      {enabled: true,  name: '&#216L',        width: '30px',  style: 'padding-left: 5px', title: 'Line Width',    default: 1},
+        shadowsize:     {enabled: true,  name: '&#216S',        width: '30px',  style: 'padding-left: 5px', title: 'Shadow Size',   default: 0},
         name:           {enabled: true,  name: 'Name',          width: '200px', style: 'padding-left: 5px'},
         commonYAxis:    {enabled: true,  name: 'Common Y Axis', width: '',      style: 'padding-left: 5px; text-align: center', values: ['', '1', '2', '3', '4', '5'], defaultValueName: 'default'},
         ignoreNull:     {enabled: true,  name: 'NULL as',       width: '30px',  style: 'text-align: center;',   values: ['false', 'true', '0'], defaultValueName: 'default'},
@@ -49,6 +49,13 @@ var settings = {
     options_titleColor: {enabled: true},
     options_titleSize:  {enabled: true},
     options_legend:     {enabled: true},
+
+    options_barColor:   {enabled: true},
+    options_barLabels:  {enabled: true},
+    options_barWidth:   {enabled: true},
+    options_barFontSize:{enabled: true},
+    options_barFontColor:{enabled: true},
+
     options_smoothing:  {enabled: false},
     options_afterComma: {enabled: false},
     options_useComma:   {enabled: true},

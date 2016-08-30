@@ -57,7 +57,7 @@ function CustomChart(options, config, seriesData) {
                 return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
             }
             var d = new Date(object.ticks[object.ticks.length - 1].v);
-            if (d.getDate() != now.getDate()) {
+            if (d.getDate() !== now.getDate()) {
                 return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
             }
             return $.plot.formatDate(now, that.config.timeFormatTime);
@@ -75,7 +75,7 @@ function CustomChart(options, config, seriesData) {
             var factor = afterComma ? Math.pow(10, afterComma) : 1;
             var formatted = (Math.round(number * factor) / factor).toString();
             var decimal = formatted.indexOf('.');
-            var precision = decimal == -1 ? 0 : formatted.length - decimal - 1;
+            var precision = decimal === -1 ? 0 : formatted.length - decimal - 1;
 
             if (precision < afterComma) {
                 number = (precision ? formatted : formatted + '.') + factor.toString().substr(1, afterComma - precision);
@@ -90,6 +90,51 @@ function CustomChart(options, config, seriesData) {
 
         return number + (unit ? (' ' + unit) : '');
     }
+
+    function showLabels (animation) {
+        if (that.config.barLabels) {
+            setTimeout(function () {
+                var data = that.chart.getData();
+
+                for (var d = 0; d < data.length; d++) {
+                    if (that.config.l[d].chartType !== 'bar') continue;
+
+                    $.each(data[d].data, function (i, el){
+                        if (el[1] === null) return;
+                        if (!i) return;
+                        if (i === data[d].data.length - 1) return;
+                        var o;
+                        if (that.config.barLabels === 'topover') {
+                            o = that.chart.pointOffset({x: el[0], y: el[1]});
+                            o.top -= 20;
+                        } else if (that.config.barLabels === 'topunder') {
+                            o = that.chart.pointOffset({x: el[0], y: el[1]});
+                            o.top += 5;
+                        } else if (that.config.barLabels === 'bottom') {
+                            o = that.chart.pointOffset({x: el[0], y: 0});
+                            o.top += 20;
+                        } else {//if (that.config.barLabels === 'middle') {
+                            o = that.chart.pointOffset({x: el[0], y: el[1] / 2});
+                        }
+
+                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d) + '</div></div>').css( {
+                            position:   'absolute',
+                            left:       o.left,
+                            top:        o.top
+                        }).appendTo(that.chart.getPlaceholder());
+                    });
+                }
+                if (that.config.barFontSize || that.config.barFontColor) {
+                    $('.data-point-label').css({
+                        'font-size':  that.config.barFontSize  || undefined,
+                        color:        that.config.barFontColor || undefined
+                    });
+                }
+
+            }, animation ? parseInt(animation) + 200: 0);
+        }
+    }
+
 
     (function _constructor () {
         series = [];
@@ -107,43 +152,43 @@ function CustomChart(options, config, seriesData) {
                     var p = parts[t].split(':');
 
                     // Bottom inside
-                    if (p[0] == 'bottom' && p[1] == '5') {
-                        if (that.config.height.indexOf('%') == -1) {
+                    if (p[0] === 'bottom' && p[1] == '5') {
+                        if (that.config.height.indexOf('%') === -1) {
                             css.top = parseInt(that.config.height, 10) - $title.height() - 45;
                         } else {
                             css.top = 'calc(' + that.config.height + ' - ' + ($title.height() + 45) + 'px)';
                         }
                     } else	// Bottom outside
-                    if (p[0] == 'bottom' && p[1] == '-5') {
-                        if (that.config.height.indexOf('%') == -1) {
+                    if (p[0] === 'bottom' && p[1] == '-5') {
+                        if (that.config.height.indexOf('%') === -1) {
                             css.top = parseInt(that.config.height, 10) + 5;
                         } else {
                             css.top = 'calc(' + that.config.height + ' + 5px)';
                         }
                     } else	// Middle
-                    if (p[0] == 'top' && p[1] == '50') {
-                        if (that.config.height.indexOf('%') == -1) {
+                    if (p[0] === 'top' && p[1] == '50') {
+                        if (that.config.height.indexOf('%') === -1) {
                             css.top = (parseInt(that.config.height, 10) - $title.height()) / 2;
                         } else {
                             css.top = 'calc(50% - ' + ($title.height() / 2) + 'px)';
                         }
                     } else	// Center
-                    if (p[0] == 'left' && p[1] == '50') {
-                        if (that.config.width.indexOf('%') == -1) {
+                    if (p[0] === 'left' && p[1] == '50') {
+                        if (that.config.width.indexOf('%') === -1) {
                             css.left = (parseInt(that.config.width, 10) - $title.width()) / 2;
                         } else {
                             css.left = 'calc(50% - ' + ($title.width() / 2) + 'px)';
                         }
                     } else	// Right inside
-                    if (p[0] == 'right' && p[1] == '5') {
-                        if (that.config.width.indexOf('%') == -1) {
+                    if (p[0] === 'right' && p[1] == '5') {
+                        if (that.config.width.indexOf('%') === -1) {
                             css.left = parseInt(that.config.width, 10) - $title.width() - 45;
                         } else {
                             css.left = 'calc(' + that.config.width + ' - ' + ($title.width() + 45) + 'px)';
                         }
                     } else	// Right outside
-                    if (p[0] == 'right' && p[1] == '-5') {
-                        if (that.config.width.indexOf('%') == -1) {
+                    if (p[0] === 'right' && p[1] == '-5') {
+                        if (that.config.width.indexOf('%') === -1) {
                             css.left = parseInt(that.config.width, 10) + 25;
                         } else {
                             css.left = 'calc(' + that.config.width + ' + 5px)';
@@ -161,7 +206,7 @@ function CustomChart(options, config, seriesData) {
         if (that.config.bg && that.config.bg.length < 3 && backgrounds[that.config.bg]) that.config.bg = {colors: backgrounds[that.config.bg]};
 
         //todo make bar working
-//        if (that.config.renderer != 'bar' || that.config._ids.length <= 1) {
+//        if (that.config.renderer !== 'bar' || that.config._ids.length <= 1) {
 
         for (var i = 0; i < seriesData.length; i++) {
             if (seriesData[i]) {
@@ -172,7 +217,7 @@ function CustomChart(options, config, seriesData) {
                     color:      that.config.l[i].color || undefined,
                     lines: {
                         show:       (that.config.l[i].chartType !== 'scatterplot' && that.config.l[i].chartType !== 'bar' && that.config.l[i].chartType !== 'spline'),
-                        fill:       (that.config.l[i].chartType === 'area' || that.config.l[i].chartType == 'bar'),
+                        fill:       (that.config.l[i].chartType === 'area' || that.config.l[i].chartType === 'bar'),
                         steps:      (that.config.l[i].chartType === 'steps'),
                         lineWidth:  that.config.l[i].thickness
                     },
@@ -184,11 +229,15 @@ function CustomChart(options, config, seriesData) {
                     },
                     bars: {
                         show:       (that.config.l[i].chartType === 'bar'),
+                        order:      i + 1,
                         barWidth:   0.6,
+                        lineWidth:  that.config.l[i].thickness,
+                        fill:       true,
+                        fillColor:  that.config.barColor || undefined,
                         align:      'center'
                     },
                     points: {
-                        show:       (that.config.l[i].chartType == 'lineplot' || that.config.l[i].chartType == 'scatterplot')
+                        show:       (that.config.l[i].chartType === 'lineplot' || that.config.l[i].chartType === 'scatterplot')
                     },
                     data:       seriesData[i],
                     label:      that.config.l[i].name,
@@ -206,10 +255,10 @@ function CustomChart(options, config, seriesData) {
                 that.config.l[i].afterComma = (that.config.l[i].afterComma === undefined || that.config.l[i].afterComma === '') ? that.config.afterComma : parseInt(that.config.l[i].afterComma, 10);
 
                 if (that.config.l[i].chartType === 'bar') {
-                    option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * 0.5;
+                    option.bars.barWidth = (option.data[option.data.length - 1][0] - option.data[0][0]) / option.data.length * (parseFloat(that.config.barWidth) || 0.5);
                 }
                 /*
-                 if (that.config.l[i].chartType == 'pie') {
+                 if (that.config.l[i].chartType === 'pie') {
                  series.legend = {
                  show:   !!that.config.legend,
                  position: that.config.legend
@@ -218,12 +267,12 @@ function CustomChart(options, config, seriesData) {
                  var series = {
                  series: {
                  bars: {
-                 show: that.config.l[i].chartType == 'bar',
+                 show: that.config.l[i].chartType === 'bar',
                  barWidth: 0.6,
                  align: "center"
                  },
                  pie: {
-                 show: that.config.l[i].chartType == 'pie'
+                 show: that.config.l[i].chartType === 'pie'
                  },
                  legend: {
                  show: !!that.config.legend,
@@ -266,24 +315,24 @@ function CustomChart(options, config, seriesData) {
         if (that.config.timeFormat === 'null') that.config.timeFormat = undefined;
 
         if (that.config.timeFormat) {
-            if (that.config.timeFormat.indexOf('%H:%M:%S') != -1) {
+            if (that.config.timeFormat.indexOf('%H:%M:%S') !== -1) {
                 that.config.timeFormatTime = '%H:%M:%S';
-            } else if (that.config.timeFormat.indexOf('%I:%M:%S') != -1) {
+            } else if (that.config.timeFormat.indexOf('%I:%M:%S') !== -1) {
                 that.config.timeFormatTime = '%I:%M:%S';
-            } else if (that.config.timeFormat.indexOf('%H:%M') != -1) {
+            } else if (that.config.timeFormat.indexOf('%H:%M') !== -1) {
                 that.config.timeFormatTime = '%H:%M';
             } else {
                 that.config.timeFormatTime = null;
             }
-            if (that.config.timeFormat.indexOf('%d.%m.%y') != -1) {
+            if (that.config.timeFormat.indexOf('%d.%m.%y') !== -1) {
                 that.config.timeFormatDate = '%d.%m.%y';
-            } else if (that.config.timeFormat.indexOf('%x %p') != -1) {
+            } else if (that.config.timeFormat.indexOf('%x %p') !== -1) {
                 that.config.timeFormatDate = '%x %p';
-            } else if (that.config.timeFormat.indexOf('%d/%m/%y') != -1) {
+            } else if (that.config.timeFormat.indexOf('%d/%m/%y') !== -1) {
                 that.config.timeFormatDate = '%d/%m/%y';
-            } else if (that.config.timeFormat.indexOf('%m.%d.%y') != -1) {
+            } else if (that.config.timeFormat.indexOf('%m.%d.%y') !== -1) {
                 that.config.timeFormatDate = '%m.%d.%y';
-            } else if (that.config.timeFormat.indexOf('%d.%m') != -1) {
+            } else if (that.config.timeFormat.indexOf('%d.%m') !== -1) {
                 that.config.timeFormatDate = '%d.%m';
             } else {
                 that.config.timeFormatDate = null;
@@ -352,29 +401,35 @@ function CustomChart(options, config, seriesData) {
             };
 
             var xaxi = {
-                show:       that.config.l[ii].xaxe !== 'off',
-                position:   that.config.l[ii].xaxe.indexOf('top') !== -1 ? 'top' : 'bottom',
+                show:           that.config.l[ii].xaxe !== 'off',
+                position:       that.config.l[ii].xaxe.indexOf('top') !== -1 ? 'top' : 'bottom',
                 font: {
-                    color: that.config.l[ii].xaxe.indexOf('Color') !== -1 ? that.config.l[ii].color : (that.config.x_labels_color || 'black')
+                    color:      that.config.l[ii].xaxe.indexOf('Color') !== -1 ? that.config.l[ii].color : (that.config.x_labels_color || 'black')
                 },
-                zoomRange: null,  // or [ number, number ] (min range, max range) or false
-                panRange:  null,  // or [ number, number ] (min, max) or false
-                mode:      'time',
-                //timeformat: that.config.timeFormat,
-                //timezone:   "browser",
-                tickFormatter: that.config.timeFormat ? _tickXFormatter : null,
-                minTickSize: (that.config.l[ii].chartType === 'bar') ? series[ii].bars.barWidth : undefined,
-                tickColor: that.config.grid_color || undefined,
-                min: undefined,
-                max: undefined
+                zoomRange:      null,  // or [ number, number ] (min range, max range) or false
+                panRange:       null,  // or [ number, number ] (min, max) or false
+                mode:           'time',
+                //timeformat:   that.config.timeFormat,
+                //timezone:     "browser",
+                tickFormatter:  that.config.timeFormat ? _tickXFormatter : null,
+                minTickSize:    (that.config.l[ii].chartType === 'bar') ? series[ii].bars.barWidth : undefined,
+                tickColor:      that.config.grid_color || undefined,
+                min:            undefined,
+                max:            undefined
             };
 
-            // why ??
+            //
             if (that.config.l[ii].chartType === 'bar') {
                 settings.legend.hideable = false;
+
+                xaxi.ticks = [];
+                for (var m = 0; m < seriesData[ii].length; m++) {
+                    xaxi.ticks.push(seriesData[ii][m][0]);
+                }
             }
 
             if (that.config.zoom) {
+                var now = new Date();
                 xaxi.zoomRange = [null, now.getTime()]; // or [ number, number] (min range, max range) or false
                 xaxi.panRange  = [null, now.getTime()]; // or [ number, number] (min range, max range) or false
             }
@@ -415,6 +470,8 @@ function CustomChart(options, config, seriesData) {
         }
 
         that.chart = $.plot('#' + that.options.chartId, series, settings);
+
+        showLabels(that.config.animation);
 
         var $div = $('#' + that.options.chartId);
 
@@ -477,8 +534,12 @@ function CustomChart(options, config, seriesData) {
         for (var index = 0; index < config.l.length; index++) {
             series[index].data = newSeriesData[index];
         }
+        $('.data-point-label').remove();
+
         if (settings.series && settings.series.grow) settings.series.grow.active = false;
+
         this.chart = $.plot('#' + this.options.chartId, series, settings);
+        showLabels(false);
     };
 
     this.getRange = function () {
