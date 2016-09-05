@@ -22,7 +22,7 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
-### 1.4.0 (2016-08-30)
+### 1.4.1 (2016-08-30)
 * (bluefox) support bar chart (only one bar chart possible)
 
 ### 1.3.5 (2016-08-14)

@@ -1,9 +1,9 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.4.0",
+        "version": "1.4.1",
         "news": {
-		    "1.4.0": {
+		    "1.4.1": {
               "en": "support bar chart (only one bar chart possible)",
               "de": "Unterstürtzung von Bar-Chart (nur eins ist möglich)",
               "ru": "Поддержка Bar графика (только один можно)"
