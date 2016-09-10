@@ -345,5 +345,18 @@ systemDictionary = {
     "middle":               {"en": "middle",                "de": "mittig",                 "ru": "В середине"},
     "Bars width:":          {"en": "Bars width:",           "de": "Barbreite:",             "ru": "Ширина бара:"},
     "Label font size:":     {"en": "Label font size:",      "de": "Labelschriftgröße:",     "ru": "Шрифт подписи:"},
-    "Label color:":         {"en": "Label color:",          "de": "Labelfarbe:",            "ru": "Цвет подписи:"}
+    "Label color:":         {"en": "Label color:",          "de": "Labelfarbe:",            "ru": "Цвет подписи:"},
+    "Markings":             {"en": "Markings",              "de": "Markierungen",           "ru": "Разметка"},
+    "Line ID":              {"en": "Line ID",               "de": "Linie ID",               "ru": "ID линии"},
+    "Fill":                 {"en": "Fill",                  "de": "Füllen",                 "ru": "Заливка"},
+    "ØL":                   {"en": "ØL",                    "de": "ØL",                     "ru": "ØL"},
+    "ØS":                   {"en": "ØS",                    "de": "ØS",                     "ru": "ØS"},
+    "Text":                 {"en": "Text",                  "de": "Text",                   "ru": "Текст"},
+    "Text position":        {"en": "Text position",         "de": "Textposition",           "ru": "Расположение текста"},
+    "Text offset":          {"en": "Text offset",           "de": "Text-Offset",            "ru": "Сдвиг текста"},
+    "Text size":            {"en": "Text size",             "de": "Textgröße",              "ru": "Размер текста"},
+    "Text color":           {"en": "Text color",            "de": "Textfarbe",              "ru": "Цвет текста"},
+    "Add new markings":     {"en": "Add new markings",      "de": "Neue Merkierung hinzufügen", "ru": "Добавить разметку"},
+    "Left":                 {"en": "Left",                  "de": "Links",                  "ru": "слева"},
+    "Right":                {"en": "Right",                 "de": "Rechts",                 "ru": "справа"}
 };

@@ -64,5 +64,7 @@ var settings = {
     options_animation:  {enabled: true},
     options_border_color: {enabled: true},
     options_grid_color: {enabled: true},
-    options_border_width: {enabled: true}
+    options_border_width: {enabled: true},
+
+    option_markline:    {enabled: true}  // it is extra option and not options
 };

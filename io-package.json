@@ -1,9 +1,14 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.4.1",
+        "version": "1.5.0",
         "news": {
-		    "1.4.1": {
+            "1.5.0": {
+              "en": "Support of marking lines",
+              "de": "Unterstürtzung von Markierungslinien",
+              "ru": "Поддержка горизонтальных линий"
+            },
+		    "1.4.0": {
               "en": "support bar chart (only one bar chart possible)",
               "de": "Unterstürtzung von Bar-Chart (nur eins ist möglich)",
               "ru": "Поддержка Bar графика (только один можно)"

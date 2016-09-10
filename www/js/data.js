@@ -378,7 +378,7 @@ function prepareChart() {
         titleId:    'title',
         tooltipId:  'tooltip',
         cbOnZoom:   onZoom
-    }, config, seriesData);
+    }, config, seriesData, config.m);
     
     if (config.zoom) {
         $('#resetZoom').unbind('click').click(function () {

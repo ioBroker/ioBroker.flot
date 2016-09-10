@@ -63,7 +63,7 @@
 
 <div style="height: 250px; position: relative">
     <div id="accordion">
-        <h3><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.4.1</div></h3>
+        <h3><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.5.0</div></h3>
         <div style="width: 100%; height: 100%;">
             <table>
                 <tr>
@@ -78,6 +78,37 @@
             <div style="width: 100%; height: 100%">
                 <table style="table-layout: fixed;" class="fixed" id="idslist_table"  border="0" cellspacing="0" cellpadding="0">
                     <tbody id="idslist"></tbody>
+                </table>
+            </div>
+        </div>
+        <h3 class="markline-option"><span class="translate">Markings</span></h3>
+        <div class="markline-option" style="width: 100%; height: 100%;">
+            <table style="width: 100%">
+                <tr>
+                    <td colspan="7">
+                        <button style="margin-left: 1px" id="markline_add" class="translateB">Add new markings</button>
+                    </td>
+                </tr>
+            </table>
+            <div style="width: 100%; height: 100%">
+                <table style="table-layout: fixed;" class="fixed" id="markline_table"  border="0" cellspacing="0" cellpadding="0">
+                    <thead id="markline_head">
+                        <tr class="header">
+                            <td class="translate" style="width: 30%; white-space: nowrap">Line ID</td>
+                            <td class="translate" style="width: 80px">Value</td>
+                            <td class="translate" style="width: 180px">Color</td>
+                            <td class="translate" style="width: 80px">Fill</td>
+                            <td class="translate" style="width: 80px">&#216L</td>
+                            <td class="translate" style="width: 80px">&#216S</td>
+                            <td class="translate" style="width: 30%">Text</td>
+                            <td class="translate" style="width: 150px; white-space: nowrap">Text position</td>
+                            <td class="translate" style="width: 100px; white-space: nowrap">Text offset</td>
+                            <td class="translate" style="width: 100px; white-space: nowrap">Text size</td>
+                            <td class="translate" style="width: 180px; white-space: nowrap">Text color</td>
+                            <td class="translate" style="width: 80px"></td>
+                        </tr>
+                    </thead>
+                    <tbody id="markline_list"></tbody>
                 </table>
             </div>
         </div>
@@ -442,7 +473,7 @@
         }
     }
 
-    var setup       = {
+    var setup = {
         options: {
             l: []
         }
@@ -557,6 +588,108 @@
         });
 
         return index;
+    }
+
+    function addMarkline() {
+        if (!setup.options.m) setup.options.m = [];
+        var index = setup.options.m.length;
+        setup.options.m.push({
+            l: 0, // line index
+            v: 0, // value
+            f: false,
+            c: defaultColors[index] || '#00FFFF', // color
+            t: 3, // thickness
+            s: 3, // shadowsize
+            d: '', // description
+            p: 'l', // position : left / right
+            py: 0, // description y offset
+            fc: defaultColors[index] || '#00FFFF', // color of text
+            fs: '' // font-size
+        });
+
+        return index;
+    }
+
+    function showMarklines(callback) {
+        setTimeout(function () {
+            if (!settings.option_markline) {
+                $('.markline-option').hide();
+                return;
+            }
+
+            var text = '';
+            // line index
+            var textLines = '';
+            for (var t = 0; t < setup.options.l.length; t++) {
+                textLines += '<option value="' + t + '">' + t + ' - ' + setup.options.l[t].id + '</option>\n';
+            }
+
+            var textPosition = '<option value="l">' + _('Left')    + '</option>';
+            textPosition += '<option value="r">'    + _('Right')   + '</option>';
+
+            for (var i = 0; i < setup.options.m.length; i++) {
+                text += '<tr>';
+                // line index
+                text += '<td><select class="markline-value" data-index="' + i + '" data-option="l" style="width: 95%">' + textLines + '</select></td>';
+
+                // value
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 70px"/></td>';
+                // color
+                text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="c"/ style="width: 100px"></td>';
+                // fill
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="f" type="checkbox"/></td>';
+                // thickness
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="t" type="number" min="1" style="width: 60px"/></td>';
+                // shadowsize
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="s" type="number" min="0" style="width: 60px"/></td>';
+                // description
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="d" style="width: 95%"/></td>';
+                // description position
+                text += '<td><select class="markline-value" data-index="' + i + '" data-option="p">' + textPosition + '</select></td>';
+                // description-offset
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="py" type="number" style="width: 60px"/></td>';
+                // font-size
+                text += '<td><input class="markline-value" data-index="' + i + '" data-option="fs" type="number" min="0" style="width: 60px"/></td>';
+                // font-color
+                text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="fc" style="width: 100px"/></td>';
+                // delete
+                text += '<td><button class="markline-remove" data-index="' + i + '"></button></td>\n';
+
+                text += '</tr>';
+            }
+            $('#markline_list').html(text);
+
+            $('.markline-value').each(function () {
+                var id = $(this).data('index');
+                var name = $(this).data('option');
+                if ($(this).attr('type') === 'checkbox') {
+                    $(this).prop('checked', !!setup.options.m[id][name]);
+                } else {
+                    $(this).val(setup.options.m[id][name]);
+                }
+            });
+
+            $('.markline-color').colorPicker({
+                renderCallback: function ($elm, toggled) {
+                    if (toggled === false) {
+                        $elm.trigger('change');
+                    }
+                }
+            });
+
+            $('.markline-remove').button({
+                icons: {primary: 'ui-icon-trash'},
+                text: false
+            }).click(function () {
+                if (setup.options.m.length) {
+                    var i = $(this).data('index');
+                    setup.options.m.splice(i, 1);
+                    showMarklines();
+                    save();
+                    delayedUpdate();
+                }
+            }).css({width: 22, height: 22});
+        }, 100);
     }
 
     function showIds(callback) {
@@ -743,6 +876,8 @@
                     alert('Experimental');
                 }
             });
+
+            showMarklines();
         }, 100);
     }
 
@@ -807,7 +942,9 @@
         } else {
             $('#spanName').text(_('Counts') + ':');
         }
+
         $('.relative, .static').hide();
+
         $('.' + $('#timeType').val()).show();
 
         if ($('#autoUpdate').prop('checked')) {
@@ -939,6 +1076,20 @@
                 $(this).trigger('change');
             });
 
+        $('#accordion')
+                .on('change', '.markline-value', function () {
+                    var index = $(this).data('index');
+                    if ($(this).attr('type') === 'checkbox') {
+                        setup.options.m[index][$(this).data('option')] = $(this).prop('checked') ? 1 : 0;
+                    } else {
+                        setup.options.m[index][$(this).data('option')] = $(this).val();
+                    }
+                    update();
+                })
+                .on('keyup', '.markline-value', function () {
+                    $(this).trigger('change');
+                });
+
         $('.value').each(function () {
             var $this = $(this);
             var id = $this.attr('id');
@@ -957,6 +1108,14 @@
         }).click(function () {
             addLine();
             showIds();
+        }).css({height: 30});
+
+        $('#markline_add').button({
+            icons: {secondary: 'ui-icon-plus'},
+            text: true
+        }).click(function () {
+            addMarkline();
+            showMarklines();
         }).css({height: 30});
 
         $('#clear').button({

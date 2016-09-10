@@ -5,7 +5,7 @@
 //   cbOnZoom:
 // }
 
-function CustomChart(options, config, seriesData) {
+function CustomChart(options, config, seriesData, markLines) {
     'use strict';
     
     if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData);
@@ -99,7 +99,7 @@ function CustomChart(options, config, seriesData) {
                 for (var d = 0; d < data.length; d++) {
                     if (that.config.l[d].chartType !== 'bar') continue;
 
-                    $.each(data[d].data, function (i, el){
+                    $.each(data[d].data, function (i, el) {
                         if (el[1] === null) return;
                         if (!i) return;
                         if (i === data[d].data.length - 1) return;
@@ -117,21 +117,51 @@ function CustomChart(options, config, seriesData) {
                             o = that.chart.pointOffset({x: el[0], y: el[1] / 2});
                         }
 
-                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d) + '</div></div>').css( {
-                            position:   'absolute',
-                            left:       o.left,
-                            top:        o.top
+                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d) + '</div></div>').css({
+                            position: 'absolute',
+                            left: o.left,
+                            top: o.top
                         }).appendTo(that.chart.getPlaceholder());
                     });
                 }
                 if (that.config.barFontSize || that.config.barFontColor) {
                     $('.data-point-label').css({
-                        'font-size':  that.config.barFontSize  || undefined,
-                        color:        that.config.barFontColor || undefined
+                        'font-size': that.config.barFontSize || undefined,
+                        color: that.config.barFontColor || undefined
                     });
                 }
 
-            }, animation ? parseInt(animation) + 200: 0);
+            }, animation ? parseInt(animation) + 200 : 0);
+        }
+
+        if (markLines && markLines.length) {
+            setTimeout(function () {
+                var data = that.chart.getData();
+                var offset = that.config.l.length;
+                for (var m = 0; m < markLines.length; m++) {
+                    if (markLines[m].d) {
+                        var line = data[m + offset].data;
+                        var o;
+                        var text;
+                        if (markLines[m].p === 'l') {
+                            o = that.chart.pointOffset({x: line[0][0], y: line[0][1]});
+                            o.top -= parseFloat(markLines[m].py) || 0;
+                            text = markLines[m].d;
+                        } else {//if (markLines[m].p === 'r') {
+                            o = that.chart.pointOffset({x: line[1][0], y: line[1][1]});
+                            o.top -= parseFloat(markLines[m].py) || 0;
+                            text = '<div style="width: 100%; margin-left: -100%; padding-right: 15px; white-space: nowrap">' + markLines[m].d + '</div>';
+                        }
+                        $('<div class="marklines-label"  style="padding-left: 10px;  white-space: nowrap">' + text + '</div>').css({
+                            position:   'absolute',
+                            left:       o.left,
+                            top:        o.top,
+                            'font-size': markLines[m].fs || undefined,
+                            color:      markLines[m].fc || undefined
+                        }).appendTo(that.chart.getPlaceholder());
+                    }
+                }
+            }, animation ? parseInt(animation) + 200 : 0);
         }
     }
 
@@ -206,7 +236,8 @@ function CustomChart(options, config, seriesData) {
 
         //todo make bar working
 //        if (that.config.renderer !== 'bar' || that.config._ids.length <= 1) {
-
+        var xMin = Infinity;
+        var xMax = 0;
         for (var i = 0; i < seriesData.length; i++) {
             if (seriesData[i]) {
 
@@ -214,19 +245,19 @@ function CustomChart(options, config, seriesData) {
 
                 var option = {
                     color:      that.config.l[i].color || undefined,
-                    lines: {
+                    lines:      {
                         show:       (that.config.l[i].chartType !== 'scatterplot' && that.config.l[i].chartType !== 'bar' && that.config.l[i].chartType !== 'spline'),
                         fill:       (that.config.l[i].chartType === 'area' || that.config.l[i].chartType === 'bar'),
                         steps:      (that.config.l[i].chartType === 'steps'),
                         lineWidth:  that.config.l[i].thickness
                     },
-                    splines: {
+                    splines:    {
                         show:       (that.config.l[i].chartType === 'spline'),
                         tension:    0.5, //(float between 0 and 1, defaults to 0.5),
                         lineWidth:  that.config.l[i].thickness,
                         fill:       false //(float between 0 .. 1 or false, as in flot documentation)
                     },
-                    bars: {
+                    bars:       {
                         show:       (that.config.l[i].chartType === 'bar'),
                         order:      i + 1,
                         barWidth:   0.6,
@@ -235,7 +266,7 @@ function CustomChart(options, config, seriesData) {
                         fillColor:  that.config.barColor || undefined,
                         align:      'center'
                     },
-                    points: {
+                    points:     {
                         show:       (that.config.l[i].chartType === 'lineplot' || that.config.l[i].chartType === 'scatterplot')
                     },
                     data:       seriesData[i],
@@ -282,6 +313,9 @@ function CustomChart(options, config, seriesData) {
                  */
 
                 series.push(option);
+
+                if (seriesData[i][0][0] < xMin) xMin = seriesData[i][0][0];
+                if (seriesData[i][seriesData[i].length - 1][0] > xMax) xMax = seriesData[i][seriesData[i].length - 1][0];
             }
         }
 
@@ -369,7 +403,8 @@ function CustomChart(options, config, seriesData) {
 
         var steps = that.config.animation < 1000 ? 20 : 50;
 
-        for (var ii = 0; ii < that.config.l.length; ii++) {
+        var ii;
+        for (ii = 0; ii < that.config.l.length; ii++) {
 
             that.config.l[ii].yaxe = that.config.l[ii].yaxe || '';
             that.config.l[ii].xaxe = that.config.l[ii].xaxe || '';
@@ -471,6 +506,26 @@ function CustomChart(options, config, seriesData) {
             };
         }
 
+        // draw horizontal lines
+        if (markLines && markLines.length) {
+            for (var m = 0; m < markLines.length; m++) {
+                series.push({
+                    yaxis:      series[markLines[m].l].yaxis,
+                    xaxis:      {show: false},
+                    color:      markLines[m].c || undefined,
+                    lines:      {
+                        show:       true,
+                        fill:       markLines[m].f === '1'  || markLines[m].f === 1 || markLines[m].f === 'true' || markLines[m].f === true,
+                        steps:      true,
+                        lineWidth:  markLines[m].t
+                    },
+                    data:       [[xMin, parseFloat(markLines[m].v)], [xMax, parseFloat(markLines[m].v)]],
+                    label:      markLines[m].d,
+                    shadowSize: markLines[m].s
+                })
+            }
+        }
+
         that.chart = $.plot('#' + that.options.chartId, series, settings);
 
         showLabels(that.config.animation);
@@ -549,6 +604,7 @@ function CustomChart(options, config, seriesData) {
         }
 
         $('.data-point-label').remove();
+        $('.marklines-label').remove();
 
         if (settings.series && settings.series.grow) settings.series.grow.active = false;
 
