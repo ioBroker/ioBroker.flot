@@ -3,9 +3,9 @@ var settings = {
     button_arrange_bools: {enabled: true}, // if button arrange bool is visible
     line: {
         number:         {enabled: true,  name: ''},
+        instance:       {enabled: true,  name: 'Instance'},
         id:             {enabled: true,  name: 'ID',            width: '200px', style: 'padding-left: 4px', _class: 'ids', inputStyle: ''},
         idSelect:       {enabled: true,  name: '',                              style: 'padding-left: 4px'},
-        instance:       {enabled: true,  name: 'Instance'},
         offset:         {enabled: true,  name: 'Offset',        width: '',      style: 'padding-left: 5px'}, // support of time offset
         yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: 'padding-left: 5px'}, // support of Y offset
         aggregate:      {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},

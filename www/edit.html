@@ -459,10 +459,11 @@
 <script>
     'use strict';
 
-    var defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
-    var instances   = [];
-    var timer       = null;
-    var showTimer   = null;
+    var defaultColors   = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
+    var instances       = [];
+    var timer           = null;
+    var showTimer       = null;
+    var defaultHistory  = '';
 
     // hide/show settings
     if (settings.maxLines < 2) $('#ids_add').hide();
@@ -536,9 +537,7 @@
     $('#dialog-select-member').selectId('init', {
         filter: {
             common: {
-                history: {
-                    enabled: true
-                }
+                custom: true
             }
         },
         noMultiselect: true,
@@ -627,35 +626,37 @@
             var textPosition = '<option value="l">' + _('Left')    + '</option>';
             textPosition += '<option value="r">'    + _('Right')   + '</option>';
 
-            for (var i = 0; i < setup.options.m.length; i++) {
-                text += '<tr>';
-                // line index
-                text += '<td><select class="markline-value" data-index="' + i + '" data-option="l" style="width: 95%">' + textLines + '</select></td>';
+            if (setup.options.m) {
+                for (var i = 0; i < setup.options.m.length; i++) {
+                    text += '<tr>';
+                    // line index
+                    text += '<td><select class="markline-value" data-index="' + i + '" data-option="l" style="width: 95%">' + textLines + '</select></td>';
 
-                // value
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 70px"/></td>';
-                // color
-                text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="c"/ style="width: 100px"></td>';
-                // fill
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="f" type="checkbox"/></td>';
-                // thickness
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="t" type="number" min="1" style="width: 60px"/></td>';
-                // shadowsize
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="s" type="number" min="0" style="width: 60px"/></td>';
-                // description
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="d" style="width: 95%"/></td>';
-                // description position
-                text += '<td><select class="markline-value" data-index="' + i + '" data-option="p">' + textPosition + '</select></td>';
-                // description-offset
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="py" type="number" style="width: 60px"/></td>';
-                // font-size
-                text += '<td><input class="markline-value" data-index="' + i + '" data-option="fs" type="number" min="0" style="width: 60px"/></td>';
-                // font-color
-                text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="fc" style="width: 100px"/></td>';
-                // delete
-                text += '<td><button class="markline-remove" data-index="' + i + '"></button></td>\n';
+                    // value
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 70px"/></td>';
+                    // color
+                    text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="c"/ style="width: 100px"></td>';
+                    // fill
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="f" type="checkbox"/></td>';
+                    // thickness
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="t" type="number" min="1" style="width: 60px"/></td>';
+                    // shadowsize
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="s" type="number" min="0" style="width: 60px"/></td>';
+                    // description
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="d" style="width: 95%"/></td>';
+                    // description position
+                    text += '<td><select class="markline-value" data-index="' + i + '" data-option="p">' + textPosition + '</select></td>';
+                    // description-offset
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="py" type="number" style="width: 60px"/></td>';
+                    // font-size
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="fs" type="number" min="0" style="width: 60px"/></td>';
+                    // font-color
+                    text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="fc" style="width: 100px"/></td>';
+                    // delete
+                    text += '<td><button class="markline-remove" data-index="' + i + '"></button></td>\n';
 
-                text += '</tr>';
+                    text += '</tr>';
+                }
             }
             $('#markline_list').html(text);
 
@@ -826,7 +827,16 @@
                 }
             }).css({width: 25, height: 22}).click(function () {
                 var index = $(this).data('index');
-                $('#dialog-select-member').selectId('show', setup.options.l[index].id, undefined, function (newId, ignore, obj) {
+                // get instance
+                var instance = $('[data-option="instance"][data-index="' + index + '"]').val();
+                if (!instance) instance = defaultHistory;
+
+                $('#dialog-select-member').selectId('show', setup.options.l[index].id, {
+                        common: {
+                            custom: instance
+                        }
+                    },
+                    function (newId, ignore, obj) {
                     setup.options.l[index].id = newId;
                     $('.ids[data-index="' + index + '"]').val(newId).trigger('change');
                     if (obj && obj.common.type === 'boolean') {
@@ -1238,28 +1248,31 @@
 
         socket.on('connect', function () {
             this.emit('name', 'flotEdit');
-            // load history instances
-            socket.emit('getObjectView', 'system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, function (err, doc) {
-                if (!err && doc && doc.rows) {
-                    if (doc.rows.length === 0) {
-                        if (callback) callback ([]);
-                    } else {
-                        var res = [];
-                        for (var i = 0; i < doc.rows.length; i++) {
-                            var obj = doc.rows[i].value;
-                            if (obj && obj.type === 'instance' && obj.common && obj.common.type === 'storage') {
-                                instances.push(obj._id.substring('system.adapter.'.length));
+            this.emit('getObject', 'system.config', function (err, obj) {
+                if (obj && obj.common) defaultHistory = obj.common.defaultHistory || 'history.0';
+                // load history instances
+                socket.emit('getObjectView', 'system', 'instance', {
+                    startkey: 'system.adapter.',
+                    endkey: 'system.adapter.\u9999'
+                }, function (err, doc) {
+                    if (!err && doc && doc.rows) {
+                        if (doc.rows.length !== 0) {
+                            for (var i = 0; i < doc.rows.length; i++) {
+                                var obj = doc.rows[i].value;
+                                if (obj && obj.type === 'instance' && obj.common && obj.common.type === 'storage') {
+                                    if (instances.indexOf(obj._id.substring('system.adapter.'.length)) === -1) instances.push(obj._id.substring('system.adapter.'.length));
+                                }
                             }
                         }
                     }
-                }
-                showIds();
+                    showIds();
 
-                update();
+                    update();
 
-                // not need to disconnect, because socket-io uses pool
-                //socket.disconnect();
-                //socket = null;
+                    // not need to disconnect, because socket-io uses pool
+                    //socket.disconnect();
+                    //socket = null;
+                });
             });
         });
 
