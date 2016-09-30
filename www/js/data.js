@@ -74,7 +74,6 @@ if (config._ids) {
             unit:       units[i]   || ''
         });
     }
-    config.range = parseInt(config.range, 10);
     config.aggregateType = 'step';
     config.aggregateSpan = 300;
     config.relativeEnd   = 'now';
@@ -101,7 +100,7 @@ config.useComma     = config.useComma  === 'true' || config.useComma  === true;
 config.zoom         = config.zoom      === 'true' || config.zoom      === true;
 config.animation    = parseInt(config.animation)  || 0;
 config.noedit       = config.noedit    === 'true' || config.noedit    === true;
-config.afterComma   = (config.afterComma === undefined) ? 2 : config.afterComma;
+config.afterComma   = (config.afterComma === undefined) ? 2 : parseInt(config.afterComma, 10);
 config.timeType     = config.timeArt || config.timeType || 'relative';
 //    if ((config.max !== undefined && config.max !== '' && config.max !== null && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
 var seriesData      = [];
@@ -172,12 +171,75 @@ socket.on('disconnect', function () {
     }
 });
 
+function addTime(time, offset, plusOrMinus, isOffsetInMinutes) {
+    time = new Date(time);
+
+    if (typeof offset === 'string') {
+        if (offset[1] === 'm') {
+            offset = parseInt(offset, 10);
+            time.setMonth(plusOrMinus ? time.getMonth() + offset : time.getMonth() - offset);
+            time = time.getTime();
+        } else if (offset[1] === 'y') {
+            offset = parseInt(offset, 10);
+            time.setFullYear(plusOrMinus ? time.getFullYear() + offset : time.getFullYear() - offset);
+            time = time.getTime();
+        } else {
+            time  = time.getTime();
+            if (isOffsetInMinutes) {
+                if (plusOrMinus) {
+                    time += (parseInt(offset, 10) || 0) * 60000;
+                } else {
+                    time -= (parseInt(offset, 10) || 0) * 60000;
+                }
+
+            } else {
+                if (plusOrMinus) {
+                    time += (parseInt(offset, 10) || 0) * 1000;
+                } else {
+                    time -= (parseInt(offset, 10) || 0) * 1000;
+                }
+            }
+        }
+    } else {
+        time  = time.getTime();
+        if (isOffsetInMinutes) {
+            if (plusOrMinus) {
+                time += (parseInt(offset, 10) || 0) * 60000;
+            } else {
+                time -= (parseInt(offset, 10) || 0) * 60000;
+            }
+
+        } else {
+            if (plusOrMinus) {
+                time += (parseInt(offset, 10) || 0) * 1000;
+            } else {
+                time -= (parseInt(offset, 10) || 0) * 1000;
+            }
+        }
+    }
+    return time;
+}
+
 function getStartStop(index, step) {
     var option = {};
     var end;
     var start;
     var _now;
     config.l[index].offset = config.l[index].offset || 0;
+
+    // check config range
+    if (config.range[1] === 'm' && config.l.length > 1) {
+        for (var a = 0; a < config.l.length; a++) {
+            if (config.l[a].offset && config.l[a].offset !== 0) {
+                // Check what the month has first index
+                _now = addTime(now, config.l[0].offset);
+                var minusMonth = new Date(_now);
+                minusMonth.setMonth(minusMonth.getMonth() - 1);
+                config.range = Math.floor((_now - minusMonth.getTime()) / 60000) + '';
+                break;
+            }
+        }
+    }
 
     if (config.zoomed) {
         navOptions[index].end   = config.l[index].zMax;
@@ -188,6 +250,8 @@ function getStartStop(index, step) {
             if (config.timeType === 'static') {
                 var startTime;
                 var endTime;
+                var y;
+                var m;
                 if (config.start_time !== undefined) {
                     startTime = config.start_time.split(':').map(Number);
                 } else {
@@ -201,21 +265,19 @@ function getStartStop(index, step) {
                 }
 
                 // offset is in seconds
-                start = new Date(config.start).setHours(startTime[0], startTime[1]) - config.l[index].offset * 1000;
-                end   = new Date(config.end)  .setHours(endTime[0],   endTime[1])   - config.l[index].offset * 1000;
-
+                start = new Date(config.start).setHours(startTime[0], startTime[1]);
+                end   = new Date(config.end)  .setHours(endTime[0],   endTime[1]);
+                start = addTime(start, config.l[index].offset);
+                end   = addTime(end,   config.l[index].offset);
             } else {
                 if (config.relativeEnd === 'now') {
-                    end   = now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
+                    _now = new Date(now);
                 } else if (config.relativeEnd.indexOf('minute') !== -1) {
                     var minutes = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
                     _now.setMinutes(Math.floor(_now.getMinutes() / minutes) * minutes + minutes);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 }  else if (config.relativeEnd.indexOf('hour') !== -1) {
                     var hours = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
@@ -223,8 +285,6 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'today') {
                     _now = new Date(now);
                     _now.setDate(_now.getDate() + 1);
@@ -232,8 +292,6 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'weekUsa') {
                     //var week = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
@@ -242,8 +300,6 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'weekEurope') {
                     //var _week = parseInt(config.relativeEnd, 10) || 1;
                     _now = new Date(now);
@@ -257,8 +313,6 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'month') {
                     _now = new Date(now);
                     _now.setMonth(_now.getMonth() + 1);
@@ -267,8 +321,6 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 } else if (config.relativeEnd === 'year') {
                     _now = new Date(now);
                     _now.setFullYear(_now.getFullYear() + 1);
@@ -278,9 +330,10 @@ function getStartStop(index, step) {
                     _now.setMinutes(0);
                     _now.setSeconds(0);
                     _now.setMilliseconds(0);
-                    end   = _now.getTime() - config.l[index].offset * 1000;
-                    start = end - (config.range * 60000);
                 }
+
+                end   = addTime(_now, config.l[index].offset);
+                start = addTime(end,  config.range, false, true);
             }
 
             option = {
@@ -300,8 +353,7 @@ function getStartStop(index, step) {
             return option;
 
         } else {
-
-            end   = now.getTime() - config.l[index].offset * 1000;
+            end   = addTime(now, config.l[index].offset);
             start = end - step;
 
             option = {
@@ -313,7 +365,7 @@ function getStartStop(index, step) {
             };
 
             navOptions[index].end   = end;
-            navOptions[index].start = end - (config.range * 60);
+            navOptions[index].start = addTime(end, config.range, false, true);
             return option;
         }
     }

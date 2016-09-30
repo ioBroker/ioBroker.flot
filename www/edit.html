@@ -162,12 +162,12 @@
                         <option value="4320"    class="translate">3 days</option>
                         <option value="10080"   class="translate">7 days</option>
                         <option value="20160"   class="translate">14 days</option>
-                        <option value="43200"   class="translate">1 month</option>
-                        <option value="86400"   class="translate">2 months</option>
-                        <option value="129600"  class="translate">3 months</option>
-                        <option value="259200"  class="translate">6 months</option>
-                        <option value="525600"  class="translate">1 year</option>
-                        <option value="1051200" class="translate">2 years</option>
+                        <option value="1m"      class="translate">1 month</option>
+                        <option value="2m"      class="translate">2 months</option>
+                        <option value="3m"      class="translate">3 months</option>
+                        <option value="6m"      class="translate">6 months</option>
+                        <option value="1y"      class="translate">1 year</option>
+                        <option value="2y"      class="translate">2 years</option>
                     </select></td>
                 </tr>
                 <tr class="relative time_live">
@@ -415,10 +415,10 @@
                     <td class="translate">Smoothing:</td>
                     <td><input type="text" class="value input" id="smoothing"></td>
                 </tr>
-                <tr class="options_afterComma">
+                <!--tr class="options_afterComma">
                     <td class="translate">After comma:</td>
                     <td><input type="text" class="value input" id="afterComma"></td>
-                </tr>
+                </tr-->
                 <tr class="options_useComma">
                     <td class="translate">Use comma:</td>
                     <td><input type="checkbox" class="value" id="useComma"></td>
@@ -508,7 +508,6 @@
                     unit:       units[i]          || ''
                 });
             }
-            setup.options.range = parseInt(setup.options.range, 10);
             setup.options.aggregateType = 'step';
             setup.options.aggregateSpan = 300;
             setup.options.relativeEnd   = 'now';
@@ -766,12 +765,12 @@
                                 '<option value="345600">'   + _('4D')   + '</option>' +
                                 '<option value="604800">'   + _('1W')   + '</option>' +
                                 '<option value="1209600">'  + _('2W')   + '</option>' +
-                                '<option value="2419200">'  + _('4W')   + '</option>' +
-                                '<option value="4838400">'  + _('8W')   + '</option>' +
-                                '<option value="7257600">'  + _('12W')  + '</option>' +
-                                '<option value="15724800">' + _('26W')  + '</option>' +
-                                '<option value="30758400">' + _('1Y')   + '</option>' +
-                                '<option value="61516800">' + _('2Y')   + '</option>';
+                                '<option value="1m">'       + _('1M')   + '</option>' +
+                                '<option value="2m">'       + _('2M')   + '</option>' +
+                                '<option value="3m">'       + _('3M')  + '</option>' +
+                                '<option value="6m">'       + _('6M')  + '</option>' +
+                                '<option value="1y">'       + _('1Y')   + '</option>' +
+                                '<option value="2y">'       + _('2Y')   + '</option>';
                         text += '</select></td>\n';
                     } else
                     if (s === 'removeButton') {
@@ -862,8 +861,10 @@
                     }
                 }
             });
-
-            $('.spinner-lines').spinner().on('spin', delayedUpdate).parent().addClass('input');
+            $('.spinner-lines').attr('type', 'number');
+            /*$('.spinner-lines').spinner().on('stop', function () {
+                $(this).trigger('change');
+            }).parent().addClass('input');*/
 
             if (typeof callback === 'function') callback();
 
@@ -1080,7 +1081,11 @@
                 } else {
                     setup.options.l[index][$(this).data('option')] = $(this).val();
                 }
-                update();
+                if ($(this).hasClass('spinner-lines')) {
+                    delayedUpdate();
+                } else {
+                    update();
+                }
             })
             .on('keyup', '.options-lines', function () {
                 $(this).trigger('change');
@@ -1136,7 +1141,13 @@
             location.reload();
         }).css({width: 30, height: 30});
 
-        $('.value').change(update).keyup(function () {
+        $('.value').change(function () {
+            if ($(this).hasClass('spinner')) {
+                delayedUpdate();
+            } else {
+                update();
+            }
+        }).keyup(function () {
             $(this).trigger('change');
         });
 
@@ -1147,6 +1158,7 @@
                 }
             }
         });
+
         $('.clear-button').button({
             icons: {
                 primary: 'ui-icon-trash'
@@ -1164,7 +1176,10 @@
             $('.' + $(this).val()).show();
         });
 
-        $('.spinner').spinner().on('spin', delayedUpdate).parent().addClass('input');
+        $('.spinner').attr('type', 'number');
+        /*$('.spinner').spinner().on('stop', function () {
+            $(this).trigger('change');
+        }).parent().addClass('input');*/
 
         $('#bg_custom').change(function () {
             if ($(this).prop('checked')) {

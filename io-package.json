@@ -1,12 +1,17 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.1",
+        "version": "1.5.2",
         "news": {
+            "1.5.2": {
+              "en": "fix range and offset if month or year\nfix after comma settings",
+              "de": "Korrigiere Intervall und Offset falls Monat oder Jahr benutzt sind\nKorrigiere Stellen nach Komma",
+              "ru": "Исправлен интервал и сдвиг, если использовались месяц или год\nИспрвалена настройка цифр после запятой"
+            },
             "1.5.1": {
-            "en": "Filter IDs depends on storage instance",
-            "de": "Filtere IDs abhängig vom Instanz",
-            "ru": "Филтровать ID в зависимости от инстанции"
+              "en": "Filter IDs depends on storage instance",
+              "de": "Filtere IDs abhängig vom Instanz",
+              "ru": "Филтровать ID в зависимости от инстанции"
             },
             "1.5.0": {
               "en": "Support of marking lines",
