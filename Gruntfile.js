@@ -26,12 +26,12 @@ module.exports = function (grunt) {
                 options: {
                     patterns: [
                         {
-                            match: /var version = *'[\.0-9]*';/g,
+                            match: /var version = *'[.0-9]*';/g,
                             replacement: "var version = '" + version + "';"
                         },
                         {
-                            match: /"version"\: *"[\.0-9]*",/g,
-                            replacement: '"version": "' + version + '",'
+                            match: /Version: [.0-9]*</g,
+                            replacement: 'Version: ' + version + '<'
                         }
                     ]
                 },
@@ -40,11 +40,19 @@ module.exports = function (grunt) {
                         expand:  true,
                         flatten: true,
                         src:     [
-                            srcDir + 'controller.js',
-                            srcDir + 'package.json',
-                            srcDir + 'io-package.json'
+                            srcDir + 'www/*.*',
+                            '!' + srcDir + 'www/*.png'
                         ],
-                        dest:    srcDir
+                        dest:    srcDir + 'www'
+                    },
+                    {
+                        expand:  true,
+                        flatten: true,
+                        src:     [
+                            srcDir + 'www/js/*.*',
+                            '!' + srcDir + 'www/js/*.png'
+                        ],
+                        dest:    srcDir + 'www/js'
                     }
                 ]
             },
@@ -136,42 +144,6 @@ module.exports = function (grunt) {
                     }
                 ]
             }
-        },
-        // Javascript code styler
-        jscs:   require(__dirname + '/tasks/jscs.js'),
-        // Lint
-        jshint: require(__dirname + '/tasks/jshint.js'),
-        http: {
-            get_hjscs: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/' + appName + '/' + appName + '.js-controller/master/tasks/jscs.js'
-                },
-                dest: 'tasks/jscs.js'
-            },
-            get_jshint: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/' + appName + '/' + appName + '.js-controller/master/tasks/jshint.js'
-                },
-                dest: 'tasks/jshint.js'
-            },
-            get_gruntfile: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/' + appName + '/' + appName + '.build/master/adapters/Gruntfile.js'
-                },
-                dest: 'Gruntfile.js'
-            },
-            get_utilsfile: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/' + appName + '/' + appName + '.build/master/adapters/utils.js'
-                },
-                dest: 'lib/utils.js'
-            },
-            get_jscsRules: {
-                options: {
-                    url: 'https://raw.githubusercontent.com/' + appName + '/' + appName + '.js-controller/master/tasks/jscsRules.js'
-                },
-                dest: 'tasks/jscsRules.js'
-            }
         }
     });
 
@@ -205,16 +177,11 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-replace');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-jscs');
-    grunt.loadNpmTasks('grunt-http');
 
     grunt.registerTask('default', [
         'http',
         'replace:core',
-        'updateReadme',
-        'jshint',
-        'jscs'
+        'updateReadme'
     ]);
 
     grunt.registerTask('p', [

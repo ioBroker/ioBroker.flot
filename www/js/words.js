@@ -362,5 +362,7 @@ systemDictionary = {
     "Text color":           {"en": "Text color",            "de": "Textfarbe",              "ru": "Цвет текста"},
     "Add new markings":     {"en": "Add new markings",      "de": "Neue Merkierung hinzufügen", "ru": "Добавить разметку"},
     "Left":                 {"en": "Left",                  "de": "Links",                  "ru": "слева"},
-    "Right":                {"en": "Right",                 "de": "Rechts",                 "ru": "справа"}
+    "Right":                {"en": "Right",                 "de": "Rechts",                 "ru": "справа"},
+    "Upper value or ID":    {"en": "Upper value or ID",     "de": "Oberes Wert oder ID",    "ru": "Верхнее значение или ID"},
+    "Lower value or ID":    {"en": "Lower value or ID",     "de": "Unteres Wert oder ID",   "ru": "Нижнее значение или ID"}
 };

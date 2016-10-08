@@ -63,7 +63,7 @@
 
 <div style="height: 250px; position: relative">
     <div id="accordion">
-        <h3><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.5.0</div></h3>
+        <h3><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.5.3</div></h3>
         <div style="width: 100%; height: 100%;">
             <table>
                 <tr>
@@ -95,7 +95,10 @@
                     <thead id="markline_head">
                         <tr class="header">
                             <td class="translate" style="width: 30%; white-space: nowrap">Line ID</td>
-                            <td class="translate" style="width: 80px">Value</td>
+                            <td class="translate" style="width: 130px; white-space: nowrap">Upper value or ID</td>
+                            <td class="translate" style="width: 40px;"></td>
+                            <td class="translate" style="width: 130px; white-space: nowrap">Lower value or ID</td>
+                            <td class="translate" style="width: 40px;"></td>
                             <td class="translate" style="width: 180px">Color</td>
                             <td class="translate" style="width: 80px">Fill</td>
                             <td class="translate" style="width: 80px">&#216L</td>
@@ -400,6 +403,7 @@
                         <option value="" class="translate">Default</option>
                         <option value="%H:%M %d.%m">HH:MM dd.mm</option>
                         <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
+						<option value="%H:%M <br> %d.%m.%y">HH:MM / dd.mm.yy</option>
                         <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
                         <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
                         <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
@@ -631,8 +635,12 @@
                     // line index
                     text += '<td><select class="markline-value" data-index="' + i + '" data-option="l" style="width: 95%">' + textLines + '</select></td>';
 
-                    // value
-                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 70px"/></td>';
+                    // upper value
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 200px;display: inline"/></td>';
+                    text += '<td><button style="display: inline;margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="v">...</button></td>';
+                    // lower value
+                    text += '<td><input class="markline-value" data-index="' + i + '" data-option="vl" style="width: 200px;display: inline"/></td>';
+                    text += '<td><button style="display: inline;margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="vl">...</button></td>';
                     // color
                     text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="c"/ style="width: 100px"></td>';
                     // fill
@@ -689,6 +697,25 @@
                     delayedUpdate();
                 }
             }).css({width: 22, height: 22});
+
+            $('.markline-select-dialog').button({
+                text: false,
+                icons: {
+                    primary: 'ui-icon-folder-open'
+                }
+            }).css({width: 25, height: 22}).click(function () {
+                var index = $(this).data('index');
+                var attr  = $(this).data('option');
+                $('#dialog-select-member').selectId('show', setup.options.m[index][attr], {
+                            common: {
+                                custom: false
+                            }
+                        },
+                        function (newId, ignore, obj) {
+                            setup.options.l[index][attr] = newId;
+                            $('.markline-value[data-index="' + index + '"][data-option="' + attr + '"]').val(newId).trigger('change');
+                        });
+            });
         }, 100);
     }
 

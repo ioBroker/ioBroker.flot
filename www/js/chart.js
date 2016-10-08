@@ -16,6 +16,7 @@ function CustomChart(options, config, seriesData, markLines) {
     
     var that     = this;
     var series;
+    var markingsOffset = 0;
     var settings;
     var backgrounds = [
         ['#8e9eab', '#eef2f3'], // Portrait
@@ -234,6 +235,48 @@ function CustomChart(options, config, seriesData, markLines) {
         // Replace background
         if (that.config.bg && that.config.bg.length < 3 && backgrounds[that.config.bg]) that.config.bg = {colors: backgrounds[that.config.bg]};
 
+        markingsOffset = 0;
+        // draw horizontal lines
+        if (markLines && markLines.length) {
+            for (var m = 0; m < markLines.length; m++) {
+                markingsOffset++;
+                markLines[m].v = parseFloat(markLines[m].v) || 0;
+                series.push({
+                    id:         'line' + m,
+                    xaxis:      {show: false},
+                    color:      markLines[m].c || undefined,
+                    lines:      {
+                        show:       true,
+                        fill:       markLines[m].f === '1'  || markLines[m].f === 1 || markLines[m].f === 'true' || markLines[m].f === true,
+                        steps:      true,
+                        lineWidth:  markLines[m].t
+                    },
+                    data:       [[0, markLines[m].v], [100, markLines[m].v]],
+                    label:      markLines[m].d,
+                    shadowSize: markLines[m].s
+                });
+                // if lower value set
+                if (markLines[m].vl !== '' && markLines[m].vl !== null && markLines[m].vl !== undefined) {
+                    markingsOffset++;
+                    markLines[m].vl = parseFloat(markLines[m].vl) || 0;
+                    series.push({
+                        xaxis:      {show: false},
+                        color:      markLines[m].c || undefined,
+                        lines:      {
+                            show:       true,
+                            fill:       true,
+                            steps:      true,
+                            lineWidth:  markLines[m].t
+                        },
+                        data:       [[0, markLines[m].vl], [100, markLines[m].vl]],
+                        fillBetween: 'line' + m,
+                        label:      markLines[m].d,
+                        shadowSize: markLines[m].s
+                    });
+                }
+            }
+        }
+
         //todo make bar working
 //        if (that.config.renderer !== 'bar' || that.config._ids.length <= 1) {
         var xMin = Infinity;
@@ -318,6 +361,7 @@ function CustomChart(options, config, seriesData, markLines) {
                 if (seriesData[i][seriesData[i].length - 1][0] > xMax) xMax = seriesData[i][seriesData[i].length - 1][0];
             }
         }
+
 
         if (that.config.min === null || that.config.min === undefined || that.config.min === '' || that.config.min.toString() === 'NaN') {
             that.config.min = undefined;
@@ -446,7 +490,7 @@ function CustomChart(options, config, seriesData, markLines) {
                 //timeformat:   that.config.timeFormat,
                 //timezone:     "browser",
                 tickFormatter:  that.config.timeFormat ? _tickXFormatter : null,
-                minTickSize:    (that.config.l[ii].chartType === 'bar') ? series[ii].bars.barWidth : undefined,
+                minTickSize:    (that.config.l[ii].chartType === 'bar') ? series[ii + markingsOffset].bars.barWidth : undefined,
                 tickColor:      that.config.grid_color || undefined,
                 min:            undefined,
                 max:            undefined
@@ -476,17 +520,36 @@ function CustomChart(options, config, seriesData, markLines) {
 
             // Support for commonYAxis
             if (that.config.l[ii].commonYAxis !== '') {
-                series[ii].yaxis = parseInt(that.config.l[ii].commonYAxis);
+                series[ii + markingsOffset].yaxis = parseInt(that.config.l[ii].commonYAxis);
             } else {
-                series[ii].yaxis = ii + 1;
+                series[ii + markingsOffset].yaxis = ii + 1;
             }
-            series[ii].xaxis = ii + 1;
+            series[ii + markingsOffset].xaxis = ii + 1;
 
-            series[ii].curvedLines = {
+            series[ii + markingsOffset].curvedLines = {
                 apply:          !!that.config.l[ii].smoothing,
                 active:         !!that.config.l[ii].smoothing,
                 monotonicFit:   true
             };
+        }
+
+        // set yaxis
+        if (markLines && markLines.length) {
+            var num = 0;
+            for (var mm = 0; mm < markLines.length; mm++) {
+                markLines[mm].l = parseInt(markLines[mm].l, 10);
+                series[num].yaxis = series[markLines[mm].l + markingsOffset].yaxis;
+                series[num].data[0][0] = xMin;
+                series[num].data[1][0] = xMax;
+                num++;
+                // if lower value set
+                if (markLines[mm].vl !== '' && markLines[mm].vl !== null && markLines[mm].vl !== undefined) {
+                    series[num].yaxis = series[markLines[mm].l + markingsOffset].yaxis;
+                    series[num].data[0][0] = xMin;
+                    series[num].data[1][0] = xMax;
+                    num++;
+                }
+            }
         }
 
         if (smoothing) {
@@ -506,26 +569,6 @@ function CustomChart(options, config, seriesData, markLines) {
             };
         }
 
-        // draw horizontal lines
-        if (markLines && markLines.length) {
-            for (var m = 0; m < markLines.length; m++) {
-                series.push({
-                    yaxis:      series[markLines[m].l].yaxis,
-                    xaxis:      {show: false},
-                    color:      markLines[m].c || undefined,
-                    lines:      {
-                        show:       true,
-                        fill:       markLines[m].f === '1'  || markLines[m].f === 1 || markLines[m].f === 'true' || markLines[m].f === true,
-                        steps:      true,
-                        lineWidth:  markLines[m].t
-                    },
-                    data:       [[xMin, parseFloat(markLines[m].v)], [xMax, parseFloat(markLines[m].v)]],
-                    label:      markLines[m].d,
-                    shadowSize: markLines[m].s
-                })
-            }
-        }
-
         that.chart = $.plot('#' + that.options.chartId, series, settings);
 
         showLabels(that.config.animation);
@@ -541,15 +584,15 @@ function CustomChart(options, config, seriesData, markLines) {
                     var x = item.datapoint[0].toFixed(2);
                     var y;
 
-                    if (that.config.l[item.seriesIndex].type === 'boolean') {
-                        y = !!Math.round(item.datapoint[1] - that.config.l[item.seriesIndex].yOffset);
+                    if (that.config.l[item.seriesIndex - markingsOffset].type === 'boolean') {
+                        y = !!Math.round(item.datapoint[1] - that.config.l[item.seriesIndex - markingsOffset].yOffset);
                     } else {
-                        y = (item.datapoint[1] - that.config.l[item.seriesIndex].yOffset).toFixed(2);
+                        y = (item.datapoint[1] - that.config.l[item.seriesIndex - markingsOffset].yOffset).toFixed(2);
                     }
 
                     var text = item.series.label ? item.series.label + '<br>' : '';
                     text += $.plot.formatDate(new Date(parseInt(x, 10)), that.config.timeFormat) + '<br>';
-                    text += '<b>' + _yFormatter(y, item.seriesIndex) + '</b>';
+                    text += '<b>' + _yFormatter(y, item.seriesIndex - markingsOffset) + '</b>';
 
                     var $tooltip = $('#' + that.options.tooltipId).html(text);
                     if ($(this).height() - item.pageY < $tooltip.height()) {
@@ -587,27 +630,65 @@ function CustomChart(options, config, seriesData, markLines) {
         }
     })();
 
-    this.update = function (newSeriesData) {
-        for (var index = 0; index < config.l.length; index++) {
-            series[index].data = newSeriesData[index];
+    this.update = function (newSeriesData, newMarkingsData) {
+        if (newSeriesData) {
+            var xMin = Infinity;
+            var xMax = 0;
 
-            // prepare for bar
-            if (config.l[index].chartType === 'bar') {
-                settings.xaxes[index].ticks = [];
-                for (var m = 0; m < newSeriesData[index].length; m++) {
-                    settings.xaxes[index].ticks.push(newSeriesData[index][m][0]);
+            for (var index = 0; index < config.l.length; index++) {
+                series[index + markingsOffset].data = newSeriesData[index];
+                if (newSeriesData[index][0][0] < xMin) xMin = newSeriesData[index][0][0];
+                if (newSeriesData[index][newSeriesData[index].length - 1][0] > xMax) xMax = newSeriesData[index][newSeriesData[index].length - 1][0];
+
+                // prepare for bar
+                if (config.l[index].chartType === 'bar') {
+                    settings.xaxes[index].ticks = [];
+                    for (var m = 0; m < newSeriesData[index].length; m++) {
+                        settings.xaxes[index].ticks.push(newSeriesData[index][m][0]);
+                    }
+                    // Normally first and last points are invalid
+                    newSeriesData[index][0][1] = null;
+                    newSeriesData[index][newSeriesData[index].length - 1][1] = null;
                 }
-                // Normally first and last points are invalid
-                newSeriesData[index][0][1] = null;
-                newSeriesData[index][newSeriesData[index].length - 1][1] = null;
+            }
+
+            // update xmin and xmax
+            if (markLines && markLines.length) {
+                var num_ = 0;
+                for (var m = 0; m < markLines.length; m++) {
+                    series[num_].data[0][0] = xMin;
+                    series[num_].data[1][0] = xMax;
+                    num_++;
+                    // if lower value set
+                    if (markLines[m].vl !== '' && markLines[m].vl !== null && markLines[m].vl !== undefined) {
+                        series[num_].data[0][0] = xMin;
+                        series[num_].data[1][0] = xMax;
+                        num_++;
+                    }
+                }
+            }
+
+            $('.data-point-label').remove();
+            $('.marklines-label').remove();
+
+            if (settings.series && settings.series.grow) settings.series.grow.active = false;
+        }
+        if (newMarkingsData) {
+            if (newMarkingsData && newMarkingsData.length) {
+                var num = 0;
+                for (var mm = 0; mm < newMarkingsData.length; mm++) {
+                    series[num].data[0][1] = newMarkingsData[mm].v;
+                    series[num].data[1][1] = newMarkingsData[mm].v;
+                    num++;
+                    // if lower value set
+                    if (newMarkingsData[mm].vl !== '' && newMarkingsData[mm].vl !== null && newMarkingsData[mm].vl !== undefined) {
+                        series[num].data[0][1] = newMarkingsData[mm].vl;
+                        series[num].data[1][1] = newMarkingsData[mm].vl;
+                        num++;
+                    }
+                }
             }
         }
-
-        $('.data-point-label').remove();
-        $('.marklines-label').remove();
-
-        if (settings.series && settings.series.grow) settings.series.grow.active = false;
-
         this.chart = $.plot('#' + this.options.chartId, series, settings);
         showLabels(false);
     };

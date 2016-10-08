@@ -22,6 +22,10 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.5.3 (2016-10-08)
+* (bluefox) Allow using of IDs in the marking
+* (bluefox) Support of filled markings
+
 ### 1.5.2 (2016-09-30)
 * (bluefox) fix range and offset if month or year
 * (bluefox) fix after comma settings

@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.2",
+        "version": "1.5.3",
         "news": {
+            "1.5.3": {
+              "en": "Allow using of IDs in the marking\nSupport of filled markings",
+              "de": "Es ist möglich IDs zu benutzen für Markierungslinien\nUnterstützung von gefüllten Markierungen",
+              "ru": "Можно использовать ID для значений горизонтальных линий\nПоддержка закрашениых горизонтальных интервалов"
+            },
             "1.5.2": {
               "en": "fix range and offset if month or year\nfix after comma settings",
               "de": "Korrigiere Intervall und Offset falls Monat oder Jahr benutzt sind\nKorrigiere Stellen nach Komma",

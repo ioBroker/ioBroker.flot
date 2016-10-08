@@ -120,6 +120,8 @@ var lastWidth       = null;
 var chart           = null;
 
 var isApp           = false;
+var subscribes      = [];
+var subscribed      = false;
 // because of security issue
 try {
     if ((window.top !== window.self) && (typeof window.top.app !== 'undefined') && (typeof window.top.socketUrl !== 'undefined')) {
@@ -157,6 +159,19 @@ socket.on('connect', function () {
         disconnectTimeout = null;
     }
     readData();
+});
+
+socket.on('stateChange', function (id, state) {
+    console.log(id + ' - ' + state.val);
+    for (var m = 0; m < config.m.length; m++) {
+        if (config.m[m].oid === id) {
+            config.m[m].v = parseFloat(state.val) || 0;
+        }
+        if (config.m[m].oidl === id) {
+            config.m[m].vl = parseFloat(state.val) || 0;
+        }
+    }
+    chart.update(null, config.m);
 });
 
 if (config.window_bg) $('body').css('background', config.window_bg);
@@ -424,6 +439,16 @@ function readOneChart(id, instance, index, callback) {
     });
 }
 
+function readValue(id, index, callback) {
+    socket.emit('getState', id, function (err, state) {
+        if (state) {
+            callback(index, parseFloat(state.val) || 0);
+        } else {
+            callback(index, 0);
+        }
+    });
+}
+
 function prepareChart() {
     chart = new CustomChart({
         chartId:    divId,
@@ -540,6 +565,35 @@ function _readOneLine(index, cb) {
     });
 }
 
+function readMarkings(cb) {
+    var count = 0;
+    if (config.m && config.m.length) {
+        for (var m = 0; m < config.m.length; m++) {
+            if (!config.m[m].oid && config.m[m].v && parseFloat(config.m[m].v) != config.m[m].v && config.m[m].v.indexOf('.') !== -1) {
+                count++;
+                if (subscribes.indexOf(config.m[m].v) === -1) subscribes.push(config.m[m].v);
+                readValue(config.m[m].v, m, function (index, val) {
+                    config.m[index].oid = config.m[index].v;
+                    config.m[index].v   = val;
+                    if (!--count) cb();
+                });
+            }
+            if (!config.m[m].oidl && config.m[m].vl && parseFloat(config.m[m].vl) != config.m[m].vl && config.m[m].vl.indexOf('.') !== -1) {
+                count++;
+                if (subscribes.indexOf(config.m[m].vl) === -1) subscribes.push(config.m[m].vl);
+                readValue(config.m[m].vl, m, function (index, val) {
+                    config.m[index].oidl = config.m[index].vl;
+                    config.m[index].vl   = val;
+                    if (!--count) cb();
+                });
+            }
+        }
+        if (!count) cb();
+    } else {
+        cb();
+    }
+}
+
 function readData(hidden) {
     if (disconnectTimeout) {
         $('#no-connection').hide();
@@ -572,10 +626,22 @@ function readData(hidden) {
         var ready = config.l.length;
         for (j = 0; j < config.l.length; j++) {
             if (config.l[j] !== '' && config.l[j] !== undefined) seriesData.push([]);
+
             _readOneLine(j, function () {
                 if (!--ready) {
-                    $('#server-disconnect').hide();
-                    prepareChart();
+                    readMarkings(function () {
+                        if (!subscribed) {
+                            subscribed = true;
+                            if (subscribes.length) {
+                                for (var s = 0; s < subscribes.length; s++) {
+                                    socket.emit('subscribe', subscribes[s]);
+                                }
+                            }
+                        }
+
+                        $('#server-disconnect').hide();
+                        prepareChart();
+                    });
                 }
             });
         }
