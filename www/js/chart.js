@@ -138,18 +138,18 @@ function CustomChart(options, config, seriesData, markLines) {
         if (markLines && markLines.length) {
             setTimeout(function () {
                 var data = that.chart.getData();
-                var offset = that.config.l.length;
+                var num = 0;
                 for (var m = 0; m < markLines.length; m++) {
                     if (markLines[m].d) {
-                        var line = data[m + offset].data;
+                        var line = data[num].data;
                         var o;
                         var text;
                         if (markLines[m].p === 'l') {
-                            o = that.chart.pointOffset({x: line[0][0], y: line[0][1]});
+                            o = that.chart.pointOffset({x: line[0][0], y: line[0][1], yaxis: data[markLines[m].l + markingsOffset].yaxis, xaxis: data[markLines[m].l + markingsOffset].xaxis});
                             o.top -= parseFloat(markLines[m].py) || 0;
                             text = markLines[m].d;
                         } else {//if (markLines[m].p === 'r') {
-                            o = that.chart.pointOffset({x: line[1][0], y: line[1][1]});
+                            o = that.chart.pointOffset({x: line[1][0], y: line[1][1], yaxis: data[markLines[m].l + markingsOffset].yaxis, xaxis: data[markLines[m].l + markingsOffset].xaxis});
                             o.top -= parseFloat(markLines[m].py) || 0;
                             text = '<div style="width: 100%; margin-left: -100%; padding-right: 15px; white-space: nowrap">' + markLines[m].d + '</div>';
                         }
@@ -161,6 +161,10 @@ function CustomChart(options, config, seriesData, markLines) {
                             color:      markLines[m].fc || undefined
                         }).appendTo(that.chart.getPlaceholder());
                     }
+                    if (markLines[m].vl !== '' && markLines[m].vl !== null && markLines[m].vl !== undefined) {
+                        num++;
+                    }
+                    num++;
                 }
             }, animation ? parseInt(animation) + 200 : 0);
         }
@@ -252,7 +256,7 @@ function CustomChart(options, config, seriesData, markLines) {
                         lineWidth:  markLines[m].t
                     },
                     data:       [[0, markLines[m].v], [100, markLines[m].v]],
-                    label:      markLines[m].d,
+                    label:      '__hide_me__',
                     shadowSize: markLines[m].s
                 });
                 // if lower value set
@@ -270,7 +274,7 @@ function CustomChart(options, config, seriesData, markLines) {
                         },
                         data:       [[0, markLines[m].vl], [100, markLines[m].vl]],
                         fillBetween: 'line' + m,
-                        label:      markLines[m].d,
+                        label:      '__hide_me__',
                         shadowSize: markLines[m].s
                     });
                 }
@@ -428,7 +432,11 @@ function CustomChart(options, config, seriesData, markLines) {
             legend: {
                 show:       !!that.config.legend,
                 position:   that.config.legend,
-                hideable:   true
+                hideable:   true,
+                labelFormatter: function (label, series) {
+                    if (label === '__hide_me__') return null;
+                    return '<span class="graphlabel">' + label + '</span>';
+                }
             }
         };
 
@@ -568,6 +576,25 @@ function CustomChart(options, config, seriesData, markLines) {
                 stepDelay:      that.config.animation / steps
             };
         }
+
+        // hiddengraphs overload the labelFormatter, so we should overload the hiddengraphs
+        $.plot.plugins.push({
+            init: function (plot) {
+                plot.hooks.processOptions.push(function checkOptions(plot, options) {
+                    if (!options.legend.hideable) {
+                        return;
+                    }
+
+                    options.legend.labelFormatter = function(label, series) {
+                        if (label === '__hide_me__') return null;
+                        return '<span class="graphlabel">' + label + '</span>';
+                    };
+                });
+            },
+            options: options,
+            name: 'hiddenGraphsEx',
+            version: '1.0'
+        });
 
         that.chart = $.plot('#' + that.options.chartId, series, settings);
 
