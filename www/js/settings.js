@@ -6,8 +6,6 @@ var settings = {
         instance:       {enabled: true,  name: 'Instance'},
         id:             {enabled: true,  name: 'ID',            width: '200px', style: 'padding-left: 4px', _class: 'ids', inputStyle: ''},
         idSelect:       {enabled: true,  name: '',                              style: 'padding-left: 4px'},
-        offset:         {enabled: true,  name: 'Offset',        width: '',      style: 'padding-left: 5px'}, // support of time offset
-        yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: 'padding-left: 5px'}, // support of Y offset
         aggregate:      {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},
         chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'area', 'bar', 'lineplot', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
         color:          {enabled: true,  name: 'Color',         width: '120px', style: 'padding-left: 5px', _class: 'input-color'},
@@ -16,14 +14,21 @@ var settings = {
         unit:           {enabled: true,  name: 'Unit',          width: '70px',  style: 'padding-left: 5px'},
         yaxe:           {enabled: true,  name: 'Y Axis',        width: '140px', style: 'padding-left: 5px',     values: ['', 'off', 'left', 'right', 'leftColor', 'rightColor'], defaultValueName: 'default'},
         xaxe:           {enabled: true,  name: 'X Axis',        width: '140px', style: 'padding-left: 5px',     values: ['', 'off', 'top', 'bottom', 'topColor', 'bottomColor'], defaultValueName: 'default'},
-        thickness:      {enabled: true,  name: '&#216L',        width: '30px',  style: 'padding-left: 5px', title: 'Line Width',    default: 1},
-        shadowsize:     {enabled: true,  name: '&#216S',        width: '30px',  style: 'padding-left: 5px', title: 'Shadow Size',   default: 0},
         name:           {enabled: true,  name: 'Name',          width: '200px', style: 'padding-left: 5px'},
-        commonYAxis:    {enabled: true,  name: 'Common Y Axis', width: '',      style: 'padding-left: 5px; text-align: center', values: ['', '1', '2', '3', '4', '5'], defaultValueName: 'default'},
-        ignoreNull:     {enabled: true,  name: 'NULL as',       width: '30px',  style: 'text-align: center;',   values: ['false', 'true', '0'], defaultValueName: 'default'},
-        smoothing:      {enabled: false, name: 'Smoothing',     width: '30px',  style: 'text-align: center;', _class: 'spinner-lines'},
-        afterComma:     {enabled: true,  name: 'After comma',   width: '30px',  style: 'text-align: center;', _class: 'spinner-lines',   default: 2},
+        extraOptions:   {enabled: true,  name: 'More',          width: '90px',  style: 'text-align: center'},
         removeButton:   {enabled: true,  name: '',              width: '',      style: 'padding-left: 5px'}
+    },
+    extraOptions: {
+        offset:         {enabled: true,  name: 'Offset',        width: '70px',  style: '', type: 'number'}, // support of time offset
+        yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: '', type: 'number'}, // support of Y offset
+        xticks:         {enabled: true,  name: 'X-Axis ticks',  width: '70px',  style: '', type: 'number'},
+        yticks:         {enabled: true,  name: 'Y-Axis ticks',  width: '70px',  style: '', type: 'number'},
+        thickness:      {enabled: true,  name: '&#216L',        width: '70px',  style: '', type: 'number', title: 'Line Width',    default: 1},
+        shadowsize:     {enabled: true,  name: '&#216S',        width: '70px',  style: '', type: 'number', title: 'Shadow Size',   default: 0},
+        commonYAxis:    {enabled: true,  name: 'Common Y Axis', width: '',      style: '', values: ['', '1', '2', '3', '4', '5'],  default: '',      names: ['default']},
+        ignoreNull:     {enabled: true,  name: 'NULL as',       width: '',      style: '', values: ['false', 'true', '0'],         default: 'false', names: ['default', 'ignore null values', 'use 0 instead of null values']},
+        smoothing:      {enabled: false, name: 'Smoothing',     width: '70px',  style: '', type: 'number'},
+        afterComma:     {enabled: true,  name: 'After comma',   width: '70px',  style: '', type: 'number',  default: 2}
     },
     chapter_time:       {enabled: true},
     time_timeType:      {enabled: true},

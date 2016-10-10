@@ -459,7 +459,12 @@
     <button style="padding-left: 5px" id="updatePreview" class="translateB">update Preview</button>
 </div>
 <iframe src="index.html" style="width: calc(100% - 20px); bottom: 0; height: calc(100% - 360px); border: 1px solid #afafaf; border-radius: 2px" id="chart"></iframe>
-<div id="dialog-select-member" style="display:none"></div>
+<div id="dialog-select-member" style="display: none"></div>
+
+<div id="dialog-line-options" style="display: none">
+    <table>
+    </table>
+</div>
 <script>
     'use strict';
 
@@ -719,6 +724,111 @@
         }, 100);
     }
 
+    function showOptionsDialog(index) {
+        var options = setup.options.l[index];
+        $('#dialog-line-options').data('index', index);
+
+        if (!$('#dialog-line-options').data('inited')) {
+            $('#dialog-line-options').data('inited', true);
+
+            var count = 0;
+            var text = '';
+            for (var attr in settings.extraOptions) {
+                count++;
+                text += '<tr ' + (settings.extraOptions[attr].title ? 'title="' + settings.extraOptions[attr].title + '" ' : '') + '>';
+                text += '<td><label for="option_' + attr + '">' + _(settings.extraOptions[attr].name || attr) + '</label></td>';
+                if (!settings.extraOptions[attr].values) {
+                    text += '<td><input id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
+                            (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
+                            ' style="' + (settings.extraOptions[attr].style || '') + '" ' +
+                            (settings.extraOptions[attr].default !== undefined ? 'data-default="' + settings.extraOptions[attr].default + '"' : '') +
+                            '/></td>';
+                } else {
+                    text += '<td><select id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
+                            (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
+                            ' style="' + (settings.extraOptions[attr].style || '') + '" ' +
+                            (settings.extraOptions[attr].default !== undefined ? 'data-default="' + settings.extraOptions[attr].default + '"' : '') +
+                            '>';
+                    for (var opt = 0; opt < settings.extraOptions[attr].values.length; opt++) {
+                        text += '<option value="' + settings.extraOptions[attr].values[opt] + '">' +
+                                (settings.extraOptions[attr].names && settings.extraOptions[attr].names[opt] !== undefined ?
+                                        _(settings.extraOptions[attr].names[opt]) : settings.extraOptions[attr].values[opt])  +
+                                '</option>';
+                    }
+
+                    text += '</select></td>';
+                }
+                text += '</tr>';
+            }
+            $('#dialog-line-options').find('table').html(text);
+
+            $('#dialog-line-options').dialog({
+                autoOpen:   false,
+                modal:      true,
+                width:      430,
+                height:     count * 32 + 120,
+                buttons: [
+                    {
+                        text: _('Ok'),
+                        click: function () {
+                            var index = $('#dialog-line-options').data('index');
+                            var changed = false;
+                            var options = setup.options.l[index];
+                            $('#dialog-line-options').find('.dialog-line-option').each(function () {
+                                var attr = $(this).data('option');
+
+                                if ($(this).attr('type') === 'checkbox') {
+                                    if ($(this).prop('checked') !== options[attr]) {
+                                        changed = true;
+                                        options[attr] = $(this).prop('checked');
+                                    }
+                                } else {
+                                    if ($(this).val() != options[attr]) {
+                                        changed = true;
+                                        options[attr] = $(this).val();
+                                    }
+                                }
+                            });
+
+                            if (changed) update();
+
+                            $('#dialog-line-options').dialog('close');
+                        }
+                    },
+                    {
+                        text: _('Cancel'),
+                        click: function () {
+                            $('#dialog-line-options').dialog('close');
+                        }
+                    }
+                ]
+            });
+
+        }
+
+
+        $('#dialog-line-options').find('.dialog-line-option').each(function () {
+            var attr = $(this).data('option');
+            if ($(this).attr('type') === 'checkbox') {
+                if (options[attr] === 'true') options[attr] = true;
+                if ($(this).data('default') !== null && $(this).data('default') !== undefined &&
+                        (options[attr] === undefined || options[attr] === '' || options[attr] === null)) {
+                    options[attr] = $(this).data('default') === 'true';
+                }
+                $(this).prop('checked', options[attr] === true);
+            } else {
+                if ($(this).data('default') !== null && $(this).data('default') !== undefined &&
+                        (options[attr] === undefined || options[attr] === '' || options[attr] === null)) {
+                    options[attr] = $(this).data('default');
+                }
+                $(this).val(options[attr] === undefined ? '' : options[attr]);
+            }
+        });
+
+        $('#dialog-line-options').dialog('option', 'title', _('Edit options for line %s', index + 1));
+        $('#dialog-line-options').dialog('open');
+    }
+
     function showIds(callback) {
         setTimeout(function () {
             var text = '';
@@ -802,6 +912,8 @@
                     } else
                     if (s === 'removeButton') {
                         text += '<td style="' + settings.line[s].style + '"><button class="id-remove" data-index="' + i + '"></button></td>\n';
+                    } else if (s === 'extraOptions') {
+                        text += '<td style="' + settings.line[s].style + '"><button class="id-options" data-index="' + i + '"></button></td>\n';
                     } else {
                         text += '<td style="' + settings.line[s].style + '">\n';
                         if (settings.line[s].values) {
@@ -844,6 +956,13 @@
                     save();
                     delayedUpdate();
                 }
+            }).css({width: 22, height: 22});
+
+            $('.id-options').button({
+                icons: {primary: 'ui-icon-gear'},
+                text: false
+            }).click(function () {
+                showOptionsDialog($(this).data('index'));
             }).css({width: 22, height: 22});
 
             $('.select-dialog').button({

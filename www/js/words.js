@@ -364,5 +364,19 @@ systemDictionary = {
     "Left":                 {"en": "Left",                  "de": "Links",                  "ru": "слева"},
     "Right":                {"en": "Right",                 "de": "Rechts",                 "ru": "справа"},
     "Upper value or ID":    {"en": "Upper value or ID",     "de": "Oberes Wert oder ID",    "ru": "Верхнее значение или ID"},
-    "Lower value or ID":    {"en": "Lower value or ID",     "de": "Unteres Wert oder ID",   "ru": "Нижнее значение или ID"}
+    "Lower value or ID":    {"en": "Lower value or ID",     "de": "Unteres Wert oder ID",   "ru": "Нижнее значение или ID"},
+    "X-Axis ticks":         {"en": "X-Axis ticks",          "de": "X-Achse-Ticks",          "ru": "Кол-во делений на шкале X"},
+    "Y-Axis ticks":         {"en": "Y-Axis ticks",          "de": "Y-Achse-Ticks",          "ru": "Кол-во делений на шкале Y"},
+    "ignore null values":   {"en": "ignore null values",    "de": "ignore null values", "ru": "ignore null values"},
+    "use 0 instead of null values": {
+        "en": "use 0 instead of null values",
+        "de": "use 0 instead of null values",
+        "ru": "use 0 instead of null values"
+    },
+    "More":                 {"en": "more",                  "de": "mehr",                   "ru": "ещё"},
+    "Edit options for line %s": {
+        "en": "Edit options for line %s",
+        "de": "Editieren weitere Einstellungen für Linie %s",
+        "ru": "Редактировать настройки для линии %s"
+    }
 };

@@ -463,15 +463,15 @@ function CustomChart(options, config, seriesData, markLines) {
             that.config.l[ii].commonYAxis = that.config.l[ii].commonYAxis || '';
 
             var yaxi = {
-                show: that.config.l[ii].yaxe !== 'off',
-                min:  (that.config.l[ii].min !== '' && that.config.l[ii].min !== null && that.config.l[ii].min !== undefined) ? parseFloat(that.config.l[ii].min) : undefined,
-                max:  (that.config.l[ii].max !== '' && that.config.l[ii].max !== null && that.config.l[ii].max !== undefined) ? parseFloat(that.config.l[ii].max) : undefined,
-                position: that.config.l[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
+                show:       that.config.l[ii].yaxe !== 'off',
+                min:        (that.config.l[ii].min !== '' && that.config.l[ii].min !== null && that.config.l[ii].min !== undefined) ? parseFloat(that.config.l[ii].min) : undefined,
+                max:        (that.config.l[ii].max !== '' && that.config.l[ii].max !== null && that.config.l[ii].max !== undefined) ? parseFloat(that.config.l[ii].max) : undefined,
+                position:   that.config.l[ii].yaxe.indexOf('left') > -1 ? 'left' : 'right',
                 font: {
-                    color: that.config.l[ii].yaxe.indexOf('Color') > -1 ? that.config.l[ii].color : (that.config.y_labels_color || 'black')
+                    color:  that.config.l[ii].yaxe.indexOf('Color') > -1 ? that.config.l[ii].color : (that.config.y_labels_color || 'black')
                 },
-                zoomRange: false,  // or [ number, number ] (min range, max range) or false
-                panRange:  false,  // or [ number, number ] (min, max) or false
+                zoomRange:  false,  // or [ number, number ] (min range, max range) or false
+                panRange:   false,  // or [ number, number ] (min, max) or false
                 // to do
                 /*{
                  size: 11,
@@ -482,7 +482,8 @@ function CustomChart(options, config, seriesData, markLines) {
                  variant: "small-caps",
                  color: "#545454"
                  }*/
-                tickColor: that.config.grid_color || undefined,
+                ticks:      parseInt(that.config.l[ii].yticks, 10) || undefined,
+                tickColor:  that.config.grid_color || undefined,
                 tickFormatter: _tickYFormatter
             };
 
@@ -500,6 +501,7 @@ function CustomChart(options, config, seriesData, markLines) {
                 tickFormatter:  that.config.timeFormat ? _tickXFormatter : null,
                 minTickSize:    (that.config.l[ii].chartType === 'bar') ? series[ii + markingsOffset].bars.barWidth : undefined,
                 tickColor:      that.config.grid_color || undefined,
+                ticks:          parseInt(that.config.l[ii].xticks, 10) || undefined,
                 min:            undefined,
                 max:            undefined
             };
