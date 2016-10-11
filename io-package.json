@@ -1,9 +1,9 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.3",
+        "version": "1.5.4",
         "news": {
-            "1.5.3": {
+            "1.5.4": {
               "en": "Allow using of IDs in the marking\nSupport of filled markings",
               "de": "Es ist möglich IDs zu benutzen für Markierungslinien\nUnterstützung von gefüllten Markierungen",
               "ru": "Можно использовать ID для значений горизонтальных линий\nПоддержка закрашениых горизонтальных интервалов"
