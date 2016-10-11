@@ -54,6 +54,9 @@ var settings = {
     options_titleColor: {enabled: true},
     options_titleSize:  {enabled: true},
     options_legend:     {enabled: true},
+    options_legColumns: {enabled: true},
+    options_legBg:      {enabled: true},
+    options_legBgOpacity: {enabled: true},
 
     options_barColor:   {enabled: true},
     options_barLabels:  {enabled: true},

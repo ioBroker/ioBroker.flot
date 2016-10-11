@@ -231,7 +231,7 @@
                     <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
                 </tr>
                 <tr class="options_width">
-                    <td class="translate" style="width: 300px">Width:</td>
+                    <td class="translate" style="width: 270px">Width:</td>
                     <td><input id="width" class="value input spinner"></td>
                 </tr>
                 <tr class="options_height">
@@ -273,7 +273,7 @@
                             <option value="8">Koko Caramel</option>
                             <option value="9">Turquoise flow</option>
                         </select>
-                        <input type="text" id="bg" class="value input" style="display: none">
+                        <input type="text" id="bg" class="value input" style="display: none"/>
                     </td>
                 </tr>
                 <tr class="options_x_labels_color">
@@ -393,11 +393,23 @@
                         <option value="se" class="translate">Bottom, right</option>
                     </select></td>
                 </tr>
-                <tr class="options_legend">
+                <tr class="options_legColumns">
+                    <td class="translate">Legend columns:</td>
+                    <td><input type="number" class="value" id="legColumns"></td>
+                </tr>
+                <tr class="options_legBgOpacity">
+                    <td><label class="translate" for="legBgOpacity">Legend opacity (from 0 to 1):</label></td>
+                    <td><input class="value input" id="legBgOpacity"/></td>
+                </tr>
+                <tr class="options_legBg">
+                    <td><label class="translate" for="legBg">Legend background:</label></td>
+                    <td><input class="value input input-static-color" id="legBg" style="display: inline-block"><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td>
+                </tr>
+                <tr class="options_hoverDetail">
                     <td class="translate">Hover details:</td>
                     <td><input type="checkbox" class="value" id="hoverDetail"></td>
                 </tr>
-                <tr class="options_legend">
+                <tr class="options_timeFormat">
                     <td class="translate">Time format:</td>
                     <td><select class="value input" id="timeFormat">
                         <option value="" class="translate">Default</option>
@@ -676,6 +688,8 @@
                 var id = $(this).data('index');
                 var name = $(this).data('option');
                 if ($(this).attr('type') === 'checkbox') {
+                    if (setup.options.m[id][name] === 'true')  setup.options.m[id][name] = true;
+                    if (setup.options.m[id][name] === 'false') setup.options.m[id][name] = false;
                     $(this).prop('checked', !!setup.options.m[id][name]);
                 } else {
                     $(this).val(setup.options.m[id][name]);
@@ -810,7 +824,8 @@
         $('#dialog-line-options').find('.dialog-line-option').each(function () {
             var attr = $(this).data('option');
             if ($(this).attr('type') === 'checkbox') {
-                if (options[attr] === 'true') options[attr] = true;
+                if (options[attr] === 'true')  options[attr] = true;
+                if (options[attr] === 'false') options[attr] = false;
                 if ($(this).data('default') !== null && $(this).data('default') !== undefined &&
                         (options[attr] === undefined || options[attr] === '' || options[attr] === null)) {
                     options[attr] = $(this).data('default') === 'true';
@@ -1001,6 +1016,9 @@
 
                 if (setup.options.l[index][opt] !== undefined) {
                     if ($this.attr('type') === 'checkbox') {
+                        if (setup.options.l[index][opt] === 'true')  setup.options.l[index][opt] = true;
+                        if (setup.options.l[index][opt] === 'false') setup.options.l[index][opt] = false;
+
                         $this.prop('checked', !!setup.options.l[index][opt]);
                     } else {
                         $this.val(setup.options.l[index][opt]);
@@ -1256,6 +1274,8 @@
             var id = $this.attr('id');
             if (setup.options[id] !== undefined) {
                 if ($this.attr('type') === 'checkbox') {
+                    if (setup.options[id] === 'true')  setup.options[id] = true;
+                    if (setup.options[id] === 'false') setup.options[id] = false;
                     $this.prop('checked', !!setup.options[id]);
                 } else {
                     $this.val(setup.options[id]);
@@ -1288,7 +1308,7 @@
         }).css({width: 30, height: 30});
 
         $('.value').change(function () {
-            if ($(this).hasClass('spinner')) {
+            if ($(this).hasClass('spinner') || $(this).hasClass('input-static-color')) {
                 delayedUpdate();
             } else {
                 update();
@@ -1311,10 +1331,13 @@
             },
             text: false
         }).css({width: 22, height: 22}).click(function () {
-            $('#' + $(this).data('clear'))
-                .val('')
-                .css({color: '#000', 'background-color': '#FFF'})
-                .trigger('change');
+            var id = $(this).data('clear');
+            setTimeout(function () {
+                $('#' + id)
+                        .val('')
+                        .css({color: '#000', 'background-color': '#FFF'})
+                        .trigger('change');
+            }, 500);
         });
 
         $('#timeType').change(function () {

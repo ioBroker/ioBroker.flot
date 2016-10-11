@@ -367,16 +367,19 @@ systemDictionary = {
     "Lower value or ID":    {"en": "Lower value or ID",     "de": "Unteres Wert oder ID",   "ru": "Нижнее значение или ID"},
     "X-Axis ticks":         {"en": "X-Axis ticks",          "de": "X-Achse-Ticks",          "ru": "Кол-во делений на шкале X"},
     "Y-Axis ticks":         {"en": "Y-Axis ticks",          "de": "Y-Achse-Ticks",          "ru": "Кол-во делений на шкале Y"},
-    "ignore null values":   {"en": "ignore null values",    "de": "ignore null values", "ru": "ignore null values"},
+    "ignore null values":   {"en": "ignore null values",    "de": "null-Werte ignorieren",  "ru": "игнорировать значения null"},
     "use 0 instead of null values": {
         "en": "use 0 instead of null values",
-        "de": "use 0 instead of null values",
-        "ru": "use 0 instead of null values"
+        "de": "0 statt null benutzen",
+        "ru": "Заменять null на 0"
     },
     "More":                 {"en": "more",                  "de": "mehr",                   "ru": "ещё"},
     "Edit options for line %s": {
         "en": "Edit options for line %s",
         "de": "Editieren weitere Einstellungen für Linie %s",
         "ru": "Редактировать настройки для линии %s"
-    }
+    },
+    "Legend columns:":      {"en": "Legend columns:",       "de": "Spalten in Legende:",   "ru": "Колонок в легенде:"},
+    "Legend opacity (from 0 to 1):": {"en": "Legend opacity (from 0 to 1):", "de": "Legende-Opacity (von 0 bis 1):", "ru": "Прозрачность легенды (от 0 до 1):"},
+    "Legend background:":   {"en": "Legend background:",    "de": "Legende-Hintergrund:",     "ru": "Фон легенды:"}
 };

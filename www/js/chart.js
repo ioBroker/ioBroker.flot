@@ -433,6 +433,9 @@ function CustomChart(options, config, seriesData, markLines) {
                 show:       !!that.config.legend,
                 position:   that.config.legend,
                 hideable:   true,
+                noColumns:  parseInt(that.config.legColumns, 10) || undefined,
+                backgroundColor:  that.config.legBg || undefined,
+                backgroundOpacity:  that.config.legBgOpacity !== undefined ? parseFloat(that.config.legBgOpacity) : 0.85,
                 labelFormatter: function (label, series) {
                     if (label === '__hide_me__') return null;
                     return '<span class="graphlabel">' + label + '</span>';
