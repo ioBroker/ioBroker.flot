@@ -22,7 +22,11 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
-### 1.5.4 (2016-10-11)
+### 1.5.4 (2016-10-13)
+* (bluefox) remove area, line plot 
+* (bluefox) add fill value, points option
+
+### 1.5.3 (2016-10-11)
 * (bluefox) Allow using of IDs in the marking
 * (bluefox) Support of filled markings
 

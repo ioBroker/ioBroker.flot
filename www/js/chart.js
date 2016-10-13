@@ -140,7 +140,7 @@ function CustomChart(options, config, seriesData, markLines) {
                 var data = that.chart.getData();
                 var num = 0;
                 for (var m = 0; m < markLines.length; m++) {
-                    if (markLines[m].d) {
+                    if (markLines[m].d && data[markLines[m].l + markingsOffset]) {
                         var line = data[num].data;
                         var o;
                         var text;
@@ -294,7 +294,7 @@ function CustomChart(options, config, seriesData, markLines) {
                     color:      that.config.l[i].color || undefined,
                     lines:      {
                         show:       (that.config.l[i].chartType !== 'scatterplot' && that.config.l[i].chartType !== 'bar' && that.config.l[i].chartType !== 'spline'),
-                        fill:       (that.config.l[i].chartType === 'area' || that.config.l[i].chartType === 'bar'),
+                        fill:       (that.config.l[i].fill && that.config.l[i].fill !== '0') ? parseFloat(that.config.l[i].fill) : (that.config.l[i].chartType === 'area' || that.config.l[i].chartType === 'bar'),
                         steps:      (that.config.l[i].chartType === 'steps'),
                         lineWidth:  that.config.l[i].thickness
                     },
@@ -302,19 +302,19 @@ function CustomChart(options, config, seriesData, markLines) {
                         show:       (that.config.l[i].chartType === 'spline'),
                         tension:    0.5, //(float between 0 and 1, defaults to 0.5),
                         lineWidth:  that.config.l[i].thickness,
-                        fill:       false //(float between 0 .. 1 or false, as in flot documentation)
+                        fill:       (that.config.l[i].fill && that.config.l[i].fill !== '0') ? parseFloat(that.config.l[i].fill) : false //(float between 0 .. 1 or false, as in flot documentation)
                     },
                     bars:       {
                         show:       (that.config.l[i].chartType === 'bar'),
                         order:      i + 1,
                         barWidth:   0.6,
                         lineWidth:  that.config.l[i].thickness,
-                        fill:       true,
+                        fill:       (that.config.l[i].fill && that.config.l[i].fill !== '0') ? parseFloat(that.config.l[i].fill) : false,
                         fillColor:  that.config.barColor || undefined,
                         align:      'center'
                     },
                     points:     {
-                        show:       (that.config.l[i].chartType === 'lineplot' || that.config.l[i].chartType === 'scatterplot')
+                        show:       (that.config.l[i].chartType === 'lineplot' || that.config.l[i].chartType === 'scatterplot' || that.config.l[i].points === 'true' || that.config.l[i].points === true)
                     },
                     data:       seriesData[i],
                     label:      that.config.l[i].name,
@@ -550,17 +550,19 @@ function CustomChart(options, config, seriesData, markLines) {
         if (markLines && markLines.length) {
             var num = 0;
             for (var mm = 0; mm < markLines.length; mm++) {
-                markLines[mm].l = parseInt(markLines[mm].l, 10);
-                series[num].yaxis = series[markLines[mm].l + markingsOffset].yaxis;
-                series[num].data[0][0] = xMin;
-                series[num].data[1][0] = xMax;
-                num++;
-                // if lower value set
-                if (markLines[mm].vl !== '' && markLines[mm].vl !== null && markLines[mm].vl !== undefined) {
+                if (series[markLines[mm].l + markingsOffset]) {
+                    markLines[mm].l = parseInt(markLines[mm].l, 10);
                     series[num].yaxis = series[markLines[mm].l + markingsOffset].yaxis;
                     series[num].data[0][0] = xMin;
                     series[num].data[1][0] = xMax;
                     num++;
+                    // if lower value set
+                    if (markLines[mm].vl !== '' && markLines[mm].vl !== null && markLines[mm].vl !== undefined) {
+                        series[num].yaxis = series[markLines[mm].l + markingsOffset].yaxis;
+                        series[num].data[0][0] = xMin;
+                        series[num].data[1][0] = xMax;
+                        num++;
+                    }
                 }
             }
         }

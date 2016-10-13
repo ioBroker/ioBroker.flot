@@ -7,7 +7,9 @@ var settings = {
         id:             {enabled: true,  name: 'ID',            width: '200px', style: 'padding-left: 4px', _class: 'ids', inputStyle: ''},
         idSelect:       {enabled: true,  name: '',                              style: 'padding-left: 4px'},
         aggregate:      {enabled: true,  name: 'Aggregation',   width: '70px',  style: 'padding-left: 5px',     values: ['minmax', 'average', 'min', 'max', 'total', 'onchange']},
-        chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'area', 'bar', 'lineplot', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
+        chartType:      {enabled: true,  name: 'Chart Type',    width: '90px',                                  values: ['line', 'bar', 'scatterplot', 'steps', /*'pie',*/ 'spline']},
+        fill:           {enabled: true,  name: 'Fill(0to1)',    width: '70px',  style: 'width: 70px; text-align: right'},
+        points:         {enabled: true,  name: 'Points',        width: '50px',             type: 'checkbox'},
         color:          {enabled: true,  name: 'Color',         width: '120px', style: 'padding-left: 5px', _class: 'input-color'},
         min:            {enabled: true,  name: 'Min',           width: '50px',  style: 'padding-left: 5px'},
         max:            {enabled: true,  name: 'Max',           width: '50px',  style: 'padding-left: 5px'},
@@ -19,7 +21,7 @@ var settings = {
         removeButton:   {enabled: true,  name: '',              width: '',      style: 'padding-left: 5px'}
     },
     extraOptions: {
-        offset:         {enabled: true,  name: 'Offset',        width: '70px',  style: '', type: 'number'}, // support of time offset
+        offset:         {enabled: true,  name: 'Offset',        width: '130px', style: '', type: 'number'}, // support of time offset
         yOffset:        {enabled: true,  name: 'Y-Offset',      width: '70px',  style: '', type: 'number'}, // support of Y offset
         xticks:         {enabled: true,  name: 'X-Axis ticks',  width: '70px',  style: '', type: 'number'},
         yticks:         {enabled: true,  name: 'Y-Axis ticks',  width: '70px',  style: '', type: 'number'},

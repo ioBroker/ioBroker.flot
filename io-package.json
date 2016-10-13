@@ -4,6 +4,11 @@
         "version": "1.5.4",
         "news": {
             "1.5.4": {
+              "en": "remove area, line plot \nadd fill value, points option",
+              "de": "Area, LinienPlot gelöscht\nUnterstützung Füllwert und Punktenoption",
+              "ru": "Удалены area и line plot\nПоддержка заливки и опции точек"
+            },
+            "1.5.3": {
               "en": "Allow using of IDs in the marking\nSupport of filled markings",
               "de": "Es ist möglich IDs zu benutzen für Markierungslinien\nUnterstützung von gefüllten Markierungen",
               "ru": "Можно использовать ID для значений горизонтальных линий\nПоддержка закрашениых горизонтальных интервалов"

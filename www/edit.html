@@ -751,16 +751,52 @@
                 count++;
                 text += '<tr ' + (settings.extraOptions[attr].title ? 'title="' + settings.extraOptions[attr].title + '" ' : '') + '>';
                 text += '<td><label for="option_' + attr + '">' + _(settings.extraOptions[attr].name || attr) + '</label></td>';
+                if (attr === 'offset') {
+                    text += '<td><select id="option_' + attr + '" ' +
+                            'style="' + (settings.extraOptions[attr].width ? 'width: ' + settings.extraOptions[attr].width + ';': '') + (settings.extraOptions[attr].style || '') + '" ' +
+                            'class="dialog-line-option ' + (settings.extraOptions[attr]._class || '') + '" ' +
+                            'data-option="' + attr + '">\n';
+                    text +=
+                            '<option value="0">'        + _('0s')   + '</option>' +
+                            '<option value="10">'       + _('10s')  + '</option>' +
+                            '<option value="30">'       + _('30s')  + '</option>' +
+                            '<option value="60">'       + _('60s')  + '</option>' +
+                            '<option value="120">'      + _('2m')   + '</option>' +
+                            '<option value="180">'      + _('3m')   + '</option>' +
+                            '<option value="240">'      + _('4m')   + '</option>' +
+                            '<option value="300">'      + _('5m')   + '</option>' +
+                            '<option value="600">'      + _('10m')  + '</option>' +
+                            '<option value="900">'      + _('15m')  + '</option>' +
+                            '<option value="1800">'     + _('30m')  + '</option>' +
+                            '<option value="2700">'     + _('45m')  + '</option>' +
+                            '<option value="3600">'     + _('1H')   + '</option>' +
+                            '<option value="7200">'     + _('2H')   + '</option>' +
+                            '<option value="21600">'    + _('6H')   + '</option>' +
+                            '<option value="43200">'    + _('12H')  + '</option>' +
+                            '<option value="86400">'    + _('1D')   + '</option>' +
+                            '<option value="172800">'   + _('2D')   + '</option>' +
+                            '<option value="259200">'   + _('3D')   + '</option>' +
+                            '<option value="345600">'   + _('4D')   + '</option>' +
+                            '<option value="604800">'   + _('1W')   + '</option>' +
+                            '<option value="1209600">'  + _('2W')   + '</option>' +
+                            '<option value="1m">'       + _('1M')   + '</option>' +
+                            '<option value="2m">'       + _('2M')   + '</option>' +
+                            '<option value="3m">'       + _('3M')  + '</option>' +
+                            '<option value="6m">'       + _('6M')  + '</option>' +
+                            '<option value="1y">'       + _('1Y')   + '</option>' +
+                            '<option value="2y">'       + _('2Y')   + '</option>';
+                    text += '</select></td>\n';
+                } else
                 if (!settings.extraOptions[attr].values) {
                     text += '<td><input id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
                             (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
-                            ' style="' + (settings.extraOptions[attr].style || '') + '" ' +
+                            ' style="' + (settings.extraOptions[attr].width ? 'width: ' + settings.extraOptions[attr].width + ';': '') + (settings.extraOptions[attr].style || '') + '" ' +
                             (settings.extraOptions[attr].default !== undefined ? 'data-default="' + settings.extraOptions[attr].default + '"' : '') +
                             '/></td>';
                 } else {
                     text += '<td><select id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
                             (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
-                            ' style="' + (settings.extraOptions[attr].style || '') + '" ' +
+                            ' style="' + (settings.extraOptions[attr].width ? 'width: ' + settings.extraOptions[attr].width + ';': '') + (settings.extraOptions[attr].style || '') + '" ' +
                             (settings.extraOptions[attr].default !== undefined ? 'data-default="' + settings.extraOptions[attr].default + '"' : '') +
                             '>';
                     for (var opt = 0; opt < settings.extraOptions[attr].values.length; opt++) {
@@ -780,6 +816,7 @@
                 autoOpen:   false,
                 modal:      true,
                 width:      430,
+                resizable:  false,
                 height:     count * 32 + 120,
                 buttons: [
                     {
@@ -938,7 +975,7 @@
                             }
                             text += '</select>\n';
                         } else {
-                            text += '<input data-option="' + s + '" style="width: 100%; ' + (settings.line[s].inputStyle || '') + '" data-index="' + i + '" class="options-lines ' + settings.line[s]._class + '" value="' + (line[s] || settings.line[s].default || '') + '">\n';
+                            text += '<input data-option="' + s + '" type="' + (settings.line[s].type || 'text') + '" style="width: 100%; ' + (settings.line[s].inputStyle || '') + '" data-index="' + i + '" class="options-lines ' + settings.line[s]._class + '" value="' + (line[s] || settings.line[s].default || '') + '">\n';
                         }
                         text += '</td>\n';
                     }
