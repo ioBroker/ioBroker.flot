@@ -1,9 +1,9 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.4",
+        "version": "1.5.5",
         "news": {
-            "1.5.4": {
+            "1.5.5": {
               "en": "remove area, line plot \nadd fill value, points option",
               "de": "Area, LinienPlot gelöscht\nUnterstützung Füllwert und Punktenoption",
               "ru": "Удалены area и line plot\nПоддержка заливки и опции точек"
