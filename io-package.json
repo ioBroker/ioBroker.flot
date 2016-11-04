@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.5",
+        "version": "1.5.6",
         "news": {
+            "1.5.6": {
+              "en": "fix marking line",
+              "de": "Korrigiere Markierungslinie",
+              "ru": "Исправлена горизонтальная линия"
+            },
             "1.5.5": {
               "en": "remove area, line plot \nadd fill value, points option",
               "de": "Area, LinienPlot gelöscht\nUnterstützung Füllwert und Punktenoption",

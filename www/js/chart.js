@@ -146,11 +146,11 @@ function CustomChart(options, config, seriesData, markLines) {
                         var text;
                         if (markLines[m].p === 'l') {
                             o = that.chart.pointOffset({x: line[0][0], y: line[0][1], yaxis: data[markLines[m].l + markingsOffset].yaxis, xaxis: data[markLines[m].l + markingsOffset].xaxis});
-                            o.top -= parseFloat(markLines[m].py) || 0;
+                            o.top -= markLines[m].py;
                             text = markLines[m].d;
                         } else {//if (markLines[m].p === 'r') {
                             o = that.chart.pointOffset({x: line[1][0], y: line[1][1], yaxis: data[markLines[m].l + markingsOffset].yaxis, xaxis: data[markLines[m].l + markingsOffset].xaxis});
-                            o.top -= parseFloat(markLines[m].py) || 0;
+                            o.top -= markLines[m].py;
                             text = '<div style="width: 100%; margin-left: -100%; padding-right: 15px; white-space: nowrap">' + markLines[m].d + '</div>';
                         }
                         $('<div class="marklines-label"  style="padding-left: 10px;  white-space: nowrap">' + text + '</div>').css({
@@ -244,7 +244,11 @@ function CustomChart(options, config, seriesData, markLines) {
         if (markLines && markLines.length) {
             for (var m = 0; m < markLines.length; m++) {
                 markingsOffset++;
-                markLines[m].v = parseFloat(markLines[m].v) || 0;
+                markLines[m].v  = parseFloat(markLines[m].v)  || 0; // value
+                markLines[m].l  = parseInt(markLines[m].l)    || 0; // line number
+                markLines[m].s  = parseFloat(markLines[m].s)  || 0; // shadow size
+                markLines[m].t  = parseFloat(markLines[m].t)  || 0; // line width
+                markLines[m].py = parseFloat(markLines[m].py) || 0; // y offset of label
                 series.push({
                     id:         'line' + m,
                     xaxis:      {show: false},
