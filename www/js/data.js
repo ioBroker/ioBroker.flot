@@ -712,26 +712,26 @@ function updateLive() {
 
 function avg(data, range) {
     var r = [];
-    var rd = [];
+    var rd;
     var i1;
     var s;
+    var cnt;
     for(var i = 0; i < data.length; i++) {
         if (i < range) {
             i1 = 0;
         } else {
             i1 = i - range + 1;
         }
-        rd = [];
-        rd[0] = data[i][0];
+        rd = [data[i][0], null];
         if (data[i][1] !== null) {
-            s = 0;
+            s   = 0;
+            cnt = 0;
             for(var j = i1; j <= i; j++) {
                 if (data[j][1] === null) continue;
                 s += data[j][1];
+                cnt++;
             }
-            rd[1] = (s / (i - i1 + 1));
-        } else {
-            rd[1] = null;
+            rd[1] = s / cnt;
         }
         r.push(rd);
     }
