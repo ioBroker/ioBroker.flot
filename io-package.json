@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.7",
+        "version": "1.5.8",
         "news": {
+            "1.5.8": {
+              "en": "Add series as X ticks",
+              "de": "Möglichkeit ein Wert als X Beschriftung zu benutzen",
+              "ru": "Возможность показывать X подписи из истории"
+            },
             "1.5.7": {
               "en": "Small fix in smoothing algorithm",
               "de": "Korrigiere smoothing Algoritmus",

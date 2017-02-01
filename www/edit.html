@@ -222,6 +222,10 @@
                     <td class="translate" id="spanName">Step span:</td>
                     <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
+                <tr class="time_ticks">
+                    <td class="translate">Ticks from:</td>
+                    <td><input id="ticks" class="value input" style="display: inline;" /><button style="display: inline; margin-right: 15px;" id="ticks_select"></button></td>
+                </tr>
             </table>
         </div>
         <h3 class="translate chapter_options">Options</h3>
@@ -654,10 +658,10 @@
 
                     // upper value
                     text += '<td><input class="markline-value" data-index="' + i + '" data-option="v" style="width: 200px;display: inline"/></td>';
-                    text += '<td><button style="display: inline;margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="v">...</button></td>';
+                    text += '<td><button style="display: inline; margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="v">...</button></td>';
                     // lower value
                     text += '<td><input class="markline-value" data-index="' + i + '" data-option="vl" style="width: 200px;display: inline"/></td>';
-                    text += '<td><button style="display: inline;margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="vl">...</button></td>';
+                    text += '<td><button style="display: inline; margin-right: 15px;" class="markline-select-dialog" data-index="' + i + '" data-option="vl">...</button></td>';
                     // color
                     text += '<td><input class="markline-value markline-color" data-index="' + i + '" data-option="c"/ style="width: 100px"></td>';
                     // fill
@@ -1400,6 +1404,24 @@
 
         $('#bg_predefined').change(function () {
             $('#bg').val($(this).val()).trigger('change');
+        });
+
+        $('#ticks_select').button({
+            text: false,
+            icons: {
+                primary: 'ui-icon-folder-open'
+            }
+        }).css({width: 25, height: 22}).click(function () {
+            $('#dialog-select-member').selectId('show', $('#ticks').val(), {
+                    common: {
+                        custom: true
+                    }
+                },
+                function (newId, ignore, obj) {
+                    if (newId) {
+                        $('#ticks').val(newId).trigger('change');
+                    }
+                });
         });
 
         if (setup.options.bg || setup.options.bg === 0) {

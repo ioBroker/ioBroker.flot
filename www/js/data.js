@@ -104,6 +104,7 @@ config.afterComma   = (config.afterComma === undefined) ? 2 : parseInt(config.af
 config.timeType     = config.timeArt || config.timeType || 'relative';
 //    if ((config.max !== undefined && config.max !== '' && config.max !== null && parseFloat(config.max) != NaN)) config.max = parseFloat(config.max);
 var seriesData      = [];
+var ticks           = null;
 var liveInterval;
 
 var navOptions      = {};
@@ -455,7 +456,7 @@ function prepareChart() {
         titleId:    'title',
         tooltipId:  'tooltip',
         cbOnZoom:   onZoom
-    }, config, seriesData, config.m);
+    }, config, seriesData, config.m, ticks);
     
     if (config.zoom) {
         $('#resetZoom').unbind('click').click(function () {
@@ -565,6 +566,55 @@ function _readOneLine(index, cb) {
     });
 }
 
+function readTicks(callback) {
+    if (!config.ticks) {
+        callback && callback(null);
+    } else {
+        socket.emit('getObject', config.ticks, function (err, res) {
+            var index = 0;
+            var option = JSON.parse(JSON.stringify(getStartStop(index)));
+            option.instance  = config.l[index].instance;
+            option.sessionId = sessionId;
+            option.aggregate = 'onchange';
+
+            //console.log(JSON.stringify(option));
+            console.log('Ticks: ' + new Date(option.start) + ' - ' + new Date(option.end));
+            socket.emit('getHistory', config.ticks, option, function (err, res, stepIgnore, _sessionId) {
+                if (err) window.alert(err);
+
+                if (sessionId && _sessionId && _sessionId !== sessionId) {
+                    console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
+                    return;
+                }
+
+                if (!err && res) {
+                    var _series = ticks || [];
+                    if (ticks && ticks.length) ticks.splice(0, ticks.length);
+
+                    for (var i = 0; i < res.length; i++) {
+                        // if less 2000.01.01 00:00:00
+                        if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
+
+                        if (!res[i].val !== null) _series.push([res[i].ts, res[i].val]);
+                    }
+                    // add start and end
+                    if (_series.length) {
+                        if (_series[0][0] > option.start) _series.unshift([option.start, '']);
+                        if (_series[_series.length - 1][0] < option.end) _series.push([option.end, '']);
+                    } else {
+                        _series.push([option.start, '']);
+                        _series.push([option.end,   '']);
+                    }
+                    // free memory
+                    res = null;
+                    ticks = _series;
+                }
+                if (callback) callback(_series);
+            });
+        });
+    }
+}
+
 function readMarkings(cb) {
     var count = 0;
     if (config.m && config.m.length) {
@@ -629,18 +679,20 @@ function readData(hidden) {
 
             _readOneLine(j, function () {
                 if (!--ready) {
-                    readMarkings(function () {
-                        if (!subscribed) {
-                            subscribed = true;
-                            if (subscribes.length) {
-                                for (var s = 0; s < subscribes.length; s++) {
-                                    socket.emit('subscribe', subscribes[s]);
+                    readTicks(function (_ticks) {
+                        readMarkings(function () {
+                            if (!subscribed) {
+                                subscribed = true;
+                                if (subscribes.length) {
+                                    for (var s = 0; s < subscribes.length; s++) {
+                                        socket.emit('subscribe', subscribes[s]);
+                                    }
                                 }
                             }
-                        }
 
-                        $('#server-disconnect').hide();
-                        prepareChart();
+                            $('#server-disconnect').hide();
+                            prepareChart();
+                        });
                     });
                 }
             });
@@ -703,8 +755,10 @@ function updateLive() {
         seriesData[index] = [];
         readOneChart(config.l[index].id, config.l[index].instance, index, function () {
             if (!--ready) {
-                chart.update(seriesData);
-                $('.loader').hide();
+                readTicks(function (_ticks) {
+                    chart.update(seriesData, null, _ticks);
+                    $('.loader').hide();
+                });
             }
         });
     }

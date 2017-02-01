@@ -5,10 +5,10 @@
 //   cbOnZoom:
 // }
 
-function CustomChart(options, config, seriesData, markLines) {
+function CustomChart(options, config, seriesData, markLines, ticks) {
     'use strict';
     
-    if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData);
+    if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData, markLines, ticks);
     
     this.chart   = null;
     this.config  = config;
@@ -52,6 +52,7 @@ function CustomChart(options, config, seriesData, markLines) {
     }
 
     function _tickXFormatter(number, object) {
+        if (ticks) return ' ';
         var now = new Date(parseInt(number, 10));
         if (that.config.timeFormatDate && that.config.timeFormatTime) {
             if (!object.ticks.length) {
@@ -524,6 +525,8 @@ function CustomChart(options, config, seriesData, markLines) {
                 }
                 seriesData[ii][0][1] = null;
                 seriesData[ii][seriesData[ii].length - 1][1] = null;
+            } else if (ticks) {
+                xaxi.ticks = ticks;
             }
 
             if (that.config.zoom) {
@@ -668,7 +671,7 @@ function CustomChart(options, config, seriesData, markLines) {
         }
     })();
 
-    this.update = function (newSeriesData, newMarkingsData) {
+    this.update = function (newSeriesData, newMarkingsData, newTicks) {
         if (newSeriesData) {
             var xMin = Infinity;
             var xMax = 0;

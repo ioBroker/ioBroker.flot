@@ -41,6 +41,7 @@ var settings = {
     time_end:           {enabled: true},
     time_aggregateType: {enabled: true},
     time_aggregateSpan: {enabled: true},
+    time_ticks:         {enabled: true},
 
     chapter_options:    {enabled: true},
     options_width:      {enabled: true},

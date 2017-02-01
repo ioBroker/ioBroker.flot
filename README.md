@@ -22,6 +22,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.5.8 (2017-02-01)
+* (bluefox) Add series as X ticks
+
 ### 1.5.7 (2017-01-26)
 * (bluefox) Small fix in smoothing algorithm
 
