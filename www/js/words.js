@@ -368,6 +368,7 @@ systemDictionary = {
     "X-Axis ticks":         {"en": "X-Axis ticks",          "de": "X-Achse-Ticks",          "ru": "Кол-во делений на шкале X"},
     "Y-Axis ticks":         {"en": "Y-Axis ticks",          "de": "Y-Achse-Ticks",          "ru": "Кол-во делений на шкале Y"},
     "ignore null values":   {"en": "ignore null values",    "de": "null-Werte ignorieren",  "ru": "игнорировать значения null"},
+    "Ticks from:":          {"en": "Use X-ticks from:",       "de": "Benutze X-Ticks aus:", "ru": "Подписи X-делений из:"},
     "use 0 instead of null values": {
         "en": "use 0 instead of null values",
         "de": "0 statt null benutzen",
