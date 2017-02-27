@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.5.8",
+        "version": "1.5.9",
         "news": {
+            "1.5.9": {
+              "en": "New color picker\nIf 'none' for title selected => do not show any title\nadd date format 'dd.mm.'",
+              "de": "Neuer Farbselektor\nZeige keine Beschriftung falls 'none'\nNeues Datumformat 'dd.mm.'",
+              "ru": "Новый выбор цвета\nЕсли 'ничего' выбрано для подписи, то ничего не показывать\nдобавлен формат даты 'dd.mm.'"
+            },
             "1.5.8": {
               "en": "Add series as X ticks",
               "de": "Möglichkeit ein Wert als X Beschriftung zu benutzen",

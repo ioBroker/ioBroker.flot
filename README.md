@@ -22,6 +22,11 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.5.9 (2017-02-27)
+* (bluefox) New color picker
+* (bluefox) If 'none' for title selected => do not show any title
+* (bluefox) add date format 'dd.mm.'
+
 ### 1.5.8 (2017-02-01)
 * (bluefox) Add series as X ticks
 

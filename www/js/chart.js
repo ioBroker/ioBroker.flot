@@ -177,7 +177,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
         var $title = $('#' + that.options.titleId);
 
         if (that.config.title && !$title.html()) {
-            $title.html(decodeURI(that.config.title));
+            $title.html(that.config.titlePos ? decodeURI(that.config.title) : '');
             if (that.config.titleColor) $title.css('color',    that.config.titleColor);
             if (that.config.titleSize) $title.css('font-size', that.config.titleSize);
             if (that.config.titlePos) {

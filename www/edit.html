@@ -2,19 +2,20 @@
 <head>
     <title>Flot Edit</title>
     <link href="img/favicon.png" rel="shortcut icon" type="image/x-icon" />
-    <link type="text/css" rel="stylesheet" href="/lib/css/themes/jquery-ui/default/jquery-ui.min.css">
-    <link type="text/css" rel="stylesheet" href="/lib/css/fancytree/ui.fancytree.min.css"/>
+    <link type="text/css" rel="stylesheet" href="../../lib/css/themes/jquery-ui/default/jquery-ui.min.css">
+    <link type="text/css" rel="stylesheet" href="../../lib/css/fancytree/ui.fancytree.min.css"/>
+    <link type="text/css" rel="stylesheet" href="lib/css/jquery.colorpicker.css"/>
 
-    <script type="text/javascript" src="/lib/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/lib/js/jquery-ui-1.10.3.full.min.js"></script>
-    <script type="text/javascript" src="/lib/js/jquery.fancytree-all.min.js"></script>
-    <script type="text/javascript" src="/lib/js/translate.js"></script>
-    <script type="text/javascript" src="/lib/js/selectID.js"></script>
-    <script type="text/javascript" src="/lib/js/socket.io.js"></script>
-    <script type="text/javascript" src="lib/js/jqColorPicker.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery-ui-1.10.3.full.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/jquery.fancytree-all.min.js"></script>
+    <script type="text/javascript" src="../../lib/js/translate.js"></script>
+    <script type="text/javascript" src="../../lib/js/selectID.js"></script>
+    <script type="text/javascript" src="../../lib/js/socket.io.js"></script>
     <script type="text/javascript" src="lib/js/jquery-deparam.js"></script>
+    <script type="text/javascript" src="lib/js/jquery.colorpicker.js"></script>
 
-    <script type="text/javascript" src="/_socket/info.js"></script>
+    <script type="text/javascript" src="../../_socket/info.js"></script>
     <script type="text/javascript" src="js/words.js"></script>
     <script type="text/javascript" src="js/settings.js"></script>
 
@@ -57,13 +58,18 @@
         table.fixed td { overflow: hidden; }
         table.fixed th { overflow: hidden; }
 
+        .no-spaces {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
     </style>
 </head>
 <body style="height: calc(100% - 16px)">
 
 <div style="height: 250px; position: relative">
     <div id="accordion">
-        <h3><span class="translate">Input data</span><div style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</div></h3>
+        <h3><span class="translate">Input data</span><span style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</span></h3>
         <div style="width: 100%; height: 100%;">
             <table>
                 <tr>
@@ -223,46 +229,46 @@
                     <td><input id="aggregateSpan" value="300" class="value input"></td>
                 </tr>
                 <tr class="time_ticks">
-                    <td class="translate">Ticks from:</td>
-                    <td><input id="ticks" class="value input" style="display: inline;" /><button style="display: inline; margin-right: 15px;" id="ticks_select"></button></td>
+                    <td><label class="translate" for="ticks">Ticks from:</label></td>
+                    <td><table class="no-spaces"><tr><td><input id="ticks" class="value input" style="display: inline;" /></td><td><button style="display: inline; margin-right: 15px;" id="ticks_select"></button></td></tr></table></td>
                 </tr>
             </table>
         </div>
         <h3 class="translate chapter_options">Options</h3>
         <div style="display: flex" class="chapter_options">
-            <table style="width: 480px">
+            <table style="width: 380px">
                 <tr>
                     <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
                 </tr>
                 <tr class="options_width">
-                    <td class="translate" style="width: 270px">Width:</td>
-                    <td><input id="width" class="value input spinner"></td>
+                    <td style="width: 270px"><label class="translate" for="width">Width:</label></td>
+                    <td><input id="width" class="value input spinner"/></td>
                 </tr>
                 <tr class="options_height">
-                    <td class="translate">Height:</td>
+                    <td><label class="translate" for="height">Height:</label></td>
                     <td><input id="height" class="value input spinner"></td>
                 </tr>
                 <tr class="options_noborder">
-                    <td class="translate">No border:</td>
+                    <td><label class="translate" for="noBorder">No border:</label></td>
                     <td><select class="value input" id="noBorder">
                         <option value="" class="translate"></option>
                         <option value="noborder" class="translate">yes</option>
                     </select></td>
                 </tr>
                 <tr class="options_window_bg">
-                    <td class="translate label">Window background:</td>
+                    <td class="label"><label class="translate" for="window_bg">Window background:</label></td>
                     <td>
-                        <input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"></td><td><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_bg_custom">
-                    <td class="translate label">Custom chart background:</td>
+                    <td class="label"><label class="translate" for="bg_custom">Custom chart background:</label></td>
                     <td>
                         <input type="checkbox" id="bg_custom">
                     </td>
                 </tr>
                 <tr class="options_bg">
-                    <td class="translate label">Chart background:</td>
+                    <td class="label"><label class="bg_predefined" for="bg_custom">Chart background:</label></td>
                     <td>
                         <select id="bg_predefined">
                             <option value="" class="translate">default</option>
@@ -283,25 +289,25 @@
                 <tr class="options_x_labels_color">
                     <td class="translate label">X axis labels color:</td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="x_labels_color"><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_y_labels_color">
                     <td class="translate label">Y axis labels color:</td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="y_labels_color"><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_border_color">
                     <td><label class="translate label" for="border_color">Border color:</label></td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="border_color"><button data-clear="border_color" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="border_color"></td><td><button data-clear="border_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_grid_color">
                     <td class="translate label">Grid color:</td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="grid_color"><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="grid_color"></td><td><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_border_width">
@@ -319,7 +325,7 @@
                 <tr class="options_barColor">
                     <td><label  class="translate" for="barColor">Fill color:</label></td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="barColor"><button data-clear="barColor" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barColor"></td><td><button data-clear="barColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
                 <tr class="options_barLabels">
@@ -343,12 +349,12 @@
                 <tr class="options_barFontColor">
                     <td><label class="translate" for="barFontColor">Label color:</label></td>
                     <td>
-                        <input type="text" class="value input input-static-color" id="barFontColor"><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button>
+                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barFontColor"></td><td><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
                     </td>
                 </tr>
             </table>
 
-            <table style="margin-left: 25px">
+            <table style="margin-left: 25px; width: 300px">
                 <tr><td class="translate header" colspan="2" style="text-align: center">Title</td></tr>
                 <tr class="options_title">
                     <td class="translate">Title:</td>
@@ -375,8 +381,8 @@
                     </select></td>
                 </tr>
                 <tr class="options_titleColor">
-                    <td class="translate">Title color:</td>
-                    <td><input type="text" id="titleColor" class="value input input-static-color"><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td>
+                    <td><label class="translate" for="titleColor">Title color:</label></td>
+                    <td><table class="no-spaces"><tr><td><input type="text" id="titleColor" class="value input input-static-color"></td><td><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
                 </tr>
                 <tr class="options_titleSize">
                     <td class="translate">Title size:</td>
@@ -385,7 +391,7 @@
 
             </table>
 
-            <table style="margin-left: 25px">
+            <table style="margin-left: 25px; width: 400px">
                 <tr><td class="translate header" colspan="2" style="text-align: center">Options</td></tr>
                 <tr class="options_legend">
                     <td class="translate">Show legend:</td>
@@ -407,7 +413,7 @@
                 </tr>
                 <tr class="options_legBg">
                     <td><label class="translate" for="legBg">Legend background:</label></td>
-                    <td><input class="value input input-static-color" id="legBg" style="display: inline-block"><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td>
+                    <td><table class="no-spaces"><tr><td><input class="value input input-static-color" id="legBg" style="display: inline-block"></td><td><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
                 </tr>
                 <tr class="options_hoverDetail">
                     <td class="translate">Hover details:</td>
@@ -418,7 +424,9 @@
                     <td><select class="value input" id="timeFormat">
                         <option value="" class="translate">Default</option>
                         <option value="%H:%M %d.%m">HH:MM dd.mm</option>
+                        <option value="%H:%M %d.%m.">HH:MM dd.mm.</option>
                         <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
+                        <option value="%H:%M <br> %d.%m.">HH:MM / dd.mm.</option>
 						<option value="%H:%M <br> %d.%m.%y">HH:MM / dd.mm.yy</option>
                         <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
                         <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
@@ -700,13 +708,18 @@
                 }
             });
 
-            $('.markline-color').colorPicker({
+            /*$('.markline-color').colorPicker({
                 renderCallback: function ($elm, toggled) {
                     if (toggled === false) {
                         $elm.trigger('change');
                     }
                 }
-            });
+            });*/
+            $('.markline-color').colorpicker({
+                colorFormat: '#HEX'
+            }).on('change', function () {
+                $(this).css({'background-color': $(this).val(), color: invertColor($(this).val())});
+            }).trigger('change');
 
             $('.markline-remove').button({
                 icons: {primary: 'ui-icon-trash'},
@@ -990,13 +1003,76 @@
 
             $('#idslist').html(thead + text);
 
-            $('.input-color').colorPicker({
+            /*$('.input-color').colorPicker({
                 renderCallback: function ($elm, toggled) {
                     if (toggled === false) {
                         $elm.trigger('change');
                     }
                 }
-            });
+            });*/
+            if (systemLang === 'de') {
+                $.colorpicker.regional = {
+                    '': {
+                        ok: 'OK',
+                        cancel: 'Abbrechen',
+                        none: 'Nichts',
+                        button: 'Farbe',
+                        title: 'Farbe wählen',
+                        transparent: 'Transparent',
+                        hsvH: 'H',
+                        hsvS: 'S',
+                        hsvV: 'V',
+                        rgbR: 'R',
+                        rgbG: 'G',
+                        rgbB: 'B',
+                        labL: 'L',
+                        labA: 'a',
+                        labB: 'b',
+                        hslH: 'H',
+                        hslS: 'S',
+                        hslL: 'L',
+                        cmykC: 'C',
+                        cmykM: 'M',
+                        cmykY: 'Y',
+                        cmykK: 'K',
+                        alphaA: 'A'
+                    }
+                };
+            } else if (systemLang === 'ru') {
+                $.colorpicker.regional = {
+                    '': {
+                        ok: 'OK',
+                        cancel: 'Отмена',
+                        none: 'Нет',
+                        button: 'Цвет',
+                        title: 'Выбрать цвет',
+                        transparent: 'Прозрачность',
+                        hsvH: 'H',
+                        hsvS: 'S',
+                        hsvV: 'V',
+                        rgbR: 'R',
+                        rgbG: 'G',
+                        rgbB: 'B',
+                        labL: 'L',
+                        labA: 'a',
+                        labB: 'b',
+                        hslH: 'H',
+                        hslS: 'S',
+                        hslL: 'L',
+                        cmykC: 'C',
+                        cmykM: 'M',
+                        cmykY: 'Y',
+                        cmykK: 'K',
+                        alphaA: 'A'
+                    }
+                };
+            }
+
+            $('.input-color').colorpicker({
+                colorFormat: '#HEX'
+            }).on('change', function () {
+                $(this).css({'background-color': $(this).val(), color: invertColor($(this).val())});
+            }).trigger('change');
 
             $('.id-remove').button({
                 icons: {primary: 'ui-icon-trash'},
@@ -1208,6 +1284,14 @@
         $('#updatePreview').button('option', 'disabled', true);
     }
 
+    function invertColor(hexcolor){
+        hexcolor = hexcolor.replace('#', '');
+        var r = parseInt(hexcolor.substr(0, 2), 16);
+        var g = parseInt(hexcolor.substr(2, 2), 16);
+        var b = parseInt(hexcolor.substr(4, 2), 16);
+        var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+        return (yiq >= 128) ? 'black' : 'white';
+    }
     $(document).ready(function() {
         if (typeof(Storage) !== 'undefined') {
             var _setup = localStorage.getItem('iobroker.Flot');
@@ -1358,15 +1442,20 @@
             $(this).trigger('change');
         });
 
-        $('.input-static-color').colorPicker({
+        /*$('.input-static-color').colorPicker({
             renderCallback: function ($elm, toggled) {
                 if (toggled === false) {
                     $elm.trigger('change');
                 }
             }
-        });
+        });*/
+        $('.input-static-color').colorpicker({
+            colorFormat: '#HEX'
+        }).on('change', function () {
+            $(this).css({'background-color': $(this).val(), color: invertColor($(this).val())});
+        }).trigger('change');
 
-        $('.clear-button').button({
+        $('.clear-button').hide();/*.button({
             icons: {
                 primary: 'ui-icon-trash'
             },
@@ -1376,10 +1465,10 @@
             setTimeout(function () {
                 $('#' + id)
                         .val('')
-                        .css({color: '#000', 'background-color': '#FFF'})
-                        .trigger('change');
+                        .css({color: '#000', 'background-color': '#FFF'});
+                        //.trigger('change');
             }, 500);
-        });
+        });*/
 
         $('#timeType').change(function () {
             $('.relative, .static').hide();
