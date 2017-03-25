@@ -3,6 +3,11 @@
         "name":         "flot",
         "version": "1.5.9",
         "news": {
+            "1.6.0": {
+              "en": "Change edit layout",
+              "de": "Ändere Edit Layout",
+              "ru": "Изменено положение элементов при редактировании "
+            },
             "1.5.9": {
               "en": "New color picker\nIf 'none' for title selected => do not show any title\nadd date format 'dd.mm.'",
               "de": "Neuer Farbselektor\nZeige keine Beschriftung falls 'none'\nNeues Datumformat 'dd.mm.'",

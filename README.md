@@ -22,6 +22,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.6.0 (2017-03-25)
+* (bluefox) Change edit layout
+
 ### 1.5.9 (2017-02-27)
 * (bluefox) New color picker
 * (bluefox) If 'none' for title selected => do not show any title

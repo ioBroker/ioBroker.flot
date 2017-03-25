@@ -55,6 +55,14 @@
             padding: 5px 10px !important;
         }
 
+        #accordion {
+            font-size: 14px !important;
+        }
+
+        #accordion>div {
+            padding: 3px;
+        }
+
         table.fixed td { overflow: hidden; }
         table.fixed th { overflow: hidden; }
 
@@ -63,42 +71,64 @@
             border-spacing: 0;
         }
 
+        .ui-resizable-s {
+            cursor: s-resize;
+            height: 10px;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            background-color: gray;
+        }
+        .version {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+            color: white;
+        }
+
     </style>
 </head>
-<body style="height: calc(100% - 16px)">
+<body style="height: calc(100% - 16px); width: 100%; margin: 0; padding: 0;">
 
-<div style="height: 250px; position: relative">
-    <div id="accordion">
-        <h3><span class="translate">Input data</span><span style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</span></h3>
-        <div style="width: 100%; height: 100%;">
-            <table>
-                <tr>
-                    <td colspan="7">
-                        <button style="margin-left: 1px" id="ids_add" class="translateB">Add new line</button>
-                        <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
-                        <span class="translate" style="padding-left: 20px">Auto-update:</span><input type="checkbox" id="autoUpdate"/>
-                        <button id="arrangeBools" class="translateB button_arrange_bools">Arrange bools</button>
-                    </td>
-                </tr>
-            </table>
-            <div style="width: 100%; height: 100%">
-                <table style="table-layout: fixed;" class="fixed" id="idslist_table"  border="0" cellspacing="0" cellpadding="0">
-                    <tbody id="idslist"></tbody>
+<div id="resizable1" style="overflow: hidden; height: 360px">
+    <div style="height: calc(100% - 75px); position: relative; overflow: hidden;">
+        <div id="accordion" style="">
+            <ul>
+                <li><a href="#chapter_ids" class="translate">Input data</a></li>
+                <li><a href="#chapter_markline" class="translate">Markings</a></li>
+                <li><a href="#chapter_time" class="translate">Time</a></li>
+                <li><a href="#chapter_options" class="translate">Options</a></li>
+            </ul>
+            <!--h3><span class="translate">Input data</span><span style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</span></h3-->
+            <div id="chapter_ids" style="width: 100%; height: 100%">
+                <table>
+                    <tr>
+                        <td colspan="7">
+                            <button style="margin-left: 1px" id="ids_add" class="translateB">Add new line</button>
+                            <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
+                            <span class="translate" style="padding-left: 20px">Auto-update:</span><input type="checkbox" id="autoUpdate"/>
+                            <button id="arrangeBools" class="translateB button_arrange_bools">Arrange bools</button>
+                        </td>
+                    </tr>
                 </table>
+                <div style="width: 100%;">
+                    <table style="table-layout: fixed;" class="fixed" id="idslist_table"  border="0" cellspacing="0" cellpadding="0">
+                        <tbody id="idslist"></tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-        <h3 class="markline-option"><span class="translate">Markings</span></h3>
-        <div class="markline-option" style="width: 100%; height: 100%;">
-            <table style="width: 100%">
-                <tr>
-                    <td colspan="7">
-                        <button style="margin-left: 1px" id="markline_add" class="translateB">Add new markings</button>
-                    </td>
-                </tr>
-            </table>
-            <div style="width: 100%; height: 100%">
-                <table style="table-layout: fixed;" class="fixed" id="markline_table"  border="0" cellspacing="0" cellpadding="0">
-                    <thead id="markline_head">
+            <!--h3 class="markline-option"><span class="translate">Markings</span></h3-->
+            <div id="chapter_markline" class="markline-option" style="width: 100%; height: 100%;">
+                <table style="width: 100%">
+                    <tr>
+                        <td colspan="7">
+                            <button style="margin-left: 1px" id="markline_add" class="translateB">Add new markings</button>
+                        </td>
+                    </tr>
+                </table>
+                <div style="width: 100%; height: 100%">
+                    <table style="table-layout: fixed;" class="fixed" id="markline_table"  border="0" cellspacing="0" cellpadding="0">
+                        <thead id="markline_head">
                         <tr class="header">
                             <td class="translate" style="width: 30%; white-space: nowrap">Line ID</td>
                             <td class="translate" style="width: 130px; white-space: nowrap">Upper value or ID</td>
@@ -116,373 +146,375 @@
                             <td class="translate" style="width: 180px; white-space: nowrap">Text color</td>
                             <td class="translate" style="width: 80px"></td>
                         </tr>
-                    </thead>
-                    <tbody id="markline_list"></tbody>
+                        </thead>
+                        <tbody id="markline_list"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!--h3 class="chapter_time"><span class="translate">Time</span> <span id="time_span"></span></h3-->
+            <div id="chapter_time" style="display: flex" class="chapter_time">
+                <table >
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
+                    </tr>
+                    <tr class="time_timeType">
+                        <td class="translate">Aggregation:</td>
+                        <td><select id="timeType" class="input value">
+                            <option value="relative" class="translate">relative</option>
+                            <option value="static"   class="translate">static</option>
+                        </select></td>
+                    </tr>
+                    <tr class="relative time_relativeEnd">
+                        <td class="translate">End:</td>
+                        <td><select id="relativeEnd" class="input value">
+                            <option value="now"         class="translate">now</option>
+                            <option value="1minute"     class="translate">end of minute</option>
+                            <option value="5minutes"    class="translate">end of 5 minutes</option>
+                            <option value="10minutes"   class="translate">end of 10 minutes</option>
+                            <option value="30minutes"   class="translate">end of 30 minutes</option>
+                            <option value="1hour"       class="translate">end of hour</option>
+                            <option value="2hours"      class="translate">end of 2 hours</option>
+                            <option value="3hours"      class="translate">end of 3 hours</option>
+                            <option value="4hours"      class="translate">end of 4 hours</option>
+                            <option value="6hours"      class="translate">end of 6 hours</option>
+                            <option value="8hours"      class="translate">end of 8 hours</option>
+                            <option value="12hours"     class="translate">end of 12 hours</option>
+                            <option value="today"       class="translate">end of day</option>
+                            <option value="weekEurope"  class="translate">end of sunday</option>
+                            <option value="weekUsa"     class="translate">end of saturday</option>
+                            <option value="month"       class="translate">this month</option>
+                            <option value="year"        class="translate">this year</option>
+                        </select></td>
+                    </tr>
+                    <tr class="relative time_range">
+                        <td class="translate">Range:</td>
+                        <td><select id="range"      class="value input">
+                            <option value="10"      class="translate">10 minutes</option>
+                            <option value="30"      class="translate">30 minutes</option>
+                            <option value="60"      class="translate">1 hour</option>
+                            <option value="120"     class="translate">2 hours</option>
+                            <option value="180"     class="translate">3 hours</option>
+                            <option value="360"     class="translate">6 hours</option>
+                            <option value="720"     class="translate">12 hours</option>
+                            <option value="1440"    class="translate">1 day</option>
+                            <option value="2880"    class="translate">2 days</option>
+                            <option value="4320"    class="translate">3 days</option>
+                            <option value="10080"   class="translate">7 days</option>
+                            <option value="20160"   class="translate">14 days</option>
+                            <option value="1m"      class="translate">1 month</option>
+                            <option value="2m"      class="translate">2 months</option>
+                            <option value="3m"      class="translate">3 months</option>
+                            <option value="6m"      class="translate">6 months</option>
+                            <option value="1y"      class="translate">1 year</option>
+                            <option value="2y"      class="translate">2 years</option>
+                        </select></td>
+                    </tr>
+                    <tr class="relative time_live">
+                        <td class="translate">Live update every:</td>
+                        <td><select class="value" id="live">
+                            <option value=""        class="translate">none</option>
+                            <option value="5"       class="translate">5 seconds</option>
+                            <option value="10"      class="translate">10 seconds</option>
+                            <option value="15"      class="translate">15 seconds</option>
+                            <option value="20"      class="translate">20 seconds</option>
+                            <option value="30"      class="translate">30 seconds</option>
+                            <option value="60"      class="translate">1 minute</option>
+                            <option value="120"     class="translate">2 minutes</option>
+                            <option value="300"     class="translate">5 minutes</option>
+                            <option value="600"     class="translate">10 minutes</option>
+                            <option value="900"     class="translate">15 minutes</option>
+                            <option value="1200"    class="translate">20 minutes</option>
+                            <option value="1800"    class="translate">30 minutes</option>
+                            <option value="3600"    class="translate">1 hour</option>
+                            <option value="7200"    class="translate">2 hours</option>
+                            <option value="10800"   class="translate">3 hours</option>
+                            <option value="21600"   class="translate">6 hours</option>
+                            <option value="43200"   class="translate">12 hours</option>
+                            <option value="86400"   class="translate">1 day</option>
+                        </select></td>
+                    </tr>
+                    <tr class="static time_start">
+                        <td class="translate">Start:</td>
+                        <td><input type="date" id="start" class="value input"> <input type="time" id="start_time" class="value input_time"></td>
+                    </tr>
+                    <tr class="static time_end">
+                        <td class="translate">End:</td>
+                        <td><input type="date" id="end" class="value input"> <input type="time" id="end_time" class="value input_time"></td>
+                    </tr>
+                </table>
+
+                <table style="margin-left: 25px">
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
+                    </tr>
+                    <tr class="time_aggregateType">
+                        <td class="translate ">Step type:</td>
+                        <td><select id="aggregateType" class="value input">
+                            <option value="count" class="translate">counts</option>
+                            <option value="step" class="translate">seconds</option>
+                        </select></td>
+                    </tr>
+                    <tr class="time_aggregateSpan">
+                        <td class="translate" id="spanName">Step span:</td>
+                        <td><input id="aggregateSpan" value="300" class="value input"></td>
+                    </tr>
+                    <tr class="time_ticks">
+                        <td><label class="translate" for="ticks">Ticks from:</label></td>
+                        <td><table class="no-spaces"><tr><td><input id="ticks" class="value input" style="display: inline;" /></td><td><button style="display: inline; margin-right: 15px;" id="ticks_select"></button></td></tr></table></td>
+                    </tr>
+                </table>
+            </div>
+            <!--h3 class="translate chapter_options">Options</h3-->
+            <div id="chapter_options" style="display: flex" class="chapter_options">
+                <table style="width: 380px">
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
+                    </tr>
+                    <tr class="options_width">
+                        <td style="width: 270px"><label class="translate" for="width">Width:</label></td>
+                        <td><input id="width" class="value input spinner"/></td>
+                    </tr>
+                    <tr class="options_height">
+                        <td><label class="translate" for="height">Height:</label></td>
+                        <td><input id="height" class="value input spinner"></td>
+                    </tr>
+                    <tr class="options_noborder">
+                        <td><label class="translate" for="noBorder">No border:</label></td>
+                        <td><select class="value input" id="noBorder">
+                            <option value="" class="translate"></option>
+                            <option value="noborder" class="translate">yes</option>
+                        </select></td>
+                    </tr>
+                    <tr class="options_window_bg">
+                        <td class="label"><label class="translate" for="window_bg">Window background:</label></td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"></td><td><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_bg_custom">
+                        <td class="label"><label class="translate" for="bg_custom">Custom chart background:</label></td>
+                        <td>
+                            <input type="checkbox" id="bg_custom">
+                        </td>
+                    </tr>
+                    <tr class="options_bg">
+                        <td class="label"><label class="bg_predefined" for="bg_custom">Chart background:</label></td>
+                        <td>
+                            <select id="bg_predefined">
+                                <option value="" class="translate">default</option>
+                                <option value="0">Portrait</option>
+                                <option value="1">Instagram</option>
+                                <option value="2">ServQuick</option>
+                                <option value="3">Metallic Toad</option>
+                                <option value="4">Clouds</option>
+                                <option value="5">Mirage</option>
+                                <option value="6">Steel Gray</option>
+                                <option value="7">Horizon</option>
+                                <option value="8">Koko Caramel</option>
+                                <option value="9">Turquoise flow</option>
+                            </select>
+                            <input type="text" id="bg" class="value input" style="display: none"/>
+                        </td>
+                    </tr>
+                    <tr class="options_x_labels_color">
+                        <td class="translate label">X axis labels color:</td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_y_labels_color">
+                        <td class="translate label">Y axis labels color:</td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_border_color">
+                        <td><label class="translate label" for="border_color">Border color:</label></td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="border_color"></td><td><button data-clear="border_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_grid_color">
+                        <td class="translate label">Grid color:</td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="grid_color"></td><td><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_border_width">
+                        <td class="translate label">Border width:</td>
+                        <td>
+                            <input type="text" class="value input" id="border_width">
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="width: 340px" class="options-bar">
+                    <tr>
+                        <td class="translate header" colspan="2" style="text-align: center">Bar settings</td>
+                    </tr>
+                    <tr class="options_barColor">
+                        <td><label  class="translate" for="barColor">Fill color:</label></td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barColor"></td><td><button data-clear="barColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                    <tr class="options_barLabels">
+                        <td><label  class="translate" for="barLabels">Show labels:</label></td>
+                        <td><select id="barLabels" class="value input">
+                            <option value=""       class="translate">none</option>
+                            <option value="topover"  class="translate">top over</option>
+                            <option value="topunder" class="translate">top under</option>
+                            <option value="bottom"   class="translate">bottom</option>
+                            <option value="middle"   class="translate">middle</option>
+                        </select></td>
+                    </tr>
+                    <tr class="options_barWidth">
+                        <td><label class="translate" for="barWidth">Bars width:</label></td>
+                        <td><input id="barWidth" class="value input"></td>
+                    </tr>
+                    <tr class="options_barFontSize">
+                        <td><label class="translate" for="barFontSize">Label font size:</label></td>
+                        <td><input id="barFontSize" class="value input"></td>
+                    </tr>
+                    <tr class="options_barFontColor">
+                        <td><label class="translate" for="barFontColor">Label color:</label></td>
+                        <td>
+                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barFontColor"></td><td><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                        </td>
+                    </tr>
+                </table>
+
+                <table style="margin-left: 25px; width: 300px">
+                    <tr><td class="translate header" colspan="2" style="text-align: center">Title</td></tr>
+                    <tr class="options_title">
+                        <td class="translate">Title:</td>
+                        <td><input type="text" id="title" class="value input"></td>
+                    </tr>
+                    <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
+                    <tr class="options_titlePos">
+                        <td class="translate">Title position:</td>
+                        <td><select class="value input" id="titlePos">
+                            <option value="" class="translate">none</option>
+                            <option value="top:35;left:65" class="translate">Top, left, inside</option>
+                            <option value="top:35;right:5" class="translate">Top, right, inside</option>
+                            <option value="top:35;left:50" class="translate">Top, center, inside</option>
+                            <option value="top:50;left:65" class="translate">Middle, left, inside</option>
+                            <option value="top:50;right:5" class="translate">Middle, right, inside</option>
+                            <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
+                            <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
+                            <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
+
+                            <option value="top:5;right:-5" class="translate">Top, right, outside</option>
+                            <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
+                            <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
+                            <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
+                        </select></td>
+                    </tr>
+                    <tr class="options_titleColor">
+                        <td><label class="translate" for="titleColor">Title color:</label></td>
+                        <td><table class="no-spaces"><tr><td><input type="text" id="titleColor" class="value input input-static-color"></td><td><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
+                    </tr>
+                    <tr class="options_titleSize">
+                        <td class="translate">Title size:</td>
+                        <td><input type="text" id="titleSize" class="value input"></td>
+                    </tr>
+
+                </table>
+
+                <table style="margin-left: 25px; width: 400px">
+                    <tr><td class="translate header" colspan="2" style="text-align: center">Options</td></tr>
+                    <tr class="options_legend">
+                        <td class="translate">Show legend:</td>
+                        <td><select class="value input" id="legend">
+                            <option value="" class="translate">none</option>
+                            <option value="nw" class="translate">Top, left</option>
+                            <option value="ne" class="translate">Top, right</option>
+                            <option value="sw" class="translate">Bottom, left</option>
+                            <option value="se" class="translate">Bottom, right</option>
+                        </select></td>
+                    </tr>
+                    <tr class="options_legColumns">
+                        <td class="translate">Legend columns:</td>
+                        <td><input type="number" class="value" id="legColumns"></td>
+                    </tr>
+                    <tr class="options_legBgOpacity">
+                        <td><label class="translate" for="legBgOpacity">Legend opacity (from 0 to 1):</label></td>
+                        <td><input class="value input" id="legBgOpacity"/></td>
+                    </tr>
+                    <tr class="options_legBg">
+                        <td><label class="translate" for="legBg">Legend background:</label></td>
+                        <td><table class="no-spaces"><tr><td><input class="value input input-static-color" id="legBg" style="display: inline-block"></td><td><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
+                    </tr>
+                    <tr class="options_hoverDetail">
+                        <td class="translate">Hover details:</td>
+                        <td><input type="checkbox" class="value" id="hoverDetail"></td>
+                    </tr>
+                    <tr class="options_timeFormat">
+                        <td class="translate">Time format:</td>
+                        <td><select class="value input" id="timeFormat">
+                            <option value="" class="translate">Default</option>
+                            <option value="%H:%M %d.%m">HH:MM dd.mm</option>
+                            <option value="%H:%M %d.%m.">HH:MM dd.mm.</option>
+                            <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
+                            <option value="%H:%M <br> %d.%m.">HH:MM / dd.mm.</option>
+                            <option value="%H:%M <br> %d.%m.%y">HH:MM / dd.mm.yy</option>
+                            <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
+                            <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
+                            <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
+                            <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
+                            <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
+                            <option value="%H:%M %m.%d">HH:MM mm.dd</option>
+                            <option value="%H:%M:%S">HH:MM:SS</option>
+                            <option value="%H:%M">HH:MM</option>
+                            <option value="%d.%m.%y">dd.mm.yy</option>
+                        </select></td>
+                    </tr>
+                    <tr class="options_smoothing">
+                        <td class="translate">Smoothing:</td>
+                        <td><input type="text" class="value input" id="smoothing"></td>
+                    </tr>
+                    <!--tr class="options_afterComma">
+                        <td class="translate">After comma:</td>
+                        <td><input type="text" class="value input" id="afterComma"></td>
+                    </tr-->
+                    <tr class="options_useComma">
+                        <td class="translate">Use comma:</td>
+                        <td><input type="checkbox" class="value" id="useComma"></td>
+                    </tr>
+                    <tr class="options_zoom">
+                        <td class="translate">Enable zoom and pan:</td>
+                        <td><input type="checkbox" class="value" id="zoom"></td>
+                    </tr>
+                    <tr class="options_noedit">
+                        <td class="translate">Hide edit button:</td>
+                        <td><input type="checkbox" class="value" id="noedit"></td>
+                    </tr>
+                    <tr class="options_animation">
+                        <td class="translate">Animation:</td>
+                        <td><select class="value input" id="animation">
+                            <option value="0" class="translate">no</option>
+                            <option value="300" class="translate">300ms</option>
+                            <option value="500" class="translate">500ms</option>
+                            <option value="1000" class="translate">1s</option>
+                            <option value="2000" class="translate">2s</option>
+                            <option value="3000" class="translate">3s</option>
+                            <option value="5000" class="translate">5s</option>
+                            <option value="10000" class="translate">10s</option>
+                        </select></td>
+                    </tr>
                 </table>
             </div>
         </div>
-        <h3 class="chapter_time"><span class="translate">Time</span> <span id="time_span"></span></h3>
-        <div style="display: flex" class="chapter_time">
-            <table >
-                <tr>
-                    <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
-                </tr>
-                <tr class="time_timeType">
-                    <td class="translate">Aggregation:</td>
-                    <td><select id="timeType" class="input value">
-                        <option value="relative" class="translate">relative</option>
-                        <option value="static"   class="translate">static</option>
-                    </select></td>
-                </tr>
-                <tr class="relative time_relativeEnd">
-                    <td class="translate">End:</td>
-                    <td><select id="relativeEnd" class="input value">
-                        <option value="now"         class="translate">now</option>
-                        <option value="1minute"     class="translate">end of minute</option>
-                        <option value="5minutes"    class="translate">end of 5 minutes</option>
-                        <option value="10minutes"   class="translate">end of 10 minutes</option>
-                        <option value="30minutes"   class="translate">end of 30 minutes</option>
-                        <option value="1hour"       class="translate">end of hour</option>
-                        <option value="2hours"      class="translate">end of 2 hours</option>
-                        <option value="3hours"      class="translate">end of 3 hours</option>
-                        <option value="4hours"      class="translate">end of 4 hours</option>
-                        <option value="6hours"      class="translate">end of 6 hours</option>
-                        <option value="8hours"      class="translate">end of 8 hours</option>
-                        <option value="12hours"     class="translate">end of 12 hours</option>
-                        <option value="today"       class="translate">end of day</option>
-                        <option value="weekEurope"  class="translate">end of sunday</option>
-                        <option value="weekUsa"     class="translate">end of saturday</option>
-                        <option value="month"       class="translate">this month</option>
-                        <option value="year"        class="translate">this year</option>
-                    </select></td>
-                </tr>
-                <tr class="relative time_range">
-                    <td class="translate">Range:</td>
-                    <td><select id="range"      class="value input">
-                        <option value="10"      class="translate">10 minutes</option>
-                        <option value="30"      class="translate">30 minutes</option>
-                        <option value="60"      class="translate">1 hour</option>
-                        <option value="120"     class="translate">2 hours</option>
-                        <option value="180"     class="translate">3 hours</option>
-                        <option value="360"     class="translate">6 hours</option>
-                        <option value="720"     class="translate">12 hours</option>
-                        <option value="1440"    class="translate">1 day</option>
-                        <option value="2880"    class="translate">2 days</option>
-                        <option value="4320"    class="translate">3 days</option>
-                        <option value="10080"   class="translate">7 days</option>
-                        <option value="20160"   class="translate">14 days</option>
-                        <option value="1m"      class="translate">1 month</option>
-                        <option value="2m"      class="translate">2 months</option>
-                        <option value="3m"      class="translate">3 months</option>
-                        <option value="6m"      class="translate">6 months</option>
-                        <option value="1y"      class="translate">1 year</option>
-                        <option value="2y"      class="translate">2 years</option>
-                    </select></td>
-                </tr>
-                <tr class="relative time_live">
-                    <td class="translate">Live update every:</td>
-                    <td><select class="value" id="live">
-                        <option value=""        class="translate">none</option>
-                        <option value="5"       class="translate">5 seconds</option>
-                        <option value="10"      class="translate">10 seconds</option>
-                        <option value="15"      class="translate">15 seconds</option>
-                        <option value="20"      class="translate">20 seconds</option>
-                        <option value="30"      class="translate">30 seconds</option>
-                        <option value="60"      class="translate">1 minute</option>
-                        <option value="120"     class="translate">2 minutes</option>
-                        <option value="300"     class="translate">5 minutes</option>
-                        <option value="600"     class="translate">10 minutes</option>
-                        <option value="900"     class="translate">15 minutes</option>
-                        <option value="1200"    class="translate">20 minutes</option>
-                        <option value="1800"    class="translate">30 minutes</option>
-                        <option value="3600"    class="translate">1 hour</option>
-                        <option value="7200"    class="translate">2 hours</option>
-                        <option value="10800"   class="translate">3 hours</option>
-                        <option value="21600"   class="translate">6 hours</option>
-                        <option value="43200"   class="translate">12 hours</option>
-                        <option value="86400"   class="translate">1 day</option>
-                    </select></td>
-                </tr>
-                <tr class="static time_start">
-                    <td class="translate">Start:</td>
-                    <td><input type="date" id="start" class="value input"> <input type="time" id="start_time" class="value input_time"></td>
-                </tr>
-                <tr class="static time_end">
-                    <td class="translate">End:</td>
-                    <td><input type="date" id="end" class="value input"> <input type="time" id="end_time" class="value input_time"></td>
-                </tr>
-            </table>
-
-            <table style="margin-left: 25px">
-                <tr>
-                    <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
-                </tr>
-                <tr class="time_aggregateType">
-                    <td class="translate ">Step type:</td>
-                    <td><select id="aggregateType" class="value input">
-                        <option value="count" class="translate">counts</option>
-                        <option value="step" class="translate">seconds</option>
-                    </select></td>
-                </tr>
-                <tr class="time_aggregateSpan">
-                    <td class="translate" id="spanName">Step span:</td>
-                    <td><input id="aggregateSpan" value="300" class="value input"></td>
-                </tr>
-                <tr class="time_ticks">
-                    <td><label class="translate" for="ticks">Ticks from:</label></td>
-                    <td><table class="no-spaces"><tr><td><input id="ticks" class="value input" style="display: inline;" /></td><td><button style="display: inline; margin-right: 15px;" id="ticks_select"></button></td></tr></table></td>
-                </tr>
-            </table>
-        </div>
-        <h3 class="translate chapter_options">Options</h3>
-        <div style="display: flex" class="chapter_options">
-            <table style="width: 380px">
-                <tr>
-                    <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
-                </tr>
-                <tr class="options_width">
-                    <td style="width: 270px"><label class="translate" for="width">Width:</label></td>
-                    <td><input id="width" class="value input spinner"/></td>
-                </tr>
-                <tr class="options_height">
-                    <td><label class="translate" for="height">Height:</label></td>
-                    <td><input id="height" class="value input spinner"></td>
-                </tr>
-                <tr class="options_noborder">
-                    <td><label class="translate" for="noBorder">No border:</label></td>
-                    <td><select class="value input" id="noBorder">
-                        <option value="" class="translate"></option>
-                        <option value="noborder" class="translate">yes</option>
-                    </select></td>
-                </tr>
-                <tr class="options_window_bg">
-                    <td class="label"><label class="translate" for="window_bg">Window background:</label></td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"></td><td><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_bg_custom">
-                    <td class="label"><label class="translate" for="bg_custom">Custom chart background:</label></td>
-                    <td>
-                        <input type="checkbox" id="bg_custom">
-                    </td>
-                </tr>
-                <tr class="options_bg">
-                    <td class="label"><label class="bg_predefined" for="bg_custom">Chart background:</label></td>
-                    <td>
-                        <select id="bg_predefined">
-                            <option value="" class="translate">default</option>
-                            <option value="0">Portrait</option>
-                            <option value="1">Instagram</option>
-                            <option value="2">ServQuick</option>
-                            <option value="3">Metallic Toad</option>
-                            <option value="4">Clouds</option>
-                            <option value="5">Mirage</option>
-                            <option value="6">Steel Gray</option>
-                            <option value="7">Horizon</option>
-                            <option value="8">Koko Caramel</option>
-                            <option value="9">Turquoise flow</option>
-                        </select>
-                        <input type="text" id="bg" class="value input" style="display: none"/>
-                    </td>
-                </tr>
-                <tr class="options_x_labels_color">
-                    <td class="translate label">X axis labels color:</td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_y_labels_color">
-                    <td class="translate label">Y axis labels color:</td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_border_color">
-                    <td><label class="translate label" for="border_color">Border color:</label></td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="border_color"></td><td><button data-clear="border_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_grid_color">
-                    <td class="translate label">Grid color:</td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="grid_color"></td><td><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_border_width">
-                    <td class="translate label">Border width:</td>
-                    <td>
-                        <input type="text" class="value input" id="border_width">
-                    </td>
-                </tr>
-            </table>
-
-            <table style="width: 340px" class="options-bar">
-                <tr>
-                    <td class="translate header" colspan="2" style="text-align: center">Bar settings</td>
-                </tr>
-                <tr class="options_barColor">
-                    <td><label  class="translate" for="barColor">Fill color:</label></td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barColor"></td><td><button data-clear="barColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-                <tr class="options_barLabels">
-                    <td><label  class="translate" for="barLabels">Show labels:</label></td>
-                    <td><select id="barLabels" class="value input">
-                        <option value=""       class="translate">none</option>
-                        <option value="topover"  class="translate">top over</option>
-                        <option value="topunder" class="translate">top under</option>
-                        <option value="bottom"   class="translate">bottom</option>
-                        <option value="middle"   class="translate">middle</option>
-                    </select></td>
-                </tr>
-                <tr class="options_barWidth">
-                    <td><label class="translate" for="barWidth">Bars width:</label></td>
-                    <td><input id="barWidth" class="value input"></td>
-                </tr>
-                <tr class="options_barFontSize">
-                    <td><label class="translate" for="barFontSize">Label font size:</label></td>
-                    <td><input id="barFontSize" class="value input"></td>
-                </tr>
-                <tr class="options_barFontColor">
-                    <td><label class="translate" for="barFontColor">Label color:</label></td>
-                    <td>
-                        <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barFontColor"></td><td><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
-                    </td>
-                </tr>
-            </table>
-
-            <table style="margin-left: 25px; width: 300px">
-                <tr><td class="translate header" colspan="2" style="text-align: center">Title</td></tr>
-                <tr class="options_title">
-                    <td class="translate">Title:</td>
-                    <td><input type="text" id="title" class="value input"></td>
-                </tr>
-                <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
-                <tr class="options_titlePos">
-                    <td class="translate">Title position:</td>
-                    <td><select class="value input" id="titlePos">
-                        <option value="" class="translate">none</option>
-                        <option value="top:35;left:65" class="translate">Top, left, inside</option>
-                        <option value="top:35;right:5" class="translate">Top, right, inside</option>
-                        <option value="top:35;left:50" class="translate">Top, center, inside</option>
-                        <option value="top:50;left:65" class="translate">Middle, left, inside</option>
-                        <option value="top:50;right:5" class="translate">Middle, right, inside</option>
-                        <option value="bottom:5;left:65" class="translate">Bottom, left, inside</option>
-                        <option value="bottom:5;right:5" class="translate">Bottom, right, inside</option>
-                        <option value="bottom:5;left:50" class="translate">Bottom, center, inside</option>
-
-                        <option value="top:5;right:-5" class="translate">Top, right, outside</option>
-                        <option value="top:50;right:-5" class="translate">Middle, right, outside</option>
-                        <option value="bottom:5;right:-5" class="translate">Bottom, right, outside</option>
-                        <option value="bottom:-5;left:50" class="translate">Bottom, center, outside</option>
-                    </select></td>
-                </tr>
-                <tr class="options_titleColor">
-                    <td><label class="translate" for="titleColor">Title color:</label></td>
-                    <td><table class="no-spaces"><tr><td><input type="text" id="titleColor" class="value input input-static-color"></td><td><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
-                </tr>
-                <tr class="options_titleSize">
-                    <td class="translate">Title size:</td>
-                    <td><input type="text" id="titleSize" class="value input"></td>
-                </tr>
-
-            </table>
-
-            <table style="margin-left: 25px; width: 400px">
-                <tr><td class="translate header" colspan="2" style="text-align: center">Options</td></tr>
-                <tr class="options_legend">
-                    <td class="translate">Show legend:</td>
-                    <td><select class="value input" id="legend">
-                        <option value="" class="translate">none</option>
-                        <option value="nw" class="translate">Top, left</option>
-                        <option value="ne" class="translate">Top, right</option>
-                        <option value="sw" class="translate">Bottom, left</option>
-                        <option value="se" class="translate">Bottom, right</option>
-                    </select></td>
-                </tr>
-                <tr class="options_legColumns">
-                    <td class="translate">Legend columns:</td>
-                    <td><input type="number" class="value" id="legColumns"></td>
-                </tr>
-                <tr class="options_legBgOpacity">
-                    <td><label class="translate" for="legBgOpacity">Legend opacity (from 0 to 1):</label></td>
-                    <td><input class="value input" id="legBgOpacity"/></td>
-                </tr>
-                <tr class="options_legBg">
-                    <td><label class="translate" for="legBg">Legend background:</label></td>
-                    <td><table class="no-spaces"><tr><td><input class="value input input-static-color" id="legBg" style="display: inline-block"></td><td><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
-                </tr>
-                <tr class="options_hoverDetail">
-                    <td class="translate">Hover details:</td>
-                    <td><input type="checkbox" class="value" id="hoverDetail"></td>
-                </tr>
-                <tr class="options_timeFormat">
-                    <td class="translate">Time format:</td>
-                    <td><select class="value input" id="timeFormat">
-                        <option value="" class="translate">Default</option>
-                        <option value="%H:%M %d.%m">HH:MM dd.mm</option>
-                        <option value="%H:%M %d.%m.">HH:MM dd.mm.</option>
-                        <option value="%H:%M <br> %d.%m">HH:MM / dd.mm</option>
-                        <option value="%H:%M <br> %d.%m.">HH:MM / dd.mm.</option>
-						<option value="%H:%M <br> %d.%m.%y">HH:MM / dd.mm.yy</option>
-                        <option value="%H:%M:%S %d.%m.%y">HH:MM:SS dd.mm.yy</option>
-                        <option value="%H:%M %d.%m.%y">HH:MM dd.mm.yy</option>
-                        <option value="%I:%M:%S %x %p">HH:MM:SS mm/dd/yy am (US)</option>
-                        <option value="%H:%M:%S %d/%m/%y">HH:MM:SS dd/mm/yy (UK)</option>
-                        <option value="%H:%M:%S %m.%d.%y">HH:MM:SS mm.dd.yy</option>
-                        <option value="%H:%M %m.%d">HH:MM mm.dd</option>
-                        <option value="%H:%M:%S">HH:MM:SS</option>
-                        <option value="%H:%M">HH:MM</option>
-                        <option value="%d.%m.%y">dd.mm.yy</option>
-                    </select></td>
-                </tr>
-                <tr class="options_smoothing">
-                    <td class="translate">Smoothing:</td>
-                    <td><input type="text" class="value input" id="smoothing"></td>
-                </tr>
-                <!--tr class="options_afterComma">
-                    <td class="translate">After comma:</td>
-                    <td><input type="text" class="value input" id="afterComma"></td>
-                </tr-->
-                <tr class="options_useComma">
-                    <td class="translate">Use comma:</td>
-                    <td><input type="checkbox" class="value" id="useComma"></td>
-                </tr>
-                <tr class="options_zoom">
-                    <td class="translate">Enable zoom and pan:</td>
-                    <td><input type="checkbox" class="value" id="zoom"></td>
-                </tr>
-                <tr class="options_noedit">
-                    <td class="translate">Hide edit button:</td>
-                    <td><input type="checkbox" class="value" id="noedit"></td>
-                </tr>
-                <tr class="options_animation">
-                    <td class="translate">Animation:</td>
-                    <td><select class="value input" id="animation">
-                        <option value="0" class="translate">no</option>
-                        <option value="300" class="translate">300ms</option>
-                        <option value="500" class="translate">500ms</option>
-                        <option value="1000" class="translate">1s</option>
-                        <option value="2000" class="translate">2s</option>
-                        <option value="3000" class="translate">3s</option>
-                        <option value="5000" class="translate">5s</option>
-                        <option value="10000" class="translate">10s</option>
-                    </select></td>
-                </tr>
-            </table>
-        </div>
+        <div class="version">Version: 1.6.0</div>
+    </div>
+    <div style="height: 70px; display: flex; justify-content: space-around; align-items: center; margin-top: 10px; margin-bottom: 10px">
+        <label class="translate" for="link">Link</label>
+        <textarea id="link" style="width: calc(100% - 260px); height: 55px; word-break: break-all; resize: none"></textarea>
+        <button style="padding-left: 2px" id="open"          class="translateB">Open</button>
+        <button style="padding-left: 5px" id="updatePreview" class="translateB">update Preview</button>
     </div>
 </div>
-<div style="display: flex;justify-content: space-around;align-items: center;margin-top: 10px;margin-bottom: 10px">
-    <label class="translate" for="link">Link</label>
-    <textarea id="link" style="width: calc(100% - 260px); height: 55px; word-break: break-all; resize: none"></textarea>
-    <button style="padding-left: 2px" id="open"          class="translateB">Open</button>
-    <button style="padding-left: 5px" id="updatePreview" class="translateB">update Preview</button>
-</div>
-<iframe src="index.html" style="width: calc(100% - 20px); bottom: 0; height: calc(100% - 360px); border: 1px solid #afafaf; border-radius: 2px" id="chart"></iframe>
+<iframe src="index.html" style="width: calc(100% - 20px); bottom: 0; height: calc(100% - 380px); border: 1px solid #afafaf; border-radius: 2px" id="chart"></iframe>
 <div id="dialog-select-member" style="display: none"></div>
 
 <div id="dialog-line-options" style="display: none">
@@ -1292,6 +1324,7 @@
         var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
         return (yiq >= 128) ? 'black' : 'white';
     }
+    
     $(document).ready(function() {
         if (typeof(Storage) !== 'undefined') {
             var _setup = localStorage.getItem('iobroker.Flot');
@@ -1555,7 +1588,7 @@
 
         translateAll();
 
-        $('#accordion').accordion({
+        $('#accordion').tabs({
             active : parseInt(setup.acc) || 0,
             heightStyle: 'fill',
             animate: {
@@ -1609,6 +1642,24 @@
         });
 
         // Handler for .ready() called.
+        var bottomElemOriginalHeight = $('#chart').height();
+        $('#resizable1').resizable({
+                autoHide: true,
+                handles: 's',
+                resize: function (e, ui) {
+                    /*var parent = ui.element.parent();
+                    var remainingSpace = parent.height() - ui.element.outerHeight();
+                    var divTwo = ui.element.next();
+                    var divTwoWidth = (remainingSpace - (divTwo.outerHeight() - divTwo.height())) / parent.height() * 100 + '%';
+                    divTwo.width(divTwoWidth);*/
+                    $('#chart').height(bottomElemOriginalHeight - (ui.element.outerHeight() - ui.originalSize.height));
+                },
+                stop: function (e, ui) {
+                    bottomElemOriginalHeight = $('#chart').height();
+                    /* var parent = ui.element.parent();
+                    ui.element.css({height: ui.element.height() / parent.height() * 100 + '%'}); */
+                }
+            });
     });
 
 </script>
