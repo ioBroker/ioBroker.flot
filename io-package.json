@@ -118,6 +118,11 @@
         "authors": [
             "bluefox <dogafox@gmail.com>"
         ],
+		"docs": {
+            "en": "docs/en/flot.md",
+            "ru": "docs/ru/flot.md",
+            "de": "docs/de/flot.md"
+        },
         "platform":     "javascript/Node.js",
         "icon":         "flot.png",
         "mode":         "none",
