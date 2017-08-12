@@ -1,8 +1,13 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.6.1",
+        "version": "1.6.2",
         "news": {
+            "1.6.2": {
+              "en": "Show chart at start",
+              "de": "Zeige Chart am Anfang",
+              "ru": "Показывать график при старте"
+            },
             "1.6.1": {
               "en": "Change edit layout",
               "de": "Ändere Edit Layout",

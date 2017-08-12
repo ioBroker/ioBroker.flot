@@ -94,10 +94,10 @@
     <div style="height: calc(100% - 75px); position: relative; overflow: hidden;">
         <div id="accordion" style="">
             <ul>
-                <li><a href="#chapter_ids" class="translate">Input data</a></li>
+                <li><a href="#chapter_ids"      class="translate">Input data</a></li>
                 <li><a href="#chapter_markline" class="translate">Markings</a></li>
-                <li><a href="#chapter_time" class="translate">Time</a></li>
-                <li><a href="#chapter_options" class="translate">Options</a></li>
+                <li><a href="#chapter_time"     class="translate">Time</a></li>
+                <li><a href="#chapter_options"  class="translate">Options</a></li>
             </ul>
             <!--h3><span class="translate">Input data</span><span style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</span></h3-->
             <div id="chapter_ids" style="width: 100%; height: 100%">
@@ -106,7 +106,7 @@
                         <td colspan="7">
                             <button style="margin-left: 1px" id="ids_add" class="translateB">Add new line</button>
                             <button id="clear" title="Reset settings" class="translateT" style="float: left;">Clear</button>
-                            <span class="translate" style="padding-left: 20px">Auto-update:</span><input type="checkbox" id="autoUpdate"/>
+                            <label  class="translate" style="padding-left: 20px" for="autoUpdate">Auto-update:</label><input type="checkbox" id="autoUpdate"/>
                             <button id="arrangeBools" class="translateB button_arrange_bools">Arrange bools</button>
                         </td>
                     </tr>
@@ -158,14 +158,14 @@
                         <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
                     </tr>
                     <tr class="time_timeType">
-                        <td class="translate">Aggregation:</td>
+                        <td><label  class="translate" for="timeType">Aggregation:</label></td>
                         <td><select id="timeType" class="input value">
                             <option value="relative" class="translate">relative</option>
                             <option value="static"   class="translate">static</option>
                         </select></td>
                     </tr>
                     <tr class="relative time_relativeEnd">
-                        <td class="translate">End:</td>
+                        <td><label  class="translate" for="relativeEnd">End:</label></td>
                         <td><select id="relativeEnd" class="input value">
                             <option value="now"         class="translate">now</option>
                             <option value="1minute"     class="translate">end of minute</option>
@@ -187,7 +187,7 @@
                         </select></td>
                     </tr>
                     <tr class="relative time_range">
-                        <td class="translate">Range:</td>
+                        <td><label  class="translate" for="range">Range:</label></td>
                         <td><select id="range"      class="value input">
                             <option value="10"      class="translate">10 minutes</option>
                             <option value="30"      class="translate">30 minutes</option>
@@ -210,7 +210,7 @@
                         </select></td>
                     </tr>
                     <tr class="relative time_live">
-                        <td class="translate">Live update every:</td>
+                        <td><label  class="translate" for="live">Live update every:</label></td>
                         <td><select class="value" id="live">
                             <option value=""        class="translate">none</option>
                             <option value="5"       class="translate">5 seconds</option>
@@ -234,11 +234,11 @@
                         </select></td>
                     </tr>
                     <tr class="static time_start">
-                        <td class="translate">Start:</td>
+                        <td><label class="translate" for="start">Start:</label></td>
                         <td><input type="date" id="start" class="value input"> <input type="time" id="start_time" class="value input_time"></td>
                     </tr>
                     <tr class="static time_end">
-                        <td class="translate">End:</td>
+                        <td><label  class="translate" for="end">End:</label></td>
                         <td><input type="date" id="end" class="value input"> <input type="time" id="end_time" class="value input_time"></td>
                     </tr>
                 </table>
@@ -248,14 +248,14 @@
                         <td class="translate header" colspan="2" style="text-align: center">Aggregate</td>
                     </tr>
                     <tr class="time_aggregateType">
-                        <td class="translate ">Step type:</td>
+                        <td><label class="translate" for="aggregateType">Step type:</label></td>
                         <td><select id="aggregateType" class="value input">
                             <option value="count" class="translate">counts</option>
                             <option value="step" class="translate">seconds</option>
                         </select></td>
                     </tr>
                     <tr class="time_aggregateSpan">
-                        <td class="translate" id="spanName">Step span:</td>
+                        <td><label  id="spanName" class="translate" for="aggregateSpan">Step span:</label></td>
                         <td><input id="aggregateSpan" value="300" class="value input"></td>
                     </tr>
                     <tr class="time_ticks">
@@ -288,7 +288,7 @@
                     <tr class="options_window_bg">
                         <td class="label"><label class="translate" for="window_bg">Window background:</label></td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" id="window_bg" class="value input input-static-color" style="display: inline-block"></td><td><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input id="window_bg" class="value input input-static-color" style="display: inline-block"></td><td><button data-clear="window_bg" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_bg_custom">
@@ -298,7 +298,7 @@
                         </td>
                     </tr>
                     <tr class="options_bg">
-                        <td class="label"><label class="bg_predefined" for="bg_custom">Chart background:</label></td>
+                        <td class="label"><label class="bg_predefined" for="bg_predefined">Chart background:</label></td>
                         <td>
                             <select id="bg_predefined">
                                 <option value="" class="translate">default</option>
@@ -313,37 +313,37 @@
                                 <option value="8">Koko Caramel</option>
                                 <option value="9">Turquoise flow</option>
                             </select>
-                            <input type="text" id="bg" class="value input" style="display: none"/>
+                            <input id="bg" class="value input" style="display: none"/>
                         </td>
                     </tr>
                     <tr class="options_x_labels_color">
                         <td class="translate label">X axis labels color:</td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_y_labels_color">
                         <td class="translate label">Y axis labels color:</td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_border_color">
                         <td><label class="translate label" for="border_color">Border color:</label></td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="border_color"></td><td><button data-clear="border_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="border_color"></td><td><button data-clear="border_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_grid_color">
                         <td class="translate label">Grid color:</td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="grid_color"></td><td><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="grid_color"></td><td><button data-clear="grid_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_border_width">
                         <td class="translate label">Border width:</td>
                         <td>
-                            <input type="text" class="value input" id="border_width">
+                            <input class="value input" id="border_width">
                         </td>
                     </tr>
                 </table>
@@ -355,7 +355,7 @@
                     <tr class="options_barColor">
                         <td><label  class="translate" for="barColor">Fill color:</label></td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barColor"></td><td><button data-clear="barColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="barColor"></td><td><button data-clear="barColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_barLabels">
@@ -379,7 +379,7 @@
                     <tr class="options_barFontColor">
                         <td><label class="translate" for="barFontColor">Label color:</label></td>
                         <td>
-                            <table class="no-spaces"><tr><td><input type="text" class="value input input-static-color" id="barFontColor"></td><td><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
+                            <table class="no-spaces"><tr><td><input class="value input input-static-color" id="barFontColor"></td><td><button data-clear="barFontColor" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                 </table>
@@ -387,12 +387,12 @@
                 <table style="margin-left: 25px; width: 300px">
                     <tr><td class="translate header" colspan="2" style="text-align: center">Title</td></tr>
                     <tr class="options_title">
-                        <td class="translate">Title:</td>
-                        <td><input type="text" id="title" class="value input"></td>
+                        <td><label for="title" class="translate">Title:</label></td>
+                        <td><input id="title" class="value input"></td>
                     </tr>
                     <!-- Do not use values 50, 5, and -5. They are reserved for 50-middle/center, 5-inside at edge, -5 outside at edge -->
                     <tr class="options_titlePos">
-                        <td class="translate">Title position:</td>
+                        <td><label for="titlePos" class="translate">Title position:</label></td>
                         <td><select class="value input" id="titlePos">
                             <option value="" class="translate">none</option>
                             <option value="top:35;left:65" class="translate">Top, left, inside</option>
@@ -412,11 +412,11 @@
                     </tr>
                     <tr class="options_titleColor">
                         <td><label class="translate" for="titleColor">Title color:</label></td>
-                        <td><table class="no-spaces"><tr><td><input type="text" id="titleColor" class="value input input-static-color"></td><td><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
+                        <td><table class="no-spaces"><tr><td><input id="titleColor" class="value input input-static-color"></td><td><button data-clear="titleColor" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
                     </tr>
                     <tr class="options_titleSize">
-                        <td class="translate">Title size:</td>
-                        <td><input type="text" id="titleSize" class="value input"></td>
+                        <td><label for="titleSize" class="translate">Title size:</label></td>
+                        <td><input id="titleSize" class="value input"></td>
                     </tr>
 
                 </table>
@@ -424,7 +424,7 @@
                 <table style="margin-left: 25px; width: 400px">
                     <tr><td class="translate header" colspan="2" style="text-align: center">Options</td></tr>
                     <tr class="options_legend">
-                        <td class="translate">Show legend:</td>
+                        <td><label class="translate" for="legend">Show legend:</label></td>
                         <td><select class="value input" id="legend">
                             <option value="" class="translate">none</option>
                             <option value="nw" class="translate">Top, left</option>
@@ -434,7 +434,7 @@
                         </select></td>
                     </tr>
                     <tr class="options_legColumns">
-                        <td class="translate">Legend columns:</td>
+                        <td><label class="translate" for="legend">Legend columns:</label></td>
                         <td><input type="number" class="value" id="legColumns"></td>
                     </tr>
                     <tr class="options_legBgOpacity">
@@ -446,11 +446,11 @@
                         <td><table class="no-spaces"><tr><td><input class="value input input-static-color" id="legBg" style="display: inline-block"></td><td><button data-clear="legBg" class="clear-button" style="display: inline-block"></button></td></tr></table></td>
                     </tr>
                     <tr class="options_hoverDetail">
-                        <td class="translate">Hover details:</td>
+                        <td><label class="translate" for="hoverDetail">Hover details:</label></td>
                         <td><input type="checkbox" class="value" id="hoverDetail"></td>
                     </tr>
                     <tr class="options_timeFormat">
-                        <td class="translate">Time format:</td>
+                        <td><label class="translate" for="timeFormat">Time format:</label></td>
                         <td><select class="value input" id="timeFormat">
                             <option value="" class="translate">Default</option>
                             <option value="%H:%M %d.%m">HH:MM dd.mm</option>
@@ -470,12 +470,12 @@
                         </select></td>
                     </tr>
                     <tr class="options_smoothing">
-                        <td class="translate">Smoothing:</td>
-                        <td><input type="text" class="value input" id="smoothing"></td>
+                        <td><label class="translate" for="smoothing">Smoothing:</label></td>
+                        <td><input class="value input" id="smoothing"></td>
                     </tr>
                     <!--tr class="options_afterComma">
                         <td class="translate">After comma:</td>
-                        <td><input type="text" class="value input" id="afterComma"></td>
+                        <td><input class="value input" id="afterComma"></td>
                     </tr-->
                     <tr class="options_useComma">
                         <td class="translate">Use comma:</td>
@@ -531,7 +531,9 @@
     var defaultHistory  = '';
 
     // hide/show settings
-    if (settings.maxLines < 2) $('#ids_add').hide();
+    if (settings.maxLines < 2) {
+        $('#ids_add').hide();
+    }
     for (var s in settings) {
         if (!settings.hasOwnProperty(s)) continue;
         if (typeof settings[s] === 'object' && settings[s].enabled === false) {
@@ -789,14 +791,16 @@
 
     function showOptionsDialog(index) {
         var options = setup.options.l[index];
-        $('#dialog-line-options').data('index', index);
+        var $dialogLineOptions = $('#dialog-line-options');
+        $dialogLineOptions.data('index', index);
 
-        if (!$('#dialog-line-options').data('inited')) {
-            $('#dialog-line-options').data('inited', true);
+        if (!$dialogLineOptions.data('inited')) {
+            $dialogLineOptions.data('inited', true);
 
             var count = 0;
             var text = '';
             for (var attr in settings.extraOptions) {
+                if (!settings.extraOptions.hasOwnProperty(attr)) continue;
                 count++;
                 text += '<tr ' + (settings.extraOptions[attr].title ? 'title="' + settings.extraOptions[attr].title + '" ' : '') + '>';
                 text += '<td><label for="option_' + attr + '">' + _(settings.extraOptions[attr].name || attr) + '</label></td>';
@@ -859,9 +863,9 @@
                 }
                 text += '</tr>';
             }
-            $('#dialog-line-options').find('table').html(text);
+            $dialogLineOptions.find('table').html(text);
 
-            $('#dialog-line-options').dialog({
+            $dialogLineOptions.dialog({
                 autoOpen:   false,
                 modal:      true,
                 width:      430,
@@ -871,10 +875,11 @@
                     {
                         text: _('Ok'),
                         click: function () {
-                            var index = $('#dialog-line-options').data('index');
+                            var $dialogLineOptions = $('#dialog-line-options');
+                            var index = $dialogLineOptions.data('index');
                             var changed = false;
                             var options = setup.options.l[index];
-                            $('#dialog-line-options').find('.dialog-line-option').each(function () {
+                            $dialogLineOptions.find('.dialog-line-option').each(function () {
                                 var attr = $(this).data('option');
 
                                 if ($(this).attr('type') === 'checkbox') {
@@ -892,7 +897,7 @@
 
                             if (changed) update();
 
-                            $('#dialog-line-options').dialog('close');
+                            $dialogLineOptions.dialog('close');
                         }
                     },
                     {
@@ -907,7 +912,7 @@
         }
 
 
-        $('#dialog-line-options').find('.dialog-line-option').each(function () {
+        $dialogLineOptions.find('.dialog-line-option').each(function () {
             var attr = $(this).data('option');
             if ($(this).attr('type') === 'checkbox') {
                 if (options[attr] === 'true')  options[attr] = true;
@@ -926,8 +931,8 @@
             }
         });
 
-        $('#dialog-line-options').dialog('option', 'title', _('Edit options for line %s', index + 1));
-        $('#dialog-line-options').dialog('open');
+        $dialogLineOptions.dialog('option', 'title', _('Edit options for line %s', index + 1));
+        $dialogLineOptions.dialog('open');
     }
 
     function showIds(callback) {
@@ -943,7 +948,7 @@
 
             var colindex = 0;
             for (var s in settings.line) {
-                if (settings.line[s].enabled) {
+                if (settings.line.hasOwnProperty(s) && settings.line[s].enabled) {
                     colgroup += '<col data-index="' + colindex + '" ' + (settings.line[s].width ? 'width="' + settings.line[s].width + '"' : '') + ' />\n';
                     thead    += '<th class="toggleable" data-index="' + colindex + '" title="' + _(settings.line[s].title) + '" ' + (settings.line[s].width ? 'width="' + settings.line[s].width + '"' : '') + '>' + _(settings.line[s].name) + '</th>\n';
                     colindex++;
@@ -957,7 +962,7 @@
 
                 text += '<tr data-index="' + i + '" class="inputData">\n';
                 for (var s in settings.line) {
-                    if (!settings.line[s].enabled) continue;
+                    if (!settings.line.hasOwnProperty(s) || !settings.line[s] || !settings.line[s].enabled) continue;
                     settings.line[s].style  = settings.line[s].style  || '';
                     settings.line[s]._class = settings.line[s]._class || '';
 
@@ -1229,11 +1234,9 @@
             }
         }
 
-        var params = $.param(_options);
+        //console.log(deparam($.param(_options)));
 
-        //console.log(deparam(params));
-
-        return params;
+        return $.param(_options);
     }
 
     function delayedUpdate() {
@@ -1279,7 +1282,7 @@
         // calculate span
         var text = '';
         if (setup.options.timeType === 'relative') {
-            text =  _('%s ago', $('#range option:selected').text()) + ' - ' + _(setup.options.relativeEnd);
+            text =  _('%s ago', $('#range').find('option:selected').text()) + ' - ' + _(setup.options.relativeEnd);
         } else {
             text = new Date(setup.options.start).toLocaleDateString() + ' ' +
                    new Date(setup.options.start + ' ' + setup.options.start_time).toLocaleTimeString() + ' - ' +
@@ -1301,16 +1304,18 @@
     }
 
     function updatePreview() {
-        if (parseInt($('#height').val())) {
-            $('#chart').css({height: (parseInt($('#height').val()) || 500) + 90});
+        var $chart = $('#chart');
+        var height = parseInt($('#height').val(), 10);
+        if (height) {
+            $chart.css({height: (height || 500) + 90});
         } else {
-            $('#chart').css({height: 'calc(100% - 350px)'});
+            $chart.css({height: 'calc(100% - 350px)'});
         }
 
         var settings = getSettings();
-        $('#chart').attr('src', '');
+        $chart.attr('src', '');
         setTimeout(function () {
-            $('#chart').attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
+            $chart.attr('src', 'index.html?' + settings + '&' + (new Date()).getTime());
         }, 0);
 
         $('#updatePreview').button('option', 'disabled', true);
@@ -1359,21 +1364,21 @@
         $('#autoUpdate').change(function () {
             setup['auto-update'] = $(this).prop('checked') ? 'true' : 'false';
             update();
-            if (setup['auto-update'] == 'true') {
+            if (setup['auto-update'] === 'true') {
                 $('#updatePreview').hide();
             } else {
                 $('#updatePreview').show();
             }
-        }).prop('checked', setup['auto-update'] == 'true');
+        }).prop('checked', setup['auto-update'] === 'true');
 
         $('#arrangeBools').button().click(function () {
             // arrange all boolean values automatically
             //  calculate
             var count = 0;
             var axis = null;
-            for (var i = 0; i < setup.options.l.length; i++) {
-                if (setup.options.l[i].chartType === 'steps') {
-                    if (axis === null) axis = i;
+            for (var k = 0; k < setup.options.l.length; k++) {
+                if (setup.options.l[k].chartType === 'steps') {
+                    if (axis === null) axis = k;
                     count++;
                 }
             }
@@ -1395,7 +1400,9 @@
             delayedUpdate();
         });
 
-        $('#accordion')
+        var $accordion = $('#accordion');
+
+        $accordion
             .on('change', '.options-lines', function () {
                 var index = $(this).data('index');
                 if ($(this).attr('type') === 'checkbox') {
@@ -1413,7 +1420,7 @@
                 $(this).trigger('change');
             });
 
-        $('#accordion')
+        $accordion
                 .on('change', '.markline-value', function () {
                     var index = $(this).data('index');
                     if ($(this).attr('type') === 'checkbox') {
@@ -1519,8 +1526,10 @@
                 $('#bg_predefined').hide();
             } else {
                 $('#bg').hide();
-                $('#bg_predefined').show();
-                $('#bg_predefined').val(0).trigger('change');
+                $('#bg_predefined')
+                    .show()
+                    .val(0)
+                    .trigger('change');
             }
         });
 
@@ -1588,7 +1597,7 @@
 
         translateAll();
 
-        $('#accordion').tabs({
+        $accordion.tabs({
             active : parseInt(setup.acc) || 0,
             heightStyle: 'fill',
             animate: {
@@ -1634,6 +1643,7 @@
 
                     update();
 
+                    delayedPreview();
                     // not need to disconnect, because socket-io uses pool
                     //socket.disconnect();
                     //socket = null;
