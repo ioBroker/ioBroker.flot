@@ -24,7 +24,14 @@ systemDictionary = {
     "Room":                 {"en": "Room",                  "de": "Raum",                   "ru": "Комната"},
     "Value":                {"en": "Value",                 "de": "Wert",                   "ru": "Значение"},
     "none":                 {"en": "none",                  "de": "nichts",                 "ru": "ничего"},
-
+    "Save into:":           {"en": "Save into:",            "de": "Save into:",             "ru": "Сохранить как:"},
+    "Name:":                {"en": "Name:",                 "de": "Name:",                  "ru": "Имя:"},
+    "save":                 {"en": "save",                  "de": "Speichern",              "ru": "сохранить"},
+    "load":                 {"en": "load",                  "de": "laden",                  "ru": "загрузить"},
+    "Presets":              {"en": "Presets",               "de": "Presets",                "ru": "Пресеты"},
+    "IDs":                  {"en": "IDs",                   "de": "IDs",                    "ru": "Объекты"},
+    "new":                  {"en": "new",                   "de": "unter neuen Namen",      "ru": "новое"},
+    "Enter chart name":     {"en": "Enter chart name",      "de": "Chartname eintragen",    "ru": "Введите имя графика"},
 
     "Input data":           {"en": "Input data",            "de": "Input data",             "ru": "Входные данные"},
     "Options":              {"en": "Options",               "de": "Options",                "ru": "Опции"},

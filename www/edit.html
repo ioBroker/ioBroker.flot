@@ -20,6 +20,14 @@
     <script type="text/javascript" src="js/settings.js"></script>
 
     <style>
+        .ui-resizable-s {
+            cursor: s-resize;
+            height: 10px;
+            width: 100%;
+            bottom: -6px;
+            background: #a0a0a0;
+            left: 0;
+        }
         .save {
             position: absolute;
             top: 10px;
@@ -99,18 +107,30 @@
             background: grey;
             color: white;
             font-weight: bold;
+            text-align: left;
+            padding: 5px;
         }
         .presets_table_all td {
-            padding-left: 5px;
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding: 5px;
         }
 
         .presets_table_all tr:nth-child(even) {
             background: #dcdbdb;
         }
-        .presets-selected{
-            background: #7598b9;
+        .presets-selected {
+            background: #7598b9 !important;
+        }
+        .presets_table_th_load {
+            width: 70px;
+        }
+        .presets_table_th_name {
+            width: 20%;
+        }
+        .presets_table_th_ids {
+            width: calc(80 - 150px);
+        }
+        .presets_table_th_buttons {
+            width: 70px;
         }
 
     </style>
@@ -127,14 +147,14 @@
                 <li><a href="#chapter_time"     class="translate">Time</a></li>
                 <li><a href="#chapter_options"  class="translate">Options</a></li>
             </ul>
-            <div id="chapter_presets" style="width: 100%; height: 100%">
+            <div id="chapter_presets" style="width: 100%; height: calc(100% - 50px); overflow: auto;">
                 <table class="presets_table_all">
                     <thead>
                         <tr>
-                            <th style="width: 100px"></th>
-                            <th class="translate" style="width: 100px">Name</th>
-                            <th class="translate">IDs</th>
-                            <th style="width: 100px"></th>
+                            <th class="presets_table_th_load"></th>
+                            <th class="presets_table_th_name translate">Name</th>
+                            <th class="presets_table_th_ids translate">IDs</th>
+                            <th class="presets_table_th_buttons"></th>
                         </tr>
                     </thead>
                     <tbody id="presets_table">
@@ -143,7 +163,7 @@
                 </table>
             </div>
             <!--h3><span class="translate">Input data</span><span style="float:right; font-weight: normal; color: #959595">Version: 1.5.7</span></h3-->
-            <div id="chapter_ids" style="width: 100%; height: 100%">
+            <div id="chapter_ids" style="width: 100%; height: calc(100% - 50px); overflow: auto;">
                 <table>
                     <tr>
                         <td colspan="7">
@@ -161,7 +181,7 @@
                 </div>
             </div>
             <!--h3 class="markline-option"><span class="translate">Markings</span></h3-->
-            <div id="chapter_markline" class="markline-option" style="width: 100%; height: 100%;">
+            <div id="chapter_markline" class="markline-option" style="width: 100%; height: calc(100% - 50px); overflow: auto;">
                 <table style="width: 100%">
                     <tr>
                         <td colspan="7">
@@ -195,7 +215,7 @@
                 </div>
             </div>
             <!--h3 class="chapter_time"><span class="translate">Time</span> <span id="time_span"></span></h3-->
-            <div id="chapter_time" style="display: flex" class="chapter_time">
+            <div id="chapter_time" style="display: flex; height: calc(100% - 50px); overflow: auto;" class="chapter_time">
                 <table >
                     <tr>
                         <td class="translate header" colspan="2" style="text-align: center">Time Span</td>
@@ -308,7 +328,7 @@
                 </table>
             </div>
             <!--h3 class="translate chapter_options">Options</h3-->
-            <div id="chapter_options" style="display: flex" class="chapter_options">
+            <div id="chapter_options" style="display: flex; height: calc(100% - 50px); overflow: auto;" class="chapter_options">
                 <table style="width: 380px">
                     <tr>
                         <td class="translate header" colspan="2" style="text-align: center">Appearance</td>
@@ -360,13 +380,13 @@
                         </td>
                     </tr>
                     <tr class="options_x_labels_color">
-                        <td class="translate label">><label class="translate" for="x_labels_color">X axis labels color:</label></td>
+                        <td class="label"><label class="translate" for="x_labels_color">X axis labels color:</label></td>
                         <td>
                             <table class="no-spaces"><tr><td><input class="value input input-static-color" id="x_labels_color"></td><td><button data-clear="x_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
                     </tr>
                     <tr class="options_y_labels_color">
-                        <td class="translate label">><label class="translate" for="y_labels_color">Y axis labels color:</label></td>
+                        <td class="label">><label class="translate" for="y_labels_color">Y axis labels color:</label></td>
                         <td>
                             <table class="no-spaces"><tr><td><input class="value input input-static-color" id="y_labels_color"></td><td><button data-clear="y_labels_color" class="clear-button" style="display: inline-block"></button></td></tr></table>
                         </td>
@@ -548,10 +568,10 @@
                 </table>
             </div>
         </div>
-        <div class="version">Version: 1.6.0</div>
+        <div class="version">Version: 1.7.0</div>
         <button class="save">Save</button>
     </div>
-    <div style="height: 70px; display: flex; justify-content: space-around; align-items: center; margin-top: 10px; margin-bottom: 10px">
+    <div style="height: 70px; display: flex; justify-content: space-around; align-items: center; margin-top: 4px; margin-bottom: 0">
         <label class="translate" for="link">Link</label>
         <textarea id="link" style="width: calc(100% - 260px); height: 55px; word-break: break-all; resize: none"></textarea>
         <button style="padding-left: 2px" id="open"          class="translateB">Open</button>
@@ -589,6 +609,7 @@
     var presets         = {};
     var currentChart    = null;
     var socket;
+    var instance        = 0;
 
     // hide/show settings
     if (settings.maxLines < 2) {
@@ -611,7 +632,9 @@
 
     parseSettings(location.href.split('?')[1]);
 
-    if (typeof sysLang !== 'undefined') systemLang = sysLang || 'en';
+    if (typeof sysLang !== 'undefined') {
+        systemLang = sysLang || 'en';
+    }
 
     $('#dialog-select-member').selectId('init', {
         filter: {
@@ -696,7 +719,7 @@
             delete setup.options.timeArt;
         }
         var $presetsTable = $('#presets_table');
-        
+
         $presetsTable.find('tr').removeClass('presets-selected');
         $presetsTable.find('tr[data-name="' + currentChart + '"]').addClass('presets-selected');
 
@@ -1337,7 +1360,19 @@
 
             save();
         }
+
         var settings = getSettings();
+        if (currentChart) {
+            if (settings !== presets[currentChart].native.url) {
+                $('.save').button('enable');
+            } else {
+                $('.save').button('disable');
+            }
+        } else {
+            $('.save').button('enable');
+        }
+
+
         $('#link').val(location.href.split('?')[0].replace('edit.html', 'index.html') + '?' + settings);
         $('#updatePreview').button('option', 'disabled', false);
 
@@ -1409,7 +1444,7 @@
 
     function saveChart(id, name, callback) {
         if (!id || !presets[id]) {
-            id = 'flot.' + name.replace(/[.,\s]+/, '_');
+            id = name2Chart(name);
 
             presets[id] = {
                 common: {
@@ -1426,13 +1461,17 @@
 
         currentChart = id;
 
-        socket.emit('setObject', id, presets[id], callback);
+        socket.emit('setObject', id, presets[id], function (err) {
+            $('.save').button('disable');
+            callback && callback(err)
+        });
     }
 
     function loadChart(id, callback) {
         socket.emit('getObject', id, function (err, obj) {
             if (!obj) {
                 alert(_('Not found'));
+                callback && callback();
             } else {
                 currentChart = obj._id;
                 presets[obj._id] = obj;
@@ -1443,18 +1482,22 @@
                 update();
 
                 delayedPreview();
+                callback && callback();
             }
         });
+    }
+
+    function name2Chart(name) {
+        return 'flot.' + instance + '.' + name.replace(/[.,\s]+/, '_');
     }
 
     function renameChart(id, newName, callback) {
         socket.emit('getObject', id, function (err, obj) {
             socket.emit('delObject', obj._id, function (err) {
+                delete presets[obj._id];
                 obj.common.name = newName;
-                id = name.replace(/[.,\s]+/, '_');
-                obj._id = 'flot.' + id;
+                obj._id = name2Chart(name);
                 socket.emit('setObject', obj._id, obj, function (err) {
-                    delete presets[id];
                     presets[obj._id] = obj;
                     currentChart = obj._id;
                     showPresets();
@@ -1487,10 +1530,10 @@
                 currentChart = id;
             }
             texts += '<tr data-name="' + id + '" class="' + (id === currentChart ? 'presets-selected' : '') +'">';
-            texts += '<td><button class="presets-btn-load" data-name="' + id + '">' + _('load') + '</button></td>';
-            texts += '<td>' + obj.common.name + '</td>';
-            texts += '<td>' + getDesc(obj.native.url) + '</td>';
-            texts += '<td></button><button data-name="' + id + '" class="presets-btn-delete"></button><button data-name="' + id + '" class="presets-btn-rename"></button></td>';
+            texts += '<td class="presets_table_th_load" style="text-align: center"><button class="presets-btn-load" data-name="' + id + '">' + _('load') + '</button></td>';
+            texts += '<td class="presets_table_th_name">' + obj.common.name + '</td>';
+            texts += '<td class="presets_table_th_ids">' + getDesc(obj.native.url) + '</td>';
+            texts += '<td class="presets_table_th_buttons" style="text-align: center"></button><button data-name="' + id + '" class="presets-btn-delete"></button><button data-name="' + id + '" class="presets-btn-rename"></button></td>';
             texts += '</tr>';
         }
         var $presetsTable = $('#presets_table');
@@ -1498,9 +1541,10 @@
 
         $('.presets-btn-load').button().click(function () {
             var id = $(this).data('name');
-            loadChart(id);
-            $presetsTable.find('tr').removeClass('presets-selected');
-            $presetsTable.find('tr[data-name="' + id + '"]').addClass('presets-selected');
+            loadChart(id, function () {
+                $presetsTable.find('tr').removeClass('presets-selected');
+                $presetsTable.find('tr[data-name="' + id + '"]').addClass('presets-selected');
+            });
         });
 
         $('.presets-btn-delete').button({
@@ -1514,8 +1558,7 @@
                     showPresets();
                 });
             }
-        });
-
+        }).css({width: 32, height: 32});
         $('.presets-btn-rename').button({
             icons: {secondary: 'ui-icon-pencil'},
             text: false
@@ -1537,7 +1580,7 @@
                         text: _('Ok'),
                         click: function () {
                             var newName = $('#dialog-new-preset-name').val();
-                            var newId   = 'flot.' + newName.replace(/[-.\s]/, '_');
+                            var newId   = name2Chart(newName);
                             if (presets[newId] && !window.confirm(_('Overwrite existing?'))) {
                                 return;
                             }
@@ -1555,7 +1598,7 @@
                     }
                 ]
             });
-        });
+        }).css({width: 32, height: 32});
     }
 
     $(document).ready(function() {
@@ -1653,20 +1696,6 @@
                     $(this).trigger('change');
                 });
 
-        $('.value').each(function () {
-            var $this = $(this);
-            var id = $this.attr('id');
-            if (setup.options[id] !== undefined) {
-                if ($this.attr('type') === 'checkbox') {
-                    if (setup.options[id] === 'true')  setup.options[id] = true;
-                    if (setup.options[id] === 'false') setup.options[id] = false;
-                    $this.prop('checked', !!setup.options[id]);
-                } else {
-                    $this.val(setup.options[id]);
-                }
-            }
-        });
-
         $('#ids_add').button({
             icons: {secondary: 'ui-icon-plus'},
             text: true
@@ -1691,15 +1720,30 @@
             location.reload();
         }).css({width: 30, height: 30});
 
-        $('.value').change(function () {
+        $('.value')
+            .change(function () {
             if ($(this).hasClass('spinner') || $(this).hasClass('input-static-color')) {
                 delayedUpdate();
             } else {
                 update();
             }
-        }).keyup(function () {
-            $(this).trigger('change');
-        });
+        })
+            .keyup(function () {
+                $(this).trigger('change');
+            })
+            .each(function () {
+                var $this = $(this);
+                var id = $this.attr('id');
+                if (setup.options[id] !== undefined) {
+                    if ($this.attr('type') === 'checkbox') {
+                        if (setup.options[id] === 'true')  setup.options[id] = true;
+                        if (setup.options[id] === 'false') setup.options[id] = false;
+                        $this.prop('checked', !!setup.options[id]);
+                    } else {
+                        $this.val(setup.options[id]);
+                    }
+                }
+            });
 
         /*$('.input-static-color').colorPicker({
             renderCallback: function ($elm, toggled) {
@@ -1817,7 +1861,6 @@
 
         $accordion.tabs({
             active : parseInt(setup.acc) || 0,
-            heightStyle: 'fill',
             animate: {
                 easing: 'linear',
                 duration: 200
@@ -1869,7 +1912,7 @@
                 });
             });
 
-            this.emit('getObjectView', 'chart', 'chart', {startkey: 'flot.', endkey: 'flot.\u9999'}, function (err, res) {
+            this.emit('getObjectView', 'chart', 'chart', {startkey: 'flot.' + instance + '.', endkey: 'flot.' + instance + '.\u9999'}, function (err, res) {
                 presets = {};
                 if (res && res.rows) {
                     for (var i = 0; i < res.rows.length; i++) {
@@ -1878,73 +1921,84 @@
                 }
                 showPresets();
 
-                $('.save').button({
+                $('.save')
+                    .button({
                     icons: {
                         primary: 'ui-icon-arrowthickstop-1-s'
                     },
                     label: _('save'),
                     showLabel: true
-                }).click(function () {
-                    var texts = '<option value="">' + _('new') + '</option>';
-                    for (var id in presets) {
-                        texts += '<option value="' + id + '">' + presets[id].common.name + '</option>';
-                    }
+                })
+                    .click(function () {
+                        var texts = '<option value="">' + _('new') + '</option>';
+                        for (var id in presets) {
+                            texts += '<option value="' + id + '">' + presets[id].common.name + '</option>';
+                        }
 
-                    $('#dialog-new-preset-info-tr').show();
+                        $('#dialog-new-preset-info-tr').show();
 
-                    $('#dialog-new-preset-into')
-                        .html(texts)
-                        .val(currentChart)
-                        .unbind('change')
-                        .bind('change', function () {
-                            var val = $(this).val();
-                            if (!val) {
-                                $('#dialog-new-preset-name-tr').show();
-                            } else {
-                                $('#dialog-new-preset-name-tr').hide();
-                            }
-                        }).trigger('change');
+                        $('#dialog-new-preset-into')
+                            .html(texts)
+                            .val(currentChart)
+                            .unbind('change')
+                            .bind('change', function () {
+                                var val = $(this).val();
+                                if (!val) {
+                                    $('#dialog-new-preset-name-tr').show();
+                                } else {
+                                    $('#dialog-new-preset-name-tr').hide();
+                                }
+                            }).trigger('change');
 
-                    $('#dialog-new-preset').dialog({
-                        autoOpen:   true,
-                        modal:      true,
-                        title:      _('Enter chart name'),
-                        width:      430,
-                        resizable:  false,
-                        buttons: [
-                            {
-                                id: 'dialog-new-preset-ok',
-                                text: _('Ok'),
-                                click: function () {
-                                    var name = $('#dialog-new-preset-into').val();
-                                    var id   = name;
+                        $('#dialog-new-preset').dialog({
+                            autoOpen:   true,
+                            modal:      true,
+                            title:      _('Enter chart name'),
+                            width:      430,
+                            resizable:  false,
+                            buttons: [
+                                {
+                                    id: 'dialog-new-preset-ok',
+                                    text: _('Ok'),
+                                    click: function () {
+                                        var name = $('#dialog-new-preset-into').val();
+                                        var id   = name;
 
-                                    if (!name) {
-                                        name = $('#dialog-new-preset-name').val();
-                                        id = 'flot.' + name.replace(/[-.\s]/, '_');
-                                        if (presets[id]) {
-                                            // Warning. Overwrite?
-                                            if (!window.confirm(_('Overwrite existing?'))) {
-                                                return;
+                                        if (!name) {
+                                            name = $('#dialog-new-preset-name').val();
+                                            id = name2Chart(name);
+                                            if (presets[id]) {
+                                                // Warning. Overwrite?
+                                                if (!window.confirm(_('Overwrite existing?'))) {
+                                                    return;
+                                                }
                                             }
                                         }
-                                    }
 
-                                    saveChart(id, name, function () {
-                                        showPresets();
+                                        saveChart(id, name, function () {
+                                            showPresets();
+                                            $('#dialog-new-preset').dialog('close');
+                                        });
+                                    }
+                                },
+                                {
+                                    text: _('Cancel'),
+                                    click: function () {
                                         $('#dialog-new-preset').dialog('close');
-                                    });
+                                    }
                                 }
-                            },
-                            {
-                                text: _('Cancel'),
-                                click: function () {
-                                    $('#dialog-new-preset').dialog('close');
-                                }
-                            }
-                        ]
-                    });
-                }).css({'font-size': 14, 'white-space': 'nowrap'});
+                            ]
+                        });
+                    })
+                    .css({'font-size': 14, 'white-space': 'nowrap'});
+
+                // select editor tab if no presets
+                if (!res || !res.rows || !res.rows.length) {
+                    $('#accordion').tabs({active: 1});
+                    $('.save').button('enable');
+                } else if (currentChart) {
+                    $('.save').button('disable');
+                }
 
                 $('#dialog-new-preset-name').keyup(function (e) {
                     if (e.keyCode === 13) {
@@ -1971,6 +2025,18 @@
                     bottomElemOriginalHeight = $('#chart').height();
                     /* var parent = ui.element.parent();
                     ui.element.css({height: ui.element.height() / parent.height() * 100 + '%'}); */
+                    $('#temp_div').remove();
+                },
+                start: function(){
+                    var $ifr = $('#chart');
+                    var $d = $('<div></div>');
+
+                    $('body').append($d[0]);
+                    $d[0].id = 'temp_div';
+                    $d.css({position:'absolute'});
+                    $d.css({top: $ifr.position().top, left:0});
+                    $d.height($ifr.height());
+                    $d.width('100%');
                 }
             });
     });
