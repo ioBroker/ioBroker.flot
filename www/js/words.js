@@ -32,7 +32,7 @@ systemDictionary = {
     "IDs":                  {"en": "IDs",                   "de": "IDs",                    "ru": "Объекты"},
     "new":                  {"en": "new",                   "de": "unter neuen Namen",      "ru": "новое"},
     "Enter chart name":     {"en": "Enter chart name",      "de": "Chartname eintragen",    "ru": "Введите имя графика"},
-
+    "save %s":              {"en": "save %s",               "de": "Speichern %s",           "ru": "сохранить %s"},
     "Input data":           {"en": "Input data",            "de": "Input data",             "ru": "Входные данные"},
     "Options":              {"en": "Options",               "de": "Options",                "ru": "Опции"},
     "Range:":               {"en": "Range:",                "de": "Range:",                 "ru": "Интервал:"},
