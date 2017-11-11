@@ -1,5 +1,5 @@
 ![Logo](admin/flot.png)
-ioBroker.flot
+# ioBroker.flot
 =================
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
