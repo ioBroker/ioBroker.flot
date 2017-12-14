@@ -819,6 +819,7 @@ $(document).ready(function () {
                 parseSettings(obj.native.url);
                 $('#accordion').tabs({active: 1});
                 showIds();
+                fillValues();
 
                 update();
 
@@ -940,6 +941,33 @@ $(document).ready(function () {
                 ]
             });
         }).css({width: 32, height: 32});
+    }
+
+    function fillValues() {
+        $('.value')
+            .each(function () {
+                var $this = $(this);
+                var id = $this.attr('id');
+                if (setup.options[id] !== undefined) {
+                    if ($this.attr('type') === 'checkbox') {
+                        if (setup.options[id] === 'true') setup.options[id] = true;
+                        if (setup.options[id] === 'false') setup.options[id] = false;
+                        $this.prop('checked', !!setup.options[id]);
+                    } else {
+                        $this.val(setup.options[id]);
+                    }
+                }
+            });
+        if (setup.options.bg || setup.options.bg === 0) {
+            if (setup.options.bg && setup.options.bg.length < 3 && parseInt(setup.options.bg, 10).toString() === setup.options.bg.toString()) {
+                $('#bg').hide();
+                $('#bg_predefined').show().val(setup.options.bg);
+            } else {
+                $('#bg_custom').prop('checked', true);
+                $('#bg').show();
+                $('#bg_predefined').hide();
+            }
+        }
     }
 
     function init() {
@@ -1135,19 +1163,6 @@ $(document).ready(function () {
             })
             .keyup(function () {
                 $(this).trigger('change');
-            })
-            .each(function () {
-                var $this = $(this);
-                var id = $this.attr('id');
-                if (setup.options[id] !== undefined) {
-                    if ($this.attr('type') === 'checkbox') {
-                        if (setup.options[id] === 'true') setup.options[id] = true;
-                        if (setup.options[id] === 'false') setup.options[id] = false;
-                        $this.prop('checked', !!setup.options[id]);
-                    } else {
-                        $this.val(setup.options[id]);
-                    }
-                }
             });
 
         /*$('.input-static-color').colorPicker({
@@ -1224,16 +1239,6 @@ $(document).ready(function () {
                 });
         });
 
-        if (setup.options.bg || setup.options.bg === 0) {
-            if (setup.options.bg && setup.options.bg.length < 3 && parseInt(setup.options.bg, 10).toString() === setup.options.bg.toString()) {
-                $('#bg').hide();
-                $('#bg_predefined').show().val(setup.options.bg);
-            } else {
-                $('#bg_custom').prop('checked', true);
-                $('#bg').show();
-                $('#bg_predefined').hide();
-            }
-        }
 
         $('#aggregateType').change(function () {
             if ($('#aggregateType').val() === 'step') {
@@ -1323,6 +1328,8 @@ $(document).ready(function () {
                 return null;
             }
         };
+
+        fillValues();
 
         initSocket();
     }

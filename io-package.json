@@ -1,8 +1,16 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.0",
+        "version": "1.7.1",
         "news": {
+            "1.7.1": {
+              "en": "Fixed the loading of presets\nAdded new date formats for X axis",
+              "de": "Das Laden von Presets wurde korrigiert\nNeue Datumsformate für die X-Achse hinzugefügt",
+              "ru": "Исправлена загрузка пресетов\nДобавлены новые форматы дат для оси X",
+              "pt": "Corrigido o carregamento de predefinições\nAdicionado novos formatos de data para o eixo X",
+              "fr": "Correction du chargement des presets\nAjout de nouveaux formats de date pour l'axe X",
+              "nl": "Het laden van presets verholpen\nNieuwe datumnotaties voor X-as toegevoegd"
+            },
             "1.7.0": {
               "en": "Add presets",
               "de": "Presets sind jinzugefügt",
@@ -27,48 +35,16 @@
               "en": "Add series as X ticks",
               "de": "Möglichkeit ein Wert als X Beschriftung zu benutzen",
               "ru": "Возможность показывать X подписи из истории"
-            },
-            "1.5.7": {
-              "en": "Small fix in smoothing algorithm",
-              "de": "Korrigiere smoothing Algoritmus",
-              "ru": "Исправлен cглаживающий алгоритм"
-            },
-            "1.5.6": {
-              "en": "fix marking line",
-              "de": "Korrigiere Markierungslinie",
-              "ru": "Исправлена горизонтальная линия"
-            },
-            "1.5.5": {
-              "en": "remove area, line plot \nadd fill value, points option",
-              "de": "Area, LinienPlot gelöscht\nUnterstützung Füllwert und Punktenoption",
-              "ru": "Удалены area и line plot\nПоддержка заливки и опции точек"
-            },
-            "1.5.3": {
-              "en": "Allow using of IDs in the marking\nSupport of filled markings",
-              "de": "Es ist möglich IDs zu benutzen für Markierungslinien\nUnterstützung von gefüllten Markierungen",
-              "ru": "Можно использовать ID для значений горизонтальных линий\nПоддержка закрашениых горизонтальных интервалов"
-            },
-            "1.5.2": {
-              "en": "fix range and offset if month or year\nfix after comma settings",
-              "de": "Korrigiere Intervall und Offset falls Monat oder Jahr benutzt sind\nKorrigiere Stellen nach Komma",
-              "ru": "Исправлен интервал и сдвиг, если использовались месяц или год\nИспрвалена настройка цифр после запятой"
-            },
-            "1.5.1": {
-              "en": "Filter IDs depends on storage instance",
-              "de": "Filtere IDs abhängig vom Instanz",
-              "ru": "Филтровать ID в зависимости от инстанции"
-            },
-            "1.5.0": {
-              "en": "Support of marking lines",
-              "de": "Unterstürtzung von Markierungslinien",
-              "ru": "Поддержка горизонтальных линий"
             }
         },
         "title":        "Flot Charts",
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",
-            "de": "Adapter benutzt Flot-Module um Grafiken zu zeichnen.",
-            "ru": "Драйвер строит графики с помощью Flot"
+            "de": "Dieser Adapter zeichnet Diagramme mit Flot in ioBroker.",
+            "ru": "Драйвер строит графики с помощью Flot",
+            "nl": "Deze adapter tekent grafieken met Flot in ioBroker",
+            "fr": "Cet adaptateur dessine des graphiques avec Flot dans ioBroker",
+            "pt": "Este adaptador desenha gráficos com o Flot no ioBroker"
         },
         "authors": [
             "bluefox <dogafox@gmail.com>"
