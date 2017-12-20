@@ -1,8 +1,17 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.1",
+        "version": "1.7.2",
         "news": {
+            "1.7.2": {
+              "en": "The loading via cloud is fixed",
+              "de": "Das Laden über die Cloud ist behoben",
+              "ru": "Погрузка через облако фиксирована",
+              "pt": "O carregamento por nuvem é fixo",
+              "nl": "Het laden via cloud is opgelost",
+              "fr": "Le chargement via le cloud est fixe",
+              "it": "Il caricamento tramite cloud è fisso"
+            },
             "1.7.1": {
               "en": "Fixed the loading of presets\nAdded new date formats for X axis",
               "de": "Das Laden von Presets wurde korrigiert\nNeue Datumsformate für die X-Achse hinzugefügt",
@@ -44,7 +53,8 @@
             "ru": "Драйвер строит графики с помощью Flot",
             "nl": "Deze adapter tekent grafieken met Flot in ioBroker",
             "fr": "Cet adaptateur dessine des graphiques avec Flot dans ioBroker",
-            "pt": "Este adaptador desenha gráficos com o Flot no ioBroker"
+            "pt": "Este adaptador desenha gráficos com o Flot no ioBroker",
+            "it": "Questo adattatore disegna i grafici con Flot in ioBroker."
         },
         "authors": [
             "bluefox <dogafox@gmail.com>"

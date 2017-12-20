@@ -7,4 +7,5 @@ node_modules
 .git
 test
 .travis.yml
+iob_npm.done
 appveyor.yml

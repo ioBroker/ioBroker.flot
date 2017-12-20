@@ -22,6 +22,9 @@ to
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
 ## Changelog
+### 1.7.2 (2017-12-20)
+* (bluefox) The loading via cloud is fixed
+
 ### 1.7.1 (2017-12-14)
 * (bluefox) Fixed the loading of presets
 * (bluefox) Added new date formats for X axis

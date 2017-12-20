@@ -163,6 +163,7 @@ socket.on('connect', function () {
 });
 
 socket.on('stateChange', function (id, state) {
+    if (!chart || !config || !config.m) return;
     console.log(id + ' - ' + state.val);
     for (var m = 0; m < config.m.length; m++) {
         if (config.m[m].oid === id) {
