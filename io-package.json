@@ -1,9 +1,9 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.2",
+        "version": "1.7.3",
         "news": {
-            "1.7.2": {
+            "1.7.3": {
               "en": "The loading via cloud is fixed",
               "de": "Das Laden über die Cloud ist behoben",
               "ru": "Погрузка через облако фиксирована",
@@ -46,7 +46,17 @@
               "ru": "Возможность показывать X подписи из истории"
             }
         },
-        "title":        "Flot Charts",
+        "title": {
+          "en": "Flot Charts",
+          "de": "Flot-Diagrammen",
+          "ru": "Графики c Flot",
+          "pt": "Flot Charts",
+          "nl": "Flot charts",
+          "fr": "Graphiques des Flot",
+          "it": "Grafici Flot",
+          "es": "Gráficos de Flot",
+          "pl": "Wykresy Flot"
+        },
         "desc":         {
             "en": "This adapter draws charts with Flot in ioBroker.",
             "de": "Dieser Adapter zeichnet Diagramme mit Flot in ioBroker.",
@@ -54,7 +64,9 @@
             "nl": "Deze adapter tekent grafieken met Flot in ioBroker",
             "fr": "Cet adaptateur dessine des graphiques avec Flot dans ioBroker",
             "pt": "Este adaptador desenha gráficos com o Flot no ioBroker",
-            "it": "Questo adattatore disegna i grafici con Flot in ioBroker."
+            "it": "Questo adattatore disegna i grafici con Flot in ioBroker.",
+            "es": "Este adaptador dibuja tablas con Flot en ioBroker",
+            "pl": "Ten adapter rysuje wykresy za pomocą Flot w programie ioBroker"
         },
         "authors": [
             "bluefox <dogafox@gmail.com>"

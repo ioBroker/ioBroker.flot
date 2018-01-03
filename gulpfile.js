@@ -20,7 +20,9 @@ var languages =  {
     pt: {},
     nl: {},
     fr: {},
-    it: {}
+    it: {},
+    es: {},
+    pl: {}
 };
 
 function lang2data(lang, isFlat) {
@@ -139,7 +141,7 @@ function words2languages(src) {
         for (var l in langs) {
             if (!langs.hasOwnProperty(l)) continue;
             var keys = Object.keys(langs[l]);
-            keys.sort();
+            //keys.sort();
             var obj = {};
             for (var k = 0; k < keys.length; k++) {
                 obj[keys[k]] = langs[l][keys[k]];
@@ -174,7 +176,7 @@ function words2languagesFlat(src) {
             }
         }
         var keys = Object.keys(langs.en);
-        keys.sort();
+        /*keys.sort();
         for (var l in langs) {
             if (!langs.hasOwnProperty(l)) continue;
             var obj = {};
@@ -182,7 +184,7 @@ function words2languagesFlat(src) {
                 obj[keys[k]] = langs[l][keys[k]];
             }
             langs[l] = obj;
-        }
+        }*/
         if (!fs.existsSync(src + 'i18n/')) {
             fs.mkdirSync(src + 'i18n/');
         }
@@ -307,7 +309,7 @@ function languages2words(src) {
     // read actual words.js
     var aWords = readWordJs();
 
-    var temporaryIgnore = ['pt', 'fr', 'nl', 'it'];
+    var temporaryIgnore = ['pt', 'fr', 'nl', 'it', 'es', 'pl'];
     if (aWords) {
         // Merge words together
         for (var w in aWords) {

@@ -1,6 +1,7 @@
 Gruntfile.js
 gulpfile.js
 tasks
+www/i18n
 www/lib/js/jquery.flot.js
 .idea
 node_modules

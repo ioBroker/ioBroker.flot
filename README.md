@@ -21,8 +21,14 @@ to
 
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
+## How to use
+- install "web"-adapter and create one instance if not installed.
+- Select in settings of "web"-adapter the instance of installed "socket.io"-instance.
+- install "flot"-adapter and call
+- Go to http://ip:8082/flot/edit.html
+
 ## Changelog
-### 1.7.2 (2017-12-20)
+### 1.7.3 (2018-01-03)
 * (bluefox) The loading via cloud is fixed
 
 ### 1.7.1 (2017-12-14)
@@ -169,9 +175,3 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ### 0.0.1 (2015-03-27)
 * (bluefox) initial commit
-
-### How to use
-- install "web"-adapter and create one instance if not installed.
-- Select in settings of "web"-adapter the instance of installed "socket.io"-instance.
-- install "flot"-adapter and call
-- Go to http://ip:8082/flot/edit.html

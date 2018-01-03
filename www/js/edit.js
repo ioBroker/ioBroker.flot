@@ -1,17 +1,18 @@
 $(document).ready(function () {
     'use strict';
 
-    var defaultColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
-    var instances = [];
-    var timer = null;
-    var showTimer = null;
-    var defaultHistory = '';
-    var presets = {};
-    var currentChart = null;
-    var onlyOneChart = false;
+    var defaultColors   = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF', '#800000', '#008000', '#000080', '#808000', '#800080', '#008080'];
+    var instances       = [];
+    var timer           = null;
+    var showTimer       = null;
+    var defaultHistory  = '';
+    var presets         = {};
+    var currentChart    = null;
+    var onlyOneChart    = false;
+    var loaded          = false;
     var socket;
-    var instance = 0;
-    var setup = {
+    var instance        = 0;
+    var setup           = {
         options: {
             l: []
         }
@@ -686,6 +687,7 @@ $(document).ready(function () {
     }
 
     function update() {
+        if (!loaded) return;
         clearTimeout(timer);
         timer = null;
 
@@ -1381,6 +1383,7 @@ $(document).ready(function () {
                 endkey: 'flot.' + instance + '.\u9999'
             }, function (err, res) {
                 presets = {};
+                loaded  = true;
                 if (res && res.rows) {
                     for (var i = 0; i < res.rows.length; i++) {
                         presets[res.rows[i].value._id] = res.rows[i].value;

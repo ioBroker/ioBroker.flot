@@ -1,2 +1,4 @@
 .idea
 node_modules
+www/i18n/flat.txt
+www/i18n/*/flat.txt
