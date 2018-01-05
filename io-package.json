@@ -1,9 +1,9 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.3",
+        "version": "1.7.4",
         "news": {
-            "1.7.3": {
+            "1.7.4": {
               "en": "The loading via cloud is fixed",
               "de": "Das Laden über die Cloud ist behoben",
               "ru": "Погрузка через облако фиксирована",
@@ -46,7 +46,8 @@
               "ru": "Возможность показывать X подписи из истории"
             }
         },
-        "title": {
+		"title": "Flot Charts",
+        "titleLang": {
           "en": "Flot Charts",
           "de": "Flot-Diagrammen",
           "ru": "Графики c Flot",
