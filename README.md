@@ -28,6 +28,9 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 - Go to http://ip:8082/flot/edit.html
 
 ## Changelog
+### 1.7.5 (2018-01-13)
+* (bluefox) try to fix small error
+
 ### 1.7.4 (2018-01-05)
 * (bluefox) The loading via cloud is fixed
 

@@ -99,7 +99,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 var data = that.chart.getData();
 
                 for (var d = 0; d < data.length; d++) {
-                    if (that.config.l[d].chartType !== 'bar') continue;
+                    if (!that.config.l[d] || that.config.l[d].chartType !== 'bar') continue;
 
                     $.each(data[d].data, function (i, el) {
                         if (el[1] === null) return;

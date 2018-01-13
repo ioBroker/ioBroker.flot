@@ -1,8 +1,19 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.4",
+        "version": "1.7.5",
         "news": {
+            "1.7.5": {
+              "en": "try to fix small error",
+              "de": "Versuch einen kleinen Fehler zu beheben",
+              "ru": "попытка исправить небольшую ошибку",
+              "pt": "tente corrigir pequenos erros",
+              "nl": "probeer een kleine fout op te lossen",
+              "fr": "essayer de réparer une petite erreur",
+              "it": "prova a correggere un piccolo errore",
+              "es": "intenta arreglar un pequeño error",
+              "pl": "spróbuj naprawić mały błąd"
+            },
             "1.7.4": {
               "en": "The loading via cloud is fixed",
               "de": "Das Laden über die Cloud ist behoben",
