@@ -1,8 +1,19 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.5",
+        "version": "1.7.6",
         "news": {
+            "1.7.6": {
+              "en": "remove alert windows from errors, log instead",
+              "de": "Entfernen Sie Warnfenster von Fehlern, loggen Sie sich stattdessen ein",
+              "ru": "удалять окна предупреждений из ошибок, вместо этого записывать журнал",
+              "pt": "remova janelas de alerta de erros, registre em vez disso",
+              "nl": "verwijder waarschuwingsvensters van fouten, log in plaats daarvan",
+              "fr": "supprimer les fenêtres d'alerte des erreurs, consigner à la place",
+              "it": "rimuovere le finestre di avviso dagli errori, invece registrare",
+              "es": "eliminar ventanas de alerta de errores, registrar en su lugar",
+              "pl": "usuń okna alertów z błędów, zamiast tego zaloguj się"
+            },
             "1.7.5": {
               "en": "try to fix small error",
               "de": "Versuch einen kleinen Fehler zu beheben",

@@ -28,6 +28,9 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 - Go to http://ip:8082/flot/edit.html
 
 ## Changelog
+### 1.7.6 (2018-02-16)
+* (Apollon77) remove alert windows from errors, log instead
+
 ### 1.7.5 (2018-01-13)
 * (bluefox) try to fix small error
 
@@ -62,7 +65,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 * (bluefox) fix marking line
 
 ### 1.5.4 (2016-10-13)
-* (bluefox) remove area, line plot 
+* (bluefox) remove area, line plot
 * (bluefox) add fill value, points option
 
 ### 1.5.3 (2016-10-08)
@@ -94,7 +97,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ### 1.3.2 (2016-06-13)
 * (bluefox) add settings for border color and border width
-* (bluefox) make splines work 
+* (bluefox) make splines work
 
 ### 1.3.1 (2016-06-07)
 * (bluefox) add spline file
@@ -135,7 +138,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 * (bluefox) ignoreNull per variable
 * (bluefox) fix x axis
 
-### 1.0.0 (2016-04-09) 
+### 1.0.0 (2016-04-09)
 * (bluefox) enable editing of created charts
 * (bluefox) enable set of label colors
 * (bluefox) enable set of window background

@@ -398,7 +398,7 @@ function readOneChart(id, instance, index, callback) {
     //console.log(JSON.stringify(option));
     console.log(new Date(option.start) + ' - ' + new Date(option.end));
     socket.emit('getHistory', id, option, function (err, res, stepIgnore, _sessionId) {
-        if (err) window.alert(err);
+        if (err) console.error(err);
 
         if (sessionId && _sessionId && _sessionId !== sessionId) {
             console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
@@ -458,7 +458,7 @@ function prepareChart() {
         tooltipId:  'tooltip',
         cbOnZoom:   onZoom
     }, config, seriesData, config.m, ticks);
-    
+
     if (config.zoom) {
         $('#resetZoom').unbind('click').click(function () {
             seriesData = [];
@@ -467,7 +467,7 @@ function prepareChart() {
             now = new Date();
             readData(true);
         });
-            
+
         // handlers for zoom and pan
         $('#' + divId)
             // flot can pan and zoom with mouse itself
@@ -532,7 +532,7 @@ function prepareChart() {
                             var positionX  = (touches[0].pageX > touches[1].pageX) ? (touches[1].pageX + width / 2) : (touches[0].pageX + width / 2);
 
                             chart.zoom(positionX, amount);
-                            
+
                             if (zoomTimeout) clearTimeout(zoomTimeout);
                             zoomTimeout = setTimeout(onZoom, 500);
                         }
@@ -581,7 +581,7 @@ function readTicks(callback) {
             //console.log(JSON.stringify(option));
             console.log('Ticks: ' + new Date(option.start) + ' - ' + new Date(option.end));
             socket.emit('getHistory', config.ticks, option, function (err, res, stepIgnore, _sessionId) {
-                if (err) window.alert(err);
+                if (err) console.error(err);
 
                 if (sessionId && _sessionId && _sessionId !== sessionId) {
                     console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
@@ -716,13 +716,13 @@ function startLiveUpdate() {
         if (config.zoomed) {
             var max = 0;
             var min = null;
-            
+
             // Find min and max of all lines
             for (var index = 0; index < config.l.length; index++) {
                 if (max < config.l[index].zMax) max = config.l[index].zMax;
                 if (min === null || min > config.l[index].zMin) min = config.l[index].zMin;
             }
-            
+
             // if 20%
             if ((max + ((max - min) / 20)) >= new Date().getTime()) {
                 max = new Date().getTime() - now.getTime();
@@ -750,7 +750,7 @@ function updateLive() {
     sessionId++;
 
     if (config.zoom) chart.resetZoom(now);
-    
+
     for (var index = 0; index < config.l.length; index++) {
         ready++;
         seriesData[index] = [];
@@ -798,7 +798,7 @@ function onZoom() {
         $('#resetZoom').show();
         config.zoomed = true;
     }
-    
+
     var result = chart.getRange();
 
     for (var r = 0; r < result.length; r++) {
