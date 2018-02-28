@@ -113,7 +113,7 @@
         "singleton":    true,
 		"type":         "visualization",
         "noConfig":     true,
-		"welcomeScreen": {"link": "flot/edit.html", "name": "flot editor", "img": "flot.admin/flot.png", "color": "gray"}
+		"welcomeScreen": {"link": "flot/edit.html", "name": "flot editor", "img": "flot.admin/flot.png", "color": "gray", "order": 4}
     },
     "native": {
 
