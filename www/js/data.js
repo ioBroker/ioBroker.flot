@@ -244,14 +244,16 @@ function getStartStop(index, step) {
     var _now;
     config.l[index].offset = config.l[index].offset || 0;
 
+    var isMonthRange = (config.range.indexOf('m') === -1) ? false : true;
     // check config range
-    if (config.range[1] === 'm' && config.l.length > 1) {
+    if (isMonthRange && config.l.length > 1) {
+        var monthRange = parseInt(config.range, 10) || 1;
         for (var a = 0; a < config.l.length; a++) {
             if (config.l[a].offset && config.l[a].offset !== 0) {
                 // Check what the month has first index
                 _now = addTime(now, config.l[0].offset);
                 var minusMonth = new Date(_now);
-                minusMonth.setMonth(minusMonth.getMonth() - 1);
+                minusMonth.setMonth(minusMonth.getMonth() - monthRange);
                 config.range = Math.floor((_now - minusMonth.getTime()) / 60000) + '';
                 break;
             }
