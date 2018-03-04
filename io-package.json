@@ -1,8 +1,19 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.6",
+        "version": "1.7.7",
         "news": {
+            "1.7.7": {
+              "en": "fix month range",
+              "de": "Monatsspanne festlegen",
+              "ru": "исправить месячный диапазон",
+              "pt": "intervalo mensal fixo",
+              "nl": "bereik maandbereik",
+              "fr": "fixer la plage de mois",
+              "it": "fissare il range del mese",
+              "es": "arreglar rango de mes",
+              "pl": "popraw zakres miesięcy"
+            },
             "1.7.6": {
               "en": "remove alert windows from errors, log instead",
               "de": "Entfernen Sie Warnfenster von Fehlern, loggen Sie sich stattdessen ein",

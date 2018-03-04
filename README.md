@@ -28,6 +28,10 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 - Go to http://ip:8082/flot/edit.html
 
 ## Changelog
+
+### 1.7.7 (2018-03-04)
+* (Apollon77) fix month range
+
 ### 1.7.6 (2018-02-16)
 * (Apollon77) remove alert windows from errors, log instead
 
