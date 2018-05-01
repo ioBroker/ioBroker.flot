@@ -1,8 +1,19 @@
 {
     "common": {
         "name":         "flot",
-        "version": "1.7.7",
+        "version": "1.7.8",
         "news": {
+            "1.7.8": {
+              "en": "Added support of multi-languages in names",
+              "de": "Unterstützung von Multi-Sprachen in Namen hinzugefügt",
+              "ru": "Добавлена ​​поддержка нескольких языков в именах",
+              "pt": "Adicionado suporte de multi-idiomas em nomes",
+              "nl": "Ondersteuning van meerdere talen toegevoegd aan namen",
+              "fr": "Ajout du support de plusieurs langues dans les noms",
+              "it": "Aggiunto il supporto di più lingue nei nomi",
+              "es": "Se agregó soporte de múltiples idiomas en los nombres",
+              "pl": "Dodano obsługę wielu języków w nazwach"
+            },
             "1.7.7": {
               "en": "fix month range",
               "de": "Monatsspanne festlegen",

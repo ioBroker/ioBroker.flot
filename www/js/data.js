@@ -565,6 +565,9 @@ function _readOneLine(index, cb) {
             config.l[index].name = config.l[index].name || config.l[index].id;
             config.l[index].unit = config.l[index].unit || '';
         }
+        if (typeof config.l[index].name === 'object') {
+            config.l[index].name = config.l[index].name[systemLang] || config.l[index].name.en;
+        }
         readOneChart(config.l[index].id, config.l[index].instance, index, cb);
     });
 }
