@@ -29,7 +29,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ## Changelog
 
-### 1.7.8 (2018-05-01)
+### 1.7.9 (2018-05-01)
 * (bluefox) Added support of multi-languages in names
 
 ### 1.7.7 (2018-03-04)

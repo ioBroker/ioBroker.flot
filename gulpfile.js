@@ -1,10 +1,10 @@
 'use strict';
 
-var gulp      = require('gulp');
-var fs        = require('fs');
-var pkg       = require('./package.json');
-var iopackage = require('./io-package.json');
-var version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
+const gulp      = require('gulp');
+const fs        = require('fs');
+const pkg       = require('./package.json');
+const iopackage = require('./io-package.json');
+const version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
 /*var appName   = getAppName();
 
 function getAppName() {
@@ -13,7 +13,7 @@ function getAppName() {
 }
 */
 const fileName = 'words.js';
-var languages =  {
+let languages =  {
     en: {},
     de: {},
     ru: {},
@@ -355,6 +355,15 @@ gulp.task('adminLanguages2words', function (done) {
 });
 
 
+gulp.task('updateEditHtml', function (done) {
+    let text = fs.readFileSync('./www/edit.html').toString('utf-8');
+    let newText = text.replace(/Version: \d+\.\d+\.\d+\<\/div\>/, `Version: ${pkg.version}</div>`);
+    if (newText !== text) {
+        fs.writeFileSync('./www/edit.html', newText);
+    }
+    done();
+});
+
 gulp.task('updatePackages', function (done) {
     iopackage.common.version = pkg.version;
     iopackage.common.news = iopackage.common.news || {};
@@ -397,4 +406,4 @@ gulp.task('updateReadme', function (done) {
     done();
 });
 
-gulp.task('default', ['updatePackages', 'updateReadme']);
+gulp.task('default', ['updatePackages', 'updateReadme', 'updateEditHtml']);

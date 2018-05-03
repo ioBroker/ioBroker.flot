@@ -1,7 +1,7 @@
 {
   "name": "iobroker.flot",
   "description": "This adapter draws charts with Flot in ioBroker.",
-  "version": "1.7.8",
+  "version": "1.7.9",
   "author": {
     "name": "bluefox",
     "email": "dogafox@gmail.com"
@@ -39,7 +39,8 @@
   },
   "main": "Gruntfile.js",
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --exit"
+    "test": "node node_modules/mocha/bin/mocha --exit",
+    "prepublish": "node node_modules/gulp/bin/gulp default"
   },
   "license": "MIT"
 }
