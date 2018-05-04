@@ -153,13 +153,18 @@ var socket = io.connect(socketURL, {
 });
 
 socket.on('connect', function () {
-    socket.emit('name', 'flot');
     if (disconnectTimeout) {
         $('#no-connection').hide();
         clearTimeout(disconnectTimeout);
         disconnectTimeout = null;
     }
-    readData();
+    setTimeout(function () {
+        socket.emit('name', 'flot');
+    }, 50);
+
+    setTimeout(function () {
+        readData();
+    }, 100);
 });
 
 socket.on('stateChange', function (id, state) {
@@ -621,32 +626,67 @@ function readTicks(callback) {
     }
 }
 
-function readMarkings(cb) {
-    var count = 0;
-    if (config.m && config.m.length) {
-        for (var m = 0; m < config.m.length; m++) {
-            if (!config.m[m].oid && config.m[m].v && parseFloat(config.m[m].v) != config.m[m].v && config.m[m].v.indexOf('.') !== -1) {
-                count++;
-                if (subscribes.indexOf(config.m[m].v) === -1) subscribes.push(config.m[m].v);
-                readValue(config.m[m].v, m, function (index, val) {
-                    config.m[index].oid = config.m[index].v;
-                    config.m[index].v   = val;
-                    if (!--count) cb();
-                });
-            }
-            if (!config.m[m].oidl && config.m[m].vl && parseFloat(config.m[m].vl) != config.m[m].vl && config.m[m].vl.indexOf('.') !== -1) {
-                count++;
-                if (subscribes.indexOf(config.m[m].vl) === -1) subscribes.push(config.m[m].vl);
-                readValue(config.m[m].vl, m, function (index, val) {
-                    config.m[index].oidl = config.m[index].vl;
-                    config.m[index].vl   = val;
-                    if (!--count) cb();
-                });
-            }
-        }
-        if (!count) cb();
+function readMarkings(cb, m) {
+    m = m || 0;
+    if (!config.m || !config.m.length || m >= config.m.length) {
+        return cb && cb();
     } else {
-        cb();
+        if (!config.m[m].oid && config.m[m].v && parseFloat(config.m[m].v) != config.m[m].v && config.m[m].v.indexOf('.') !== -1) {
+            count++;
+
+            if (subscribes.indexOf(config.m[m].v) === -1) subscribes.push(config.m[m].v);
+
+            readValue(config.m[m].v, m, function (index, val) {
+                config.m[index].oid = config.m[index].v;
+                config.m[index].v   = val;
+
+                if (!config.m[m].oidl && config.m[m].vl && parseFloat(config.m[m].vl) != config.m[m].vl && config.m[m].vl.indexOf('.') !== -1) {
+                    if (subscribes.indexOf(config.m[m].vl) === -1) subscribes.push(config.m[m].vl);
+                    readValue(config.m[m].vl, m, function (index, val) {
+                        config.m[index].oidl = config.m[index].vl;
+                        config.m[index].vl   = val;
+                        cb && cb();
+                    });
+                } else {
+                    cb && cb();
+                }
+            });
+        } else
+        if (!config.m[m].oidl && config.m[m].vl && parseFloat(config.m[m].vl) != config.m[m].vl && config.m[m].vl.indexOf('.') !== -1) {
+            if (subscribes.indexOf(config.m[m].vl) === -1) subscribes.push(config.m[m].vl);
+            readValue(config.m[m].vl, m, function (index, val) {
+                config.m[index].oidl = config.m[index].vl;
+                config.m[index].vl   = val;
+                cb && cb();
+            });
+        }
+    }
+}
+
+function _readData(callback, j) {
+    j = j || 0;
+    if (j >= config.l.length) {
+        return callback && callback();
+    } else {
+        if (config.l[j] !== '' && config.l[j] !== undefined) seriesData.push([]);
+        _readOneLine(j, function () {
+            setTimeout(function () {
+                _readData(callback, j + 1);
+            }, 10);
+        });
+    }
+}
+
+function subscribeAll(subscribes, cb, s) {
+    s = s || 0;
+    if (!subscribes || !subscribes.length || s >= subscribes.length) {
+        cb && cb();
+    } else {
+        socket.emit('subscribe', subscribes[s], function () {
+            setTimeout(function () {
+                subscribeAll(subscribes, cb, s + 1);
+            }, 0);
+        });
     }
 }
 
@@ -678,31 +718,19 @@ function readData(hidden) {
 //                    });
 //                }
 //            } else {
-        var j;
-        var ready = config.l.length;
-        for (j = 0; j < config.l.length; j++) {
-            if (config.l[j] !== '' && config.l[j] !== undefined) seriesData.push([]);
+        _readData(function () {
+            readTicks(function (_ticks) {
+                readMarkings(function () {
+                    if (!subscribed) {
+                        subscribed = true;
+                        subscribeAll();
+                    }
 
-            _readOneLine(j, function () {
-                if (!--ready) {
-                    readTicks(function (_ticks) {
-                        readMarkings(function () {
-                            if (!subscribed) {
-                                subscribed = true;
-                                if (subscribes.length) {
-                                    for (var s = 0; s < subscribes.length; s++) {
-                                        socket.emit('subscribe', subscribes[s]);
-                                    }
-                                }
-                            }
-
-                            $('#server-disconnect').hide();
-                            prepareChart();
-                        });
-                    });
-                }
+                    $('#server-disconnect').hide();
+                    prepareChart();
+                });
             });
-        }
+        });
     }
 
     if (!config.noedit) {

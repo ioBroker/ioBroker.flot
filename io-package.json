@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.7.9",
+        "version": "1.7.10",
         "news": {
+            "1.7.10": {
+                "en": "Optimize communication",
+                "de": "Kommunikation optimieren",
+                "ru": "Оптимизация связи",
+                "pt": "Otimizar a comunicação",
+                "nl": "Optimaliseer communicatie",
+                "fr": "Optimiser la communication",
+                "it": "Ottimizza la comunicazione",
+                "es": "Optimizar la comunicación",
+                "pl": "Zoptymalizuj komunikację"
+            },
             "1.7.9": {
                 "en": "Added support of multi-languages in names",
                 "de": "Unterstützung von Multi-Sprachen in Namen hinzugefügt",

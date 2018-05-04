@@ -973,6 +973,7 @@ $(document).ready(function () {
     }
 
     function init() {
+        console.log('Initialize...');
         // hide/show settings
         if (settings.maxLines < 2) {
             $('#ids_add').hide();
@@ -1003,11 +1004,12 @@ $(document).ready(function () {
                     custom: true
                 }
             },
+            imgPath:    '../lib/css/fancytree/',
             noMultiselect: true,
             connCfg: {
                 socketUrl: socketUrl,
                 socketSession: socketSession,
-                socketName: 'flotEdit',
+                socketName: 'flotEditDialog',
                 upgrade: typeof socketForceWebSockets !== 'undefined' ? !socketForceWebSockets : undefined,
                 rememberUpgrade: typeof socketForceWebSockets !== 'undefined' ? socketForceWebSockets : undefined,
                 transports: typeof socketForceWebSockets !== 'undefined' ? (socketForceWebSockets ? ['websocket'] : undefined) : undefined
@@ -1333,168 +1335,204 @@ $(document).ready(function () {
 
         fillValues();
 
-        initSocket();
+        setTimeout(function () {
+            initSocket();
+        }, 200);
+    }
+
+    function getPresets(socket, callback) {
+        // read presets
+        socket.emit('getObjectView', 'chart', 'chart', {
+            startkey: 'flot.' + instance + '.',
+            endkey: 'flot.' + instance + '.\u9999'
+        }, function (err, res) {
+            presets = {};
+            loaded  = true;
+            if (res && res.rows) {
+                for (var i = 0; i < res.rows.length; i++) {
+                    presets[res.rows[i].value._id] = res.rows[i].value;
+                }
+            }
+            if (currentChart && !presets[currentChart]) {
+                alert(_('Chart ID %s not found', currentChart));
+                currentChart = '';
+                onlyOneChart = false;
+                $($('#accordion').find('li')[0]).show();
+                $('#chapter_presets').show();
+            }
+
+            if (currentChart) {
+                var _callback = callback;
+                callback = null;
+                setTimeout(function () {
+                    loadChart(currentChart, _callback);
+                }, 200);
+            }
+            showPresets();
+
+            var $save = $('.save');
+            $save
+                .button({
+                    icons: {
+                        primary: 'ui-icon-arrowthickstop-1-s'
+                    },
+                    label: onlyOneChart ? _('save %s', presets[currentChart].common.name) : _('save'),
+                    showLabel: true
+                })
+                .click(function () {
+                    if (onlyOneChart && currentChart) {
+                        saveChart(currentChart);
+                        return;
+                    }
+
+                    var texts = '<option value="">' + _('new') + '</option>';
+                    for (var id in presets) {
+                        texts += '<option value="' + id + '">' + presets[id].common.name + '</option>';
+                    }
+
+                    $('#dialog-new-preset-info-tr').show();
+
+                    $('#dialog-new-preset-into')
+                        .html(texts)
+                        .val(currentChart)
+                        .unbind('change')
+                        .bind('change', function () {
+                            var val = $(this).val();
+                            if (!val) {
+                                $('#dialog-new-preset-name-tr').show();
+                            } else {
+                                $('#dialog-new-preset-name-tr').hide();
+                            }
+                        }).trigger('change');
+
+                    $('#dialog-new-preset').dialog({
+                        autoOpen: true,
+                        modal: true,
+                        title: _('Enter chart name'),
+                        width: 430,
+                        resizable: false,
+                        buttons: [
+                            {
+                                id: 'dialog-new-preset-ok',
+                                text: _('Ok'),
+                                click: function () {
+                                    var name = $('#dialog-new-preset-into').val();
+                                    var id = name;
+
+                                    if (!name) {
+                                        name = $('#dialog-new-preset-name').val();
+                                        id = name2Chart(name);
+                                        if (presets[id]) {
+                                            // Warning. Overwrite?
+                                            if (!window.confirm(_('Overwrite existing?'))) {
+                                                return;
+                                            }
+                                        }
+                                    }
+
+                                    saveChart(id, name, function () {
+                                        showPresets();
+                                        $('#dialog-new-preset').dialog('close');
+                                    });
+                                }
+                            },
+                            {
+                                text: _('Cancel'),
+                                click: function () {
+                                    $('#dialog-new-preset').dialog('close');
+                                }
+                            }
+                        ]
+                    });
+                })
+                .css({'font-size': 14, 'white-space': 'nowrap'});
+
+            // select editor tab if no presets
+            if (!res || !res.rows || !res.rows.length) {
+                $('#accordion').tabs({active: 1});
+                $save.button('enable');
+            } else if (currentChart) {
+                $save.button('disable');
+            }
+
+            $('#dialog-new-preset-name').keyup(function (e) {
+                if (e.keyCode === 13) {
+                    $('#dialog-new-preset-ok').trigger('click');
+                }
+            });
+            callback && callback();
+        });
     }
 
     function initSocket() {
+        console.log('Init connection...');
         // Read instances
         socket = io.connect(socketUrl, {
-            query: 'key=' + socketSession,
-            'reconnection limit': 10000,
-            'max reconnection attempts': Infinity,
+            query: {
+                key: socketSession
+            },
+            reconnectionDelay: 10000,
+            reconnectionAttempts: Infinity,
             upgrade: typeof socketForceWebSockets !== 'undefined' ? !socketForceWebSockets : undefined,
             rememberUpgrade: typeof socketForceWebSockets !== 'undefined' ? socketForceWebSockets : undefined,
             transports: typeof socketForceWebSockets !== 'undefined' ? (socketForceWebSockets ? ['websocket'] : undefined) : undefined
         });
 
         socket.on('connect', function () {
-            this.emit('name', 'flotEdit');
+            console.log('Connected');
 
-            this.emit('getObject', 'system.config', function (err, obj) {
-                if (obj && obj.common) defaultHistory = obj.common.defaultHistory || 'history.0';
-                // load history instances
-                socket.emit('getObjectView', 'system', 'instance', {
-                    startkey: 'system.adapter.',
-                    endkey: 'system.adapter.\u9999'
-                }, function (err, doc) {
-                    if (!err && doc && doc.rows) {
-                        if (doc.rows.length !== 0) {
-                            for (var i = 0; i < doc.rows.length; i++) {
-                                var obj = doc.rows[i].value;
-                                if (obj && obj.type === 'instance' && obj.common && obj.common.type === 'storage') {
-                                    if (instances.indexOf(obj._id.substring('system.adapter.'.length)) === -1) instances.push(obj._id.substring('system.adapter.'.length));
+            // modifiy it later to socket.emit('name', 'flotEdit', function () { do }); 2018_05_04 BF
+            setTimeout(function () {
+                socket.emit('name', 'flotEdit');
+            }, 50);
+
+            setTimeout(function () {
+                getPresets(socket, function () {
+                    socket.emit('getObject', 'system.config', function (err, obj) {
+                        if (obj && obj.common) defaultHistory = obj.common.defaultHistory || 'history.0';
+                        // load history instances
+                        socket.emit('getObjectView', 'system', 'instance', {
+                            startkey: 'system.adapter.',
+                            endkey: 'system.adapter.\u9999'
+                        }, function (err, doc) {
+                            if (!err && doc && doc.rows) {
+                                if (doc.rows.length !== 0) {
+                                    for (var i = 0; i < doc.rows.length; i++) {
+                                        var obj = doc.rows[i].value;
+                                        if (obj && obj.type === 'instance' && obj.common && obj.common.type === 'storage') {
+                                            if (instances.indexOf(obj._id.substring('system.adapter.'.length)) === -1) instances.push(obj._id.substring('system.adapter.'.length));
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                    showIds();
+                            showIds();
 
-                    update();
+                            update();
 
-                    delayedPreview();
-                    // not need to disconnect, because socket-io uses pool
-                    //socket.disconnect();
-                    //socket = null;
-                });
-            });
+                            delayedPreview();
 
-            this.emit('getObjectView', 'chart', 'chart', {
-                startkey: 'flot.' + instance + '.',
-                endkey: 'flot.' + instance + '.\u9999'
-            }, function (err, res) {
-                presets = {};
-                loaded  = true;
-                if (res && res.rows) {
-                    for (var i = 0; i < res.rows.length; i++) {
-                        presets[res.rows[i].value._id] = res.rows[i].value;
-                    }
-                }
-                if (currentChart && !presets[currentChart]) {
-                    alert(_('Chart ID %s not found', currentChart));
-                    currentChart = '';
-                    onlyOneChart = false;
-                    $($('#accordion').find('li')[0]).show();
-                    $('#chapter_presets').show();
-                }
+                            setTimeout(function() {
+                                $('iframe').attr('src', 'index.html');
+                            }, 500);
 
-                if (currentChart) {
-                    setTimeout(function () {
-                        loadChart(currentChart);
-                    }, 200);
-                }
-                showPresets();
-
-                var $save = $('.save');
-                $save
-                    .button({
-                        icons: {
-                            primary: 'ui-icon-arrowthickstop-1-s'
-                        },
-                        label: onlyOneChart ? _('save %s', presets[currentChart].common.name) : _('save'),
-                        showLabel: true
-                    })
-                    .click(function () {
-                        if (onlyOneChart && currentChart) {
-                            saveChart(currentChart);
-                            return;
-                        }
-
-                        var texts = '<option value="">' + _('new') + '</option>';
-                        for (var id in presets) {
-                            texts += '<option value="' + id + '">' + presets[id].common.name + '</option>';
-                        }
-
-                        $('#dialog-new-preset-info-tr').show();
-
-                        $('#dialog-new-preset-into')
-                            .html(texts)
-                            .val(currentChart)
-                            .unbind('change')
-                            .bind('change', function () {
-                                var val = $(this).val();
-                                if (!val) {
-                                    $('#dialog-new-preset-name-tr').show();
-                                } else {
-                                    $('#dialog-new-preset-name-tr').hide();
-                                }
-                            }).trigger('change');
-
-                        $('#dialog-new-preset').dialog({
-                            autoOpen: true,
-                            modal: true,
-                            title: _('Enter chart name'),
-                            width: 430,
-                            resizable: false,
-                            buttons: [
-                                {
-                                    id: 'dialog-new-preset-ok',
-                                    text: _('Ok'),
-                                    click: function () {
-                                        var name = $('#dialog-new-preset-into').val();
-                                        var id = name;
-
-                                        if (!name) {
-                                            name = $('#dialog-new-preset-name').val();
-                                            id = name2Chart(name);
-                                            if (presets[id]) {
-                                                // Warning. Overwrite?
-                                                if (!window.confirm(_('Overwrite existing?'))) {
-                                                    return;
-                                                }
-                                            }
-                                        }
-
-                                        saveChart(id, name, function () {
-                                            showPresets();
-                                            $('#dialog-new-preset').dialog('close');
-                                        });
-                                    }
-                                },
-                                {
-                                    text: _('Cancel'),
-                                    click: function () {
-                                        $('#dialog-new-preset').dialog('close');
-                                    }
-                                }
-                            ]
+                            // not need to disconnect, because socket-io uses pool
+                            //socket.disconnect();
+                            //socket = null;
                         });
-                    })
-                    .css({'font-size': 14, 'white-space': 'nowrap'});
-
-                // select editor tab if no presets
-                if (!res || !res.rows || !res.rows.length) {
-                    $('#accordion').tabs({active: 1});
-                    $save.button('enable');
-                } else if (currentChart) {
-                    $save.button('disable');
-                }
-
-                $('#dialog-new-preset-name').keyup(function (e) {
-                    if (e.keyCode === 13) {
-                        $('#dialog-new-preset-ok').trigger('click');
-                    }
+                    });
                 });
-            });
+            }, 100);
+        });
+
+        socket.on('disconnect', function () {
+            console.log('Lost connection');
+        });
+
+        socket.on('error', function (e) {
+            console.error('Socket error: ' + e);
+        });
+        socket.on('connect_error', function (e) {
+            console.error('Socket error: ' + e);
         });
     }
 
