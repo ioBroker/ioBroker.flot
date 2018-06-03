@@ -32,6 +32,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 ### 1.9.0 (2018-06-03)
 * (bluefox) Added dashed lines
 * (bluefox) All JS files together are concatenated
+* (bluefox) Show days of week (dow) in time axis.
 
 ### 1.8.0 (2018-05-04)
 * (bluefox) Optimize communication
@@ -195,3 +196,9 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ### 0.0.1 (2015-03-27)
 * (bluefox) initial commit
+
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2014-2018 bluefox<dogafox@gmail.com>

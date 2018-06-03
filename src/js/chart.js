@@ -56,15 +56,15 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
         var now = new Date(parseInt(number, 10));
         if (that.config.timeFormatDate && that.config.timeFormatTime) {
             if (!object.ticks.length) {
-                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
+                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate, months[systemLang], days[systemLang]) + '</i></b>';
             }
             var d = new Date(object.ticks[object.ticks.length - 1].v);
             if (d.getDate() !== now.getDate()) {
-                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate) + '</i></b>';
+                return '<b><i>' + $.plot.formatDate(now, that.config.timeFormatDate, months[systemLang], days[systemLang]) + '</i></b>';
             }
-            return $.plot.formatDate(now, that.config.timeFormatTime);
+            return $.plot.formatDate(now, that.config.timeFormatTime, months[systemLang], days[systemLang]);
         } else {
-            return $.plot.formatDate(now, that.config.timeFormat);
+            return $.plot.formatDate(now, that.config.timeFormat, months[systemLang], days[systemLang]);
         }
     }
 
@@ -414,6 +414,8 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 that.config.timeFormatTime = '%H:%M:%S';
             } else if (that.config.timeFormat.indexOf('%I:%M:%S') !== -1) {
                 that.config.timeFormatTime = '%I:%M:%S';
+            } else if (that.config.timeFormat.indexOf('%H:%M.') !== -1) {
+                that.config.timeFormatTime = '%H:%M.';
             } else if (that.config.timeFormat.indexOf('%H:%M') !== -1) {
                 that.config.timeFormatTime = '%H:%M';
             } else {
@@ -429,6 +431,8 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 that.config.timeFormatDate = '%m.%d.%y';
             } else if (that.config.timeFormat.indexOf('%d.%m') !== -1) {
                 that.config.timeFormatDate = '%d.%m';
+            } else if (that.config.timeFormat.indexOf('%a') !== -1) {
+                that.config.timeFormatDate = '%a';
             } else {
                 that.config.timeFormatDate = null;
             }

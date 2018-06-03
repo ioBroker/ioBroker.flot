@@ -11,6 +11,12 @@ var sessionId = 1;
 // Analyse query
 var path = location.href.split('?')[1];
 
+var systemLang = 'en';
+if (typeof sysLang !== 'undefined') {
+    systemLang = sysLang || 'en';
+}
+
+
 // convert old format to new one
 // OLD: http://localhost:8082/flot/index.html?range=1440&renderer=line&axeX=l&axeY=inside&_ids=system.adapter.admin.0.memRss%2Csystem.adapter.email.0.memRss&_colors=%23c05020%3B%2330c020%3B%236060c0
 // NEW: http://localhost:8082/flot/index.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss&l%5B0%5D%5Boffset%5D=0&l%5B0%5D%5Baggregate%5D=average&l%5B0%5D%5Bcolor%5D=%23FF0000&l%5B0%5D%5Bthickness%5D=3&l%5B1%5D%5Bid%5D=system.adapter.email.0.memRss&l%5B1%5D%5Boffset%5D=0&l%5B1%5D%5Bart%5D=average&l%5B1%5D%5Bcolor%5D=%2300FF00&l%5B1%5D%5Bthickness%5D=3&timeType=relative&relativeEnd=now&range=10&aggregateType=step&aggregateSpan=300&legend=sw

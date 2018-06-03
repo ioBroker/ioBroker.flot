@@ -434,6 +434,7 @@ gulp.task('flotJS', () => {
         './src/lib/js/jquery.flot.dashes.js',
         './src/lib/js/jquery.flot.grow.js',
         './src/lib/js/jquery-deparam.js',
+        './src/js/days.js',
         './src/js/chart.js',
         './src/js/data.js'
     ])
