@@ -291,7 +291,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
         var xMin = Infinity;
         var xMax = 0;
         for (var i = 0; i < seriesData.length; i++) {
-            if (seriesData[i]) {
+            if (seriesData[i] && that.config.l[i]) {
 
                 that.config.l[i].chartType = that.config.l[i].chartType || that.config.chartType || 'line';
                 that.config.l[i].dashes = that.config.l[i].dashes === true || that.config.l[i].dashes === 'true';
