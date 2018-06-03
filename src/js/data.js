@@ -138,7 +138,7 @@ if (isApp) {
 	if (typeof socketUrl !== 'undefined') {
 		socketURL = socketUrl;
 		if (socketURL && socketURL[0] === ':') {
-			socketURL = 'http://' + location.hostname + socketURL;
+			socketURL = location.protocol + '//' + location.hostname + socketURL;
 		}
 		socketSESSION = socketSession;
 	}
