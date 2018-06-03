@@ -1,9 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.7.10",
+        "version": "1.9.0",
         "news": {
-            "1.7.10": {
+            "1.9.0": {
+                "en": "Added dashed lines\nAll JS files together are concatenated",
+                "de": "Gestrichelte Linien hinzugefügt\nAlle JS-Dateien zusammen sind verkettet",
+                "ru": "Добавлены пунктирные линии\nВсе файлы JS вместе объединены",
+                "pt": "Adicionado linhas tracejadas\nTodos os arquivos JS juntos são concatenados",
+                "nl": "Gestreepte lijnen toegevoegd\nAlle JS-bestanden samen zijn aaneengeschakeld",
+                "fr": "Ajout de lignes pointillées\nTous les fichiers JS sont concaténés",
+                "it": "Aggiunte linee tratteggiate\nTutti i file JS insieme sono concatenati",
+                "es": "Líneas discontinuas agregadas\nTodos los archivos JS juntos están concatenados",
+                "pl": "Dodano przerywane linie\nWszystkie pliki JS są ze sobą połączone"
+            },
+            "1.8.0": {
                 "en": "Optimize communication",
                 "de": "Kommunikation optimieren",
                 "ru": "Оптимизация связи",
@@ -154,6 +165,7 @@
         "singleton": true,
         "type": "visualization",
         "noConfig": true,
+        "nogit": true,
         "welcomeScreen": {
             "link": "flot/edit.html",
             "name": "flot editor",

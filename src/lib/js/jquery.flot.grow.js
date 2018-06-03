@@ -28,7 +28,7 @@ THE SOFTWARE.
 (function ($){
     "use strict";
     var pluginName = "grow", pluginVersion = "0.4";
-    var options ={
+    var options = {
         series: {
             grow: {
                 active: false,

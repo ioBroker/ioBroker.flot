@@ -30,7 +30,10 @@ var settings = {
         commonYAxis:    {enabled: true,  name: 'Common Y Axis', width: '',      style: '', values: ['', '1', '2', '3', '4', '5'],  default: '',      names: ['default']},
         ignoreNull:     {enabled: true,  name: 'NULL as',       width: '',      style: '', values: ['false', 'true', '0'],         default: 'false', names: ['default', 'ignore null values', 'use 0 instead of null values']},
         smoothing:      {enabled: false, name: 'Smoothing',     width: '70px',  style: '', type: 'number'},
-        afterComma:     {enabled: true,  name: 'After comma',   width: '70px',  style: '', type: 'number',  default: 2}
+        afterComma:     {enabled: true,  name: 'After comma',   width: '70px',  style: '', type: 'number',  default: 2},
+        dashes:         {enabled: true,  name: 'Dashes',        width: '',      style: '', type: 'checkbox', default: false},
+        dashLength:     {enabled: true,  name: 'Dashes length', width: '70px',  style: '', type: 'number', default: 10},
+        spaceLength:    {enabled: true,  name: 'Space length',  width: '70px',  style: '', type: 'number', default: 10}
     },
     chapter_time:       {enabled: true},
     time_timeType:      {enabled: true},

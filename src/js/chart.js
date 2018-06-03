@@ -294,11 +294,15 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
             if (seriesData[i]) {
 
                 that.config.l[i].chartType = that.config.l[i].chartType || that.config.chartType || 'line';
+                that.config.l[i].dashes = that.config.l[i].dashes === true || that.config.l[i].dashes === 'true';
+                that.config.l[i].dashLength = parseFloat(that.config.l[i].dashLength) || 10;
+                that.config.l[i].spaceLength = parseFloat(that.config.l[i].spaceLength) || 10;
+                var isLine = that.config.l[i].chartType !== 'scatterplot' && that.config.l[i].chartType !== 'bar' && that.config.l[i].chartType !== 'spline';
 
                 var option = {
                     color:      that.config.l[i].color || undefined,
                     lines:      {
-                        show:       (that.config.l[i].chartType !== 'scatterplot' && that.config.l[i].chartType !== 'bar' && that.config.l[i].chartType !== 'spline'),
+                        show:       (!that.config.l[i].dashes && isLine),
                         fill:       (that.config.l[i].fill && that.config.l[i].fill !== '0') ? parseFloat(that.config.l[i].fill) : (that.config.l[i].chartType === 'area' || that.config.l[i].chartType === 'bar'),
                         steps:      (that.config.l[i].chartType === 'steps'),
                         lineWidth:  that.config.l[i].thickness
@@ -323,7 +327,12 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                     },
                     data:       seriesData[i],
                     label:      that.config.l[i].name,
-                    shadowSize: that.config.l[i].shadowsize
+                    shadowSize: that.config.l[i].shadowsize,
+                    dashes:     {
+                        show: that.config.l[i].dashes && isLine,
+                        lineWidth: that.config.l[i].thickness,
+                        dashLength: [that.config.l[i].dashLength, that.config.l[i].spaceLength]
+                    }
                 };
 
                 if ((that.config.smoothing && that.config.smoothing > 0) || (that.config.l[i].smoothing && that.config.l[i].smoothing > 0)) {

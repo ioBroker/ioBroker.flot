@@ -1,7 +1,7 @@
 {
   "name": "iobroker.flot",
   "description": "This adapter draws charts with Flot in ioBroker.",
-  "version": "1.7.10",
+  "version": "1.9.0",
   "author": {
     "name": "bluefox",
     "email": "dogafox@gmail.com"
@@ -31,7 +31,13 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
-    "mocha": "^5.1.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-htmlmin": "^4.0.0",
+    "del": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "mocha": "^5.2.0",
     "chai": "^4.1.2"
   },
   "bugs": {
