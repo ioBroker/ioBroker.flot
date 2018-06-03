@@ -363,10 +363,10 @@ gulp.task('languages2words', done => {
 
 
 gulp.task('updateEditHtml', done => {
-    let text = fs.readFileSync('./www/edit.html').toString('utf-8');
+    let text = fs.readFileSync('./src/edit.html').toString('utf-8');
     let newText = text.replace(/Version: \d+\.\d+\.\d+<\/div>/, `Version: ${pkg.version}</div>`);
     if (newText !== text) {
-        fs.writeFileSync('./www/edit.html', newText);
+        fs.writeFileSync('./src/edit.html', newText);
     }
     done();
 });
@@ -472,7 +472,7 @@ gulp.task('indexHTML', () => {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./www/'));
 });
-gulp.task('editHTML', () => {
+gulp.task('editHTML', ['updateEditHtml'], () => {
     return gulp.src([
         './src/edit.html'
     ])
