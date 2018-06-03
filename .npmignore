@@ -1,8 +1,5 @@
-Gruntfile.js
 gulpfile.js
-tasks
-www/i18n
-www/lib/js/jquery.flot.js
+src
 .idea
 node_modules
 .git
