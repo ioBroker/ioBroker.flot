@@ -638,8 +638,6 @@ function readMarkings(cb, m) {
         return cb && cb();
     } else {
         if (!config.m[m].oid && config.m[m].v && parseFloat(config.m[m].v) != config.m[m].v && config.m[m].v.indexOf('.') !== -1) {
-            count++;
-
             if (subscribes.indexOf(config.m[m].v) === -1) subscribes.push(config.m[m].v);
 
             readValue(config.m[m].v, m, function (index, val) {
@@ -651,10 +649,10 @@ function readMarkings(cb, m) {
                     readValue(config.m[m].vl, m, function (index, val) {
                         config.m[index].oidl = config.m[index].vl;
                         config.m[index].vl   = val;
-                        cb && cb();
+                        setTimeout(readMarkings, 0, cb, m + 1);
                     });
                 } else {
-                    cb && cb();
+                    setTimeout(readMarkings, 0, cb, m + 1);
                 }
             });
         } else
@@ -663,8 +661,10 @@ function readMarkings(cb, m) {
             readValue(config.m[m].vl, m, function (index, val) {
                 config.m[index].oidl = config.m[index].vl;
                 config.m[index].vl   = val;
-                cb && cb();
+                setTimeout(readMarkings, 0, cb, m + 1);
             });
+        } else {
+            setTimeout(readMarkings, 0, cb, m + 1);
         }
     }
 }
