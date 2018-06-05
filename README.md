@@ -10,13 +10,13 @@
 Draw charts with [flot](http://www.flotcharts.org/)
 
 ![Example](img/example.png)
-![Example](img/screen1.png)
-![Example](img/screen2.png)
-![Example](img/screen3.png)
-![Example](img/screen4.png)
-![Example](img/screen5.png)
-![Example](img/screen6.png)
-![Example](img/screen7.png)
+![Example](img/screen1.jpg)
+![Example](img/screen2.jpg)
+![Example](img/screen3.jpg)
+![Example](img/screen4.jpg)
+![Example](img/screen5.jpg)
+![Example](img/screen6.jpg)
+![Example](img/screen7.jpg)
 
 To use the charts one of the history adapters is required: history, sql or InfluxDB
 
