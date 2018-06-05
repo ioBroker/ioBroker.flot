@@ -10,6 +10,13 @@
 Draw charts with [flot](http://www.flotcharts.org/)
 
 ![Example](img/example.png)
+![Example](img/screen1.png)
+![Example](img/screen2.png)
+![Example](img/screen3.png)
+![Example](img/screen4.png)
+![Example](img/screen5.png)
+![Example](img/screen6.png)
+![Example](img/screen7.png)
 
 To use the charts one of the history adapters is required: history, sql or InfluxDB
 
@@ -29,7 +36,7 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ## Changelog
 
-### 1.9.0 (2018-06-03)
+### 1.9.1 (2018-06-04)
 * (bluefox) Added dashed lines
 * (bluefox) All JS files together are concatenated
 * (bluefox) Show days of week (dow) in time axis.
