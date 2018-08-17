@@ -1,8 +1,19 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.9.1",
+        "version": "1.9.2",
         "news": {
+            "1.9.2":  {
+                "en": "Translations",
+                "de": "Übersetzungen",
+                "ru": "Переводы",
+                "pt": "Traduções",
+                "nl": "vertaalwerk",
+                "fr": "Traductions",
+                "it": "Traduzioni",
+                "es": "Traducciones",
+                "pl": "Tłumaczenia"
+            },
             "1.9.1": {
                 "en": "Added dashed lines\nAll JS files together are concatenated",
                 "de": "Gestrichelte Linien hinzugefügt\nAlle JS-Dateien zusammen sind verkettet",

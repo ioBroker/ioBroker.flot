@@ -36,6 +36,9 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ## Changelog
 
+### 1.9.2 (2018-08-18)
+* (Seqway) Translations
+
 ### 1.9.1 (2018-06-04)
 * (bluefox) Added dashed lines
 * (bluefox) All JS files together are concatenated
