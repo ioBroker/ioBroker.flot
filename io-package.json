@@ -119,14 +119,14 @@
             },
             "1.5.8": {
                 "en": "Add series as X ticks",
-                "de": "Möglichkeit ein Wert als X Beschriftung zu benutzen",
+                "de": "Möglichkeit, einen Wert als X Beschriftung zu benutzen",
                 "ru": "Возможность показывать X подписи из истории"
             }
         },
         "title": "Flot Charts",
         "titleLang": {
             "en": "Flot Charts",
-            "de": "Flot-Diagrammen",
+            "de": "Flot-Diagramme",
             "ru": "Графики c Flot",
             "pt": "Flot Charts",
             "nl": "Flot charts",
