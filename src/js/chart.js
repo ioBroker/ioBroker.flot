@@ -99,7 +99,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 var data = that.chart.getData();
 
                 for (var d = markingsOffset; d < data.length; d++) {
-                    if (!that.config.l[d-markingsOffset] || that.config.l[d-markingsOffset].chartType !== 'bar') continue;
+                    if (!that.config.l[d - markingsOffset] || that.config.l[d - markingsOffset].chartType !== 'bar') continue;
 
                     $.each(data[d].data, function (i, el) {
                         if (el[1] === null) return;
@@ -119,7 +119,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                             o = that.chart.pointOffset({x: el[0], y: el[1] / 2});
                         }
 
-                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d-markingsOffset) + '</div></div>').css({
+                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d - markingsOffset) + '</div></div>').css({
                             position: 'absolute',
                             left: o.left,
                             top: o.top
