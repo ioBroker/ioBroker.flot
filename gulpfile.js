@@ -10,6 +10,7 @@ const concat      = require('gulp-concat');
 const sourcemaps  = require('gulp-sourcemaps');
 const htmlmin     = require('gulp-htmlmin');
 const del         = require('del');
+const translate   = require("./lib/tools.js").translateText;
 
 /*var appName   = getAppName();
 
