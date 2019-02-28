@@ -8,7 +8,6 @@ const version     = (pkg && pkg.version) ? pkg.version : iopackage.common.versio
 const uglify      = require('gulp-uglify');
 const concat      = require('gulp-concat');
 const sourcemaps  = require('gulp-sourcemaps');
-const gutil       = require('gulp-util');
 const htmlmin     = require('gulp-htmlmin');
 const del         = require('del');
 
@@ -29,7 +28,8 @@ let languages =  {
     fr: {},
     it: {},
     es: {},
-    pl: {}
+    pl: {},
+    "zh-cn": {}
 };
 
 function lang2data(lang, isFlat) {
@@ -379,9 +379,16 @@ gulp.task('updatePackages', done => {
         const newNews = {};
 
         newNews[pkg.version] = {
-            en: 'news',
-            de: 'neues',
-            ru: 'новое'
+            en: "news",
+            de: "neues",
+            ru: "новое",
+            pt: "novidades",
+            nl: "nieuws",
+            fr: "nouvelles",
+            it: "notizie",
+            es: "noticias",
+            pl: "nowości",
+            "zh-cn": "新"
         };
         iopackage.common.news = Object.assign(newNews, news);
     }
@@ -445,23 +452,20 @@ gulp.task('flotJS', () => {
         .pipe(gulp.dest('./www/js'));
 });
 
-gulp.task('editJS', ['languages2words'], () => {
+gulp.task('editJS', gulp.series('languages2words', () => {
     return gulp.src([
         './src/lib/js/jquery-deparam.js',
         './src/lib/js/jquery.colorpicker.js',
         './src/js/words.js',
         './src/js/settings.js',
-        './src/js/edit.js',
+        './src/js/edit.js'
     ])
         .pipe(sourcemaps.init())
         .pipe(concat('edit.js'))
         .pipe(uglify())
-        .on('error', function (err) {
-            gutil.log(gutil.colors.red('[Error]'), err.toString());
-        })
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./www/js'));
-});
+}));
 
 gulp.task('indexHTML', () => {
     return gulp.src([
@@ -473,7 +477,7 @@ gulp.task('indexHTML', () => {
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./www/'));
 });
-gulp.task('editHTML', ['updateEditHtml'], () => {
+gulp.task('editHTML', gulp.series('updateEditHtml', () => {
     return gulp.src([
         './src/edit.html'
     ])
@@ -482,7 +486,7 @@ gulp.task('editHTML', ['updateEditHtml'], () => {
         .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
         .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest('./www/'));
-});
+}));
 
 gulp.task('copyCSS', () => {
     return gulp.src([
@@ -498,4 +502,71 @@ gulp.task('copyImg', () => {
         .pipe(gulp.dest('./www/img'));
 });
 
-gulp.task('default', ['flotJS', 'editJS', 'indexHTML', 'editHTML', 'copyCSS', 'copyImg']);
+gulp.task('translate', async function (done) {
+
+    let yandex;
+    const i = process.argv.indexOf("--yandex");
+    if (i > -1) {
+        yandex = process.argv[i + 1];
+    }
+    
+    if (iopackage && iopackage.common) {
+        if (iopackage.common.news) {
+            console.log("Translate News");
+            for (let k in iopackage.common.news) {
+                console.log("News: " + k);
+                let nw = iopackage.common.news[k];
+                await translateNotExisting(nw, null, yandex);
+            }
+        }
+        if (iopackage.common.titleLang) {
+            console.log("Translate Title");
+            await translateNotExisting(iopackage.common.titleLang, iopackage.common.title, yandex);
+        }
+        if (iopackage.common.desc) {
+            console.log("Translate Description");
+            await translateNotExisting(iopackage.common.desc, null, yandex);
+        }
+
+        if (fs.existsSync('./src/i18n/en/translations.json')) {
+            let enTranslations = require('./src/i18n/en/translations.json');
+            for (let l in languages) {
+                console.log("Translate Text: " + l);
+                let existing = {};
+                if (fs.existsSync('./src/i18n/' + l + '/translations.json')) {
+                    existing = require('./src/i18n/' + l + '/translations.json');
+                }
+                for (let t in enTranslations) {
+                    if (!existing[t]) {
+                        existing[t] = await translate(enTranslations[t], l, yandex);
+                    }
+                }
+                if (!fs.existsSync('./src/i18n/' + l + '/')) {
+                    fs.mkdirSync('./src/i18n/' + l + '/');
+                }
+                fs.writeFileSync('./src/i18n/' + l + '/translations.json', JSON.stringify(existing, null, 4));
+            }
+        }
+
+    }
+    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 4));
+});
+
+async function translateNotExisting(obj, baseText, yandex) {
+    let t = obj['en'];
+    if (!t) {
+        t = baseText;
+    }
+
+    if (t) {
+        for (let l in languages) {
+            if (!obj[l]) {                
+                const time = new Date().getTime();
+                obj[l] = await translate(t, l, yandex);
+                console.log("en -> " + l + " " + (new Date().getTime() - time) + " ms");
+            }
+        }
+    }
+}
+
+gulp.task('default', gulp.series('flotJS', 'editJS', 'indexHTML', 'editHTML', 'copyCSS', 'copyImg'));
