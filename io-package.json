@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.9.2",
+        "version": "1.9.3",
         "news": {
-            "1.9.2":  {
+            "1.9.3": {
                 "en": "Translations",
                 "de": "Übersetzungen",
                 "ru": "Переводы",
@@ -12,7 +12,8 @@
                 "fr": "Traductions",
                 "it": "Traduzioni",
                 "es": "Traducciones",
-                "pl": "Tłumaczenia"
+                "pl": "Tłumaczenia",
+                "zh-cn": "翻译"
             },
             "1.9.1": {
                 "en": "Added dashed lines\nAll JS files together are concatenated",
@@ -23,7 +24,8 @@
                 "fr": "Ajout de lignes pointillées\nTous les fichiers JS sont concaténés",
                 "it": "Aggiunte linee tratteggiate\nTutti i file JS insieme sono concatenati",
                 "es": "Líneas discontinuas agregadas\nTodos los archivos JS juntos están concatenados",
-                "pl": "Dodano przerywane linie\nWszystkie pliki JS są ze sobą połączone"
+                "pl": "Dodano przerywane linie\nWszystkie pliki JS są ze sobą połączone",
+                "zh-cn": "加入虚线\n所有JS文件一起，是连接的"
             },
             "1.8.0": {
                 "en": "Optimize communication",
@@ -34,7 +36,8 @@
                 "fr": "Optimiser la communication",
                 "it": "Ottimizza la comunicazione",
                 "es": "Optimizar la comunicación",
-                "pl": "Zoptymalizuj komunikację"
+                "pl": "Zoptymalizuj komunikację",
+                "zh-cn": "优化通信"
             },
             "1.7.9": {
                 "en": "Added support of multi-languages in names",
@@ -45,7 +48,8 @@
                 "fr": "Ajout du support de plusieurs langues dans les noms",
                 "it": "Aggiunto il supporto di più lingue nei nomi",
                 "es": "Se agregó soporte de múltiples idiomas en los nombres",
-                "pl": "Dodano obsługę wielu języków w nazwach"
+                "pl": "Dodano obsługę wielu języków w nazwach",
+                "zh-cn": "增加支持的多语言的名字"
             },
             "1.7.7": {
                 "en": "fix month range",
@@ -56,7 +60,8 @@
                 "fr": "fixer la plage de mois",
                 "it": "fissare il range del mese",
                 "es": "arreglar rango de mes",
-                "pl": "popraw zakres miesięcy"
+                "pl": "popraw zakres miesięcy",
+                "zh-cn": "修复月的范围"
             },
             "1.7.6": {
                 "en": "remove alert windows from errors, log instead",
@@ -67,7 +72,8 @@
                 "fr": "supprimer les fenêtres d'alerte des erreurs, consigner à la place",
                 "it": "rimuovere le finestre di avviso dagli errori, invece registrare",
                 "es": "eliminar ventanas de alerta de errores, registrar en su lugar",
-                "pl": "usuń okna alertów z błędów, zamiast tego zaloguj się"
+                "pl": "usuń okna alertów z błędów, zamiast tego zaloguj się",
+                "zh-cn": "除警报windows从错误的，登录代替"
             },
             "1.7.5": {
                 "en": "try to fix small error",
@@ -78,7 +84,8 @@
                 "fr": "essayer de réparer une petite erreur",
                 "it": "prova a correggere un piccolo errore",
                 "es": "intenta arreglar un pequeño error",
-                "pl": "spróbuj naprawić mały błąd"
+                "pl": "spróbuj naprawić mały błąd",
+                "zh-cn": "尝试修复小的错误"
             },
             "1.7.4": {
                 "en": "The loading via cloud is fixed",
@@ -87,7 +94,10 @@
                 "pt": "O carregamento por nuvem é fixo",
                 "nl": "Het laden via cloud is opgelost",
                 "fr": "Le chargement via le cloud est fixe",
-                "it": "Il caricamento tramite cloud è fisso"
+                "it": "Il caricamento tramite cloud è fisso",
+                "es": "La carga a través de la nube es fijo",
+                "pl": "Ładowanie przez chmury stałe",
+                "zh-cn": "装载过云是固定的"
             },
             "1.7.1": {
                 "en": "Fixed the loading of presets\nAdded new date formats for X axis",
@@ -95,32 +105,71 @@
                 "ru": "Исправлена загрузка пресетов\nДобавлены новые форматы дат для оси X",
                 "pt": "Corrigido o carregamento de predefinições\nAdicionado novos formatos de data para o eixo X",
                 "fr": "Correction du chargement des presets\nAjout de nouveaux formats de date pour l'axe X",
-                "nl": "Het laden van presets verholpen\nNieuwe datumnotaties voor X-as toegevoegd"
+                "nl": "Het laden van presets verholpen\nNieuwe datumnotaties voor X-as toegevoegd",
+                "it": "Fissa il caricamento dei preset\nAggiunti nuovi formati di data per l'asse X",
+                "es": "Fija la carga de presets\nAñadido nuevos formatos de fecha para el eje X",
+                "pl": "Naprawiono ładowanie presetów\nDodano nowe formaty daty na osi X",
+                "zh-cn": "固定装载的预置\n增加了新的日期格式X轴"
             },
             "1.7.0": {
                 "en": "Add presets",
                 "de": "Presets sind jinzugefügt",
-                "ru": "Добавлены пресеты"
+                "ru": "Добавлены пресеты",
+                "pt": "Adicionar predefinições",
+                "nl": "Voorinstellingen toevoegen",
+                "fr": "Ajouter les préréglages",
+                "it": "Aggiungere impostazioni predefinite",
+                "es": "Agregar presets",
+                "pl": "Dodaj presety",
+                "zh-cn": "增加预设"
             },
             "1.6.2": {
                 "en": "Show chart at start",
                 "de": "Zeige Chart am Anfang",
-                "ru": "Показывать график при старте"
+                "ru": "Показывать график при старте",
+                "pt": "Mostrar gráfico em iniciar",
+                "nl": "Toon grafiek van start",
+                "fr": "Montrer graphique au démarrage",
+                "it": "Mostra un grafico a inizio",
+                "es": "Mostrar el gráfico en el arranque",
+                "pl": "Pokaż wykres na starcie",
+                "zh-cn": "显示图表，在开始"
             },
             "1.6.1": {
                 "en": "Change edit layout",
                 "de": "Ändere Edit Layout",
-                "ru": "Изменено положение элементов при редактировании "
+                "ru": "Изменено положение элементов при редактировании ",
+                "pt": "Alteração de edição de layout",
+                "nl": "Wijzig lay-out bewerken",
+                "fr": "Changement de modifier la disposition de la",
+                "it": "Modifica modifica del layout",
+                "es": "Cambio de edición de diseño",
+                "pl": "Zmienić układ",
+                "zh-cn": "改变编辑的布局"
             },
             "1.5.9": {
                 "en": "New color picker\nIf 'none' for title selected => do not show any title\nadd date format 'dd.mm.'",
                 "de": "Neuer Farbselektor\nZeige keine Beschriftung falls 'none'\nNeues Datumformat 'dd.mm.'",
-                "ru": "Новый выбор цвета\nЕсли 'ничего' выбрано для подписи, то ничего не показывать\nдобавлен формат даты 'dd.mm.'"
+                "ru": "Новый выбор цвета\nЕсли 'ничего' выбрано для подписи, то ничего не показывать\nдобавлен формат даты 'dd.mm.'",
+                "pt": "Selecionador nova cor de\nSe 'nenhum' para o título seleccionado => não mostrar qualquer título\nadicionar data formato 'dd.mm.'",
+                "nl": "Nieuwe kleurkiezer\nAls 'geen' voor de titel geselecteerde => vertonen geen titel\nvoeg datum in het formaat 'dd.mm.'",
+                "fr": "Nouveau sélecteur de couleur\nSi \"aucun\" pour le titre sélectionné => ne pas afficher le titre\najouter la date au format \" jj.mm.'",
+                "it": "Nuovo selettore colore\nSe 'none' per il titolo selezionato => non mostra alcun titolo\naggiungere la data in formato dd.mm.'",
+                "es": "Nuevo selector de color\nSi 'none' para el título seleccionado => no mostrar ningún título\nagregar la fecha en formato 'dd.mm.'",
+                "pl": "Nowa paleta kolorów\nJeśli 'nie' dla nagłówka wybrany => nie pokazuj tytuł\ndodaj datę w formacie \" DD.mm.'",
+                "zh-cn": "新的颜色选择\n如果是\"无\"为标题的选择=>没有显示任何标题\n添加的日期格式'dd。毫米。'"
             },
             "1.5.8": {
                 "en": "Add series as X ticks",
                 "de": "Möglichkeit, einen Wert als X Beschriftung zu benutzen",
-                "ru": "Возможность показывать X подписи из истории"
+                "ru": "Возможность показывать X подписи из истории",
+                "pt": "Adicionar séries como X carrapatos",
+                "nl": "Het toevoegen van series als X-teken",
+                "fr": "Ajouter des séries comme X tiques",
+                "it": "Aggiungere serie come X le zecche",
+                "es": "Agregar series como X garrapatas",
+                "pl": "Dodaj serii X kleszczy",
+                "zh-cn": "添加一系列作为X蜱"
             }
         },
         "title": "Flot Charts",
@@ -133,7 +182,8 @@
             "fr": "Graphiques des Flot",
             "it": "Grafici Flot",
             "es": "Gráficos de Flot",
-            "pl": "Wykresy Flot"
+            "pl": "Wykresy Flot",
+            "zh-cn": "海军报表"
         },
         "desc": {
             "en": "This adapter draws charts with Flot in ioBroker.",
@@ -144,7 +194,8 @@
             "pt": "Este adaptador desenha gráficos com o Flot no ioBroker",
             "it": "Questo adattatore disegna i grafici con Flot in ioBroker.",
             "es": "Este adaptador dibuja tablas con Flot en ioBroker",
-            "pl": "Ten adapter rysuje wykresy za pomocą Flot w programie ioBroker"
+            "pl": "Ten adapter rysuje wykresy za pomocą Flot w programie ioBroker",
+            "zh-cn": "这器绘制图表，与海军报在ioBroker的。"
         },
         "authors": [
             "bluefox <dogafox@gmail.com>"
@@ -154,6 +205,7 @@
             "ru": "docs/ru/flot.md",
             "de": "docs/de/flot.md"
         },
+        "license": "MIT",
         "platform": "javascript/Node.js",
         "icon": "flot.png",
         "mode": "none",
