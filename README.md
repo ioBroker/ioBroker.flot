@@ -1,6 +1,5 @@
 ![Logo](admin/flot.png)
 # ioBroker.flot
-=================
 
 ![Number of Installations](http://iobroker.live/badges/flot-installed.svg) ![Number of Installations](http://iobroker.live/badges/flot-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
