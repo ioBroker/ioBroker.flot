@@ -455,7 +455,10 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 backgroundColor:  that.config.legBg || undefined,
                 backgroundOpacity:  that.config.legBgOpacity !== undefined ? parseFloat(that.config.legBgOpacity) : 0.85,
                 labelFormatter: function (label, series) {
-                    if (label === '__hide_me__') return null;
+                    if (label === '__hide_me__') {
+                        return null;
+                    }
+
                     return '<span class="graphlabel">' + label + '</span>';
                 }
             }
@@ -532,8 +535,8 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 settings.legend.hideable = false;
 
                 xaxi.ticks = [];
-                for (var m = 0; m < seriesData[ii].length; m++) {
-                    xaxi.ticks.push(seriesData[ii][m][0]);
+                for (var q = 0; q < seriesData[ii].length; q++) {
+                    xaxi.ticks.push(seriesData[ii][q][0]);
                     // Normally first and last points are invalid
                 }
                 seriesData[ii][0][1] = null;

@@ -255,7 +255,7 @@ function getStartStop(index, step) {
     var _now;
     config.l[index].offset = config.l[index].offset || 0;
 
-    var isMonthRange = (config.range.indexOf('m') === -1) ? false : true;
+    var isMonthRange = config.range.indexOf('m') !== -1;
     // check config range
     if (isMonthRange && config.l.length > 1) {
         var monthRange = parseInt(config.range, 10) || 1;
@@ -280,8 +280,6 @@ function getStartStop(index, step) {
             if (config.timeType === 'static') {
                 var startTime;
                 var endTime;
-                var y;
-                var m;
                 if (config.start_time !== undefined) {
                     startTime = config.start_time.split(':').map(Number);
                 } else {
