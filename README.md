@@ -1,8 +1,7 @@
 ![Logo](admin/flot.png)
 # ioBroker.flot
-=================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
+![Number of Installations](http://iobroker.live/badges/flot-installed.svg) ![Number of Installations](http://iobroker.live/badges/flot-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.flot.svg)](https://www.npmjs.com/package/iobroker.flot)
 
 [![NPM](https://nodei.co/npm/iobroker.flot.png?downloads=true)](https://nodei.co/npm/iobroker.flot/)
@@ -10,6 +9,13 @@
 Draw charts with [flot](http://www.flotcharts.org/)
 
 ![Example](img/example.png)
+![Example](img/screen1.jpg)
+![Example](img/screen2.jpg)
+![Example](img/screen3.jpg)
+![Example](img/screen4.jpg)
+![Example](img/screen5.jpg)
+![Example](img/screen6.jpg)
+![Example](img/screen7.jpg)
 
 To use the charts one of the history adapters is required: history, sql or InfluxDB
 
@@ -29,7 +35,10 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ## Changelog
 
-### 1.9.0 (2018-06-03)
+### 1.9.2 (2018-08-18)
+* (Seqway) Translations
+
+### 1.9.1 (2018-06-04)
 * (bluefox) Added dashed lines
 * (bluefox) All JS files together are concatenated
 * (bluefox) Show days of week (dow) in time axis.

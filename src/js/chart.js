@@ -98,8 +98,8 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
             setTimeout(function () {
                 var data = that.chart.getData();
 
-                for (var d = 0; d < data.length; d++) {
-                    if (!that.config.l[d] || that.config.l[d].chartType !== 'bar') continue;
+                for (var d = markingsOffset; d < data.length; d++) {
+                    if (!that.config.l[d - markingsOffset] || that.config.l[d - markingsOffset].chartType !== 'bar') continue;
 
                     $.each(data[d].data, function (i, el) {
                         if (el[1] === null) return;
@@ -119,7 +119,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                             o = that.chart.pointOffset({x: el[0], y: el[1] / 2});
                         }
 
-                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d) + '</div></div>').css({
+                        $('<div class="data-point-label"><div style="width: 100%; margin-left: -50%;">' + _yFormatter(el[1], d - markingsOffset) + '</div></div>').css({
                             position: 'absolute',
                             left: o.left,
                             top: o.top
@@ -455,7 +455,10 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 backgroundColor:  that.config.legBg || undefined,
                 backgroundOpacity:  that.config.legBgOpacity !== undefined ? parseFloat(that.config.legBgOpacity) : 0.85,
                 labelFormatter: function (label, series) {
-                    if (label === '__hide_me__') return null;
+                    if (label === '__hide_me__') {
+                        return null;
+                    }
+
                     return '<span class="graphlabel">' + label + '</span>';
                 }
             }
@@ -532,8 +535,8 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 settings.legend.hideable = false;
 
                 xaxi.ticks = [];
-                for (var m = 0; m < seriesData[ii].length; m++) {
-                    xaxi.ticks.push(seriesData[ii][m][0]);
+                for (var q = 0; q < seriesData[ii].length; q++) {
+                    xaxi.ticks.push(seriesData[ii][q][0]);
                     // Normally first and last points are invalid
                 }
                 seriesData[ii][0][1] = null;

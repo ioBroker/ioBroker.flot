@@ -3,7 +3,6 @@ node_modules
 src/i18n/flat.txt
 src/i18n/*/flat.txt
 www
-package-lock.json
 iob_npm.done
 tmp
-
+nbproject
