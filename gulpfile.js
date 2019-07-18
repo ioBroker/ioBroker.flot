@@ -29,7 +29,8 @@ let languages =  {
     fr: {},
     it: {},
     es: {},
-    pl: {}
+    pl: {},
+    'zh-cn': {}
 };
 
 function lang2data(lang, isFlat) {
