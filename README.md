@@ -35,6 +35,9 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 
 ## Changelog
 
+### 1.10.0 (2020-05-14)
+* (sbormann) preset.html added to display a list of stored flot presets with direct links
+
 ### 1.9.2 (2018-08-18)
 * (Seqway) Translations
 
@@ -210,4 +213,4 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox<dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox<dogafox@gmail.com>

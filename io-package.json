@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.9.3",
+        "version": "1.10.0",
         "news": {
+            "1.10.0": {
+                "en": "preset.html added to display a list of stored flot presets with direct links",
+                "de": "preset.html wurde hinzugefügt, um eine Liste der gespeicherten Flot-Presets mit direkten Links anzuzeigen",
+                "ru": "добавлен preset.html для отображения списка сохраненных пресетов flot с прямыми ссылками",
+                "pt": "preset.html adicionado para exibir uma lista de predefinições de flot armazenadas com links diretos",
+                "nl": "preset.html toegevoegd om een lijst met opgeslagen flotvoorinstellingen met directe links weer te geven",
+                "fr": "preset.html ajouté pour afficher une liste des préréglages de flottement stockés avec des liens directs",
+                "it": "preset.html aggiunto per visualizzare un elenco di preset flot memorizzati con collegamenti diretti",
+                "es": "preset.html agregado para mostrar una lista de presets de flot almacenados con enlaces directos",
+                "pl": "Dodano preset.html, aby wyświetlić listę zapisanych ustawień flot z bezpośrednimi linkami",
+                "zh-cn": "新增了预置.html，以显示具有直接链接的存储浮点预置的列表"
+            },
             "1.9.3": {
                 "en": "Translations",
                 "de": "Übersetzungen",
