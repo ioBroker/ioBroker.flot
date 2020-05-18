@@ -17,7 +17,7 @@
             console.log('Initialize...');
             var params = location.href.split('?')[1];
             if (params && params.match(/^preset=/)) {
-                currentChart = params.replace(/^preset=/, '');
+                currentChart = decodeURIComponent(params.replace(/^preset=/, ''));
             }
             setTimeout(function () {
                 initSocket();
