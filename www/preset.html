@@ -1,0 +1,96 @@
+<html><head><title>Flot Preset</title><link href="img/favicon.png" rel="shortcut icon" type="image/x-icon"><link type="text/css" rel="stylesheet" href="../../lib/css/themes/jquery-ui/default/jquery-ui.min.css"><script type="text/javascript" src="../../lib/js/jquery-1.11.1.min.js"></script><script type="text/javascript" src="../../lib/js/socket.io.js"></script><script type="text/javascript" src="../../_socket/info.js"></script><script type="text/javascript">var presets         	= {};
+        var currentChart    	= null;
+        var loaded          	= false;
+        var instance        	= 0;
+        var socket;
+
+        function init() {
+            console.log('Initialize...');
+            var params = location.href.split('?')[1];
+            if (params && params.match(/^preset=/)) {
+                currentChart = decodeURIComponent(params.replace(/^preset=/, ''));
+            }
+            setTimeout(function () {
+                initSocket();
+            }, 200);
+        }
+
+        function initSocket() {
+            console.log('Init connection...');
+            // Read instances
+            socket = io.connect(socketUrl, {
+                query: {
+                    key: socketSession
+                },
+                reconnectionDelay: 10000,
+                reconnectionAttempts: Infinity,
+                upgrade: typeof socketForceWebSockets !== 'undefined' ? !socketForceWebSockets : undefined,
+                rememberUpgrade: typeof socketForceWebSockets !== 'undefined' ? socketForceWebSockets : undefined,
+                transports: typeof socketForceWebSockets !== 'undefined' ? (socketForceWebSockets ? ['websocket'] : undefined) : undefined
+            });
+
+            socket.on('connect', function () {
+                console.log('Connected');
+                setTimeout(function () {
+                    socket.emit('name', 'flotPreset');
+                }, 50);
+                setTimeout(function () {
+                    getPresets(socket, function () {
+                        console.log("Got presets");
+                        console.log(presets);
+                        if (currentChart && presets[currentChart]) {
+                            loadChart(currentChart);
+                        } else if (currentChart && presets["flot." + instance + "." + currentChart]) {
+                            loadChart("flot." + instance + "." + currentChart);
+                        } else {
+                            showPresets();
+                        }
+                    });
+                }, 100);
+            });
+
+            socket.on('disconnect', function () {
+                console.log('Lost connection');
+            });
+
+            socket.on('error', function (e) {
+                console.error('Socket error: ' + e);
+            });
+            socket.on('connect_error', function (e) {
+                console.error('Socket error: ' + e);
+            });
+        }
+
+        function getPresets(socket, callback) {
+            // read presets
+            socket.emit('getObjectView', 'chart', 'chart', {
+                startkey: 'flot.' + instance + '.',
+                endkey: 'flot.' + instance + '.\u9999'
+            }, function (err, res) {
+                presets = {};
+                loaded  = true;
+                if (res && res.rows) {
+                    for (var i = 0; i < res.rows.length; i++) {
+                        presets[res.rows[i].value._id] = res.rows[i].value;
+                    }
+                }
+                callback && callback();
+            });
+        }
+
+        function showPresets() {
+            var presetList = "";
+            for (var id in presets) {
+                if (!presets.hasOwnProperty(id)) continue;
+                var obj = presets[id];
+                presetList += "<a href='index.html?" + obj.native.url + "' data-role='button'>" + obj.common.name + "</a><br>";
+            }
+            $('#presetList').html(presetList);
+        }
+
+        function loadChart(id, callback) {
+            window.location.replace("index.html?" + presets[id].native.url);
+            callback && callback();
+        }
+
+        $(document).ready(init());</script></head><body><p id="presetList">loading...</p></body></html>

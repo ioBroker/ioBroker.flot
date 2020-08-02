@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.0",
+        "version": "1.10.1",
         "news": {
+            "1.10.1": {
+                "en": "preset.html updated to allow german umlaute",
+                "de": "preset.html aktualisiert, um deutsche Umlaute zu ermöglichen",
+                "ru": "preset.html обновлен, чтобы разрешить использование немецкого умлаута",
+                "pt": "preset.html atualizado para permitir trema alemão",
+                "nl": "preset.html bijgewerkt om Duitse umlaute toe te staan",
+                "fr": "preset.html mis à jour pour autoriser le tréma allemand",
+                "it": "preset.html aggiornato per consentire il tedesco umlaute",
+                "es": "preset.html actualizado para permitir la diéresis alemana",
+                "pl": "preset.html zaktualizowany, aby umożliwić niemieckiemu umlaute",
+                "zh-cn": "预设文件.html更新为允许德国umlaute"
+            },
             "1.10.0": {
                 "en": "preset.html added to display a list of stored flot presets with direct links",
                 "de": "preset.html wurde hinzugefügt, um eine Liste der gespeicherten Flot-Presets mit direkten Links anzuzeigen",
