@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.1",
+        "version": "1.10.2",
         "news": {
+            "1.10.2": {
+                "en": "colorpicker in flot edit page fixed",
+                "de": "Farbauswahl in der Flot-Bearbeitungsseite behoben",
+                "ru": "Colorpicker на странице редактирования flot исправлен",
+                "pt": "colorpicker in flot edit page fixed",
+                "nl": "colorpicker in flot bewerkingspagina opgelost",
+                "fr": "colorpicker dans la page d'édition de flot corrigé",
+                "it": "colorpicker nella pagina di modifica del flot corretto",
+                "es": "colorpicker en la página de edición de flot fijo",
+                "pl": "Naprawiono próbnik kolorów na stronie edycji flot",
+                "zh-cn": "浮动编辑器中的colorpicker已修复"
+            },
             "1.10.1": {
                 "en": "preset.html updated to allow german umlaute",
                 "de": "preset.html aktualisiert, um deutsche Umlaute zu ermöglichen",

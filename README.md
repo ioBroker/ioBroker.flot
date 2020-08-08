@@ -46,6 +46,9 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 
 ## Changelog
 
+### 1.10.2 (2020-08-09)
+* (Apollon77/jlegen) colorpicker in flot edit page fixed
+
 ### 1.10.1 (2020-08-02)
 * (sbormann) preset.html updated to allow german umlaute
 * (Apollon77) add www directory to Github to allow GitHub installs
