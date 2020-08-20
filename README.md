@@ -27,6 +27,17 @@ to
 
 http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memRss
 
+To **recall** a saved preset, you can either call:
+
+http://localhost:8082/flot/**preset**.html
+(this lists all saved presets)
+
+or:
+
+http://localhost:8082/flot/**preset**.html?preset=**presetName**
+(this redirects to presetName directly)
+
+
 ## How to use
 - install "web"-adapter and create one instance if not installed.
 - Select in settings of "web"-adapter the instance of installed "socket.io"-instance.
@@ -34,6 +45,16 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 - Go to http://ip:8082/flot/edit.html
 
 ## Changelog
+
+### 1.10.2 (2020-08-09)
+* (Apollon77/jlegen) colorpicker in flot edit page fixed
+
+### 1.10.1 (2020-08-02)
+* (sbormann) preset.html updated to allow german umlaute
+* (Apollon77) add www directory to Github to allow GitHub installs
+
+### 1.10.0 (2020-05-14)
+* (sbormann) preset.html added to display a list of stored flot presets with direct links
 
 ### 1.9.2 (2018-08-18)
 * (Seqway) Translations
@@ -210,4 +231,4 @@ http://localhost:8082/flot/**edit**.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox<dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox<dogafox@gmail.com>

@@ -468,6 +468,16 @@ gulp.task('editJS', gulp.series('languages2words', () => {
         .pipe(gulp.dest('./www/js'));
 }));
 
+gulp.task('presetHTML', () => {
+    return gulp.src([
+        './src/preset.html'
+    ])
+        .pipe(sourcemaps.init())
+        .pipe(concat('preset.html'))
+        .pipe(htmlmin({collapseWhitespace: true, removeComments: true}))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest('./www/'));
+});
 gulp.task('indexHTML', () => {
     return gulp.src([
         './src/index.html'
@@ -570,4 +580,4 @@ async function translateNotExisting(obj, baseText, yandex) {
     }
 }
 
-gulp.task('default', gulp.series('flotJS', 'editJS', 'indexHTML', 'editHTML', 'copyCSS', 'copyImg'));
+gulp.task('default', gulp.series('flotJS', 'editJS', 'indexHTML', 'presetHTML', 'editHTML', 'copyCSS', 'copyImg'));
