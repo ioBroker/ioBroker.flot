@@ -174,8 +174,12 @@ socket.on('connect', function () {
 });
 
 socket.on('stateChange', function (id, state) {
-    if (!chart || !config || !config.m) return;
+    if (!chart || !config || !config.m) {
+        return;
+    }
+
     console.log(id + ' - ' + state.val);
+
     for (var m = 0; m < config.m.length; m++) {
         if (config.m[m].oid === id) {
             config.m[m].v = parseFloat(state.val) || 0;
@@ -187,7 +191,9 @@ socket.on('stateChange', function (id, state) {
     chart.update(null, config.m);
 });
 
-if (config.window_bg) $('body').css('background', config.window_bg);
+if (config.window_bg) {
+    $('body').css('background', config.window_bg);
+}
 
 socket.on('disconnect', function () {
     if (!disconnectTimeout) {
@@ -409,11 +415,10 @@ function readOneChart(id, instance, index, callback) {
     //console.log(JSON.stringify(option));
     console.log(new Date(option.start) + ' - ' + new Date(option.end));
     socket.emit('getHistory', id, option, function (err, res, stepIgnore, _sessionId) {
-        if (err) console.error(err);
+        err && console.error(err);
 
         if (sessionId && _sessionId && _sessionId !== sessionId) {
-            console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
-            return;
+            return console.warn('Ignore request with sessionId=' + _sessionId + ', actual is ' + sessionId);
         }
 
         if (!err && res) {
@@ -558,7 +563,9 @@ function prepareChart() {
     }
 
     if (config.live && config.timeType === 'relative') {
-        if (config.live === true || config.live === 'true') config.live = 30;
+        if (config.live === true || config.live === 'true') {
+            config.live = 30;
+        }
         config.live = parseInt(config.live, 10) || 30;
         startLiveUpdate();
     }
@@ -786,7 +793,7 @@ function updateLive() {
     $('.loader').show();
     sessionId++;
 
-    if (config.zoom) chart.resetZoom(now);
+    config.zoom && chart.resetZoom(now);
 
     for (var index = 0; index < config.l.length; index++) {
         ready++;

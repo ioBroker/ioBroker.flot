@@ -1,5 +1,5 @@
 //options: {
-//   chartId: 
+//   chartId:
 //   titleId:
 //   tooltipId:
 //   cbOnZoom:
@@ -7,13 +7,15 @@
 
 function CustomChart(options, config, seriesData, markLines, ticks) {
     'use strict';
-    
-    if (!(this instanceof CustomChart)) return new CustomChart(options, config, seriesData, markLines, ticks);
-    
+
+    if (!(this instanceof CustomChart)) {
+        return new CustomChart(options, config, seriesData, markLines, ticks);
+    }
+
     this.chart   = null;
     this.config  = config;
     this.options = options;
-    
+
     var that     = this;
     var series;
     var markingsOffset = 0;
@@ -52,7 +54,9 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
     }
 
     function _tickXFormatter(number, object) {
-        if (ticks) return ' ';
+        if (ticks) {
+            return ' ';
+        }
         var now = new Date(parseInt(number, 10));
         if (that.config.timeFormatDate && that.config.timeFormatTime) {
             if (!object.ticks.length) {
@@ -238,7 +242,9 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
         }
 
         // Replace background
-        if (that.config.bg && that.config.bg.length < 3 && backgrounds[that.config.bg]) that.config.bg = {colors: backgrounds[that.config.bg]};
+        if (that.config.bg && that.config.bg.length < 3 && backgrounds[that.config.bg]) {
+            that.config.bg = {colors: backgrounds[that.config.bg]};
+        }
 
         markingsOffset = 0;
         // draw horizontal lines
@@ -407,7 +413,9 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
 //            $('#chart_container').css({'padding-bottom':"100px"})
         }
 
-        if (that.config.timeFormat === 'null') that.config.timeFormat = undefined;
+        if (that.config.timeFormat === 'null') {
+            that.config.timeFormat = undefined;
+        }
 
         if (that.config.timeFormat) {
             if (that.config.timeFormat.indexOf('%H:%M:%S') !== -1) {
