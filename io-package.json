@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.2",
+        "version": "1.10.3",
         "news": {
+            "1.10.3": {
+                "en": "use browser timezone",
+                "de": "Verwenden Sie die Browser-Zeitzone",
+                "ru": "использовать часовой пояс браузера",
+                "pt": "usar fuso horário do navegador",
+                "nl": "gebruik de tijdzone van de browser",
+                "fr": "utiliser le fuseau horaire du navigateur",
+                "it": "utilizza il fuso orario del browser",
+                "es": "utilizar la zona horaria del navegador",
+                "pl": "użyj strefy czasowej przeglądarki",
+                "zh-cn": "使用浏览器时区"
+            },
             "1.10.2": {
                 "en": "colorpicker in flot edit page fixed",
                 "de": "Farbauswahl in der Flot-Bearbeitungsseite behoben",

@@ -529,7 +529,7 @@ function CustomChart(options, config, seriesData, markLines, ticks) {
                 panRange:       null,  // or [ number, number ] (min, max) or false
                 mode:           'time',
                 //timeformat:   that.config.timeFormat,
-                //timezone:     "browser",
+                timezone:       "browser",
                 tickFormatter:  that.config.timeFormat ? _tickXFormatter : null,
                 minTickSize:    (that.config.l[ii].chartType === 'bar') ? series[ii + markingsOffset].bars.barWidth : undefined,
                 tickColor:      that.config.grid_color || undefined,
