@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.3",
+        "version": "1.10.4",
         "news": {
-            "1.10.3": {
+            "1.10.4": {
                 "en": "use browser timezone",
                 "de": "Verwenden Sie die Browser-Zeitzone",
                 "ru": "использовать часовой пояс браузера",
