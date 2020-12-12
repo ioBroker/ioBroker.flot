@@ -46,7 +46,7 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 
 ## Changelog
 
-### 1.10.3 (2020-11-13)
+### 1.10.4 (2020-11-13)
 * (Apollon77/harvey637) use browser timezone
 
 ### 1.10.2 (2020-08-09)
