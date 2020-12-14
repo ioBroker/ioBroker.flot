@@ -320,5 +320,13 @@
     "Legend opacity (from 0 to 1):": "Legende-Opacity (von 0 bis 1):",
     "Legend background:": "Legende-Hintergrund:",
     "Fill(0to1)": "Füllen(0bis1)",
-    "Points": "Punkte"
+    "Points": "Punkte",
+	"Multiplicator": "Multiplikator für Y-Werte",
+	"Move x values": "Verschiebe x Werte",
+	"minuteBegin": "Setze auf Minutenanfang",
+    "hourBegin":  "Stundenanfang",
+    "dayBegin": "Tagesanfang",
+	"weekBegin": "Wochenanfang",
+    "monthBegin": "Monatanfang",
+    "yearBegin": "Jahresanfang"
 }

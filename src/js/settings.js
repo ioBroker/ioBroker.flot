@@ -33,7 +33,9 @@ var settings = {
         afterComma:     {enabled: true,  name: 'After comma',   width: '70px',  style: '', type: 'number',  default: 2},
         dashes:         {enabled: true,  name: 'Dashes',        width: '',      style: '', type: 'checkbox', default: false},
         dashLength:     {enabled: true,  name: 'Dashes length', width: '70px',  style: '', type: 'number', default: 10},
-        spaceLength:    {enabled: true,  name: 'Space length',  width: '70px',  style: '', type: 'number', default: 10}
+        spaceLength:    {enabled: true,  name: 'Space length',  width: '70px',  style: '', type: 'number', default: 10},
+        multiplicator: 	{enabled: true,  name: "Multiplicator", width: "70px",  style: "", type: "number", default: 1},
+		xmove: 			{enabled: true,  name: "Move x values", width: "130px", style: "", type: "number" , default: 0}				
     },
     chapter_time:       {enabled: true},
     time_timeType:      {enabled: true},
