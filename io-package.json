@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.4",
+        "version": "1.10.5",
         "news": {
+            "1.10.5": {
+                "en": "added the X value mover and Y value multiplicator",
+                "de": "Der X-Wert-Mover und der Y-Wert-Multiplikator wurden hinzugefügt",
+                "ru": "добавлен механизм перемещения значения X и мультипликатор значения Y",
+                "pt": "adicionou o movedor de valor X e o multiplicador de valor Y",
+                "nl": "de X-waardeverhuizer en de Y-waardevermenigvuldiger toegevoegd",
+                "fr": "ajout du moteur de valeur X et du multiplicateur de valeur Y",
+                "it": "aggiunto il motore del valore X e il moltiplicatore del valore Y.",
+                "es": "agregó el valor de X moviendo y el multiplicador de valor de Y",
+                "pl": "dodano element przenoszący wartość X i mnożnik wartości Y.",
+                "zh-cn": "添加了X值移动器和Y值乘数"
+            },
             "1.10.4": {
                 "en": "use browser timezone",
                 "de": "Verwenden Sie die Browser-Zeitzone",

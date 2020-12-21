@@ -44,7 +44,13 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 - install "flot"-adapter and call
 - Go to http://ip:8082/flot/edit.html
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### 1.10.5 (2020-12-21)
+*(nobodyMO) added the X value mover and Y value multiplicator
 
 ### 1.10.4 (2020-11-13)
 * (Apollon77/harvey637) use browser timezone
