@@ -405,13 +405,26 @@ function getStartStop(index, step) {
     }
 }
 
+function xmove(ts,m) {
+	ts=new Date (ts); 	
+	if (m=='minuteBegin') ts.setSeconds(0,0);
+	else if (m=='hourBegin') ts.setMinutes(0,0,0);
+	else if (m=='dayBegin') ts.setHours(0,0,0,0);
+	else if (m=='weekBegin') {
+		ts.setHours(0,0,0,0);
+		ts.setDate(ts.getDate() - (ts.getDay() + 6) % 7);	
+	} else if (m=='monthBegin') ts.setHours(0,0,0,0),ts.setDate(1);
+	else if (m=='yearBegin') ts.setHours(0,0,0,0),ts.setMonth(0, 1);
+	return ts.getTime();
+}
+
 function readOneChart(id, instance, index, callback) {
 
     var option = getStartStop(index);
     option.instance  = instance;
     option.sessionId = sessionId;
     config.l[index].yOffset = parseFloat(config.l[index].yOffset) || 0;
-
+	var multiplicator = config.l[index].multiplicator ? parseFloat (config.l[index].multiplicator) : 1.0;
     //console.log(JSON.stringify(option));
     console.log(new Date(option.start) + ' - ' + new Date(option.end));
     socket.emit('getHistory', id, option, function (err, res, stepIgnore, _sessionId) {
@@ -439,7 +452,7 @@ function readOneChart(id, instance, index, callback) {
                 }
                 if (typeof res[i].val === 'string') res[i].val = parseFloat(res[i].val);
 
-                _series.push([res[i].ts, res[i].val !== null ? res[i].val + option.yOffset : null]);
+				_series.push([(config.l[index].xmove? xmove(res[i].ts,config.l[index].xmove): res[i].ts), res[i].val !== null ? res[i].val * multiplicator + option.yOffset : null]);
             }
             // add start and end
             if (_series.length) {

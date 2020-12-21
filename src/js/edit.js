@@ -41,7 +41,8 @@ $(document).ready(function () {
                         afterComma: setup.options.afterComma || 0,
                         min: setup.options.min || '',
                         max: setup.options.max || '',
-                        unit: units[i] || ''
+                        unit: units[i] || '',
+						xmove: 0					
                     });
                 }
                 setup.options.aggregateType = 'step';
@@ -97,7 +98,8 @@ $(document).ready(function () {
             thickness: 3,
             shadowsize: 3,
             unit: '',
-            name: ''
+            name: '',
+			xmove: 0			
         });
 
         return index;
@@ -287,6 +289,21 @@ $(document).ready(function () {
                         '<option value="1y">' + _('1Y') + '</option>' +
                         '<option value="2y">' + _('2Y') + '</option>';
                     text += '</select></td>\n';
+				} else if (attr === 'xmove') {
+					text += '<td><select id="option_' + attr + '" ' +
+						'style="' + (settings.extraOptions[attr].width ? "width: " + settings.extraOptions[attr].width + ";" : "") + (settings.extraOptions[attr].style || "") + '" ' +
+						'class="dialog-line-option ' + (settings.extraOptions[attr]._class || "") + '" ' +
+						'data-option="' + attr + '">\n';
+					text += 
+						'<option value="0">' + _("0s") + '</option>' +
+						'<option value="minuteBegin">' + _("minuteBegin") + '</option>' +
+						'<option value="hourBegin">' + _("hourBegin") + '</option>' +
+						'<option value="dayBegin">' + _("dayBegin")+ '</option>' +
+						'<option value="weekBegin">' + _("weekBegin")+ '</option>' +
+						'<option value="monthBegin">' + _("monthBegin")+ '</option>' +
+						'<option value="yearBegin">' + _("yearBegin") + "</option>";
+					text += "</select></td>\n";
+					
                 } else if (!settings.extraOptions[attr].values) {
                     text += '<td><input id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
                         (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
@@ -458,6 +475,19 @@ $(document).ready(function () {
                             '<option value="1y">' + _('1Y') + '</option>' +
                             '<option value="2y">' + _('2Y') + '</option>';
                         text += '</select></td>\n';
+                    } else if (s === 'xmove') {
+                        text += '<td style="' + settings.line[s].style + '">\n';
+                        text += '<select class="input options-lines ' + settings.line[s]._class + '" data-index="' + i + '" data-option="' + s + '">\n';
+                        text +=
+							'<option value="0">' + _("0s") + '</option>' +
+							'<option value="minuteBegin">' + _("minuteBegin") + '</option>' +
+							'<option value="hourBegin">' + _("hourBegin") + '</option>' +
+							'<option value="dayBegin">' + _("dayBegin")+ '</option>' +
+							'<option value="weekBegin">' + _("weekBegin")+ '</option>' +
+							'<option value="monthBegin">' + _("monthBegin")+ '</option>' +
+							'<option value="yearBegin">' + _("yearBegin") + "</option>";
+                        text += '</select></td>\n';
+						
                     } else if (s === 'removeButton') {
                         text += '<td style="' + settings.line[s].style + '"><button class="id-remove" data-index="' + i + '"></button></td>\n';
                     } else if (s === 'extraOptions') {
