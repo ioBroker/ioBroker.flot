@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.5",
+        "version": "1.10.6",
         "news": {
-            "1.10.5": {
+            "1.10.6": {
                 "en": "added the X value mover and Y value multiplicator",
                 "de": "Der X-Wert-Mover und der Y-Wert-Multiplikator wurden hinzugefügt",
                 "ru": "добавлен механизм перемещения значения X и мультипликатор значения Y",
@@ -304,7 +304,7 @@
             "language": "javascript",
             "views": {
                 "chart": {
-                    "map": "function(doc) { if (doc.type === 'chart') emit(doc.common.name, doc); }"
+                    "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc); }"
                 }
             }
         }
