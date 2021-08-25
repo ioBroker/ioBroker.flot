@@ -83,7 +83,9 @@
             for (var id in presets) {
                 if (!presets.hasOwnProperty(id)) continue;
                 var obj = presets[id];
-                presetList += "<a href='index.html?" + obj.native.url + "' data-role='button'>" + obj.common.name + "</a><br>";
+                presetList += "<a href='preset.html?preset=" + obj.common.name + "' data-role='button'>" + obj.common.name + "</a>&nbsp;";
+                presetList += "<a href='index.html?" + obj.native.url + "' data-role='button'>(full link)</a>&nbsp;";
+                presetList += "<a href='edit.html?" + obj.native.url + "' data-role='button'>(edit)</a><br>";
             }
             $('#presetList').html(presetList);
         }
