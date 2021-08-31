@@ -1,8 +1,20 @@
 {
     "common": {
         "name": "flot",
-        "version": "1.10.6",
+        "version": "1.10.7",
         "news": {
+            "1.10.7": {
+                "en": "Enhanced the preset list (now shows the full link and the edit link)",
+                "de": "Die Preset-Liste wurde verbessert (zeigt jetzt den vollständigen Link und den Bearbeitungslink)",
+                "ru": "Расширен список предустановок (теперь отображается полная ссылка и ссылка для редактирования)",
+                "pt": "Aprimorou a lista de predefinições (agora mostra o link completo e o link de edição)",
+                "nl": "Verbeterde lijst met voorinstellingen (toont nu de volledige link en de bewerkingslink)",
+                "fr": "Amélioration de la liste des préréglages (affiche maintenant le lien complet et le lien d'édition)",
+                "it": "Migliorato l'elenco dei preset (ora mostra il collegamento completo e il collegamento di modifica)",
+                "es": "Se mejoró la lista de ajustes preestablecidos (ahora muestra el enlace completo y el enlace de edición)",
+                "pl": "Ulepszono listę ustawień wstępnych (teraz pokazuje pełny link i link do edycji)",
+                "zh-cn": "增强预设列表（现在显示完整链接和编辑链接）"
+            },
             "1.10.6": {
                 "en": "added the X value mover and Y value multiplicator",
                 "de": "Der X-Wert-Mover und der Y-Wert-Multiplikator wurden hinzugefügt",
@@ -277,6 +289,8 @@
         "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
         "readme": "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
         "loglevel": "info",
+        "connectionType": "local",
+        "dataSource": "push",
         "dependencies": [
             {
                 "web": ">=1.7.1"
