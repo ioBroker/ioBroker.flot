@@ -278,7 +278,7 @@
             "de": "docs/de/flot.md"
         },
         "license": "MIT",
-        "platform": "javascript/Node.js",
+        "platform": "Javascript/Node.js",
         "icon": "flot.png",
         "mode": "none",
         "keywords": [
