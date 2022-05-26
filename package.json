@@ -17,12 +17,6 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.flot"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/ioBroker/ioBroker.flot/blob/master/LICENSE"
-    }
-  ],
   "keywords": [
     "ioBroker",
     "flot",
