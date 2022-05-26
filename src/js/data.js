@@ -406,13 +406,13 @@ function getStartStop(index, step) {
 }
 
 function xmove(ts,m) {
-	ts=new Date (ts); 	
+	ts=new Date (ts);
 	if (m=='minuteBegin') ts.setSeconds(0,0);
 	else if (m=='hourBegin') ts.setMinutes(0,0,0);
 	else if (m=='dayBegin') ts.setHours(0,0,0,0);
 	else if (m=='weekBegin') {
 		ts.setHours(0,0,0,0);
-		ts.setDate(ts.getDate() - (ts.getDay() + 6) % 7);	
+		ts.setDate(ts.getDate() - (ts.getDay() + 6) % 7);
 	} else if (m=='monthBegin') ts.setHours(0,0,0,0),ts.setDate(1);
 	else if (m=='yearBegin') ts.setHours(0,0,0,0),ts.setMonth(0, 1);
 	return ts.getTime();
@@ -441,9 +441,6 @@ function readOneChart(id, instance, index, callback) {
             var _series = seriesData[index];
 
             for (var i = 0; i < res.length; i++) {
-                // if less 2000.01.01 00:00:00
-                if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
-
                 // Convert boolean values to numbers
                 if (res[i].val === 'true' || res[i].val === true) {
                     res[i].val = 1;
@@ -627,9 +624,6 @@ function readTicks(callback) {
                     if (ticks && ticks.length) ticks.splice(0, ticks.length);
 
                     for (var i = 0; i < res.length; i++) {
-                        // if less 2000.01.01 00:00:00
-                        if (res[i].ts < 946681200000) res[i].ts = res[i].ts * 1000;
-
                         if (!res[i].val !== null) _series.push([res[i].ts, res[i].val]);
                     }
                     // add start and end

@@ -49,6 +49,10 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Trust GetHistory results to contain ms resolution timestamps
+
 ### 1.10.7 (2021-08-31)
 * (sbormann) Enhanced the preset list (now shows the full link and the edit link)
  
