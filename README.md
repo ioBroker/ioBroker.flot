@@ -49,13 +49,12 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-
-### __WORK IN PROGRESS__
+### 1.11.0 (2022-05-26)
 * (Apollon77) Trust GetHistory results to contain ms resolution timestamps
 
 ### 1.10.7 (2021-08-31)
 * (sbormann) Enhanced the preset list (now shows the full link and the edit link)
- 
+
 ### 1.10.6 (2020-12-21)
 * (nobodyMO) added the X value mover and Y value multiplication
 
@@ -242,7 +241,6 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 
 ### 0.0.1 (2015-03-27)
 * (bluefox) initial commit
-
 
 ## License
 The MIT License (MIT)

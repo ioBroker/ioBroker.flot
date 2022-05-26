@@ -1,326 +1,170 @@
 {
-    "common": {
-        "name": "flot",
-        "version": "1.10.7",
-        "news": {
-            "1.10.7": {
-                "en": "Enhanced the preset list (now shows the full link and the edit link)",
-                "de": "Die Preset-Liste wurde verbessert (zeigt jetzt den vollständigen Link und den Bearbeitungslink)",
-                "ru": "Расширен список предустановок (теперь отображается полная ссылка и ссылка для редактирования)",
-                "pt": "Aprimorou a lista de predefinições (agora mostra o link completo e o link de edição)",
-                "nl": "Verbeterde lijst met voorinstellingen (toont nu de volledige link en de bewerkingslink)",
-                "fr": "Amélioration de la liste des préréglages (affiche maintenant le lien complet et le lien d'édition)",
-                "it": "Migliorato l'elenco dei preset (ora mostra il collegamento completo e il collegamento di modifica)",
-                "es": "Se mejoró la lista de ajustes preestablecidos (ahora muestra el enlace completo y el enlace de edición)",
-                "pl": "Ulepszono listę ustawień wstępnych (teraz pokazuje pełny link i link do edycji)",
-                "zh-cn": "增强预设列表（现在显示完整链接和编辑链接）"
-            },
-            "1.10.6": {
-                "en": "added the X value mover and Y value multiplicator",
-                "de": "Der X-Wert-Mover und der Y-Wert-Multiplikator wurden hinzugefügt",
-                "ru": "добавлен механизм перемещения значения X и мультипликатор значения Y",
-                "pt": "adicionou o movedor de valor X e o multiplicador de valor Y",
-                "nl": "de X-waardeverhuizer en de Y-waardevermenigvuldiger toegevoegd",
-                "fr": "ajout du moteur de valeur X et du multiplicateur de valeur Y",
-                "it": "aggiunto il motore del valore X e il moltiplicatore del valore Y.",
-                "es": "agregó el valor de X moviendo y el multiplicador de valor de Y",
-                "pl": "dodano element przenoszący wartość X i mnożnik wartości Y.",
-                "zh-cn": "添加了X值移动器和Y值乘数"
-            },
-            "1.10.4": {
-                "en": "use browser timezone",
-                "de": "Verwenden Sie die Browser-Zeitzone",
-                "ru": "использовать часовой пояс браузера",
-                "pt": "usar fuso horário do navegador",
-                "nl": "gebruik de tijdzone van de browser",
-                "fr": "utiliser le fuseau horaire du navigateur",
-                "it": "utilizza il fuso orario del browser",
-                "es": "utilizar la zona horaria del navegador",
-                "pl": "użyj strefy czasowej przeglądarki",
-                "zh-cn": "使用浏览器时区"
-            },
-            "1.10.2": {
-                "en": "colorpicker in flot edit page fixed",
-                "de": "Farbauswahl in der Flot-Bearbeitungsseite behoben",
-                "ru": "Colorpicker на странице редактирования flot исправлен",
-                "pt": "colorpicker in flot edit page fixed",
-                "nl": "colorpicker in flot bewerkingspagina opgelost",
-                "fr": "colorpicker dans la page d'édition de flot corrigé",
-                "it": "colorpicker nella pagina di modifica del flot corretto",
-                "es": "colorpicker en la página de edición de flot fijo",
-                "pl": "Naprawiono próbnik kolorów na stronie edycji flot",
-                "zh-cn": "浮动编辑器中的colorpicker已修复"
-            },
-            "1.10.1": {
-                "en": "preset.html updated to allow german umlaute",
-                "de": "preset.html aktualisiert, um deutsche Umlaute zu ermöglichen",
-                "ru": "preset.html обновлен, чтобы разрешить использование немецкого умлаута",
-                "pt": "preset.html atualizado para permitir trema alemão",
-                "nl": "preset.html bijgewerkt om Duitse umlaute toe te staan",
-                "fr": "preset.html mis à jour pour autoriser le tréma allemand",
-                "it": "preset.html aggiornato per consentire il tedesco umlaute",
-                "es": "preset.html actualizado para permitir la diéresis alemana",
-                "pl": "preset.html zaktualizowany, aby umożliwić niemieckiemu umlaute",
-                "zh-cn": "预设文件.html更新为允许德国umlaute"
-            },
-            "1.10.0": {
-                "en": "preset.html added to display a list of stored flot presets with direct links",
-                "de": "preset.html wurde hinzugefügt, um eine Liste der gespeicherten Flot-Presets mit direkten Links anzuzeigen",
-                "ru": "добавлен preset.html для отображения списка сохраненных пресетов flot с прямыми ссылками",
-                "pt": "preset.html adicionado para exibir uma lista de predefinições de flot armazenadas com links diretos",
-                "nl": "preset.html toegevoegd om een lijst met opgeslagen flotvoorinstellingen met directe links weer te geven",
-                "fr": "preset.html ajouté pour afficher une liste des préréglages de flottement stockés avec des liens directs",
-                "it": "preset.html aggiunto per visualizzare un elenco di preset flot memorizzati con collegamenti diretti",
-                "es": "preset.html agregado para mostrar una lista de presets de flot almacenados con enlaces directos",
-                "pl": "Dodano preset.html, aby wyświetlić listę zapisanych ustawień flot z bezpośrednimi linkami",
-                "zh-cn": "新增了预置.html，以显示具有直接链接的存储浮点预置的列表"
-            },
-            "1.9.3": {
-                "en": "Translations",
-                "de": "Übersetzungen",
-                "ru": "Переводы",
-                "pt": "Traduções",
-                "nl": "vertaalwerk",
-                "fr": "Traductions",
-                "it": "Traduzioni",
-                "es": "Traducciones",
-                "pl": "Tłumaczenia",
-                "zh-cn": "翻译"
-            },
-            "1.9.1": {
-                "en": "Added dashed lines\nAll JS files together are concatenated",
-                "de": "Gestrichelte Linien hinzugefügt\nAlle JS-Dateien zusammen sind verkettet",
-                "ru": "Добавлены пунктирные линии\nВсе файлы JS вместе объединены",
-                "pt": "Adicionado linhas tracejadas\nTodos os arquivos JS juntos são concatenados",
-                "nl": "Gestreepte lijnen toegevoegd\nAlle JS-bestanden samen zijn aaneengeschakeld",
-                "fr": "Ajout de lignes pointillées\nTous les fichiers JS sont concaténés",
-                "it": "Aggiunte linee tratteggiate\nTutti i file JS insieme sono concatenati",
-                "es": "Líneas discontinuas agregadas\nTodos los archivos JS juntos están concatenados",
-                "pl": "Dodano przerywane linie\nWszystkie pliki JS są ze sobą połączone",
-                "zh-cn": "加入虚线\n所有JS文件一起，是连接的"
-            },
-            "1.8.0": {
-                "en": "Optimize communication",
-                "de": "Kommunikation optimieren",
-                "ru": "Оптимизация связи",
-                "pt": "Otimizar a comunicação",
-                "nl": "Optimaliseer communicatie",
-                "fr": "Optimiser la communication",
-                "it": "Ottimizza la comunicazione",
-                "es": "Optimizar la comunicación",
-                "pl": "Zoptymalizuj komunikację",
-                "zh-cn": "优化通信"
-            },
-            "1.7.9": {
-                "en": "Added support of multi-languages in names",
-                "de": "Unterstützung von Multi-Sprachen in Namen hinzugefügt",
-                "ru": "Добавлена ​​поддержка нескольких языков в именах",
-                "pt": "Adicionado suporte de multi-idiomas em nomes",
-                "nl": "Ondersteuning van meerdere talen toegevoegd aan namen",
-                "fr": "Ajout du support de plusieurs langues dans les noms",
-                "it": "Aggiunto il supporto di più lingue nei nomi",
-                "es": "Se agregó soporte de múltiples idiomas en los nombres",
-                "pl": "Dodano obsługę wielu języków w nazwach",
-                "zh-cn": "增加支持的多语言的名字"
-            },
-            "1.7.7": {
-                "en": "fix month range",
-                "de": "Monatsspanne festlegen",
-                "ru": "исправить месячный диапазон",
-                "pt": "intervalo mensal fixo",
-                "nl": "bereik maandbereik",
-                "fr": "fixer la plage de mois",
-                "it": "fissare il range del mese",
-                "es": "arreglar rango de mes",
-                "pl": "popraw zakres miesięcy",
-                "zh-cn": "修复月的范围"
-            },
-            "1.7.6": {
-                "en": "remove alert windows from errors, log instead",
-                "de": "Entfernen Sie Warnfenster von Fehlern, loggen Sie sich stattdessen ein",
-                "ru": "удалять окна предупреждений из ошибок, вместо этого записывать журнал",
-                "pt": "remova janelas de alerta de erros, registre em vez disso",
-                "nl": "verwijder waarschuwingsvensters van fouten, log in plaats daarvan",
-                "fr": "supprimer les fenêtres d'alerte des erreurs, consigner à la place",
-                "it": "rimuovere le finestre di avviso dagli errori, invece registrare",
-                "es": "eliminar ventanas de alerta de errores, registrar en su lugar",
-                "pl": "usuń okna alertów z błędów, zamiast tego zaloguj się",
-                "zh-cn": "除警报windows从错误的，登录代替"
-            },
-            "1.7.5": {
-                "en": "try to fix small error",
-                "de": "Versuch einen kleinen Fehler zu beheben",
-                "ru": "попытка исправить небольшую ошибку",
-                "pt": "tente corrigir pequenos erros",
-                "nl": "probeer een kleine fout op te lossen",
-                "fr": "essayer de réparer une petite erreur",
-                "it": "prova a correggere un piccolo errore",
-                "es": "intenta arreglar un pequeño error",
-                "pl": "spróbuj naprawić mały błąd",
-                "zh-cn": "尝试修复小的错误"
-            },
-            "1.7.4": {
-                "en": "The loading via cloud is fixed",
-                "de": "Das Laden über die Cloud ist behoben",
-                "ru": "Погрузка через облако фиксирована",
-                "pt": "O carregamento por nuvem é fixo",
-                "nl": "Het laden via cloud is opgelost",
-                "fr": "Le chargement via le cloud est fixe",
-                "it": "Il caricamento tramite cloud è fisso",
-                "es": "La carga a través de la nube es fijo",
-                "pl": "Ładowanie przez chmury stałe",
-                "zh-cn": "装载过云是固定的"
-            },
-            "1.7.1": {
-                "en": "Fixed the loading of presets\nAdded new date formats for X axis",
-                "de": "Das Laden von Presets wurde korrigiert\nNeue Datumsformate für die X-Achse hinzugefügt",
-                "ru": "Исправлена загрузка пресетов\nДобавлены новые форматы дат для оси X",
-                "pt": "Corrigido o carregamento de predefinições\nAdicionado novos formatos de data para o eixo X",
-                "fr": "Correction du chargement des presets\nAjout de nouveaux formats de date pour l'axe X",
-                "nl": "Het laden van presets verholpen\nNieuwe datumnotaties voor X-as toegevoegd",
-                "it": "Fissa il caricamento dei preset\nAggiunti nuovi formati di data per l'asse X",
-                "es": "Fija la carga de presets\nAñadido nuevos formatos de fecha para el eje X",
-                "pl": "Naprawiono ładowanie presetów\nDodano nowe formaty daty na osi X",
-                "zh-cn": "固定装载的预置\n增加了新的日期格式X轴"
-            },
-            "1.7.0": {
-                "en": "Add presets",
-                "de": "Presets sind jinzugefügt",
-                "ru": "Добавлены пресеты",
-                "pt": "Adicionar predefinições",
-                "nl": "Voorinstellingen toevoegen",
-                "fr": "Ajouter les préréglages",
-                "it": "Aggiungere impostazioni predefinite",
-                "es": "Agregar presets",
-                "pl": "Dodaj presety",
-                "zh-cn": "增加预设"
-            },
-            "1.6.2": {
-                "en": "Show chart at start",
-                "de": "Zeige Chart am Anfang",
-                "ru": "Показывать график при старте",
-                "pt": "Mostrar gráfico em iniciar",
-                "nl": "Toon grafiek van start",
-                "fr": "Montrer graphique au démarrage",
-                "it": "Mostra un grafico a inizio",
-                "es": "Mostrar el gráfico en el arranque",
-                "pl": "Pokaż wykres na starcie",
-                "zh-cn": "显示图表，在开始"
-            },
-            "1.6.1": {
-                "en": "Change edit layout",
-                "de": "Ändere Edit Layout",
-                "ru": "Изменено положение элементов при редактировании ",
-                "pt": "Alteração de edição de layout",
-                "nl": "Wijzig lay-out bewerken",
-                "fr": "Changement de modifier la disposition de la",
-                "it": "Modifica modifica del layout",
-                "es": "Cambio de edición de diseño",
-                "pl": "Zmienić układ",
-                "zh-cn": "改变编辑的布局"
-            },
-            "1.5.9": {
-                "en": "New color picker\nIf 'none' for title selected => do not show any title\nadd date format 'dd.mm.'",
-                "de": "Neuer Farbselektor\nZeige keine Beschriftung falls 'none'\nNeues Datumformat 'dd.mm.'",
-                "ru": "Новый выбор цвета\nЕсли 'ничего' выбрано для подписи, то ничего не показывать\nдобавлен формат даты 'dd.mm.'",
-                "pt": "Selecionador nova cor de\nSe 'nenhum' para o título seleccionado => não mostrar qualquer título\nadicionar data formato 'dd.mm.'",
-                "nl": "Nieuwe kleurkiezer\nAls 'geen' voor de titel geselecteerde => vertonen geen titel\nvoeg datum in het formaat 'dd.mm.'",
-                "fr": "Nouveau sélecteur de couleur\nSi \"aucun\" pour le titre sélectionné => ne pas afficher le titre\najouter la date au format \" jj.mm.'",
-                "it": "Nuovo selettore colore\nSe 'none' per il titolo selezionato => non mostra alcun titolo\naggiungere la data in formato dd.mm.'",
-                "es": "Nuevo selector de color\nSi 'none' para el título seleccionado => no mostrar ningún título\nagregar la fecha en formato 'dd.mm.'",
-                "pl": "Nowa paleta kolorów\nJeśli 'nie' dla nagłówka wybrany => nie pokazuj tytuł\ndodaj datę w formacie \" DD.mm.'",
-                "zh-cn": "新的颜色选择\n如果是\"无\"为标题的选择=>没有显示任何标题\n添加的日期格式'dd。毫米。'"
-            },
-            "1.5.8": {
-                "en": "Add series as X ticks",
-                "de": "Möglichkeit, einen Wert als X Beschriftung zu benutzen",
-                "ru": "Возможность показывать X подписи из истории",
-                "pt": "Adicionar séries como X carrapatos",
-                "nl": "Het toevoegen van series als X-teken",
-                "fr": "Ajouter des séries comme X tiques",
-                "it": "Aggiungere serie come X le zecche",
-                "es": "Agregar series como X garrapatas",
-                "pl": "Dodaj serii X kleszczy",
-                "zh-cn": "添加一系列作为X蜱"
-            }
-        },
-        "title": "Flot Charts",
-        "titleLang": {
-            "en": "Flot Charts",
-            "de": "Flot-Diagramme",
-            "ru": "Графики c Flot",
-            "pt": "Flot Charts",
-            "nl": "Flot charts",
-            "fr": "Graphiques des Flot",
-            "it": "Grafici Flot",
-            "es": "Gráficos de Flot",
-            "pl": "Wykresy Flot",
-            "zh-cn": "海军报表"
-        },
-        "desc": {
-            "en": "This adapter draws charts with Flot in ioBroker.",
-            "de": "Dieser Adapter zeichnet Diagramme mit Flot in ioBroker.",
-            "ru": "Драйвер строит графики с помощью Flot",
-            "nl": "Deze adapter tekent grafieken met Flot in ioBroker",
-            "fr": "Cet adaptateur dessine des graphiques avec Flot dans ioBroker",
-            "pt": "Este adaptador desenha gráficos com o Flot no ioBroker",
-            "it": "Questo adattatore disegna i grafici con Flot in ioBroker.",
-            "es": "Este adaptador dibuja tablas con Flot en ioBroker",
-            "pl": "Ten adapter rysuje wykresy za pomocą Flot w programie ioBroker",
-            "zh-cn": "这器绘制图表，与海军报在ioBroker的。"
-        },
-        "authors": [
-            "bluefox <dogafox@gmail.com>"
-        ],
-        "docs": {
-            "en": "docs/en/flot.md",
-            "ru": "docs/ru/flot.md",
-            "de": "docs/de/flot.md"
-        },
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "icon": "flot.png",
-        "mode": "none",
-        "keywords": [
-            "charts",
-            "graphics",
-            "grafiken"
-        ],
-        "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
-        "readme": "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
-        "loglevel": "info",
-        "connectionType": "local",
-        "dataSource": "push",
-        "dependencies": [
-            {
-                "web": ">=1.7.1"
-            }
-        ],
-        "localLink": "%web_protocol%://%ip%:%web_port%/flot/edit.html",
-        "enabled": true,
-        "onlyWWW": true,
-        "singleton": true,
-        "type": "visualization",
-        "noConfig": true,
-        "nogit": true,
-        "welcomeScreen": {
-            "link": "flot/edit.html",
-            "name": "flot editor",
-            "img": "flot.admin/flot.png",
-            "color": "gray",
-            "order": 4
-        }
+  "common": {
+    "name": "flot",
+    "version": "1.11.0",
+    "news": {
+      "1.11.0": {
+        "en": "Trust GetHistory results to contain ms resolution timestamps",
+        "de": "Vertrauen Sie darauf, dass GetHistory-Ergebnisse MS-Auflösungszeitstempel enthalten",
+        "ru": "Доверяйте результатам GetHistory, чтобы они содержали временные метки разрешения ms",
+        "pt": "Confiar nos resultados do GetHistory para conter carimbos de data/hora de resolução ms",
+        "nl": "Vertrouw erop dat GetHistory-resultaten ms-resolutietijdstempels bevatten",
+        "fr": "Faites confiance aux résultats de GetHistory pour contenir les horodatages de résolution ms",
+        "it": "Considera attendibile che i risultati di GetHistory contengano timestamp di risoluzione ms",
+        "es": "Confíe en los resultados de GetHistory para que contengan marcas de tiempo de resolución de ms",
+        "pl": "Ufaj wynikom GetHistory, aby zawierały znaczniki czasu rozdzielczości ms",
+        "zh-cn": "信任 GetHistory 结果以包含 ms 分辨率时间戳"
+      },
+      "1.10.7": {
+        "en": "Enhanced the preset list (now shows the full link and the edit link)",
+        "de": "Die Preset-Liste wurde verbessert (zeigt jetzt den vollständigen Link und den Bearbeitungslink)",
+        "ru": "Расширен список предустановок (теперь отображается полная ссылка и ссылка для редактирования)",
+        "pt": "Aprimorou a lista de predefinições (agora mostra o link completo e o link de edição)",
+        "nl": "Verbeterde lijst met voorinstellingen (toont nu de volledige link en de bewerkingslink)",
+        "fr": "Amélioration de la liste des préréglages (affiche maintenant le lien complet et le lien d'édition)",
+        "it": "Migliorato l'elenco dei preset (ora mostra il collegamento completo e il collegamento di modifica)",
+        "es": "Se mejoró la lista de ajustes preestablecidos (ahora muestra el enlace completo y el enlace de edición)",
+        "pl": "Ulepszono listę ustawień wstępnych (teraz pokazuje pełny link i link do edycji)",
+        "zh-cn": "增强预设列表（现在显示完整链接和编辑链接）"
+      },
+      "1.10.6": {
+        "en": "added the X value mover and Y value multiplicator",
+        "de": "Der X-Wert-Mover und der Y-Wert-Multiplikator wurden hinzugefügt",
+        "ru": "добавлен механизм перемещения значения X и мультипликатор значения Y",
+        "pt": "adicionou o movedor de valor X e o multiplicador de valor Y",
+        "nl": "de X-waardeverhuizer en de Y-waardevermenigvuldiger toegevoegd",
+        "fr": "ajout du moteur de valeur X et du multiplicateur de valeur Y",
+        "it": "aggiunto il motore del valore X e il moltiplicatore del valore Y.",
+        "es": "agregó el valor de X moviendo y el multiplicador de valor de Y",
+        "pl": "dodano element przenoszący wartość X i mnożnik wartości Y.",
+        "zh-cn": "添加了X值移动器和Y值乘数"
+      },
+      "1.10.4": {
+        "en": "use browser timezone",
+        "de": "Verwenden Sie die Browser-Zeitzone",
+        "ru": "использовать часовой пояс браузера",
+        "pt": "usar fuso horário do navegador",
+        "nl": "gebruik de tijdzone van de browser",
+        "fr": "utiliser le fuseau horaire du navigateur",
+        "it": "utilizza il fuso orario del browser",
+        "es": "utilizar la zona horaria del navegador",
+        "pl": "użyj strefy czasowej przeglądarki",
+        "zh-cn": "使用浏览器时区"
+      },
+      "1.10.2": {
+        "en": "colorpicker in flot edit page fixed",
+        "de": "Farbauswahl in der Flot-Bearbeitungsseite behoben",
+        "ru": "Colorpicker на странице редактирования flot исправлен",
+        "pt": "colorpicker in flot edit page fixed",
+        "nl": "colorpicker in flot bewerkingspagina opgelost",
+        "fr": "colorpicker dans la page d'édition de flot corrigé",
+        "it": "colorpicker nella pagina di modifica del flot corretto",
+        "es": "colorpicker en la página de edición de flot fijo",
+        "pl": "Naprawiono próbnik kolorów na stronie edycji flot",
+        "zh-cn": "浮动编辑器中的colorpicker已修复"
+      },
+      "1.10.1": {
+        "en": "preset.html updated to allow german umlaute",
+        "de": "preset.html aktualisiert, um deutsche Umlaute zu ermöglichen",
+        "ru": "preset.html обновлен, чтобы разрешить использование немецкого умлаута",
+        "pt": "preset.html atualizado para permitir trema alemão",
+        "nl": "preset.html bijgewerkt om Duitse umlaute toe te staan",
+        "fr": "preset.html mis à jour pour autoriser le tréma allemand",
+        "it": "preset.html aggiornato per consentire il tedesco umlaute",
+        "es": "preset.html actualizado para permitir la diéresis alemana",
+        "pl": "preset.html zaktualizowany, aby umożliwić niemieckiemu umlaute",
+        "zh-cn": "预设文件.html更新为允许德国umlaute"
+      },
+      "1.10.0": {
+        "en": "preset.html added to display a list of stored flot presets with direct links",
+        "de": "preset.html wurde hinzugefügt, um eine Liste der gespeicherten Flot-Presets mit direkten Links anzuzeigen",
+        "ru": "добавлен preset.html для отображения списка сохраненных пресетов flot с прямыми ссылками",
+        "pt": "preset.html adicionado para exibir uma lista de predefinições de flot armazenadas com links diretos",
+        "nl": "preset.html toegevoegd om een lijst met opgeslagen flotvoorinstellingen met directe links weer te geven",
+        "fr": "preset.html ajouté pour afficher une liste des préréglages de flottement stockés avec des liens directs",
+        "it": "preset.html aggiunto per visualizzare un elenco di preset flot memorizzati con collegamenti diretti",
+        "es": "preset.html agregado para mostrar una lista de presets de flot almacenados con enlaces directos",
+        "pl": "Dodano preset.html, aby wyświetlić listę zapisanych ustawień flot z bezpośrednimi linkami",
+        "zh-cn": "新增了预置.html，以显示具有直接链接的存储浮点预置的列表"
+      }
     },
-    "native": {},
-    "objects": [
-        {
-            "_id": "_design/chart",
-            "language": "javascript",
-            "views": {
-                "chart": {
-                    "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc); }"
-                }
-            }
+    "title": "Flot Charts",
+    "titleLang": {
+      "en": "Flot Charts",
+      "de": "Flot-Diagramme",
+      "ru": "Графики c Flot",
+      "pt": "Flot Charts",
+      "nl": "Flot charts",
+      "fr": "Graphiques des Flot",
+      "it": "Grafici Flot",
+      "es": "Gráficos de Flot",
+      "pl": "Wykresy Flot",
+      "zh-cn": "海军报表"
+    },
+    "desc": {
+      "en": "This adapter draws charts with Flot in ioBroker.",
+      "de": "Dieser Adapter zeichnet Diagramme mit Flot in ioBroker.",
+      "ru": "Драйвер строит графики с помощью Flot",
+      "nl": "Deze adapter tekent grafieken met Flot in ioBroker",
+      "fr": "Cet adaptateur dessine des graphiques avec Flot dans ioBroker",
+      "pt": "Este adaptador desenha gráficos com o Flot no ioBroker",
+      "it": "Questo adattatore disegna i grafici con Flot in ioBroker.",
+      "es": "Este adaptador dibuja tablas con Flot en ioBroker",
+      "pl": "Ten adapter rysuje wykresy za pomocą Flot w programie ioBroker",
+      "zh-cn": "这器绘制图表，与海军报在ioBroker的。"
+    },
+    "authors": [
+      "bluefox <dogafox@gmail.com>"
+    ],
+    "docs": {
+      "en": "docs/en/flot.md",
+      "ru": "docs/ru/flot.md",
+      "de": "docs/de/flot.md"
+    },
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "icon": "flot.png",
+    "mode": "none",
+    "keywords": [
+      "charts",
+      "graphics",
+      "grafiken"
+    ],
+    "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.flot/master/admin/flot.png",
+    "readme": "https://github.com/ioBroker/ioBroker.flot/blob/master/README.md",
+    "loglevel": "info",
+    "connectionType": "local",
+    "dataSource": "push",
+    "dependencies": [
+      {
+        "web": ">=1.7.1"
+      }
+    ],
+    "localLink": "%web_protocol%://%ip%:%web_port%/flot/edit.html",
+    "enabled": true,
+    "onlyWWW": true,
+    "singleton": true,
+    "type": "visualization",
+    "noConfig": true,
+    "nogit": true,
+    "welcomeScreen": {
+      "link": "flot/edit.html",
+      "name": "flot editor",
+      "img": "flot.admin/flot.png",
+      "color": "gray",
+      "order": 4
+    }
+  },
+  "native": {},
+  "objects": [
+    {
+      "_id": "_design/chart",
+      "language": "javascript",
+      "views": {
+        "chart": {
+          "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc); }"
         }
-    ]
+      }
+    }
+  ]
 }
