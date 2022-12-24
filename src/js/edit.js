@@ -1498,7 +1498,7 @@ $(document).ready(function () {
         console.log('Init connection...');
 	// Correct "port only" url given from web adapter:
 	var correctSocketUrl = socketUrl;
-	if (correctSocketUrl[0] === ':') {
+	if (correctSocketUrl && correctSocketUrl[0] === ':') {
 	    correctSocketUrl = location.protocol + '//' + location.hostname + socketUrl;
 	}
         // Read instances
