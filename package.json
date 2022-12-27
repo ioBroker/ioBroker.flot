@@ -34,7 +34,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-sourcemaps": "^3.0.0",
     "gulp-htmlmin": "^5.0.1",
-    "del": "^6.1.1",
+    "del": "^7.0.0",
     "mocha": "^10.2.0",
     "chai": "^4.3.7",
     "axios": "^0.27.2"
