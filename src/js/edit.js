@@ -1496,6 +1496,11 @@ $(document).ready(function () {
 
     function initSocket() {
         console.log('Init connection...');
+	// Correct "port only" url given from web adapter:
+	var correctSocketUrl = socketUrl;
+	if (correctSocketUrl && correctSocketUrl[0] === ':') {
+	    correctSocketUrl = location.protocol + '//' + location.hostname + socketUrl;
+	}
         // Read instances
         socket = io.connect(socketUrl, {
             query: {
