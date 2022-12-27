@@ -321,13 +321,13 @@
   "Legend background:": "Legenda achtergrond:",
   "Fill(0to1)": "Fill (0to1)",
   "Points": "punten",
-  "y value Multiplicator": "",
-  "Move x values": "",
-  "minuteBegin": "",
-  "hourBegin": "",
-  "dayBegin": "",
-  "weekBegin": "",
-  "monthBegin": "",
-  "yearBegin": "",
-  "Multiplicator": ""
+  "y value Multiplicator": "y waarde Vermenigvuldiger",
+  "Move x values": "Verplaats x waarden",
+  "minuteBegin": "begin minuut",
+  "hourBegin": "begin uur",
+  "dayBegin": "begin van de dag",
+  "weekBegin": "begin week",
+  "monthBegin": "begin van de maand",
+  "yearBegin": "begin van het jaar",
+  "Multiplicator": "Y-waardevermenigvuldiger"
 }

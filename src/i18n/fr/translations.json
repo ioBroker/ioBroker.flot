@@ -321,13 +321,13 @@
   "Legend background:": "Contexte de la légende",
   "Fill(0to1)": "Remplir (0to1)",
   "Points": "Points",
-  "y value Multiplicator": "",
-  "Move x values": "",
-  "minuteBegin": "",
-  "hourBegin": "",
-  "dayBegin": "",
-  "weekBegin": "",
-  "monthBegin": "",
-  "yearBegin": "",
-  "Multiplicator": ""
+  "y value Multiplicator": "multiplicateur de valeur y",
+  "Move x values": "Déplacer x valeurs",
+  "minuteBegin": "début de minute",
+  "hourBegin": "début d'heure",
+  "dayBegin": "début de journée",
+  "weekBegin": "début de semaine",
+  "monthBegin": "début de mois",
+  "yearBegin": "début d'année",
+  "Multiplicator": "Multiplicateur de la valeur Y"
 }

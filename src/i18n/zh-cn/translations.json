@@ -321,13 +321,13 @@
   "Legend background:": "传说背景：",
   "Fill(0to1)": "填补(0to1)",
   "Points": "点",
-  "y value Multiplicator": "",
-  "Move x values": "",
-  "minuteBegin": "",
-  "hourBegin": "",
-  "dayBegin": "",
-  "weekBegin": "",
-  "monthBegin": "",
-  "yearBegin": "",
-  "Multiplicator": ""
+  "y value Multiplicator": "y 值乘数",
+  "Move x values": "移动 x 值",
+  "minuteBegin": "分钟开始",
+  "hourBegin": "小时开始",
+  "dayBegin": "一天的开始",
+  "weekBegin": "一周开始",
+  "monthBegin": "月初",
+  "yearBegin": "年初",
+  "Multiplicator": "Y值乘数"
 }

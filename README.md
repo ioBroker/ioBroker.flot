@@ -46,9 +46,13 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+	### **WORK IN PROGRESS**
 -->
 ## Changelog
+### **WORK IN PROGRESS**
+* (HSE83) Corrected connection to web instance
+* (bluefox) Added ukrainian translation
+
 ### 1.11.0 (2022-05-26)
 * (Apollon77) Trust GetHistory results to contain ms resolution timestamps
 

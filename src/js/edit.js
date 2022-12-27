@@ -42,7 +42,7 @@ $(document).ready(function () {
                         min: setup.options.min || '',
                         max: setup.options.max || '',
                         unit: units[i] || '',
-						xmove: 0					
+						xmove: 0
                     });
                 }
                 setup.options.aggregateType = 'step';
@@ -99,7 +99,7 @@ $(document).ready(function () {
             shadowsize: 3,
             unit: '',
             name: '',
-			xmove: 0			
+			xmove: 0
         });
 
         return index;
@@ -294,7 +294,7 @@ $(document).ready(function () {
 						'style="' + (settings.extraOptions[attr].width ? "width: " + settings.extraOptions[attr].width + ";" : "") + (settings.extraOptions[attr].style || "") + '" ' +
 						'class="dialog-line-option ' + (settings.extraOptions[attr]._class || "") + '" ' +
 						'data-option="' + attr + '">\n';
-					text += 
+					text +=
 						'<option value="0">' + _("0s") + '</option>' +
 						'<option value="minuteBegin">' + _("minuteBegin") + '</option>' +
 						'<option value="hourBegin">' + _("hourBegin") + '</option>' +
@@ -303,7 +303,7 @@ $(document).ready(function () {
 						'<option value="monthBegin">' + _("monthBegin")+ '</option>' +
 						'<option value="yearBegin">' + _("yearBegin") + "</option>";
 					text += "</select></td>\n";
-					
+
                 } else if (!settings.extraOptions[attr].values) {
                     text += '<td><input id="option_' + attr + '" class="dialog-line-option" data-option="' + attr + '" ' +
                         (settings.extraOptions[attr].type ? 'type="' + settings.extraOptions[attr].type + '" ' : '') +
@@ -487,7 +487,7 @@ $(document).ready(function () {
 							'<option value="monthBegin">' + _("monthBegin")+ '</option>' +
 							'<option value="yearBegin">' + _("yearBegin") + "</option>";
                         text += '</select></td>\n';
-						
+
                     } else if (s === 'removeButton') {
                         text += '<td style="' + settings.line[s].style + '"><button class="id-remove" data-index="' + i + '"></button></td>\n';
                     } else if (s === 'extraOptions') {
@@ -1496,11 +1496,10 @@ $(document).ready(function () {
 
     function initSocket() {
         console.log('Init connection...');
-	// Correct "port only" url given from web adapter:
-	var correctSocketUrl = socketUrl;
-	if (correctSocketUrl && correctSocketUrl[0] === ':') {
-	    correctSocketUrl = location.protocol + '//' + location.hostname + socketUrl;
-	}
+        // Correct "port only" url given from web adapter:
+        if (window.socketUrl && window.socketUrl[0] === ':') {
+            window.socketUrl = location.protocol + '//' + location.hostname + socketUrl;
+        }
         // Read instances
         socket = io.connect(socketUrl, {
             query: {

@@ -1,16 +1,16 @@
 'use strict';
 
-const gulp        = require('gulp');
-const fs          = require('fs');
-const pkg         = require('./package.json');
-const iopackage   = require('./io-package.json');
-const version     = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
-const uglify      = require('gulp-uglify');
-const concat      = require('gulp-concat');
-const sourcemaps  = require('gulp-sourcemaps');
-const htmlmin     = require('gulp-htmlmin');
-const del         = require('del');
-const translate   = require("./lib/tools.js").translateText;
+const gulp       = require('gulp');
+const fs         = require('fs');
+const pkg        = require('./package.json');
+const iopackage  = require('./io-package.json');
+const version    = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
+const uglify     = require('gulp-uglify');
+const concat     = require('gulp-concat');
+const sourcemaps = require('gulp-sourcemaps');
+const htmlmin    = require('gulp-htmlmin');
+const del        = require('del');
+const translate  = require('./lib/tools.js').translateText;
 
 /*var appName   = getAppName();
 
@@ -30,6 +30,7 @@ let languages =  {
     it: {},
     es: {},
     pl: {},
+    uk: {},
     'zh-cn': {}
 };
 
@@ -520,7 +521,7 @@ gulp.task('translate', async function (done) {
     if (i > -1) {
         yandex = process.argv[i + 1];
     }
-    
+
     if (iopackage && iopackage.common) {
         if (iopackage.common.news) {
             console.log("Translate News");
@@ -571,7 +572,7 @@ async function translateNotExisting(obj, baseText, yandex) {
 
     if (t) {
         for (let l in languages) {
-            if (!obj[l]) {                
+            if (!obj[l]) {
                 const time = new Date().getTime();
                 obj[l] = await translate(t, l, yandex);
                 console.log("en -> " + l + " " + (new Date().getTime() - time) + " ms");

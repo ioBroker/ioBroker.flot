@@ -321,13 +321,13 @@
   "Legend background:": "Tło legendy:",
   "Fill(0to1)": "Wypełnij (0to1)",
   "Points": "Zwrotnica",
-  "y value Multiplicator": "",
-  "Move x values": "",
-  "minuteBegin": "",
-  "hourBegin": "",
-  "dayBegin": "",
-  "weekBegin": "",
-  "monthBegin": "",
-  "yearBegin": "",
-  "Multiplicator": ""
+  "y value Multiplicator": "Mnożnik wartości y",
+  "Move x values": "Przenieś wartości x",
+  "minuteBegin": "początek minuty",
+  "hourBegin": "początek godz",
+  "dayBegin": "początek dnia",
+  "weekBegin": "początek tygodnia",
+  "monthBegin": "początek miesiąca",
+  "yearBegin": "początek roku",
+  "Multiplicator": "Mnożnik wartości Y"
 }
