@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "flot",
-    "version": "1.11.0",
+    "version": "1.12.0",
     "news": {
+      "1.12.0": {
+        "en": "Corrected connection to web instance\nAdded ukrainian translation",
+        "de": "Korrigierte Verbindung zur Webinstanz\nHinzugefügt ukrainische Übersetzung",
+        "ru": "Исправлена связь с веб-приводом\nДобавлен украинский перевод",
+        "pt": "Conexão correta para a instância web\nAdicionado tradução ukrainian",
+        "nl": "Vertaling:\nVertaling:",
+        "fr": "Connexion corrigée à l'instance web\nAjout de la traduction ukrainienne",
+        "it": "Collegamento corretto all'istanza web\nAggiunto ukrainian traduzione",
+        "es": "Conexión corregida a instancias web\nTraducción ucraniana",
+        "pl": "Poprawne połączenie do stron internetowych\nAddedukrainian translation",
+        "uk": "Виправлено підключення до веб-пристрою\nДодано переклад українською мовою",
+        "zh-cn": "B. 网络联系\n增加培训员"
+      },
       "1.11.0": {
         "en": "Trust GetHistory results to contain ms resolution timestamps",
         "de": "Vertrauen Sie darauf, dass GetHistory-Ergebnisse MS-Auflösungszeitstempel enthalten",
@@ -74,18 +87,6 @@
         "es": "preset.html actualizado para permitir la diéresis alemana",
         "pl": "preset.html zaktualizowany, aby umożliwić niemieckiemu umlaute",
         "zh-cn": "预设文件.html更新为允许德国umlaute"
-      },
-      "1.10.0": {
-        "en": "preset.html added to display a list of stored flot presets with direct links",
-        "de": "preset.html wurde hinzugefügt, um eine Liste der gespeicherten Flot-Presets mit direkten Links anzuzeigen",
-        "ru": "добавлен preset.html для отображения списка сохраненных пресетов flot с прямыми ссылками",
-        "pt": "preset.html adicionado para exibir uma lista de predefinições de flot armazenadas com links diretos",
-        "nl": "preset.html toegevoegd om een lijst met opgeslagen flotvoorinstellingen met directe links weer te geven",
-        "fr": "preset.html ajouté pour afficher une liste des préréglages de flottement stockés avec des liens directs",
-        "it": "preset.html aggiunto per visualizzare un elenco di preset flot memorizzati con collegamenti diretti",
-        "es": "preset.html agregado para mostrar una lista de presets de flot almacenados con enlaces directos",
-        "pl": "Dodano preset.html, aby wyświetlić listę zapisanych ustawień flot z bezpośrednimi linkami",
-        "zh-cn": "新增了预置.html，以显示具有直接链接的存储浮点预置的列表"
       }
     },
     "title": "Flot Charts",

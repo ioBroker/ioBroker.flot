@@ -49,7 +49,7 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 	### **WORK IN PROGRESS**
 -->
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.12.0 (2022-12-27)
 * (HSE83) Corrected connection to web instance
 * (bluefox) Added ukrainian translation
 

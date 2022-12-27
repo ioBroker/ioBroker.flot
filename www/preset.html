@@ -17,6 +17,10 @@
 
         function initSocket() {
             console.log('Init connection...');
+            // Correct "port only" url given from web adapter:
+            if (window.socketUrl && window.socketUrl[0] === ':') {
+                window.socketUrl = location.protocol + '//' + location.hostname + socketUrl;
+            }
             // Read instances
             socket = io.connect(socketUrl, {
                 query: {
