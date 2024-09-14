@@ -1,24 +1,16 @@
 'use strict';
 
 const gulp       = require('gulp');
-const fs         = require('fs');
+const fs         = require('node:fs');
 const pkg        = require('./package.json');
 const iopackage  = require('./io-package.json');
-const version    = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
 const uglify     = require('gulp-uglify');
 const concat     = require('gulp-concat');
 const sourcemaps = require('gulp-sourcemaps');
 const htmlmin    = require('gulp-htmlmin');
-const del        = require('del');
 const translate  = require('./lib/tools.js').translateText;
+const { deleteFoldersRecursive } = require('@iobroker/build-tools')
 
-/*var appName   = getAppName();
-
-function getAppName() {
-    var parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 1].split('.')[0].toLowerCase();
-}
-*/
 const fileName = 'words.js';
 let languages =  {
     en: {},
@@ -373,60 +365,10 @@ gulp.task('updateEditHtml', done => {
     done();
 });
 
-gulp.task('updatePackages', done => {
-    iopackage.common.version = pkg.version;
-    iopackage.common.news = iopackage.common.news || {};
-    if (!iopackage.common.news[pkg.version]) {
-        const news = iopackage.common.news;
-        const newNews = {};
-
-        newNews[pkg.version] = {
-            en: "news",
-            de: "neues",
-            ru: "новое",
-            pt: "novidades",
-            nl: "nieuws",
-            fr: "nouvelles",
-            it: "notizie",
-            es: "noticias",
-            pl: "nowości",
-            "zh-cn": "新"
-        };
-        iopackage.common.news = Object.assign(newNews, news);
-    }
-    fs.writeFileSync('io-package.json', JSON.stringify(iopackage, null, 4));
+gulp.task('clean', done => {
+    deleteFoldersRecursive('./www');
+    fs.existsSync('src/js/words.js') && fs.unlinkSync('src/js/words.js');
     done();
-});
-
-gulp.task('updateReadme', done => {
-    const readme = fs.readFileSync('README.md').toString();
-    const pos = readme.indexOf('## Changelog\n');
-    if (pos !== -1) {
-        const readmeStart = readme.substring(0, pos + '## Changelog\n'.length);
-        const readmeEnd   = readme.substring(pos + '## Changelog\n'.length);
-
-        if (readme.indexOf(version) === -1) {
-            const timestamp = new Date();
-            const date = timestamp.getFullYear() + '-' +
-                ('0' + (timestamp.getMonth() + 1).toString(10)).slice(-2) + '-' +
-                ('0' + (timestamp.getDate()).toString(10)).slice(-2);
-
-            let news = '';
-            if (iopackage.common.news && iopackage.common.news[pkg.version]) {
-                news += '* ' + iopackage.common.news[pkg.version].en;
-            }
-
-            fs.writeFileSync('README.md', readmeStart + '### ' + version + ' (' + date + ')\n' + (news ? news + '\n\n' : '\n') + readmeEnd);
-        }
-    }
-    done();
-});
-
-gulp.task('clean', () => {
-    return del([
-        'src/js/words.js',
-        'www/**/*'
-    ]);
 });
 
 gulp.task('flotJS', () => {
@@ -515,7 +457,6 @@ gulp.task('copyImg', () => {
 });
 
 gulp.task('translate', async function (done) {
-
     let yandex;
     const i = process.argv.indexOf("--yandex");
     if (i > -1) {
@@ -556,7 +497,7 @@ gulp.task('translate', async function (done) {
                 if (!fs.existsSync('./src/i18n/' + l + '/')) {
                     fs.mkdirSync('./src/i18n/' + l + '/');
                 }
-                fs.writeFileSync('./src/i18n/' + l + '/translations.json', JSON.stringify(existing, null, 4));
+                fs.writeFileSync(`./src/i18n/${l}/translations.json`, JSON.stringify(existing, null, 4));
             }
         }
 
@@ -575,7 +516,7 @@ async function translateNotExisting(obj, baseText, yandex) {
             if (!obj[l]) {
                 const time = new Date().getTime();
                 obj[l] = await translate(t, l, yandex);
-                console.log("en -> " + l + " " + (new Date().getTime() - time) + " ms");
+                console.log(`en -> ${l} ${new Date().getTime() - time} ms`);
             }
         }
     }
