@@ -249,4 +249,4 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2022 bluefox<dogafox@gmail.com>
+Copyright (c) 2014-2026 bluefox<dogafox@gmail.com>
