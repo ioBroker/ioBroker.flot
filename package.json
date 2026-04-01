@@ -30,7 +30,7 @@
     "@alcalzone/release-script-plugin-iobroker": "^3.7.2",
     "@alcalzone/release-script-plugin-license": "^3.7.0",
     "@iobroker/build-tools": "^1.0.2",
-    "@iobroker/testing": "^5.0.0",
+    "@iobroker/testing": "^5.2.2",
     "gulp": "^4.0.2",
     "gulp-uglify": "^3.0.2",
     "gulp-concat": "^2.6.1",
