@@ -19,4 +19,7 @@ updates:
       # Typescript should not be updated automatically, except patch updates
       # it does not follow semver and minor updates are usually breaking
       - dependency-name: "typescript"
-        update-types: ["version-update:semver-minor", "version-update:semver-major"]
+        update-types: [ "version-update:semver-minor", "version-update:semver-major" ]
+      - dependency-name: "@types/node"
+        update-types:
+          - version-update:semver-major
