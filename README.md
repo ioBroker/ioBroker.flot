@@ -246,6 +246,8 @@ http://localhost:8082/flot/**preset**.html?preset=**presetName**
 ### 0.0.1 (2015-03-27)
 * (bluefox) initial commit
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 The MIT License (MIT)
 
