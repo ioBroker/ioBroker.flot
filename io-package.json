@@ -146,7 +146,6 @@
     "onlyWWW": true,
     "singleton": true,
     "type": "visualization",
-    "noConfig": true,
     "nogit": true,
     "welcomeScreen": {
       "link": "flot/edit.html",
@@ -154,6 +153,9 @@
       "img": "flot.admin/flot.png",
       "color": "gray",
       "order": 4
+    },
+    "adminUI": {
+      "config": "none"
     }
   },
   "native": {},
