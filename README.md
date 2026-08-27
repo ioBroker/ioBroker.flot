@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **This adapter is deprecated!** Please use [iobroker.echarts](https://github.com/ioBroker/ioBroker.echarts) instead.
+
 ![Logo](admin/flot.png)
 # ioBroker.flot
 
