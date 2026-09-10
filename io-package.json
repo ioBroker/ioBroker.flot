@@ -122,7 +122,10 @@
       "ru": "docs/ru/flot.md",
       "de": "docs/de/flot.md"
     },
-    "license": "MIT",
+    "licenseInformation": {
+      "type": "free",
+      "license": "MIT"
+    },
     "platform": "Javascript/Node.js",
     "icon": "flot.png",
     "mode": "none",
